@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function (e) {
+        $('#login').click((e) => {
+          e.preventDefault();
+          window.location.href = '/login';
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <form id="signup" action="/signup" method="POST">
+      <input id="user" name="username" placeholder="user" type="text" />
+      <br />
+      <input id="email" name="email" placeholder="email" type="text" />
+      <br />
+      <input id="pass" name="password" placeholder="password" type="password" />
+      <br />
+      <button id="login">Login</button>
+      <button id="submit" type="submit">Sign Up</button>
+    </form>
+  </body>
+</html>
