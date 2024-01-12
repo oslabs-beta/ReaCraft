@@ -24,9 +24,6 @@ export default function App() {
     const fetchData = async () => {
       try {
         await getUser();
-        const designs = await getDesigns();
-        console.log(designs);
-        dispatch(setUserDesigns(designs));
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
