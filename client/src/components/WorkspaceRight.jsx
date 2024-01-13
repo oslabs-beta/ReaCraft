@@ -101,27 +101,6 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
             padding: `${padding}px`,
           }}
         >
-
-        <p
-          fontSize="small"
-          fill="black" 
-          strokeWidth="1" 
-          x="0"
-          y="0"
-        >
-          {nodeDatum.name}
-        </p>
-      </Fab>
-    </div>
-  </foreignObject>
-    {nodeDatum.attributes?.department && (
-      <text fill="black" x="-15" dy="-15" strokeWidth="1">
-        Department: {nodeDatum.attributes?.department}
-      </text>
-    )}
-  </g>
-  )
-    };
           <Fab
             variant='extended'
             onClick={toggleNode}
@@ -145,7 +124,6 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
     </g>
   );
 };
-
 
 function DOMTreeBackdrop({ viewTree, tree, toggleViewTree }) {
   const windowSize = useRef([window.innerWidth, window.innerHeight]);
