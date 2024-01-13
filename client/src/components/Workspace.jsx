@@ -8,7 +8,12 @@ import KonvaStage from './KonvaStage';
 export default function Workspace() {
   const userImage = useSelector((state) => state.design.userImage);
   return (
-    <Box display='grid' gridTemplateColumns='repeat(12, 1fr)' gap={2}>
+    <Box 
+      maxWidth='false'
+      display='grid' 
+      gridTemplateColumns='repeat(12, 1fr)'
+      marginTop='10px'
+    >
       <Box gridColumn='span 2'>
         <WorkspaceLeft />
       </Box>
@@ -16,7 +21,13 @@ export default function Workspace() {
         {/* <img src={userImage} style={{ maxWidth: '100%' }} /> */}
         {userImage && <KonvaStage userImage={userImage} />}
       </Box>
-      <Box gridColumn='span 2'>
+      <Box 
+      gridColumn='span 2'
+      sx={{
+        display: 'flex',
+        justifyContent: 'flex-end'
+      }}
+      >
         <WorkspaceRight />
       </Box>
     </Box>

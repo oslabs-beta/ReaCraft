@@ -115,7 +115,7 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
           borderWidth: `3px` 
         }}
         >
-        <text
+        <p
           fontSize="small"
           fill="black" 
           strokeWidth="1" 
@@ -123,7 +123,7 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
           y="0"
         >
           {nodeDatum.name}
-        </text>
+        </p>
       </Fab>
     </div>
   </foreignObject>
