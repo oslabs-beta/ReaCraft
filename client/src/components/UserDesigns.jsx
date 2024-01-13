@@ -1,10 +1,12 @@
 import { Box } from '@mui/material';
-import React, { Fragment } from 'react';
-import { useSelector } from 'react-redux';
+import React, { Fragment, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import DesignCard from './DesignCard';
 import Workspace from './Workspace';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import { getDesigns } from '../utils/fetchRequests';
+import { setUserDesigns } from '../utils/reducers/appSlice';
 
 export default function UserDesigns() {
   const userDesigns = useSelector((state) => state.app.userDesigns);
@@ -15,7 +17,23 @@ export default function UserDesigns() {
     return item._id === designId;
   })[0];
 
+  const dispatch = useDispatch();
+
   console.log(userDesigns);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const designs = await getDesigns();
+        console.log(designs);
+        dispatch(setUserDesigns(designs));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   if (!designId) {
     return (
