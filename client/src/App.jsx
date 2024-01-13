@@ -9,16 +9,17 @@ import TopBar from './components/TopBar';
 import MainContainer from './components/MainContainer';
 import { getDesigns } from './utils/fetchRequests';
 import { setUserDesigns } from './utils/reducers/appSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function App() {
   const sessionID = Cookies.get('sessionID');
+  const message = useSelector((state) => state.app.message);
+  console.log('message is', message);
   if (!sessionID) {
     window.location.href = '/login';
     return;
   }
   const { getUser } = useAuth();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {

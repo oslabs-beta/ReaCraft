@@ -38,4 +38,23 @@ const getDesigns = (req, res, next) => {
     );
 };
 
-module.exports = { addDesign, getDesigns };
+const deleteDesign = (req, res, next) => {
+  const designId = req.params.designId;
+  return db
+    .query('DELETE FROM designs WHERE _id = $1 RETURNING *;', [designId])
+    .then((data) => {
+      const image_url = new URL(data.rows[0].image_url);
+      res.locals.imageToDelete = image_url.pathname.slice(1);
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.deleteDesignComponents middleware error' +
+          err,
+        message: { err: 'deleteDesignComponents: ' + err },
+      })
+    );
+};
+
+module.exports = { addDesign, getDesigns, deleteDesign };

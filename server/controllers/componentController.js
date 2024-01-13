@@ -100,4 +100,19 @@ const getComponents = (req, res, next) => {
       })
     );
 };
-module.exports = { addComponents, getComponents };
+
+const deleteDesignComponents = (req, res, next) => {
+  const designId = req.params.designId;
+  return db
+    .query('DELETE FROM components WHERE design_id = $1;', [designId])
+    .then(() => next())
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.deleteDesignComponents middleware error' +
+          err,
+        message: { err: 'deleteDesignComponents: ' + err },
+      })
+    );
+};
+module.exports = { addComponents, getComponents, deleteDesignComponents };
