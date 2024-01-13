@@ -12,7 +12,9 @@ export default function TopBar({ toggleDarkMode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <AppBar position='static'>
-      <Toolbar>
+      <Toolbar
+        disableGutters="true"
+      >
         <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
           <MenuIcon />
         </IconButton>
