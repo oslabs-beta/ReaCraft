@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import Tree from 'react-d3-tree';
 import { useSelector } from 'react-redux';
 import { convertToTree } from '../utils/treeNode';
-import { Button, Backdrop, Fab} from '@mui/material';
-import '../utils/treeNode.css'
+import { Button, Backdrop, Fab } from '@mui/material';
+import '../utils/treeNode.css';
 
 export default function WorkspaceRight() {
   const components = useSelector((state) => state.design.components);
@@ -79,62 +79,48 @@ export default function WorkspaceRight() {
 //   ],
 // };
 
-
-
 const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
-  const textLength = Number(nodeDatum.name.length)
-  const estimatedCharWidth = (nodeDatum.name.length === 1) ? 60 : (nodeDatum.name.length <= 5) ? 30 : 20;
+  const textLength = Number(nodeDatum.name.length);
+  const estimatedCharWidth =
+    nodeDatum.name.length === 1 ? 60 : nodeDatum.name.length <= 5 ? 30 : 20;
   const textWidth = textLength * estimatedCharWidth;
   const padding = 20;
   const paddedWidth = textWidth * 2;
 
   return (
-  <g
-    transform={`translate(${-textWidth / 2}, 0)`}
-  >
-    <foreignObject
-      x={0}
-      y={-45}
-      width={textWidth}
-      height={50}
-    >
-    <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        height: '100%',
-        y: '-50px',
-        padding: `${padding}px`
-      }}>
-      <Fab
-        variant="extended" 
-        onClick={toggleNode}
-        style={{ 
-          width: `${paddedWidth}px`, 
-          height: `40px`, 
-          borderWidth: `3px` 
-        }}
-        >
-        <p
-          fontSize="small"
-          fill="black" 
-          strokeWidth="1" 
-          x="0"
-          y="0"
-        >
-          {nodeDatum.name}
-        </p>
-      </Fab>
-    </div>
-  </foreignObject>
-    {nodeDatum.attributes?.department && (
-      <text fill="black" x="-15" dy="-15" strokeWidth="1">
-        Department: {nodeDatum.attributes?.department}
-      </text>
-    )}
-  </g>
-  )
-    };
+    <g transform={`translate(${-textWidth / 2}, 0)`}>
+      <foreignObject x={0} y={-45} width={textWidth} height={50}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            y: '-50px',
+            padding: `${padding}px`,
+          }}>
+          <Fab
+            variant='extended'
+            onClick={toggleNode}
+            style={{
+              width: `${paddedWidth}px`,
+              height: `40px`,
+              borderWidth: `3px`,
+            }}>
+            <p fontSize='small' fill='black' strokeWidth='1' x='0' y='0'>
+              {nodeDatum.name}
+            </p>
+          </Fab>
+        </div>
+      </foreignObject>
+      {nodeDatum.attributes?.department && (
+        <text fill='black' x='-15' dy='-15' strokeWidth='1'>
+          Department: {nodeDatum.attributes?.department}
+        </text>
+      )}
+    </g>
+  );
+};
 
 function DOMTreeBackdrop({ viewTree, tree, toggleViewTree }) {
   const windowSize = useRef([window.innerWidth, window.innerHeight]);
@@ -147,13 +133,12 @@ function DOMTreeBackdrop({ viewTree, tree, toggleViewTree }) {
         backgroundColor: '#ffffff4D',
       }}
       open={viewTree}
-      onDoubleClickCapture={toggleViewTree}
-    >
+      onDoubleClickCapture={toggleViewTree}>
       <Tree
         data={tree}
-        rootNodeClassName="node__root"
-        branchNodeClassName="node__branch"
-        leafNodeClassName="node__leaf"
+        rootNodeClassName='node__root'
+        branchNodeClassName='node__branch'
+        leafNodeClassName='node__leaf'
         orientation='vertical'
         draggable='true'
         collapsible='true'
