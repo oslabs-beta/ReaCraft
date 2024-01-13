@@ -45,8 +45,11 @@ export default function WorkspaceLeft() {
   console.log('components in WorkspaceLeft: ', components);
 
   return (
-    <Box>
-      <AddNewComponent setSelectedIdx={setSelectedIdx} />
+    <Box
+      value='NewComponentBox'
+      maxHeight='45px'
+    >
+      <AddNewComponent setSelectedIdx={setSelectedIdx}/>
       <List>
         {components.map((item, idx) => (
           <ComponentDisplay
@@ -80,6 +83,7 @@ function ComponentDisplay({ component, idx, handleListItemClick, selected }) {
 
   return (
     <ListItemButton
+      value='NewComponentInputBox'
       selected={selected}
       // onClick={() => handleListItemClick(idx)}
       // i added this
