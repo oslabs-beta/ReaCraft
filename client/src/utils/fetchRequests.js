@@ -31,3 +31,14 @@ export function getComponents(designId) {
     .then((res) => res.json())
     .catch((err) => console.log('App: get components: ERROR', err));
 }
+
+export function deleteDesign(designId) {
+  return fetch(`/designs/delete/${designId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log('App: get components: ERROR', err));
+}
