@@ -42,10 +42,21 @@ export default function App() {
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme} sx={{width:'100%'}}>
       <CssBaseline />
-      <Container sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <TopBar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+      <Container
+        disableGutters="true"
+        maxWidth="false"
+        sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '30px',
+          }}>
+        <TopBar 
+          disableGutters="true" 
+          toggleDarkMode={toggleDarkMode} 
+          darkMode={darkMode} 
+          />
         <MainContainer />
       </Container>
     </ThemeProvider>
