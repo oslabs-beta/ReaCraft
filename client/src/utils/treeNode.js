@@ -46,21 +46,24 @@ export function validTree(components) {
   return seen.size === components.length;
 }
 
-export function convertToTree(components) {
-  const stack = [0];
-  const tree = new TreeNode(components[0], 0);
+export function convertToTree(components, fromDb) {
+  const rootId = fromDb ? components[0]._id : 0;
+  const stack = [rootId];
+  const tree = new TreeNode(components[0], rootId);
+
   while (stack.length > 0) {
     const cur = stack.pop();
     const node = tree.searchNode(cur);
-
-    const children = components.flatMap((item, idx) =>
-      item.parent === cur ? idx : []
+    const childrenIndices = components.flatMap((item, idx) =>
+      item.parent === cur || item.parent_id === cur ? idx : []
     );
 
-    children.forEach((i) => {
-      stack.push(i);
-      const child = new TreeNode(components[i], i);
-      node.addChild(child);
+    childrenIndices.forEach((i) => {
+      const child = components[i];
+      const childId = fromDb ? child._id : i;
+      stack.push(childId);
+      const childNode = new TreeNode(child, childId);
+      node.addChild(childNode);
     });
   }
   return tree;
