@@ -27,9 +27,11 @@ const addComponents = async (req, res, next) => {
 
     const stack = [0];
     while (stack.length > 0) {
+      console.log(stack);
       const parentIndex = stack.pop();
       const parentId = components[parentIndex].id;
-      const children = components.filter((item) => item.parent === parentId);
+      const children = components.filter((item) => item.parent === parentIndex);
+      console.log('children are', children);
       const rows = children.map((item) => {
         const {
           name,
@@ -55,22 +57,22 @@ const addComponents = async (req, res, next) => {
         ];
       });
 
-      children.forEach(async (child, i) => {
+      for (const [i, child] of children.entries()) {
         try {
+          stack.push(child.index);
           child.id = await db
             .query(
               'INSERT INTO components ' +
-                '(design_id, parent_id, name, x_position, y_position, z_index, , html_tag, inner_html, props, styles, hooks) ' +
+                '(design_id, parent_id, name, x_position, y_position, z_index, html_tag, inner_html, props, styles, hooks) ' +
                 'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) ' +
                 'RETURNING *;',
               rows[i]
             )
             .then((data) => data.rows[0]._id);
-          stack.push(child.index);
         } catch (err) {
           throw err;
         }
-      });
+      }
     }
     return next();
   } catch (err) {
