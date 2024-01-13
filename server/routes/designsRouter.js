@@ -26,4 +26,13 @@ router.get(
   componentController.getComponents,
   (req, res) => res.status(200).send(res.locals.components)
 );
+
+router.delete(
+  '/delete/:designId',
+  componentController.deleteDesignComponents,
+  designController.deleteDesign,
+  imageController.deleteImage,
+  (req, res) => res.status(200).send({})
+);
+
 module.exports = router;
