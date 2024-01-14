@@ -21,12 +21,7 @@ export default function Home() {
   if (user)
     return (
       //Box container below controlls margin size @ homepage
-      <Box 
-        display='grid'
-        margin='30px'
-        gridTemplateColumns='1fr 1fr' 
-        gap={2}
-        >
+      <Box display='grid' margin='30px' gridTemplateColumns='1fr 1fr' gap={2}>
         <Typography variant='h4' gridColumn='span 2'>
           Welcome back, {user.username}
         </Typography>

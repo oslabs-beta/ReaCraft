@@ -95,10 +95,10 @@ const verifyUser = async (req, res, next) => {
       });
 
     res.locals.userId = user._id;
-    await db.query('UPDATE users SET last_login = $2 WHERE _id = $1;', [
-      user._id,
-      new Date(),
-    ]);
+    await db.query(
+      'UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE _id = $1;',
+      [user._id]
+    );
     return next();
   } catch (err) {
     return next({
