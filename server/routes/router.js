@@ -4,6 +4,7 @@ const path = require('path');
 
 const userController = require('../controllers/userController');
 const cookieController = require('../controllers/cookieController');
+const imageController = require('../controllers/imageController');
 
 const loginRouter = require('./loginRouter');
 const signupRouter = require('./signupRouter');
@@ -24,6 +25,15 @@ router.get(
   cookieController.decryptCookie,
   userController.getUser,
   (req, res) => res.status(200).json(res.locals.user)
+);
+
+router.post(
+  '/update-profile',
+  cookieController.decryptCookie,
+  imageController.deleteImage,
+  imageController.uploadImage,
+  userController.updateProfilePicture,
+  (req, res) => res.status(200).json({ imageUrl: res.locals.onlineImageUrl })
 );
 
 router.get('/home', cookieController.checkCookie, (req, res) => {
