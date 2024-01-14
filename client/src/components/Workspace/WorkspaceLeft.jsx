@@ -14,7 +14,6 @@ import DeleteComponentButton from '../functionalButtons/DeleteComponentButton';
 
 export default function WorkspaceLeft({ selectedIdx, setSelectedIdx }) {
   const components = useSelector((state) => state.designV2.components);
-  console.log('components are', components);
 
   return (
     <Box value='NewComponentBox' maxHeight='45px'>
