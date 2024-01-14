@@ -10,7 +10,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Divider from '@mui/material/Divider';
 import { useDispatch } from 'react-redux';
 import { goToPage, resetStep } from '../utils/reducers/appSlice';
-import { resetDesign } from '../utils/reducers/designSlice';
+import { resetDesign } from '../utils/reducers/designSliceV2';
 
 export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
   const [value, setValue] = useState(0);

@@ -2,6 +2,7 @@ const s3 = require('../models/s3Model');
 
 const uploadImage = (req, res, next) => {
   const { userImage } = req.body;
+  if (!userImage) return next();
   const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64Data, 'base64');
 
@@ -28,7 +29,10 @@ const uploadImage = (req, res, next) => {
 };
 
 const deleteImage = (req, res, next) => {
-  const imageToDelete = res.locals.imageToDelete;
+  const imageToDelete = res.locals.imageToDelete
+    ? res.locals.imageToDelete
+    : req.body.imageToDelete;
+  if (!imageToDelete) return next();
   const params = {
     Bucket: 'reactraft',
     Key: imageToDelete,

@@ -10,11 +10,15 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { setMessage } from '../../utils/reducers/appSlice';
 import isValidVariableName from '../../utils/isValidVariableName';
 import Button from '@mui/material/Button';
-import {
-  removeComponent,
-  updateComponent,
-} from '../../utils/reducers/designSlice';
 import HtmlTagSelector from './HtmlTagSelector';
+import {
+  convertArrToObj,
+  convertObjToArr,
+} from '../../utils/convertBetweenObjArr';
+import {
+  deleteComponent,
+  submitComponentForm,
+} from '../../utils/reducers/designSliceV2';
 
 const boxStyle = {
   position: 'absolute',
@@ -27,16 +31,23 @@ const boxStyle = {
   boxShadow: 24,
   p: 4,
 };
-export default function ComponentEditor({ idx, open, closeEditor }) {
-  const component = useSelector((state) => state.design.components)[idx];
-  const [props, setProps] = useState(component.props);
-  const [styles, setStyles] = useState(component.styles);
-  const dispatch = useDispatch();
-  const childrenNum = useSelector((state) => state.design.components).filter(
-    (item) => item.parent === idx
-  ).length;
+export default function ComponentEditorForm({
+  idx,
+  open,
+  closeEditor,
+  isLeaf,
+}) {
+  const components = useSelector((state) => state.designV2.components);
+  const component = components[idx];
 
-  const isLeaf = childrenNum === 0 && idx > 0;
+  const [props, setProps] = useState(
+    convertObjToArr(JSON.parse(component.props))
+  );
+  const [styles, setStyles] = useState(
+    convertObjToArr(JSON.parse(component.styles))
+  );
+
+  const dispatch = useDispatch();
 
   const deleteMessage = isLeaf
     ? {
@@ -58,15 +69,23 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
         gap={2}
         onSubmit={(e) => {
           e.preventDefault();
-          const updatedComponent = {
+          const body = {
             name: e.target.name.value,
-            inner_html: '',
-            styles,
-            props,
+            innerHtml: e.target.innerHtml.value,
+            styles: convertArrToObj(styles),
+            props: convertArrToObj(props),
           };
-          if (isValidVariableName(updatedComponent.name)) {
-            dispatch(updateComponent({ idx, updatedComponent }));
-            closeEditor();
+          if (isValidVariableName(body.name)) {
+            try {
+              dispatch(
+                submitComponentForm({ componentId: component._id, body })
+              );
+            } catch (err) {
+              setMessage({
+                severity: 'error',
+                text: 'Saving component: ' + err,
+              });
+            }
           } else {
             dispatch(
               setMessage({
@@ -79,7 +98,13 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
       >
         <NameAndParent idx={idx} name={component.name} />
 
-        {isLeaf && <HtmlData idx={idx} isLeaf={isLeaf} />}
+        {isLeaf && (
+          <HtmlData
+            idx={idx}
+            isLeaf={isLeaf}
+            innerHtml={component.inner_html}
+          />
+        )}
 
         <Box gridColumn='span 12'>
           <Divider />
@@ -87,21 +112,16 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
 
         <AddData data={props} setData={setProps} dataName={'Props'} />
 
-        <AddData
-          data={styles}
-          setData={setStyles}
-          dataName={'Styles'}
-          isRoot={idx === 0}
-        />
+        <AddData data={styles} setData={setStyles} dataName={'Styles'} />
 
-        <Box gridColumn='span 6'>
+        <Box gridColumn='span 4'>
           {idx > 0 && (
             <Button
               variant='outlined'
               color='error'
               onClick={() => {
-                if (childrenNum === 0) {
-                  dispatch(removeComponent(idx));
+                if (isLeaf) {
+                  dispatch(deleteComponent(component._id));
                   closeEditor();
                 }
                 dispatch(setMessage(deleteMessage));
@@ -112,7 +132,13 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
           )}
         </Box>
 
-        <Box gridColumn='span 6'>
+        <Box gridColumn='span 4'>
+          <Button color='secondary' variant='contained' onClick={closeEditor}>
+            Cancel
+          </Button>
+        </Box>
+
+        <Box gridColumn='span 4'>
           <Button variant='contained' color='success' type='submit'>
             Save
           </Button>
@@ -141,7 +167,7 @@ function NameAndParent({ idx, name }) {
   );
 }
 
-function HtmlData({ idx, isLeaf }) {
+function HtmlData({ idx, isLeaf, innerHtml }) {
   return (
     <Fragment>
       <Box gridColumn='span 2'>
@@ -150,15 +176,16 @@ function HtmlData({ idx, isLeaf }) {
       <Box gridColumn='span 10'>
         <TextField
           label='inner_html'
-          name='inner html'
+          name='innerHtml'
           sx={{ width: '100%' }}
+          value={innerHtml}
         />
       </Box>
     </Fragment>
   );
 }
 
-function AddData({ data, setData, dataName, isRoot }) {
+function AddData({ data, setData, dataName }) {
   const keys = data.map((item) => item.key);
   const dispatch = useDispatch();
 
@@ -195,41 +222,36 @@ function AddData({ data, setData, dataName, isRoot }) {
               name={`${dataName.toLowerCase()}-${item.key}-key`}
               value={item.key}
               onChange={(e) => {
-                if (
-                  e.target.value.length > 0 &&
-                  keys.includes(e.target.value)
-                ) {
-                  dispatch(
-                    setMessage({
-                      severity: 'error',
-                      text: `Invalid prop key: ${e.target.value} has already been declared.`,
-                    })
-                  );
-                } else if (
+                const duplicateErr = {
+                  severity: 'error',
+                  text: `Invalid prop key: ${e.target.value} has already been declared.`,
+                };
+                const invalidErr = {
+                  severity: 'error',
+                  text: `Invalid prop key: ${e.target.value} is not a valid Javascript variable name.`,
+                };
+                const emptyErr = {
+                  severity: 'error',
+                  text: `Props key cannot be empty.`,
+                };
+                let message;
+                if (e.target.value.length > 0 && keys.includes(e.target.value))
+                  message = duplicateErr;
+                else if (
                   !isValidVariableName(e.target.value) &&
                   e.target.value.length > 0
-                ) {
-                  dispatch(
-                    setMessage({
-                      severity: 'error',
-                      text: `Invalid prop key: ${e.target.value} is not a valid Javascript variable name.`,
-                    })
-                  );
-                } else {
-                  if (e.target.value.length === 0) {
-                    dispatch(
-                      setMessage({
-                        severity: 'error',
-                        text: `Props key cannot be empty.`,
-                      })
-                    );
-                  }
+                )
+                  message = invalidErr;
+                else if (e.target.value.length === 0) message = emptyErr;
+                else {
                   setData(
                     data.map((el, i) =>
                       i === idx ? { ...el, key: e.target.value } : el
                     )
                   );
                 }
+
+                dispatch(setMessage(message));
               }}
             />
           </Box>
@@ -251,23 +273,7 @@ function AddData({ data, setData, dataName, isRoot }) {
           <Box gridColumn='span 2'>
             <IconButton
               onClick={() => {
-                if (isRoot && item.key === 'height') {
-                  dispatch(
-                    setMessage({
-                      severity: 'error',
-                      text: "Cannot remove 'height' of root component.",
-                    })
-                  );
-                } else if (isRoot && item.key === 'width') {
-                  dispatch(
-                    setMessage({
-                      severity: 'error',
-                      text: "Cannot remove 'width' of root component.",
-                    })
-                  );
-                } else {
-                  setData(data.filter((_, i) => i !== idx));
-                }
+                setData(data.filter((_, i) => i !== idx));
               }}
             >
               <RemoveCircleIcon />

@@ -31,12 +31,12 @@ export default class TreeNode {
 
 export function validTree(components) {
   const seen = new Set();
-  const stack = [0];
+  const stack = [components[0]._id];
   while (stack.length > 0) {
     const cur = stack.pop();
     seen.add(cur);
-    const children = components.flatMap((item, idx) =>
-      item.parent === cur ? idx : []
+    const children = components.flatMap((item) =>
+      item.parent_id === cur ? item._id : []
     );
     children.forEach((i) => {
       if (seen.has(i)) return false;
@@ -46,8 +46,9 @@ export function validTree(components) {
   return seen.size === components.length;
 }
 
-export function convertToTree(components, fromDb) {
-  const rootId = fromDb ? components[0]._id : 0;
+export function convertToTree(components) {
+  if (components.length === 0) return null;
+  const rootId = components[0]._id;
   const stack = [rootId];
   const tree = new TreeNode(components[0], rootId);
 
@@ -55,12 +56,12 @@ export function convertToTree(components, fromDb) {
     const cur = stack.pop();
     const node = tree.searchNode(cur);
     const childrenIndices = components.flatMap((item, idx) =>
-      item.parent === cur || item.parent_id === cur ? idx : []
+      item.parent_id === cur ? idx : []
     );
 
     childrenIndices.forEach((i) => {
       const child = components[i];
-      const childId = fromDb ? child._id : i;
+      const childId = child._id;
       stack.push(childId);
       const childNode = new TreeNode(child, childId);
       node.addChild(childNode);

@@ -1,12 +1,12 @@
 import React from 'react';
 import Container from '@mui/material/Container';
-import HorizontalStepper from './HorizontalStepper';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetMessage } from '../utils/reducers/appSlice';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import UserDesigns from './UserDesigns';
+import UserDesigns from './PastDesigns/PastDesigns';
 import Home from './HomePage';
+import NewDesign from './NewDesign';
 
 export default function MainContainer() {
   const { message, page } = useSelector((state) => state.app);
@@ -14,13 +14,14 @@ export default function MainContainer() {
   return (
     <Container
       value='WorkSpaceContainer'
-      disableGutters='true'
+      disableGutters={true}
       maxWidth='false'
-      style={{ 
-        justifyContent: 'center', 
-        alignItems: 'center' 
-      }}>
-      {page === 'NEW_DESIGN' && <HorizontalStepper />}
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && <Home />}
       {page === 'PAST_DESIGNS' && <UserDesigns />}
       <Snackbar
