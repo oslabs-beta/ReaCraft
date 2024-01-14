@@ -1,14 +1,13 @@
 import React, { useRef, useState } from 'react';
 import Tree from 'react-d3-tree';
 import { useSelector } from 'react-redux';
-import { convertToTree } from '../utils/treeNode';
+import { convertToTree } from '../../utils/treeNode';
 import { Button, Backdrop, Fab } from '@mui/material';
-import '../utils/treeNode.css';
+import '../../utils/treeNode.css';
 
 export default function WorkspaceRight() {
-  const components = useSelector((state) => state.design.components);
-  const fromDb = useSelector((state) => state.design._id);
-  const tree = convertToTree(components, fromDb);
+  const components = useSelector((state) => state.designV2.components);
+  const tree = convertToTree(components);
   const [viewTree, setViewTree] = useState(false);
   return (
     <div>
