@@ -10,6 +10,8 @@ import { getDesignDetails } from '../../utils/reducers/designSliceV2';
 
 export default function DesignCard({ design }) {
   const dispatch = useDispatch();
+  const created_at = new Date(design.created_at);
+  const last_updated = new Date(design.last_updated);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -23,7 +25,10 @@ export default function DesignCard({ design }) {
           {design.title}
         </Typography>
         <Typography variant='body2' color='text.secondary'>
-          {design.created_at}
+          created_at: {created_at.toLocaleString()}
+        </Typography>
+        <Typography variant='body2' color='text.secondary'>
+          updated_at: {last_updated.toLocaleString()}
         </Typography>
       </CardContent>
       <CardActions>
