@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { startDesign } from '../../utils/reducers/designSlice';
 import Button from '@mui/material/Button';
 import { setMessage } from '../../utils/reducers/appSlice';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -32,8 +31,6 @@ export default function UserImageUploadButton() {
             const reader = new FileReader();
             reader.onloadend = async () => {
               const userImage = reader.result;
-              dispatch(startDesign(userImage));
-
               if (!designId) {
                 dispatch(newDesign({ userImage }));
               } else {

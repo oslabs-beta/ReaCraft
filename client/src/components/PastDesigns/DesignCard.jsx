@@ -5,10 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { getComponents } from '../../utils/fetchRequests';
-import { convertObjToArr } from '../../utils/convertBetweenObjArr';
 import { useDispatch } from 'react-redux';
-import { retreveUserDesign } from '../../utils/reducers/designSlice';
 import { getDesignDetails } from '../../utils/reducers/designSliceV2';
 
 export default function DesignCard({ design }) {

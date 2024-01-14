@@ -15,7 +15,7 @@ const emptyNameErr = {
 
 const firstCharErr = {
   severity: 'error',
-  text: 'React component name must start with an uppercase letter.',
+  text: 'React component name must start with an uppercase letter and contain no space.',
 };
 
 const successMess = {

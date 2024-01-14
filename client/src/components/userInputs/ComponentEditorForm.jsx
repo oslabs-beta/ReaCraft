@@ -37,8 +37,8 @@ export default function ComponentEditorForm({
   closeEditor,
   isLeaf,
 }) {
-  const components = useSelector((state) => state.designV2.components);
-  const component = components[idx];
+  const dispatch = useDispatch();
+  const component = useSelector((state) => state.designV2.components)[idx];
 
   const [props, setProps] = useState(
     convertObjToArr(JSON.parse(component.props))
@@ -46,8 +46,6 @@ export default function ComponentEditorForm({
   const [styles, setStyles] = useState(
     convertObjToArr(JSON.parse(component.styles))
   );
-
-  const dispatch = useDispatch();
 
   const deleteMessage = isLeaf
     ? {
@@ -59,6 +57,40 @@ export default function ComponentEditorForm({
         text: `Component ${component.name} has children. Failed to remove`,
       };
 
+  function handleSumbit(e) {
+    e.preventDefault();
+    console.log('name', e.target.name.value);
+    console.log(
+      'innerHtml',
+      e.target.innerHtml ? e.target.innerHtml.value : ''
+    );
+    const body = {
+      name: e.target.name.value,
+      innerHtml: isLeaf ? e.target.innerHtml.value : '',
+      styles: convertArrToObj(styles),
+      props: convertArrToObj(props),
+    };
+    if (isValidVariableName(body.name)) {
+      try {
+        dispatch(submitComponentForm({ componentId: component._id, body }));
+        setMessage({ severity: 'success', text: 'Saved successfully.' });
+        closeEditor();
+      } catch (err) {
+        setMessage({
+          severity: 'error',
+          text: 'Saving component: ' + err,
+        });
+      }
+    } else {
+      dispatch(
+        setMessage({
+          severity: 'error',
+          text: 'React component name must start with an uppercase letter.',
+        })
+      );
+    }
+  }
+
   return (
     <Modal open={open} onClose={closeEditor}>
       <Box
@@ -67,34 +99,7 @@ export default function ComponentEditorForm({
         display='grid'
         gridTemplateColumns='repeat(12, 1fr)'
         gap={2}
-        onSubmit={(e) => {
-          e.preventDefault();
-          const body = {
-            name: e.target.name.value,
-            innerHtml: e.target.innerHtml.value,
-            styles: convertArrToObj(styles),
-            props: convertArrToObj(props),
-          };
-          if (isValidVariableName(body.name)) {
-            try {
-              dispatch(
-                submitComponentForm({ componentId: component._id, body })
-              );
-            } catch (err) {
-              setMessage({
-                severity: 'error',
-                text: 'Saving component: ' + err,
-              });
-            }
-          } else {
-            dispatch(
-              setMessage({
-                severity: 'error',
-                text: 'React component name must start with an uppercase letter.',
-              })
-            );
-          }
-        }}
+        onSubmit={handleSumbit}
       >
         <NameAndParent idx={idx} name={component.name} />
 
@@ -149,6 +154,7 @@ export default function ComponentEditorForm({
 }
 
 function NameAndParent({ idx, name }) {
+  const [nameVal, setNameVal] = useState(name);
   return (
     <Fragment>
       <Box gridColumn='span 6'>
@@ -156,8 +162,9 @@ function NameAndParent({ idx, name }) {
           required
           label='name'
           name='name'
-          defaultValue={name}
+          value={nameVal}
           disabled={idx === 0}
+          onChange={(e) => setNameVal(e.target.value)}
         />
       </Box>
       <Box gridColumn='span 6'>
@@ -168,6 +175,7 @@ function NameAndParent({ idx, name }) {
 }
 
 function HtmlData({ idx, isLeaf, innerHtml }) {
+  const [innerHtmlVal, setInnerHtmlVal] = useState(innerHtml);
   return (
     <Fragment>
       <Box gridColumn='span 2'>
@@ -178,7 +186,8 @@ function HtmlData({ idx, isLeaf, innerHtml }) {
           label='inner_html'
           name='innerHtml'
           sx={{ width: '100%' }}
-          value={innerHtml}
+          value={innerHtmlVal}
+          onChange={(e) => setInnerHtmlVal(e.target.value)}
         />
       </Box>
     </Fragment>
