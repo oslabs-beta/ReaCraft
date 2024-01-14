@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteDesign } from '../../utils/fetchRequests';
-import { resetApp, setMessage } from '../../utils/reducers/appSlice';
+import { setMessage } from '../../utils/reducers/appSlice';
 import Delete from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';

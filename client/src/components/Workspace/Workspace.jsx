@@ -9,8 +9,6 @@ import DesignTitleInput from '../userInputs/DesignTitleInput';
 import UserImageUpload from '../functionalButtons/UserImageUploadButton';
 
 export default function Workspace() {
-  const userImage = useSelector((state) => state.design.userImage);
-
   const [selectedIdx, setSelectedIdx] = useState(null);
   const { image_url, _id } = useSelector((state) => state.designV2);
   return (
@@ -35,14 +33,14 @@ export default function Workspace() {
         />
       </Box>
       <Box gridColumn='span 8' align-items='center'>
-        <img src={image_url} style={{ maxWidth: '100%' }} />
-        {/* {image_url && (
+        {/* <img src={image_url} style={{ maxWidth: '100%' }} /> */}
+        {image_url && (
           <KonvaStage
             userImage={image_url}
             selectedIdx={selectedIdx}
             setSelectedIdx={setSelectedIdx}
           />
-        )} */}
+        )}
       </Box>
       <Box
         gridColumn='span 2'
