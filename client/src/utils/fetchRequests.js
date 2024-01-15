@@ -118,3 +118,15 @@ export function submitComponentFormRequest(componentId, body) {
     .then((res) => res.json())
     .catch((err) => console.log('App: add new component: ERROR: ', err));
 }
+
+export function updateProfilePictureRequest(body) {
+  return fetch(`/update-profile`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log('App: update profile picture: ERROR: ', err));
+}

@@ -14,6 +14,7 @@ import DarkModeSwitch from './functionalButtons/DarkModeSwitch';
 
 import { goToPage } from '../utils/reducers/appSlice';
 import { resetDesign } from '../utils/reducers/designSliceV2';
+import { useAuth } from '../hooks/useAuth';
 
 export default function TopBar({ toggleDarkMode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -22,6 +23,7 @@ export default function TopBar({ toggleDarkMode }) {
     dispatch(goToPage(page));
     dispatch(resetDesign());
   }
+  const { user } = useAuth();
   return (
     <AppBar position='static'>
       <Toolbar disableGutters={true}>
@@ -34,7 +36,7 @@ export default function TopBar({ toggleDarkMode }) {
         </Button>
         <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
         <Typography>Reactraft</Typography>
-        <UserMenu />
+        {user && <UserMenu />}
         <DarkModeSwitch toggleDarkMode={toggleDarkMode} />
         <Button
           variant='contained'
