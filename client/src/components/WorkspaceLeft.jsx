@@ -16,7 +16,7 @@ import ParentSelector from './userInputs/ParentSelector';
 import AddNewComponent from './userInputs/AddNewComponent';
 import ComponentEditor from './userInputs/ComponentEditor';
 import HtmlTagSelector from './userInputs/HtmlTagSelector';
-import { MUIColorInput } from 'mui-color-input';
+import ColorPicker from './ColorPicker';
 
 export default function WorkspaceLeft() {
   const [selectedIdx, setSelectedIdx] = useState(null);
@@ -69,7 +69,6 @@ function ComponentDisplay({ component, idx, handleListItemClick, selected }) {
     (item) => item.parent === idx
   ).length;
   const isLeaf = childrenNum === 0 && idx > 0;
-  const [color, setColor] = useState('#fff');
 
   const onClickHandler = () => {
     handleListItemClick(idx);
@@ -114,6 +113,7 @@ function ComponentDisplay({ component, idx, handleListItemClick, selected }) {
         <Fragment>
           <ParentSelector childIdx={idx} />
           {isLeaf && <HtmlTagSelector idx={idx} isLeaf={isLeaf} />}
+          <ColorPicker componentName={component.name} initialColor={component.borderColor || '#fff'} />
         </Fragment>
       )}
     </ListItemButton>

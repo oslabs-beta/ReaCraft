@@ -7,7 +7,7 @@ const initialState = {
   selectedComponent: null,
 };
 
-const defalutNewComponent = {
+const defaultNewComponent = {
   parent: 0,
   x_position: 0,
   y_position: 0,
@@ -17,6 +17,7 @@ const defalutNewComponent = {
   styles: [],
   html_tag: '<div>',
   inner_html: '',
+  borderColor: '#000000',
 };
 
 const designSlice = createSlice({
@@ -26,7 +27,7 @@ const designSlice = createSlice({
     startDesign: (state, action) => {
       state.userImage = action.payload;
       const mainContainer = {
-        ...defalutNewComponent,
+        ...defaultNewComponent,
         name: 'MainContainer',
         parent: null,
         styles: [
@@ -41,7 +42,7 @@ const designSlice = createSlice({
     },
     addComponent: (state, action) => {
       const newComponent = {
-        ...defalutNewComponent,
+        ...defaultNewComponent,
         name: action.payload,
       };
       state.components = [...state.components, newComponent];
@@ -58,8 +59,6 @@ const designSlice = createSlice({
       const idx = action.payload;
       state.components.splice(idx, 1);
     },
-
-    // i added this
     selectComponent: (state, action) => {
       state.selectedComponent = action.payload;
       console.log('this is selectComponent once handleRect dispatches', action.payload);
@@ -83,6 +82,13 @@ const designSlice = createSlice({
         i !== idx ? item : { ...item, html_tag }
       );
     },
+    updateComponentBorderColor: (state, action) => {
+      const { name, borderColor } = action.payload;
+      const componentIndex = state.components.findIndex(comp => comp.name === name);
+      if (componentIndex !== -1) {
+        state.components[componentIndex].borderColor = borderColor;
+      }
+    }
   },
 });
 
@@ -96,6 +102,7 @@ export const {
   resetDesign,
   retreveUserDesign,
   selectHtmlTag,
+  updateComponentBorderColor,
 } = designSlice.actions;
 
 export default designSlice.reducer;

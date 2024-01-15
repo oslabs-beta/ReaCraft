@@ -38,27 +38,28 @@ const KonvaStage = ({ userImage }) => {
 
     console.log('this is imageWidth and imageHeight', imageWidth, imageHeight);
 
-    // runs whenever there's a change in the components makes sure there's a rectangle associated with each component
+    // useEffect runs whenever a component changes or borderColor changes - rerenders
     useEffect(() => {
         console.log('useEffect hit for components update');
         setRectangles(currentRectangles => {
             return components.map((component, index) => {
-                const existingRectangle = currentRectangles.find(rect => rect.key === component.name);
-
-                // if it's the first component, make the rectangle match the image
-                if (index === 0) {
-                    return {
-                        ...existingRectangle, // spread the existing properties
-                        width: imageWidth,
-                        height: imageHeight,
-                        key: component.name,
-                        isResizable: false
-                    };
-                }
-                // for subsequent components, keep them as they are or create new ones
-                return existingRectangle ||  {
+                // find existing rectangle or provide default values for new ones
+                const existingRectangle = currentRectangles.find(rect => rect.key === component.name) || {
                     x: 0, y: 0, width: 100, height: 100, key: component.name, isResizable: true
                 };
+                // apply borderColor from state
+                const updatedRectangle = {
+                    ...existingRectangle,
+                    stroke: component.borderColor || 'black',
+                }
+
+                // if it's the first component, set the rectangle size to match the image + non resizable 
+                if (index === 0) {
+                    updatedRectangle.width = imageWidth;
+                    updatedRectangle.height = imageHeight;
+                    updatedRectangle.isResizable = false;
+                }
+                return updatedRectangle;
             });
         });
     }, [components, image, imageWidth, imageHeight]);
@@ -70,6 +71,7 @@ const KonvaStage = ({ userImage }) => {
         const selectedRect = rectangles.find(r => r.key === selectedComponent);
         console.log('this is trRef in useEffect', trRef);
         console.log('Selected rectangle', selectedRect);
+        console.log('this is rectangles array', rectangles);
         // check if a rectangle is selected and trRef is valid
         if (selectedRect && trRef.current) {
             // check if the rectangl is resizable
@@ -132,7 +134,7 @@ const KonvaStage = ({ userImage }) => {
                 )}
                 {/* map over the entire rectangles array, creating a new Rect component for each rectangle */}
                 {rectangles.map((rect, i) => (
-                    <React.Fragment key={i}>
+                    <React.Fragment key={`${rect.key}-${rect.stroke}`}>
                     <Rect
                         // unique identifier for each element. set to the index of the map function
                         key={i}
@@ -145,7 +147,8 @@ const KonvaStage = ({ userImage }) => {
                         // fill prop sets the color of the rectangle. the rectangle will be filled with a transparent color
                         fill="transparent"
                         // stoke prop sets the color of the rectangle's border
-                        stroke="black"
+                        stroke={rect.stroke}
+                        strokeWidth={3}
                         // property allows the rectangles to be draggable on the canvas
                         draggable={rect.isResizable} // ={selectedId === rect.key}
                         // event handler for interactions with the rectangles
