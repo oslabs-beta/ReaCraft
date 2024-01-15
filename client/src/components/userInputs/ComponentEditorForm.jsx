@@ -10,11 +10,15 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { setMessage } from '../../utils/reducers/appSlice';
 import isValidVariableName from '../../utils/isValidVariableName';
 import Button from '@mui/material/Button';
-import {
-  removeComponent,
-  updateComponent,
-} from '../../utils/reducers/designSlice';
 import HtmlTagSelector from './HtmlTagSelector';
+import {
+  convertArrToObj,
+  convertObjToArr,
+} from '../../utils/convertBetweenObjArr';
+import {
+  deleteComponent,
+  submitComponentForm,
+} from '../../utils/reducers/designSliceV2';
 
 const boxStyle = {
   position: 'absolute',
@@ -27,16 +31,21 @@ const boxStyle = {
   boxShadow: 24,
   p: 4,
 };
-export default function ComponentEditor({ idx, open, closeEditor }) {
-  const component = useSelector((state) => state.design.components)[idx];
-  const [props, setProps] = useState(component.props);
-  const [styles, setStyles] = useState(component.styles);
+export default function ComponentEditorForm({
+  idx,
+  open,
+  closeEditor,
+  isLeaf,
+}) {
   const dispatch = useDispatch();
-  const childrenNum = useSelector((state) => state.design.components).filter(
-    (item) => item.parent === idx
-  ).length;
+  const component = useSelector((state) => state.designV2.components)[idx];
 
-  const isLeaf = childrenNum === 0 && idx > 0;
+  const [props, setProps] = useState(
+    convertObjToArr(JSON.parse(component.props))
+  );
+  const [styles, setStyles] = useState(
+    convertObjToArr(JSON.parse(component.styles))
+  );
 
   const deleteMessage = isLeaf
     ? {
@@ -48,6 +57,40 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
         text: `Component ${component.name} has children. Failed to remove`,
       };
 
+  function handleSumbit(e) {
+    e.preventDefault();
+    console.log('name', e.target.name.value);
+    console.log(
+      'innerHtml',
+      e.target.innerHtml ? e.target.innerHtml.value : ''
+    );
+    const body = {
+      name: e.target.name.value,
+      innerHtml: isLeaf ? e.target.innerHtml.value : '',
+      styles: convertArrToObj(styles),
+      props: convertArrToObj(props),
+    };
+    if (isValidVariableName(body.name)) {
+      try {
+        dispatch(submitComponentForm({ componentId: component._id, body }));
+        setMessage({ severity: 'success', text: 'Saved successfully.' });
+        closeEditor();
+      } catch (err) {
+        setMessage({
+          severity: 'error',
+          text: 'Saving component: ' + err,
+        });
+      }
+    } else {
+      dispatch(
+        setMessage({
+          severity: 'error',
+          text: 'React component name must start with an uppercase letter.',
+        })
+      );
+    }
+  }
+
   return (
     <Modal open={open} onClose={closeEditor}>
       <Box
@@ -56,30 +99,17 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
         display='grid'
         gridTemplateColumns='repeat(12, 1fr)'
         gap={2}
-        onSubmit={(e) => {
-          e.preventDefault();
-          const updatedComponent = {
-            name: e.target.name.value,
-            inner_html: '',
-            styles,
-            props,
-          };
-          if (isValidVariableName(updatedComponent.name)) {
-            dispatch(updateComponent({ idx, updatedComponent }));
-            closeEditor();
-          } else {
-            dispatch(
-              setMessage({
-                severity: 'error',
-                text: 'React component name must start with an uppercase letter.',
-              })
-            );
-          }
-        }}
+        onSubmit={handleSumbit}
       >
         <NameAndParent idx={idx} name={component.name} />
 
-        {isLeaf && <HtmlData idx={idx} isLeaf={isLeaf} />}
+        {isLeaf && (
+          <HtmlData
+            idx={idx}
+            isLeaf={isLeaf}
+            innerHtml={component.inner_html}
+          />
+        )}
 
         <Box gridColumn='span 12'>
           <Divider />
@@ -87,21 +117,16 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
 
         <AddData data={props} setData={setProps} dataName={'Props'} />
 
-        <AddData
-          data={styles}
-          setData={setStyles}
-          dataName={'Styles'}
-          isRoot={idx === 0}
-        />
+        <AddData data={styles} setData={setStyles} dataName={'Styles'} />
 
-        <Box gridColumn='span 6'>
+        <Box gridColumn='span 4'>
           {idx > 0 && (
             <Button
               variant='outlined'
               color='error'
               onClick={() => {
-                if (childrenNum === 0) {
-                  dispatch(removeComponent(idx));
+                if (isLeaf) {
+                  dispatch(deleteComponent(component._id));
                   closeEditor();
                 }
                 dispatch(setMessage(deleteMessage));
@@ -112,7 +137,13 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
           )}
         </Box>
 
-        <Box gridColumn='span 6'>
+        <Box gridColumn='span 4'>
+          <Button color='secondary' variant='contained' onClick={closeEditor}>
+            Cancel
+          </Button>
+        </Box>
+
+        <Box gridColumn='span 4'>
           <Button variant='contained' color='success' type='submit'>
             Save
           </Button>
@@ -123,6 +154,7 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
 }
 
 function NameAndParent({ idx, name }) {
+  const [nameVal, setNameVal] = useState(name);
   return (
     <Fragment>
       <Box gridColumn='span 6'>
@@ -130,8 +162,9 @@ function NameAndParent({ idx, name }) {
           required
           label='name'
           name='name'
-          defaultValue={name}
+          value={nameVal}
           disabled={idx === 0}
+          onChange={(e) => setNameVal(e.target.value)}
         />
       </Box>
       <Box gridColumn='span 6'>
@@ -141,7 +174,8 @@ function NameAndParent({ idx, name }) {
   );
 }
 
-function HtmlData({ idx, isLeaf }) {
+function HtmlData({ idx, isLeaf, innerHtml }) {
+  const [innerHtmlVal, setInnerHtmlVal] = useState(innerHtml);
   return (
     <Fragment>
       <Box gridColumn='span 2'>
@@ -150,15 +184,17 @@ function HtmlData({ idx, isLeaf }) {
       <Box gridColumn='span 10'>
         <TextField
           label='inner_html'
-          name='inner html'
+          name='innerHtml'
           sx={{ width: '100%' }}
+          value={innerHtmlVal}
+          onChange={(e) => setInnerHtmlVal(e.target.value)}
         />
       </Box>
     </Fragment>
   );
 }
 
-function AddData({ data, setData, dataName, isRoot }) {
+function AddData({ data, setData, dataName }) {
   const keys = data.map((item) => item.key);
   const dispatch = useDispatch();
 
@@ -195,41 +231,36 @@ function AddData({ data, setData, dataName, isRoot }) {
               name={`${dataName.toLowerCase()}-${item.key}-key`}
               value={item.key}
               onChange={(e) => {
-                if (
-                  e.target.value.length > 0 &&
-                  keys.includes(e.target.value)
-                ) {
-                  dispatch(
-                    setMessage({
-                      severity: 'error',
-                      text: `Invalid prop key: ${e.target.value} has already been declared.`,
-                    })
-                  );
-                } else if (
+                const duplicateErr = {
+                  severity: 'error',
+                  text: `Invalid prop key: ${e.target.value} has already been declared.`,
+                };
+                const invalidErr = {
+                  severity: 'error',
+                  text: `Invalid prop key: ${e.target.value} is not a valid Javascript variable name.`,
+                };
+                const emptyErr = {
+                  severity: 'error',
+                  text: `Props key cannot be empty.`,
+                };
+                let message;
+                if (e.target.value.length > 0 && keys.includes(e.target.value))
+                  message = duplicateErr;
+                else if (
                   !isValidVariableName(e.target.value) &&
                   e.target.value.length > 0
-                ) {
-                  dispatch(
-                    setMessage({
-                      severity: 'error',
-                      text: `Invalid prop key: ${e.target.value} is not a valid Javascript variable name.`,
-                    })
-                  );
-                } else {
-                  if (e.target.value.length === 0) {
-                    dispatch(
-                      setMessage({
-                        severity: 'error',
-                        text: `Props key cannot be empty.`,
-                      })
-                    );
-                  }
+                )
+                  message = invalidErr;
+                else if (e.target.value.length === 0) message = emptyErr;
+                else {
                   setData(
                     data.map((el, i) =>
                       i === idx ? { ...el, key: e.target.value } : el
                     )
                   );
                 }
+
+                dispatch(setMessage(message));
               }}
             />
           </Box>
@@ -251,23 +282,7 @@ function AddData({ data, setData, dataName, isRoot }) {
           <Box gridColumn='span 2'>
             <IconButton
               onClick={() => {
-                if (isRoot && item.key === 'height') {
-                  dispatch(
-                    setMessage({
-                      severity: 'error',
-                      text: "Cannot remove 'height' of root component.",
-                    })
-                  );
-                } else if (isRoot && item.key === 'width') {
-                  dispatch(
-                    setMessage({
-                      severity: 'error',
-                      text: "Cannot remove 'width' of root component.",
-                    })
-                  );
-                } else {
-                  setData(data.filter((_, i) => i !== idx));
-                }
+                setData(data.filter((_, i) => i !== idx));
               }}
             >
               <RemoveCircleIcon />

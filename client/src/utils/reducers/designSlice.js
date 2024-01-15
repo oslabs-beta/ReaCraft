@@ -106,3 +106,4 @@ export const {
 } = designSlice.actions;
 
 export default designSlice.reducer;
+
