@@ -3,11 +3,11 @@ import Button from '@mui/material/Button';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import { useDispatch } from 'react-redux';
-import { goToPage, resetStep } from '../utils/reducers/appSlice';
+import { goToPage } from '../utils/reducers/appSlice';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useAuth } from '../hooks/useAuth';
-import { resetDesign } from '../utils/reducers/designSlice';
+import { resetDesign } from '../utils/reducers/designSliceV2';
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -16,11 +16,11 @@ export default function Home() {
   function handleClick(page) {
     dispatch(goToPage(page));
     dispatch(resetDesign());
-    dispatch(resetStep());
   }
   if (user)
     return (
-      <Box display='grid' gridTemplateColumns='1fr 1fr' gap={2}>
+      //Box container below controlls margin size @ homepage
+      <Box display='grid' margin='30px' gridTemplateColumns='1fr 1fr' gap={2}>
         <Typography variant='h4' gridColumn='span 2'>
           Welcome back, {user.username}
         </Typography>
