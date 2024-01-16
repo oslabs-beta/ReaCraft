@@ -6,10 +6,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import InfoIcon from '@mui/icons-material/Info';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Table from '@mui/material/Table';
@@ -18,6 +19,11 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Avatar from '@mui/material/Avatar';
+import { VisuallyHiddenInput } from './UserImageUploadButton';
+import { updateProfilePictureRequest } from '../../utils/fetchRequests';
+import { useDispatch } from 'react-redux';
+import { setMessage } from '../../utils/reducers/appSlice';
 
 const style = {
   position: 'absolute',
@@ -80,6 +86,10 @@ export default function UserMenu() {
   const { logout, user } = useAuth();
   const [modal, setModal] = useState(false);
 
+  const { username, email, profile_image } = user;
+  const [avatar, setAvatar] = useState(profile_image);
+  const created_at = new Date(user.created_at);
+  const last_login = new Date(user.last_login);
   return (
     <div>
       <Button
@@ -92,7 +102,7 @@ export default function UserMenu() {
         onClick={(e) => setAnchorEl(e.currentTarget)}
         endIcon={<KeyboardArrowDownIcon />}
       >
-        <AccountCircle />
+        <Avatar src={avatar} sx={{ width: 40, height: 40 }} />
       </Button>
       <StyledMenu
         id='demo-customized-menu'
@@ -130,20 +140,22 @@ export default function UserMenu() {
             <Typography id='modal-modal-title' variant='h6' component='h2'>
               Account Info
             </Typography>
+
+            <UserProfileImage avatar={avatar} setAvatar={setAvatar} />
+
             <TableContainer component={Paper}>
               <Table aria-label='simple table'>
                 <TableBody>
-                  {Object.keys(user).map((key) => (
-                    <TableRow
-                      key={key}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component='th' scope='row'>
-                        {key}
-                      </TableCell>
-                      <TableCell>{user[key]}</TableCell>
-                    </TableRow>
-                  ))}
+                  <UserData label='username' data={username} />
+                  <UserData label='email' data={email} />
+                  <UserData
+                    label='created_at'
+                    data={created_at.toLocaleString()}
+                  />
+                  <UserData
+                    label='last_login'
+                    data={last_login.toLocaleString()}
+                  />
                 </TableBody>
               </Table>
             </TableContainer>
@@ -151,5 +163,94 @@ export default function UserMenu() {
         </Modal>
       )}
     </div>
+  );
+}
+
+function UserData({ label, data }) {
+  return (
+    <TableRow
+      key={label}
+      sx={{
+        '&:last-child td, &:last-child th': { border: 0 },
+      }}
+    >
+      <TableCell component='th' scope='row'>
+        {label}
+      </TableCell>
+      <TableCell>{data}</TableCell>
+    </TableRow>
+  );
+}
+
+function UserProfileImage({ avatar, setAvatar }) {
+  let url;
+  console.log(setAvatar);
+  if (avatar) url = new URL(avatar);
+  const dispatch = useDispatch();
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '20px',
+      }}
+    >
+      <Avatar src={avatar} sx={{ width: 100, height: 100 }} />
+      <Stack direction='row'>
+        <Button component='label'>
+          {avatar ? 'Change' : 'Upload'}
+          <VisuallyHiddenInput
+            type='file'
+            name='user-profile'
+            accept='image/*'
+            onChange={(e) => {
+              const file = e.target.files[0];
+              console.log(file);
+              if (file) {
+                dispatch(
+                  setMessage({
+                    severity: 'success',
+                    text: 'Upload profile picutre successfully',
+                  })
+                );
+                const reader = new FileReader();
+                reader.onloadend = async () => {
+                  const userImage = reader.result;
+                  const response = await updateProfilePictureRequest({
+                    userImage,
+                    imageToDelete: url ? url.pathname.slice(1) : null,
+                  });
+                  console.log(response.imageUrl);
+                  setAvatar(response.imageUrl);
+                };
+                reader.readAsDataURL(file);
+              }
+            }}
+          />
+        </Button>
+        {avatar && (
+          <Button
+            color='error'
+            onClick={async () => {
+              await updateProfilePictureRequest({
+                imageToDelete: url.pathname.slice(1),
+              });
+              setAvatar(null);
+              dispatch(
+                setMessage({
+                  severity: 'success',
+                  text: 'Delete profile picutre successfully',
+                })
+              );
+            }}
+          >
+            Delete
+          </Button>
+        )}
+      </Stack>
+    </Box>
   );
 }
