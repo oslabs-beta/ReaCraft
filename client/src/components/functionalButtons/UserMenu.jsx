@@ -184,7 +184,6 @@ function UserData({ label, data }) {
 
 function UserProfileImage({ avatar, setAvatar }) {
   let url;
-  console.log(setAvatar);
   if (avatar) url = new URL(avatar);
   const dispatch = useDispatch();
   return (
@@ -208,7 +207,6 @@ function UserProfileImage({ avatar, setAvatar }) {
             accept='image/*'
             onChange={(e) => {
               const file = e.target.files[0];
-              console.log(file);
               if (file) {
                 dispatch(
                   setMessage({
@@ -223,7 +221,6 @@ function UserProfileImage({ avatar, setAvatar }) {
                     userImage,
                     imageToDelete: url ? url.pathname.slice(1) : null,
                   });
-                  console.log(response.imageUrl);
                   setAvatar(response.imageUrl);
                 };
                 reader.readAsDataURL(file);
