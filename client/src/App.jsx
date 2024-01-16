@@ -13,7 +13,7 @@ import { setMessage } from './utils/reducers/appSlice';
 export default function App() {
   const sessionID = Cookies.get('sessionID');
   if (!sessionID) {
-    window.location.href = '/login';
+    window.location.href = '/home';
     return;
   }
   const { getUser } = useAuth();
