@@ -12,6 +12,9 @@ export default function HtmlTagSelector({ idx }) {
   return (
     <TextField
       select
+      sx={{ marginTop: '15px' }}
+      size='small'
+      fullWidth='true'
       key={idx}
       label='html tag'
       name='htmlTag'
@@ -29,8 +32,7 @@ export default function HtmlTagSelector({ idx }) {
             body: { htmlTag: e.target.value },
           })
         );
-      }}
-    >
+      }}>
       {['<div>', '<p>', '<button>'].map((tag, i) => (
         <MenuItem key={tag.slice(1, tag.length - 1)} value={tag}>
           {tag}
