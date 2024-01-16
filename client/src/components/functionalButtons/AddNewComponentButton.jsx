@@ -48,9 +48,9 @@ export default function AddNewComponentButton() {
           const errMessage = name.length === 0 ? emptyNameErr : firstCharErr;
           dispatch(setMessage(errMessage));
         }
-      }}
-    >
+      }}>
       <TextField
+        size='small'
         id='new-component'
         name='newComponent'
         label='New Component'
@@ -58,8 +58,10 @@ export default function AddNewComponentButton() {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <IconButton type='submit'>
-        <AddCircleIcon />
+      <IconButton size='small' type='submit'>
+        {' '}
+        {/*controls the size of the "+" button next to the TextField */}
+        <AddCircleIcon fontSize='small' />
       </IconButton>
     </form>
   );
