@@ -28,13 +28,15 @@ const boxStyle = {
   p: 4,
 };
 export default function ComponentEditor({ idx, open, closeEditor }) {
-  const component = useSelector((state) => state.design.components)[idx];
-  const [props, setProps] = useState(component.props);
-  const [styles, setStyles] = useState(component.styles);
   const dispatch = useDispatch();
+
+  const component = useSelector((state) => state.design.components)[idx];
   const childrenNum = useSelector((state) => state.design.components).filter(
     (item) => item.parent === idx
   ).length;
+
+  const [props, setProps] = useState(component.props);
+  const [styles, setStyles] = useState(component.styles);
 
   const isLeaf = childrenNum === 0 && idx > 0;
 
@@ -75,8 +77,7 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
               })
             );
           }
-        }}
-      >
+        }}>
         <NameAndParent idx={idx} name={component.name} />
 
         {isLeaf && <HtmlData idx={idx} isLeaf={isLeaf} />}
@@ -105,8 +106,7 @@ export default function ComponentEditor({ idx, open, closeEditor }) {
                   closeEditor();
                 }
                 dispatch(setMessage(deleteMessage));
-              }}
-            >
+              }}>
               Delete
             </Button>
           )}
@@ -127,6 +127,7 @@ function NameAndParent({ idx, name }) {
     <Fragment>
       <Box gridColumn='span 6'>
         <TextField
+          size='small'
           required
           label='name'
           name='name'
@@ -135,7 +136,7 @@ function NameAndParent({ idx, name }) {
         />
       </Box>
       <Box gridColumn='span 6'>
-        <ParentSelector childIdx={idx} />
+        <ParentSelector size='small' childIdx={idx} />
       </Box>
     </Fragment>
   );
@@ -180,8 +181,7 @@ function AddData({ data, setData, dataName, isRoot }) {
                 value: '',
               },
             ])
-          }
-        >
+          }>
           <AddCircleIcon color='primary' />
         </IconButton>
       </Box>
@@ -268,8 +268,7 @@ function AddData({ data, setData, dataName, isRoot }) {
                 } else {
                   setData(data.filter((_, i) => i !== idx));
                 }
-              }}
-            >
+              }}>
               <RemoveCircleIcon />
             </IconButton>
           </Box>

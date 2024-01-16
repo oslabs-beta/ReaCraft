@@ -10,6 +10,7 @@ export default function Workspace() {
   return (
     <Box
       maxWidth='false'
+      margin='30px'
       display='grid'
       gridTemplateColumns='repeat(12, 1fr)'
       marginTop='10px'>

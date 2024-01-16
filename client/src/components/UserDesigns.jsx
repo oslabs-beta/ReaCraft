@@ -18,7 +18,6 @@ export default function UserDesigns() {
   })[0];
 
   const dispatch = useDispatch();
-
   console.log(userDesigns);
 
   useEffect(() => {
@@ -35,9 +34,23 @@ export default function UserDesigns() {
     fetchData();
   }, []);
 
+  //converts created date to "MM/DD/YYYY"
+  const createdDate = (dateRaw) => {
+    let year = dateRaw.substring(0, 4);
+    let month = dateRaw.substring(5, 7);
+    let day = dateRaw.substring(8, 10);
+    return `${month}/${day}/${year}`;
+  };
+
   if (!designId) {
     return (
-      <Box display='grid' gridTemplateColumns='repeat(3, 1fr)' gap={2}>
+      <Box
+        sx={{
+          margin: '60px',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(30%, 1fr))',
+          justifyContent: 'space-around',
+        }}>
         {userDesigns.map((design) => (
           <DesignCard design={design} key={design._id} />
         ))}
@@ -46,17 +59,22 @@ export default function UserDesigns() {
   } else
     return (
       <Fragment>
-        <Box
+        <Box //Box controls the input field for document name && date
+          margin='30px' //margin size across site
           sx={{
             width: '100%',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             gap: '10px',
-          }}
-        >
-          <TextField name='title' label='Title' defaultValue={design.title} />
-          <Typography>created_at: {design.created_at}</Typography>
+          }}>
+          <TextField
+            size='small'
+            name='title'
+            label='Title'
+            defaultValue={design.title}
+          />
+          <Typography>Created: {createdDate(design.created_at)}</Typography>
         </Box>
         <Workspace />
       </Fragment>

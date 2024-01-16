@@ -51,7 +51,7 @@ export default function WorkspaceLeft() {
   console.log('components in WorkspaceLeft: ', components);
 
   return (
-    <Box value='NewComponentBox' maxHeight='45px'>
+    <Box value='NewComponentBox'>
       <AddNewComponent setSelectedIdx={setSelectedIdx} />
       <List>
         {components.map((item, idx) => (
@@ -102,9 +102,10 @@ function ComponentDisplay({ component, idx, handleListItemClick, selected }) {
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <ListItemText primary={component.name} />
         <IconButton
+          size='small'
           sx={{ marginLeft: '20px' }}
           onClick={() => setOpenEditor(true)}>
-          <EditIcon />
+          <EditIcon fontSize='small' />
         </IconButton>
         <ComponentEditor
           idx={idx}
@@ -147,7 +148,7 @@ function Delete({ name, idx, canDelete }) {
         }
         dispatch(setMessage(message));
       }}>
-      <DeleteIcon />
+      <DeleteIcon fontSize='small' />
     </IconButton>
   );
 }
