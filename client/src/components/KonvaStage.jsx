@@ -17,6 +17,7 @@ const KonvaStage = ({ userImage, selectedIdx, setSelectedIdx }) => {
   const maxWidth = 800;
   // state to store an array of drawn rectangles
   const [rectangles, setRectangles] = useState([]);
+  console.log('this is the rectangles state array', rectangles);
   // state to track the ID of the selected rectangle to resize
   const [selectedId, selectShape] = useState(null);
   // creating a ref object. object has a property called '.current' and the value of this property is persisted across renders. it will reference a konva Transformer component
@@ -34,73 +35,54 @@ const KonvaStage = ({ userImage, selectedIdx, setSelectedIdx }) => {
     // if true, use the image's natural size instead
     imageWidth = image.width;
     imageHeight = image.height;
-  }
-
-  console.log('this is imageWidth and imageHeight', imageWidth, imageHeight);
+  };
 
   // runs whenever there's a change in the components makes sure there's a rectangle associated with each component
   useEffect(() => {
     console.log('useEffect hit for components update');
     setRectangles((currentRectangles) => {
       return components.map((component, index) => {
+        // find existing rectangle or provide default values for new ones
         const existingRectangle = currentRectangles.find(
-          (rect) => rect.component_id === component._id
-        );
+          (rect) => rect.component_id === component._id) || {
+            x: 0, 
+            y: 0, 
+            width: 100, 
+            height: 100, 
+            key: component._id, 
+            component_id: component._id,
+            isResizable: true
+        };
 
-        // if it's the first component, make the rectangle match the image
+        // apply borderColor from state
+        const updatedRectangle = {
+            ...existingRectangle,
+            stroke: component.borderColor || 'black',
+        };
+
+        // if it's the first component, make the rectangle match the image + non resizable
         if (index === 0) {
-          return {
-            ...existingRectangle, // spread the existing properties
-            width: imageWidth,
-            height: imageHeight,
-            component_id: component._id,
-            isResizable: false,
-          };
+            updatedRectangle.width = imageWidth;
+            updatedRectangle.height = imageHeight;
+            updatedRectangle.isResizable = false;
         }
-        // for subsequent components, keep them as they are or create new ones
-        return (
-          existingRectangle || {
-            x: 0,
-            y: 0,
-            width: 100,
-            height: 100,
-            component_id: component._id,
-            isResizable: true,
-          }
-        );
+        return updatedRectangle;
       });
     });
   }, [components, image, imageWidth, imageHeight]);
 
   // use effect to update the transformer to wrap around the selected rectangle
   useEffect(() => {
-    console.log(`Component selected: ${selectedComponent}`);
-    // Find the selected rectangle and update the transformer
-    const selectedRect = rectangles.find(
-      (r) => r.component_id === selectedComponent._id
-    );
-    console.log('this is trRef in useEffect', trRef);
-    console.log('Selected rectangle', selectedRect);
-    // check if a rectangle is selected and trRef is valid
-    if (selectedRect && trRef.current) {
-      // check if the rectangl is resizable
-      if (selectedRect.isResizable) {
-        // attach the transformer to it (to resize)
+    console.log('Component selected:', selectedComponent);
+    const selectedRect = rectangles.find(r => r.component_id === selectedId);
+    if (selectedRect && selectedRect.isResizable && trRef.current) {
         trRef.current.nodes([selectedRect.node]);
-      } else {
-        // clear the transformer nodes
-        trRef.current.nodes([]);
-      }
-      // redraw the layer to update the canvas with transformer changes
-      trRef.current.getLayer().batchDraw();
-      // update the state with the rectangles id
-      selectShape(selectedRect.component_id);
+        trRef.current.getLayer().batchDraw();
     } else if (trRef.current) {
-      trRef.current.nodes([]);
-      trRef.current.getLayer().batchDraw();
-      selectShape(null);
+        trRef.current.nodes([]);
+        trRef.current.getLayer().batchDraw();
     }
-  }, [selectedComponent, rectangles]); // originally had selectedId in the array too
+  }, [selectedId, rectangles]); // originally had selectedId in the array too
 
   // used to automatically select the latest component added
   useEffect(() => {
@@ -111,16 +93,30 @@ const KonvaStage = ({ userImage, selectedIdx, setSelectedIdx }) => {
     }
   }, [components, dispatch]);
 
+  // useEffect to listen to changes in selectedIdx - will select the corresponding rectangle clicked in workspaceLeft
+  useEffect(() => {
+    if (selectedComponent) {
+        const correspondingRect = rectangles.find(r => r.component_id === selectedComponent._id);
+        if (correspondingRect) {
+            selectShape(correspondingRect.component_id);
+        }
+    }
+  }, [selectedIdx, selectedComponent, rectangles]);
+
   // selects a rectangle when it's clicked and prevents event propagation
   const handleRectClick = (e, i) => {
     // prevent stage from deselecting the shape
     e.cancelBubble = true;
-    console.log(`Rectangle clicked: ${rectangles[i]}`);
-    if (selectedId !== components[i]._id) {
-      // set selectedId state to the id of the clicked rectangle
-      selectShape(components[i]._id);
-      // dispatch action to updated the selected component in the global state
-      setSelectedIdx(i);
+    console.log('Rectangle clicked:', rectangles[i]);
+    const clickedRect = rectangles[i];
+    console.log('this is clickedRect', clickedRect);
+
+    if (clickedRect.isResizable && clickedRect.component_id !== selectedId) {
+        console.log('if statement passed. resizing rectangle', clickedRect.component_id);
+        selectShape(clickedRect.component_id);
+        // dispatch action to updated the selected component in the global state
+        // setSelectedIdx(i);
+        setSelectedIdx(components.findIndex(c => c._id === clickedRect.component_id));
     }
   };
 
@@ -140,7 +136,7 @@ const KonvaStage = ({ userImage, selectedIdx, setSelectedIdx }) => {
         )}
         {/* map over the entire rectangles array, creating a new Rect component for each rectangle */}
         {rectangles.map((rect, i) => (
-          <React.Fragment key={i}>
+          <React.Fragment key={`${rect.component_id}-${i}-${rect.stroke}`}>
             <Rect
               // unique identifier for each element. set to the index of the map function
               key={i}
@@ -153,7 +149,8 @@ const KonvaStage = ({ userImage, selectedIdx, setSelectedIdx }) => {
               // fill prop sets the color of the rectangle. the rectangle will be filled with a transparent color
               fill='transparent'
               // stoke prop sets the color of the rectangle's border
-              stroke='black'
+              stroke={rect.stroke}
+              strokeWidth={3}
               // property allows the rectangles to be draggable on the canvas
               draggable={rect.isResizable} // ={selectedId === rect.key}
               // event handler for interactions with the rectangles

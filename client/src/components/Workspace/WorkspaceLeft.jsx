@@ -11,6 +11,7 @@ import AddNewComponent from '../functionalButtons/AddNewComponentButton';
 import ComponentEditor from '../userInputs/ComponentEditorForm';
 import HtmlTagSelector from '../userInputs/HtmlTagSelector';
 import DeleteComponentButton from '../functionalButtons/DeleteComponentButton';
+import ColorPicker from '../ColorPicker';
 
 export default function WorkspaceLeft({ selectedIdx, setSelectedIdx }) {
   const components = useSelector((state) => state.designV2.components);
@@ -24,7 +25,11 @@ export default function WorkspaceLeft({ selectedIdx, setSelectedIdx }) {
             component={item}
             key={idx}
             idx={idx}
-            handleListItemClick={() => setSelectedIdx(idx)}
+            handleListItemClick={(e) => {
+              e.stopPropagation();
+              console.log('component index selected:', idx);
+              setSelectedIdx(idx)
+            }}
             selected={selectedIdx === idx}
             isLeaf={
               idx > 0 &&
@@ -45,6 +50,7 @@ function ComponentDisplay({
   isLeaf,
 }) {
   const [openEditor, setOpenEditor] = useState(false);
+  console.log('this is component.id in ComponentDisplay', component._id);
 
   return (
     <ListItemButton
@@ -64,7 +70,10 @@ function ComponentDisplay({
         <ListItemText primary={component.name} />
         <IconButton
           sx={{ marginLeft: '20px' }}
-          onClick={() => setOpenEditor(true)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenEditor(true);
+          }}
         >
           <EditIcon />
         </IconButton>
@@ -88,6 +97,7 @@ function ComponentDisplay({
         <Fragment>
           <ParentSelector childIdx={idx} />
           {isLeaf && <HtmlTagSelector idx={idx} isLeaf={isLeaf} />}
+          <ColorPicker componentId={component._id} initialColor={component.borderColor || '#fff'} />
         </Fragment>
       )}
     </ListItemButton>
