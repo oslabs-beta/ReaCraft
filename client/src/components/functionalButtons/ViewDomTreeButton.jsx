@@ -1,17 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, Fragment } from 'react';
 import Tree from 'react-d3-tree';
-import { useSelector } from 'react-redux';
-import { convertToTree } from '../utils/treeNode';
+import { convertToTree } from '../../utils/treeNode';
 import { Button, Backdrop, Fab } from '@mui/material';
-import '../utils/treeNode.css';
+import { ImTree } from 'react-icons/im';
 
-export default function WorkspaceRight() {
-  const components = useSelector((state) => state.design.components);
-  const fromDb = useSelector((state) => state.design._id);
-  const tree = convertToTree(components, fromDb);
+import '../../utils/treeNode.css';
+
+export default function ViewDomTreeButton({ tree }) {
   const [viewTree, setViewTree] = useState(false);
   return (
-    <div>
+    <Fragment>
       <Button
         variant='contained'
         onClick={() => setViewTree(true)}
@@ -37,46 +35,9 @@ export default function WorkspaceRight() {
         tree={tree}
         toggleViewTree={() => setViewTree(!viewTree)}
       />
-    </div>
+    </Fragment>
   );
 }
-
-//tree naming properties
-// const orgChart = {
-//   name: 'Animals',
-//   children: [
-//     {
-//       name: 'Bunny',
-//       attributes: {
-//         department: 'Kick Butt',
-//       },
-//       children: [
-//         {
-//           name: 'lil Bunnies',
-//           attributes: {
-//             department: 'administration',
-//           },
-//           children: [
-//             {
-//               name: 'baby bunny',
-//             },
-//           ],
-//         },
-//         {
-//           name: 'Foreman Bunny',
-//           attributes: {
-//             department: 'Stands Around',
-//           },
-//           children: [
-//             {
-//               name: 'Stands and pretends',
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//   ],
-// };
 
 const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
   const textLength = Number(nodeDatum.name.length);

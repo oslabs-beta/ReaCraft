@@ -4,10 +4,12 @@ const path = require('path');
 
 const userController = require('../controllers/userController');
 const cookieController = require('../controllers/cookieController');
+const imageController = require('../controllers/imageController');
 
 const loginRouter = require('./loginRouter');
 const signupRouter = require('./signupRouter');
 const designsRouter = require('./designsRouter');
+const componentsRouter = require('./componentsRouter');
 
 router.get('/logout', cookieController.removeCookie, (req, res) => {
   res.status(200).end();
@@ -16,12 +18,22 @@ router.get('/logout', cookieController.removeCookie, (req, res) => {
 router.use('/login', loginRouter);
 router.use('/signup', signupRouter);
 router.use('/designs', cookieController.decryptCookie, designsRouter);
+router.use('/components', componentsRouter);
 
 router.get(
   '/user',
   cookieController.decryptCookie,
   userController.getUser,
   (req, res) => res.status(200).json(res.locals.user)
+);
+
+router.post(
+  '/update-profile',
+  cookieController.decryptCookie,
+  imageController.deleteImage,
+  imageController.uploadImage,
+  userController.updateProfilePicture,
+  (req, res) => res.status(200).json({ imageUrl: res.locals.onlineImageUrl })
 );
 
 router.get('/home', cookieController.checkCookie, (req, res) => {
