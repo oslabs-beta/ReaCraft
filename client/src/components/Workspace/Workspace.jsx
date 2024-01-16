@@ -10,7 +10,8 @@ import UserImageUpload from '../functionalButtons/UserImageUploadButton';
 
 export default function Workspace() {
   const [selectedIdx, setSelectedIdx] = useState(null);
-  const { image_url, _id } = useSelector((state) => state.designV2);
+  const { image_url, _id, components } = useSelector((state) => state.designV2);
+  if (selectedIdx === components.length) setSelectedIdx(null);
   return (
     <Box
       maxWidth='false'
