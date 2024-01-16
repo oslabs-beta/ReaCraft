@@ -8,21 +8,23 @@ import { Button } from '@mui/material';
 import { validTree } from '../../utils/treeNode';
 
 export default function ParentSelector({ childIdx }) {
-  const components = useSelector((state) => state.design.components);
   const dispatch = useDispatch();
-  const parent = components[childIdx].parent;
-
-  const name = parent ? components[parent].name : 'MainContainer';
-  const index = parent ? parent : 0;
-
+  const components = useSelector((state) => state.design.components);
   const [parentValue, setParentValue] = useState(
     JSON.stringify({ name, index })
   );
+
+  const parent = components[childIdx].parent;
+  const name = parent ? components[parent].name : 'MainContainer';
+  const index = parent ? parent : 0;
 
   if (childIdx > 0) {
     return (
       <TextField
         select
+        display='flex'
+        fullWidth='true'
+        size='small'
         key={childIdx}
         label='parent'
         name='parent'
@@ -51,14 +53,13 @@ export default function ParentSelector({ childIdx }) {
             setParentValue(e.target.value);
           }
           dispatch(setMessage(success ? successMess : errorMess));
-        }}
-      >
+        }}>
         {components.map((item, i) =>
           i !== childIdx ? (
             <MenuItem
+              size='small'
               key={i}
-              value={JSON.stringify({ name: item.name, index: i })}
-            >
+              value={JSON.stringify({ name: item.name, index: i })}>
               {item.name + ', ' + i}
             </MenuItem>
           ) : null
@@ -75,8 +76,7 @@ export default function ParentSelector({ childIdx }) {
               text: "'MainContainer' has to be the root component",
             })
           )
-        }
-      >
+        }>
         <TextField
           disabled
           id='parent'

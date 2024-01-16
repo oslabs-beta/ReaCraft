@@ -38,16 +38,18 @@ export default function AddNewComponent() {
           const errMessage = name.length === 0 ? emptyNameErr : firstCharErr;
           dispatch(setMessage(errMessage));
         }
-      }}
-    >
+      }}>
       <TextField
+        size='small'
         id='new-component'
         name='newComponent'
         label='New Component'
         variant='outlined'
       />
-      <IconButton type='submit'>
-        <AddCircleIcon />
+      <IconButton size='small' type='submit'>
+        {' '}
+        {/*controls the size of the "+" button next to the TextField */}
+        <AddCircleIcon fontSize='small' />
       </IconButton>
     </form>
   );
