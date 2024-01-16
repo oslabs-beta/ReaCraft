@@ -34,6 +34,7 @@
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.15.3",
     "@mui/material": "^5.15.3",
+    "@mui/styles": "^5.15.4",
     "@reduxjs/toolkit": "^2.0.1",
     "aws-sdk": "^2.1534.0",
     "cookie": "^0.6.0",
