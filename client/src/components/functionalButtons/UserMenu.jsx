@@ -153,7 +153,7 @@ export default function UserMenu() {
                     data={created_at.toLocaleString()}
                   />
                   <UserData
-                    label='created_at'
+                    label='last_login'
                     data={last_login.toLocaleString()}
                   />
                 </TableBody>
