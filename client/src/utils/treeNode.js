@@ -1,7 +1,8 @@
 export default class TreeNode {
-  constructor(component, index) {
+  constructor(component, id) {
     this.name = component.name;
-    this.attributes = { index: index, tag: component.html_tag };
+    this.attributes = { tag: component.html_tag };
+    this.id = id;
     this.children = [];
   }
 
@@ -10,16 +11,16 @@ export default class TreeNode {
   }
 
   removeChild(child) {
-    this.children = this.children.filter((c) => c.index !== child.index);
+    this.children = this.children.filter((c) => c.id !== child.id);
   }
 
-  searchNode(index) {
-    if (this.attributes.index === index) return this;
+  searchNode(id) {
+    if (this.id === id) return this;
     else if (this.children.length === 0) return;
     else {
       let res;
       this.children.forEach((child) => {
-        const searchChild = child.searchNode(index);
+        const searchChild = child.searchNode(id);
         if (searchChild) {
           res = searchChild;
         }
