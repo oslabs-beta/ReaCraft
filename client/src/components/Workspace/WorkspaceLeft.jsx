@@ -27,8 +27,7 @@ export default function WorkspaceLeft({ selectedIdx, setSelectedIdx }) {
             idx={idx}
             handleListItemClick={(e) => {
               e.stopPropagation();
-              console.log('component index selected:', idx);
-              setSelectedIdx(idx)
+              setSelectedIdx(idx);
             }}
             selected={selectedIdx === idx}
             isLeaf={
@@ -50,7 +49,6 @@ function ComponentDisplay({
   isLeaf,
 }) {
   const [openEditor, setOpenEditor] = useState(false);
-  console.log('this is component.id in ComponentDisplay', component._id);
 
   return (
     <ListItemButton
@@ -97,7 +95,10 @@ function ComponentDisplay({
         <Fragment>
           <ParentSelector childIdx={idx} />
           {isLeaf && <HtmlTagSelector idx={idx} isLeaf={isLeaf} />}
-          <ColorPicker componentId={component._id} initialColor={component.borderColor || '#fff'} />
+          <ColorPicker
+            componentId={component._id}
+            initialColor={component.borderColor || '#fff'}
+          />
         </Fragment>
       )}
     </ListItemButton>

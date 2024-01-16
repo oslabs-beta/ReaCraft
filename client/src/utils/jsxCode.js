@@ -11,8 +11,6 @@ export function jsxCode(components, tree) {
   let stack = [tree];
   while (stack.length > 0) {
     const cur = stack.pop();
-    console.log('cur is', cur);
-    console.log('components are', components);
     const component = components.find((item) => item._id === cur.id);
     const { html_tag, inner_html, name } = component;
     const children = cur.children;
@@ -40,19 +38,25 @@ export function jsxCode(components, tree) {
         '\n    </div>\n);';
     }
 
-    let propsCode = '';
     const componentProps = convertObjToArr(JSON.parse(component.props));
-    if (componentProps.length > 0) {
-      propsCode = '{ ' + componentProps.map(({ key }) => key).join(', ') + ' }';
+    let propKeys = new Set(componentProps.map(({ key }) => key));
+    if (code[name]) {
+      const codeStr = code[name];
+      const functionRegex = new RegExp(
+        `function\\s+${name}\\(\\{\\s*([^)]*?)\\s*\\}\\)`
+      );
+      const matches = codeStr.match(functionRegex);
+      if (matches) {
+        const oldPropKeys = new Set(matches[1].split(', '));
+        propKeys = new Set([...propKeys, ...oldPropKeys]);
+      }
     }
-    if (!code[name]) {
-      code[name] = `import React from 'react';
+    const propsCode = '{ ' + [...propKeys].join(', ') + ' }';
+    code[name] = `import React from 'react';
 export default function ${name}(${propsCode}) {
 ${html}
 }`;
-    }
     stack = stack.concat(children);
   }
-  console.log(code);
   return code;
 }

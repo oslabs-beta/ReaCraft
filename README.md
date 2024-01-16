@@ -203,11 +203,14 @@ Project Link: [https://github.com/oslabs-beta/Reactraft](https://github.com/osla
 
 <!-- ACKNOWLEDGMENTS -->
 
-<!-- ## Acknowledgments
+## Acknowledgments
 
-- []()
-- []()
-- []() -->
+- [shield.io](https://shields.io/)
+- [react-icons](https://react-icons.github.io/react-icons/)
+- [README-Template](https://github.com/othneildrew/Best-README-Template)
+- [PLULL_REQUEST_TEMPLATE](https://github.com/open-sauced/.github/blob/main/.github/PULL_REQUEST_TEMPLATE.md)
+- [react-d3-tree](https://www.npmjs.com/package/react-d3-tree)
+- [react-code-blocks](https://github.com/rajinwonderland/react-code-blocks)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
