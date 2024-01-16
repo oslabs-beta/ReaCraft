@@ -13,7 +13,7 @@ export default function WorkspaceRight({ selectedIdx }) {
   return (
     <Stack direction='column' gap={2}>
       <ViewDomTreeButton tree={tree} />
-      {selectedIdx !== null && (
+      {typeof selectedIdx === 'number' && (
         <ViewCodeButton
           code={code[components[selectedIdx].name]}
           name={components[selectedIdx].name}

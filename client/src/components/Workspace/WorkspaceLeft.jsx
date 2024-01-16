@@ -29,7 +29,7 @@ export default function WorkspaceLeft({ selectedIdx, setSelectedIdx }) {
               e.stopPropagation();
               setSelectedIdx(idx);
             }}
-            selected={selectedIdx === idx}
+            selectedIdx={selectedIdx}
             isLeaf={
               idx > 0 &&
               components.filter((e) => e.parent_id === item._id).length === 0
@@ -45,10 +45,11 @@ function ComponentDisplay({
   component,
   idx,
   handleListItemClick,
-  selected,
+  selectedIdx,
   isLeaf,
 }) {
   const [openEditor, setOpenEditor] = useState(false);
+  const selected = selectedIdx === idx;
 
   return (
     <ListItemButton
@@ -66,15 +67,17 @@ function ComponentDisplay({
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <ListItemText primary={component.name} />
-        <IconButton
-          sx={{ marginLeft: '20px' }}
-          onClick={(e) => {
-            e.stopPropagation();
-            setOpenEditor(true);
-          }}
-        >
-          <EditIcon />
-        </IconButton>
+        {selected && (
+          <IconButton
+            sx={{ marginLeft: '20px' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenEditor(true);
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        )}
         <ComponentEditor
           idx={idx}
           open={openEditor}
@@ -82,7 +85,7 @@ function ComponentDisplay({
           isLeaf={isLeaf}
         />
 
-        {idx > 0 && (
+        {idx > 0 && selected && (
           <DeleteComponentButton
             name={component.name}
             componentId={component._id}
