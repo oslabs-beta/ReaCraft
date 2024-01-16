@@ -10,7 +10,6 @@ export default function WorkspaceRight({ selectedIdx }) {
   const components = useSelector((state) => state.designV2.components);
   const tree = convertToTree(components);
   const code = jsxCode(components, tree);
-  console.log(selectedIdx);
   return (
     <Stack direction='column' gap={2}>
       <ViewDomTreeButton tree={tree} />
