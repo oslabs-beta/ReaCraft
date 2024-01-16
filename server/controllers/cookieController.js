@@ -2,6 +2,7 @@ const { encrypt, decrypt } = require('../helpers/encryptDecrypt');
 
 const checkCookie = (req, res, next) => {
   res.locals.verified = !!(req.cookies && req.cookies.sessionID);
+  console.log('verified: ', res.locals.verified);
   return next();
 };
 
