@@ -22,7 +22,7 @@ export default function Home() {
       //Box container below controlls margin size @ homepage
       <Box display='grid' margin='30px' gridTemplateColumns='1fr 1fr' gap={2}>
         <Typography variant='h4' gridColumn='span 2'>
-          Welcome back, {user.username}
+          Welcome back, {user.username}!
         </Typography>
         <Button
           variant='contained'

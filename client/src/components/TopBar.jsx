@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
+import Box from '@mui/material/Box';
 
 import SideDrawer from './SideDrawer';
 import UserMenu from './functionalButtons/UserMenu';
@@ -26,32 +27,51 @@ export default function TopBar({ toggleDarkMode }) {
   const { user } = useAuth();
   return (
     <AppBar position='static'>
-      <Toolbar disableGutters={true}>
-        <Button
-          variant='contained'
-          disableElevation
-          onClick={() => setDrawerOpen(!drawerOpen)}
+      <Toolbar
+        disableGutters={true}
+        sx={{ display: 'flex', justifyContent: 'space-between' }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'start',
+            alignItems: 'center',
+          }}
         >
-          <MenuIcon />
-        </Button>
-        <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-        <Typography>Reactraft</Typography>
-        {user && <UserMenu />}
-        <DarkModeSwitch toggleDarkMode={toggleDarkMode} />
-        <Button
-          variant='contained'
-          disableElevation
-          onClick={() => handlePageClick('HOME')}
+          <Button
+            variant='contained'
+            disableElevation
+            onClick={() => setDrawerOpen(!drawerOpen)}
+          >
+            <MenuIcon />
+          </Button>
+          <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+          <Typography>Reactraft</Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'end',
+            alignItems: 'center',
+          }}
         >
-          <HomeIcon />
-        </Button>
-        <Button
-          variant='contained'
-          disableElevation
-          onClick={() => handlePageClick('PAST_DESIGNS')}
-        >
-          <BackupTableIcon />
-        </Button>
+          <DarkModeSwitch toggleDarkMode={toggleDarkMode} />
+          <Button
+            variant='contained'
+            disableElevation
+            onClick={() => handlePageClick('HOME')}
+          >
+            <HomeIcon />
+          </Button>
+          <Button
+            variant='contained'
+            disableElevation
+            onClick={() => handlePageClick('PAST_DESIGNS')}
+          >
+            <BackupTableIcon />
+          </Button>
+          {user && <UserMenu />}
+        </Box>
       </Toolbar>
     </AppBar>
   );
