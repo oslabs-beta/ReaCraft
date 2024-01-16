@@ -22,6 +22,9 @@ export default function ParentSelector({ childIdx }) {
     return (
       <TextField
         select
+        display='flex'
+        fullWidth='true'
+        size='small'
         key={childIdx}
         label='parent'
         name='parent'
@@ -57,14 +60,13 @@ export default function ParentSelector({ childIdx }) {
             setParentValue(e.target.value);
           }
           dispatch(setMessage(success ? successMess : errorMess));
-        }}
-      >
+        }}>
         {components.map((item, i) =>
           i !== childIdx ? (
             <MenuItem
+              size='small'
               key={i}
-              value={JSON.stringify({ name: item.name, index: i })}
-            >
+              value={JSON.stringify({ name: item.name, index: i })}>
               {item.name + ', ' + i}
             </MenuItem>
           ) : null
@@ -81,8 +83,7 @@ export default function ParentSelector({ childIdx }) {
               text: "'MainContainer' has to be the root component",
             })
           )
-        }
-      >
+        }>
         <TextField
           disabled
           id='parent'
