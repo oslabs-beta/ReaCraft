@@ -37,7 +37,6 @@ router.post(
 );
 
 router.get('/', (req, res) => {
-  console.log('get /');
   return res.redirect('/home');
 });
 
@@ -45,7 +44,6 @@ router.get('/home', cookieController.checkCookie, (req, res) => {
   const filePath = res.locals.verified
     ? '../../build/index.html'
     : '../../client/public/views/landingPage.html';
-  console.log(filePath);
   return res.status(200).sendFile(path.join(__dirname, filePath));
 });
 

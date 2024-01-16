@@ -103,6 +103,7 @@ Streamlining React Development from Design to Deployment
 [![Webpack](https://img.shields.io/badge/webpack-v5.89.0-8DD6F9?logo=webpack)](https://webpack.js.org/)
 [![Electron](https://img.shields.io/badge/electron-v28.1.3-47848F?logo=electron&logoColor=white)](https://www.electronjs.org/)
 [![Babel](https://img.shields.io/badge/babel-v7.23.7-F9DC3E?logo=babel)](https://babeljs.io/)
+[![Bootstrap](https://img.shields.io/badge/bootstrap-v5.3-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -211,6 +212,7 @@ Project Link: [https://github.com/oslabs-beta/Reactraft](https://github.com/osla
 - [PLULL_REQUEST_TEMPLATE](https://github.com/open-sauced/.github/blob/main/.github/PULL_REQUEST_TEMPLATE.md)
 - [react-d3-tree](https://www.npmjs.com/package/react-d3-tree)
 - [react-code-blocks](https://github.com/rajinwonderland/react-code-blocks)
+- [Bootstrap](https://getbootstrap.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
