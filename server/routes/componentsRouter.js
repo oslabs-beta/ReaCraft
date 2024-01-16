@@ -26,12 +26,14 @@ router.post(
 router.post(
   '/update-tag/:componentId',
   componentController.updateParentOrTag,
+  componentController.updateHtmlForAllSameComponents,
   (req, res) => res.status(200).send(res.locals)
 );
 
 router.post(
   '/submit/:componentId',
   componentController.updateComponentForm,
+  componentController.updateHtmlForAllSameComponents,
   (req, res) => res.status(200).send(res.locals.updatedComponent)
 );
 
