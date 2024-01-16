@@ -31,8 +31,8 @@ CREATE TABLE components (
   name VARCHAR(255) NOT NULL,
   html_tag VARCHAR(255) DEFAULT '<div>',
   inner_html VARCHAR(255) DEFAULT '',
-  props VARCHAR(255),
-  styles VARCHAR(255),
+  props VARCHAR(255) DEFAULT '{}',
+  styles VARCHAR(255) DEFAULT '{}',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (design_id) REFERENCES designs(_id),
   FOREIGN KEY (parent_id) REFERENCES components(_id)
@@ -50,5 +50,5 @@ CREATE TABLE rectangles (
   borderRadius VARCHAR(255),
   stroke VARCHAR(255),
   backgroundColor VARCHAR(255),
-  FOREIGN KEY (component_id) REFERENCES componet(_id)
+  FOREIGN KEY (component_id) REFERENCES components(_id)
 );
