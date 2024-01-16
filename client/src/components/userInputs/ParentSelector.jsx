@@ -2,23 +2,23 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux';
 import MenuItem from '@mui/material/MenuItem';
-import { setParent } from '../../utils/reducers/designSlice';
 import { setMessage } from '../../utils/reducers/appSlice';
 import { Button } from '@mui/material';
 import { validTree } from '../../utils/treeNode';
+import { updateComponentParent } from '../../utils/reducers/designSliceV2';
 
 export default function ParentSelector({ childIdx }) {
-  const dispatch = useDispatch();
-  const components = useSelector((state) => state.design.components);
-  const [parentValue, setParentValue] = useState(
-    JSON.stringify({ name, index })
-  );
-
-  const parent = components[childIdx].parent;
-  const name = parent ? components[parent].name : 'MainContainer';
-  const index = parent ? parent : 0;
-
   if (childIdx > 0) {
+    const components = useSelector((state) => state.designV2.components);
+    const dispatch = useDispatch();
+
+    const child = components[childIdx];
+    const parentId = child.parent_id;
+    const parent = components.filter((item) => item._id === parentId)[0];
+
+    const [parentValue, setParentValue] = useState(
+      JSON.stringify({ name: parent.name, index: parent.index })
+    );
     return (
       <TextField
         select
@@ -35,21 +35,28 @@ export default function ParentSelector({ childIdx }) {
           const successMess = {
             severity: 'success',
             text:
-              `Successfully set ${components[parentIdx].name}(${parentIdx}) to be the parent of ${components[childIdx].name}(${childIdx}). \n` +
+              `Successfully set ${components[parentIdx].name}(${parentIdx}) to be the parent of ${child.name}(${childIdx}). \n` +
               `${components[parentIdx].name}(${parentIdx}) has been set to <div> and inner_html string removed`,
           };
 
           const errorMess = {
             severity: 'error',
-            text: `Invalid tree: cannot ${components[parentIdx].name}(${parentIdx}) to be the parent of ${components[childIdx].name}(${childIdx}).`,
+            text: `Invalid tree: cannot ${components[parentIdx].name}(${parentIdx}) to be the parent of ${child.name.name}(${childIdx}).`,
           };
 
           const updatedComponents = components.map((item, idx) =>
-            idx !== childIdx ? item : { ...item, parent: parentIdx }
+            idx !== childIdx
+              ? item
+              : { ...item, parent_id: components[parentIdx]._id }
           );
           const success = validTree(updatedComponents);
           if (success) {
-            dispatch(setParent({ childIdx, parentIdx }));
+            dispatch(
+              updateComponentParent({
+                componentId: child._id,
+                body: { parentId: components[parentIdx]._id },
+              })
+            );
             setParentValue(e.target.value);
           }
           dispatch(setMessage(success ? successMess : errorMess));
