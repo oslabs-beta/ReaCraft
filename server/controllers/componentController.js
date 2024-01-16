@@ -1,93 +1,33 @@
 const db = require('../models/dbModel');
 
-const addComponents = async (req, res, next) => {
-  const { componentsStr } = req.body;
-  const components = JSON.parse(componentsStr);
-  const designId = res.locals.designId;
-  console.log(components);
-
-  const root = components[0];
-
-  try {
-    components[0].id = await db
-      .query(
-        'INSERT INTO components (design_id, name, z_index, props, styles, hooks) ' +
-          'VALUES ($1, $2, $3, $4, $5, $6) ' +
-          'RETURNING *;',
-        [
-          designId,
-          root.name,
-          root.z_index,
-          JSON.stringify(root.props),
-          JSON.stringify(root.styles),
-          JSON.stringify(root.hooks),
-        ]
-      )
-      .then((data) => data.rows[0]._id);
-
-    const stack = [0];
-    while (stack.length > 0) {
-      const parentIndex = stack.pop();
-      const parentId = components[parentIndex].id;
-      const children = components.filter((item) => item.parent === parentId);
-      const rows = children.map((item) => {
-        const {
-          name,
-          x_position,
-          y_position,
-          z_index,
-          props,
-          styles,
-          hooks,
-          html_tag,
-          inner_html,
-        } = item;
-        return [
-          designId,
-          parentId,
-          name,
-          x_position,
-          y_position,
-          z_index,
-          html_tag,
-          inner_html,
-          ...[props, styles, hooks].map((item) => JSON.stringify(item)),
-        ];
-      });
-
-      children.forEach(async (child, i) => {
-        try {
-          child.id = await db
-            .query(
-              'INSERT INTO components ' +
-                '(design_id, parent_id, name, x_position, y_position, z_index, , html_tag, inner_html, props, styles, hooks) ' +
-                'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) ' +
-                'RETURNING *;',
-              rows[i]
-            )
-            .then((data) => data.rows[0]._id);
-          stack.push(child.index);
-        } catch (err) {
-          throw err;
-        }
-      });
-    }
-    return next();
-  } catch (err) {
-    return next({
-      log:
-        'Express error handler caught componentController.addComponent middleware error' +
-        err,
-      message: { err: 'addComponent: ' + err },
-    });
-  }
+const createRootComponent = (req, res, next) => {
+  const designId = res.locals.design._id;
+  return db
+    .query(
+      'INSERT INTO components (design_id, index, name) ' +
+        'VALUES ($1, $2, $3) ' +
+        'RETURNING *;',
+      [designId, 0, 'RootContainer']
+    )
+    .then((data) => {
+      res.locals.design.components = [data.rows[0]];
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.createRootComponent middleware error' +
+          err,
+        message: { err: 'createRootComponent: ' + err },
+      })
+    );
 };
 
 const getComponents = (req, res, next) => {
   const designId = req.params.designId;
   return db
     .query('SELECT * FROM components WHERE design_id = $1;', [designId])
-    .then((data) => (res.locals.components = data.rows))
+    .then((data) => (res.locals.design.components = data.rows))
     .then(() => next())
     .catch((err) =>
       next({
@@ -98,4 +38,197 @@ const getComponents = (req, res, next) => {
       })
     );
 };
-module.exports = { addComponents, getComponents };
+
+const selectDesignComponentsToDelete = (req, res, next) => {
+  const designId = req.params.designId;
+  return db
+    .query('SELECT * FROM components WHERE design_id = $1;', [designId])
+    .then((data) => {
+      res.locals.deletedComponentIds = data.rows;
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.selectDesignComponentsToDelete middleware error' +
+          err,
+        message: { err: 'selectDesignComponentsToDelete: ' + err },
+      })
+    );
+};
+
+const deleteDesignComponents = (req, res, next) => {
+  const designId = req.params.designId;
+  return db
+    .query('DELETE FROM components WHERE design_id = $1;', [designId])
+    .then((data) => next())
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.selectDesignComponentsToDelete middleware error' +
+          err,
+        message: { err: 'selectDesignComponentsToDelete: ' + err },
+      })
+    );
+};
+
+const addNewComponent = (req, res, next) => {
+  const { designId } = req.params;
+  const { name, index, rootId } = req.body;
+  return db
+    .query(
+      'INSERT INTO components (design_id, name, index, parent_id) VALUES ($1, $2, $3, $4) RETURNING *;',
+      [designId, name, index, rootId]
+    )
+    .then((data) => {
+      res.locals.component = data.rows[0];
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.addNewComponent middleware error' +
+          err,
+        message: { err: 'addNewComponent: ' + err },
+      })
+    );
+};
+
+const deleteComponentById = (req, res, next) => {
+  const { componentId } = req.params;
+  return db
+    .query(
+      'DELETE FROM components WHERE _id = $1 RETURNING index, design_id;',
+      [componentId]
+    )
+    .then((data) => {
+      const { index, design_id } = data.rows[0];
+      res.locals.indexDeleted = index;
+      console.log('indexDeleted:', index);
+      res.locals.designId = design_id;
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.deleteComponentById middleware error' +
+          err,
+        message: { err: 'deleteComponentById: ' + err },
+      })
+    );
+};
+
+const shiftComponentsAfterDelete = (req, res, next) => {
+  const { indexDeleted, designId } = res.locals;
+  return db
+    .query(
+      'UPDATE components ' +
+        'SET index = index - 1 ' +
+        'WHERE design_id = $1 AND index > $2 ' +
+        'RETURNING _id, index;',
+      [designId, indexDeleted]
+    )
+    .then((data) => {
+      res.locals.shiftedIndices = data.rows;
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.shiftComponentsAfterDelete middleware error' +
+          err,
+        message: { err: 'shiftComponentsAfterDelete: ' + err },
+      })
+    );
+};
+
+const updateParentOrTag = (req, res, next) => {
+  const { componentId } = req.params;
+  const { parentId, htmlTag } = req.body;
+  const columnKey = parentId ? 'parent_id' : 'html_tag';
+  const columnValue = parentId ? parentId : htmlTag;
+  return db
+    .query(`UPDATE components SET ${columnKey} = $1 WHERE _id = $2;`, [
+      columnValue,
+      componentId,
+    ])
+    .then(() => {
+      res.locals.componentId = componentId;
+      res.locals.parentId = parentId;
+      res.locals.htmlTag = htmlTag;
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.updateParent middleware error' +
+          err,
+        message: { err: 'updateParent: ' + err },
+      })
+    );
+};
+
+const resetParentHtml = (req, res, next) => {
+  const { parentId } = req.body;
+  return db
+    .query(
+      'UPDATE components SET html_tag = $1, inner_html = $2 WHERE _id = $3;',
+      ['<div>', '', parentId]
+    )
+    .then(() => next())
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.resetParentHtml middleware error' +
+          err,
+        message: { err: 'resetParentHtml: ' + err },
+      })
+    );
+};
+
+const updateComponentForm = (req, res, next) => {
+  const { componentId } = req.params;
+  const { name, innerHtml, props, styles } = req.body;
+  return db
+    .query(
+      'UPDATE components ' +
+        'SET name = $1, ' +
+        'inner_html = $2, ' +
+        'props = $3, ' +
+        'styles = $4 ' +
+        'WHERE _id = $5 ' +
+        'RETURNING *;',
+      [
+        name,
+        innerHtml,
+        JSON.stringify(props),
+        JSON.stringify(styles),
+        componentId,
+      ]
+    )
+    .then((data) => {
+      res.locals.updatedComponent = data.rows[0];
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.updateComponentForm middleware error' +
+          err,
+        message: { err: 'updateComponentForm: ' + err },
+      })
+    );
+};
+
+module.exports = {
+  getComponents,
+  selectDesignComponentsToDelete,
+  createRootComponent,
+  addNewComponent,
+  deleteComponentById,
+  shiftComponentsAfterDelete,
+  deleteDesignComponents,
+  updateParentOrTag,
+  resetParentHtml,
+  updateComponentForm,
+};

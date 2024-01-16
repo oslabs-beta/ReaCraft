@@ -1,7 +1,8 @@
 export default class TreeNode {
-  constructor(component, index) {
+  constructor(component, id) {
     this.name = component.name;
-    this.attributes = { index: index, tag: component.html_tag };
+    this.attributes = { tag: component.html_tag };
+    this.id = id;
     this.children = [];
   }
 
@@ -10,16 +11,16 @@ export default class TreeNode {
   }
 
   removeChild(child) {
-    this.children = this.children.filter((c) => c.index !== child.index);
+    this.children = this.children.filter((c) => c.id !== child.id);
   }
 
-  searchNode(index) {
-    if (this.attributes.index === index) return this;
+  searchNode(id) {
+    if (this.id === id) return this;
     else if (this.children.length === 0) return;
     else {
       let res;
       this.children.forEach((child) => {
-        const searchChild = child.searchNode(index);
+        const searchChild = child.searchNode(id);
         if (searchChild) {
           res = searchChild;
         }
@@ -31,12 +32,12 @@ export default class TreeNode {
 
 export function validTree(components) {
   const seen = new Set();
-  const stack = [0];
+  const stack = [components[0]._id];
   while (stack.length > 0) {
     const cur = stack.pop();
     seen.add(cur);
-    const children = components.flatMap((item, idx) =>
-      item.parent === cur ? idx : []
+    const children = components.flatMap((item) =>
+      item.parent_id === cur ? item._id : []
     );
     children.forEach((i) => {
       if (seen.has(i)) return false;
@@ -47,20 +48,24 @@ export function validTree(components) {
 }
 
 export function convertToTree(components) {
-  const stack = [0];
-  const tree = new TreeNode(components[0], 0);
+  if (components.length === 0) return null;
+  const rootId = components[0]._id;
+  const stack = [rootId];
+  const tree = new TreeNode(components[0], rootId);
+
   while (stack.length > 0) {
     const cur = stack.pop();
     const node = tree.searchNode(cur);
-
-    const children = components.flatMap((item, idx) =>
-      item.parent === cur ? idx : []
+    const childrenIndices = components.flatMap((item, idx) =>
+      item.parent_id === cur ? idx : []
     );
 
-    children.forEach((i) => {
-      stack.push(i);
-      const child = new TreeNode(components[i], i);
-      node.addChild(child);
+    childrenIndices.forEach((i) => {
+      const child = components[i];
+      const childId = child._id;
+      stack.push(childId);
+      const childNode = new TreeNode(child, childId);
+      node.addChild(childNode);
     });
   }
   return tree;

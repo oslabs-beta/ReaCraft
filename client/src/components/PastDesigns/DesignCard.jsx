@@ -1,17 +1,17 @@
-import * as React from 'react';
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { getComponents } from '../utils/fetchRequests';
-import { convertObjToArr } from '../utils/convertBetweenObjArr';
-import { useDispatch, useSelector } from 'react-redux';
-import { retreveUserDesign } from '../utils/reducers/designSlice';
+import { useDispatch } from 'react-redux';
+import { getDesignDetails } from '../../utils/reducers/designSliceV2';
 
 export default function DesignCard({ design }) {
   const dispatch = useDispatch();
+  const created_at = new Date(design.created_at);
+  const last_updated = new Date(design.last_updated);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -25,7 +25,10 @@ export default function DesignCard({ design }) {
           {design.title}
         </Typography>
         <Typography variant='body2' color='text.secondary'>
-          {design.created_at}
+          created_at: {created_at.toLocaleString()}
+        </Typography>
+        <Typography variant='body2' color='text.secondary'>
+          updated_at: {last_updated.toLocaleString()}
         </Typography>
       </CardContent>
       <CardActions>
@@ -34,14 +37,7 @@ export default function DesignCard({ design }) {
           size='small'
           onClick={async () => {
             try {
-              const components = await getComponents(design._id);
-              components.forEach((item) =>
-                ['props', 'styles'].forEach(
-                  (key) => (item[key] = convertObjToArr(JSON.parse(item[key])))
-                )
-              );
-              console.log(components);
-              dispatch(retreveUserDesign({ ...design, components }));
+              dispatch(getDesignDetails(design._id));
             } catch (err) {
               console.log('error: ' + err);
             }
