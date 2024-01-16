@@ -49,7 +49,7 @@ export default function Workspace() {
           justifyContent: 'flex-end',
         }}
       >
-        <WorkspaceRight />
+        <WorkspaceRight selectedIdx={selectedIdx} />
       </Box>
     </Box>
   );
