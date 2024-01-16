@@ -70,12 +70,23 @@ const initialState = {
   last_updated: null,
   loading: false,
   error: null,
+  borderColor: '#000000',
 };
 
 const designSliceV2 = createSlice({
   name: 'design_v2',
   initialState,
-  reducers: { resetDesign: () => initialState },
+  reducers: { 
+    resetDesign: () => initialState,
+    updateComponentBorderColor: (state, action) => {
+      const { id, borderColor } = action.payload;
+      // find component with the given _id and update its border color
+      const component = state.components.find(comp => comp._id === id);
+      if (component) {
+        component.borderColor = borderColor;
+      }
+    },
+   },
   extraReducers: (builder) => {
     asyncThunks.forEach((thunk) => {
       builder
@@ -143,6 +154,6 @@ const designSliceV2 = createSlice({
   },
 });
 
-export const { resetDesign } = designSliceV2.actions;
+export const { resetDesign, updateComponentBorderColor } = designSliceV2.actions;
 
 export default designSliceV2.reducer;
