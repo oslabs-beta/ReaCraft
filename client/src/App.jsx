@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { themeLight, themeDark } from './styles/ThemeGlobal';
-
 import Container from '@mui/material/Container';
 import TopBar from './components/TopBar';
 import MainContainer from './components/MainContainer';
@@ -37,11 +36,10 @@ export default function App() {
     fetchData();
   }, []);
 
+
   const mode = window.localStorage.getItem('mode');
-  console.log(mode);
   const [darkMode, setDarkMode] = useState(Boolean(mode));
   const theme = darkMode ? themeDark : themeLight;
-
   if (!darkMode) window.localStorage.removeItem('mode');
   else window.localStorage.setItem('mode', 'dark');
 
@@ -50,7 +48,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Container sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <TopBar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+        <TopBar toggleDarkMode={toggleDarkMode} />
         <MainContainer />
       </Container>
     </ThemeProvider>
