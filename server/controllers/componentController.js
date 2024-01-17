@@ -177,7 +177,7 @@ const updateHtmlForAllSameComponents = (req, res, next) => {
   if (!htmlTag) return next();
   return db
     .query(
-      'UPDATE components SET html_tag = $1, inner_html = $4 WHERE name = $2 AND design_id = $3;',
+      'UPDATE components SET html_tag = $1, inner_html = $4 WHERE name = $2 AND design_id = $3 RETURNING *;',
       [htmlTag, componentName, designId, innerHtml]
     )
     .then(() => next())
@@ -231,7 +231,7 @@ const updateComponentForm = (req, res, next) => {
     )
     .then((data) => {
       res.locals.updatedComponent = data.rows[0];
-      res.locals.htmlTag = data.rows[0].htmlTag;
+      res.locals.htmlTag = data.rows[0].html_tag;
       res.locals.componentName = data.rows[0].name;
       res.locals.designId = data.rows[0].design_id;
       res.locals.innerHtml = data.rows[0].inner_html;
