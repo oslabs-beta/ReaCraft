@@ -8,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material';
 
 import SideDrawer from './SideDrawer';
 import UserMenu from './functionalButtons/UserMenu';
@@ -16,6 +17,10 @@ import DarkModeSwitch from './functionalButtons/DarkModeSwitch';
 import { goToPage } from '../utils/reducers/appSlice';
 import { resetDesign } from '../utils/reducers/designSliceV2';
 import { useAuth } from '../hooks/useAuth';
+import {
+  AppBarButtonsStyleLight,
+  AppBarButtonsStyleDark,
+} from '../styles/ThemeGlobal';
 
 export default function TopBar({ toggleDarkMode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -25,11 +30,20 @@ export default function TopBar({ toggleDarkMode }) {
     dispatch(resetDesign());
   }
   const { user } = useAuth();
+  const theme = useTheme();
+  const AppBarButtonsStyle =
+    theme.palette.mode === 'dark'
+      ? AppBarButtonsStyleDark
+      : AppBarButtonsStyleLight;
   return (
     <AppBar position='static'>
       <Toolbar
         disableGutters={true}
-        sx={{ display: 'flex', justifyContent: 'space-between' }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          backgroundColor: 'transparent',
+        }}
       >
         <Box
           sx={{
@@ -42,6 +56,7 @@ export default function TopBar({ toggleDarkMode }) {
             variant='contained'
             disableElevation
             onClick={() => setDrawerOpen(!drawerOpen)}
+            sx={AppBarButtonsStyle}
           >
             <MenuIcon />
           </Button>
@@ -60,6 +75,7 @@ export default function TopBar({ toggleDarkMode }) {
             variant='contained'
             disableElevation
             onClick={() => handlePageClick('HOME')}
+            sx={AppBarButtonsStyle}
           >
             <HomeIcon />
           </Button>
@@ -67,6 +83,7 @@ export default function TopBar({ toggleDarkMode }) {
             variant='contained'
             disableElevation
             onClick={() => handlePageClick('PAST_DESIGNS')}
+            sx={AppBarButtonsStyle}
           >
             <BackupTableIcon />
           </Button>
