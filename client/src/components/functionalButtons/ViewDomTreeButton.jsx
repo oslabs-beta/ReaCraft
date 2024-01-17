@@ -16,9 +16,6 @@ export default function ViewDomTreeButton({ tree }) {
       <Button
         variant='contained'
         onClick={() => setViewTree(true)}
-<<<<<<< HEAD
-        startIcon={<ImTree />}>
-=======
         startIcon={
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -33,7 +30,6 @@ export default function ViewDomTreeButton({ tree }) {
             />
           </svg>
         }>
->>>>>>> refs/remotes/origin/dev
         Dom Tree
       </Button>
 
@@ -62,7 +58,6 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
   // };
 
   return (
-<<<<<<< HEAD
     <ThemeProvider theme={themeDOMTreeLight}>
       <g transform={`translate(${-textWidth / 2}, 0)`}>
         <foreignObject x={0} y={-45} height={50} width={textWidth + 10}>
@@ -100,39 +95,6 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
         )}
       </g>
     </ThemeProvider>
-=======
-    <g transform={`translate(${-textWidth / 2}, 0)`}>
-      <foreignObject x={0} y={-45} width={textWidth} height={50}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            y: '-50px',
-            padding: `${padding}px`,
-          }}>
-          <Fab
-            variant='extended'
-            onClick={toggleNode}
-            style={{
-              width: `${paddedWidth}px`,
-              height: `40px`,
-              borderWidth: `3px`,
-            }}>
-            <p fontSize='small' fill='black' strokeWidth='1' x='0' y='0'>
-              {nodeDatum.name}
-            </p>
-          </Fab>
-        </div>
-      </foreignObject>
-      {nodeDatum.attributes?.department && (
-        <text fill='black' x='-15' dy='-15' strokeWidth='1'>
-          Department: {nodeDatum.attributes?.department}
-        </text>
-      )}
-    </g>
->>>>>>> refs/remotes/origin/dev
   );
 };
 
