@@ -24,6 +24,9 @@
     ></script>
     <script>
       $(document).ready(function () {
+        let mode = window.localStorage.getItem('mode');
+        console.log(mode);
+        if (mode) $('*').addClass('dark');
         $('#signup').click((e) => {
           window.location.href = '/signup';
         });
@@ -31,7 +34,15 @@
           window.location.href = '/login';
         });
         $('#switch-base').click((e) => {
-          $('*').toggleClass('dark');
+          mode = window.localStorage.getItem('mode');
+          console.log('mode is', mode);
+          if (mode) {
+            $('*').removeClass('dark');
+            window.localStorage.removeItem('mode');
+          } else {
+            $('*').addClass('dark');
+            window.localStorage.setItem('mode', 'dark');
+          }
         });
       });
     </script>

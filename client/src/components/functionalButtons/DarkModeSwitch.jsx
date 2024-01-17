@@ -49,6 +49,6 @@ const MuiSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function DarkModeSwitch({ toggleDarkMode }) {
-  return <MuiSwitch onChange={toggleDarkMode} defaultChecked={true} />;
+export default function DarkModeSwitch({ toggleDarkMode, darkMode }) {
+  return <MuiSwitch onChange={toggleDarkMode} checked={!darkMode} />;
 }
