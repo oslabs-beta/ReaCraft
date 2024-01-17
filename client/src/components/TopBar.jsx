@@ -8,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip';
 import { useTheme } from '@mui/material';
 
 import SideDrawer from './SideDrawer';
@@ -61,7 +62,7 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             <MenuIcon />
           </Button>
           <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-          <Typography>Reactraft</Typography>
+          <Typography>ReaCraft</Typography>
         </Box>
         <Box
           sx={{
@@ -71,22 +72,29 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
           }}
         >
           <DarkModeSwitch toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
-          <Button
-            variant='contained'
-            disableElevation
-            onClick={() => handlePageClick('HOME')}
-            sx={AppBarButtonsStyle}
-          >
-            <HomeIcon />
-          </Button>
-          <Button
-            variant='contained'
-            disableElevation
-            onClick={() => handlePageClick('PAST_DESIGNS')}
-            sx={AppBarButtonsStyle}
-          >
-            <BackupTableIcon />
-          </Button>
+
+          <Tooltip title='Home'>
+            <Button
+              variant='contained'
+              disableElevation
+              onClick={() => handlePageClick('HOME')}
+              sx={AppBarButtonsStyle}
+            >
+              <HomeIcon />
+            </Button>
+          </Tooltip>
+
+          <Tooltip title='Past designs'>
+            <Button
+              variant='contained'
+              disableElevation
+              onClick={() => handlePageClick('PAST_DESIGNS')}
+              sx={AppBarButtonsStyle}
+            >
+              <BackupTableIcon />
+            </Button>
+          </Tooltip>
+
           {user && <UserMenu />}
         </Box>
       </Toolbar>

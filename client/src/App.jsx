@@ -38,7 +38,6 @@ export default function App() {
   }, []);
 
   const mode = window.localStorage.getItem('mode');
-  console.log(mode);
   const [darkMode, setDarkMode] = useState(Boolean(mode));
   const theme = darkMode ? themeDark : themeLight;
 

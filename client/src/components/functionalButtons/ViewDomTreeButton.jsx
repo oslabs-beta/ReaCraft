@@ -1,39 +1,55 @@
-import React, { useRef, useState, Fragment } from 'react';
+import React, { useRef, useState, Fragment, useEffect } from 'react';
 import Tree from 'react-d3-tree';
-import { convertToTree } from '../../utils/treeNode';
 import { Button, Backdrop, Fab } from '@mui/material';
-import { ImTree } from 'react-icons/im';
+import Tooltip from '@mui/material/Tooltip';
+import BackdropSnackbar from './BackdropSnackbar';
 
 import '../../utils/treeNode.css';
 
 export default function ViewDomTreeButton({ tree }) {
   const [viewTree, setViewTree] = useState(false);
+  const handleKeyPress = (e) => {
+    if (e.key === 't' || e.key === 'T') setViewTree(!viewTree);
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [viewTree]);
   return (
     <Fragment>
-      <Button
-        variant='contained'
-        onClick={() => setViewTree(true)}
-        startIcon={
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='16'
-            height='16'
-            fill='currentColor'
-            className='bi bi-diagram-3-fill'
-            viewBox='0 0 16 16'>
-            <path
-              fillRule='evenodd'
-              d='M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5zm-6 8A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5zm6 0A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5zm6 0a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5z'
-            />
-          </svg>
-        }>
-        Dom Tree
-      </Button>
+      <Tooltip title='View Dom tree'>
+        <Button
+          variant='contained'
+          onClick={() => setViewTree(true)}
+          startIcon={
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='16'
+              height='16'
+              fill='currentColor'
+              className='bi bi-diagram-3-fill'
+              viewBox='0 0 16 16'
+            >
+              <path
+                fillRule='evenodd'
+                d='M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5zm-6 8A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5zm6 0A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5zm6 0a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5z'
+              />
+            </svg>
+          }
+        >
+          Dom Tree
+        </Button>
+      </Tooltip>
+
+      <BackdropSnackbar open={viewTree} setOpen={setViewTree} />
 
       <DOMTreeBackdrop
         viewTree={viewTree}
         tree={tree}
-        toggleViewTree={() => setViewTree(!viewTree)}
+        setViewTree={setViewTree}
       />
     </Fragment>
   );
@@ -58,7 +74,8 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
             height: '100%',
             y: '-50px',
             padding: `${padding}px`,
-          }}>
+          }}
+        >
           <Fab
             variant='extended'
             onClick={toggleNode}
@@ -66,7 +83,8 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
               width: `${paddedWidth}px`,
               height: `40px`,
               borderWidth: `3px`,
-            }}>
+            }}
+          >
             <p fontSize='small' fill='black' strokeWidth='1' x='0' y='0'>
               {nodeDatum.name}
             </p>
@@ -82,7 +100,7 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
   );
 };
 
-function DOMTreeBackdrop({ viewTree, tree, toggleViewTree }) {
+function DOMTreeBackdrop({ viewTree, tree, setViewTree }) {
   const windowSize = useRef([window.innerWidth, window.innerHeight]);
   const [width, height] = windowSize.current;
   return (
@@ -93,7 +111,8 @@ function DOMTreeBackdrop({ viewTree, tree, toggleViewTree }) {
         backgroundColor: '#ffffff4D',
       }}
       open={viewTree}
-      onDoubleClickCapture={toggleViewTree}>
+      onDoubleClickCapture={() => setViewTree(false)}
+    >
       <Tree
         data={tree}
         rootNodeClassName='node__root'
