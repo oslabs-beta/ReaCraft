@@ -16,8 +16,7 @@ export default function NewDesign() {
         justifyContent: 'center',
         height: 100,
         alignItems: 'center',
-      }}
-    >
+      }}>
       <UserImageUploadButton />
     </Box>
   );
