@@ -86,13 +86,13 @@ const KonvaStage = ({ userImage, selectedIdx, setSelectedIdx }) => {
   }, [selectedId, rectangles]); // originally had selectedId in the array too
 
   // used to automatically select the latest component added
-  useEffect(() => {
-    if (components.length > 0) {
-      // const latestComponent = components[components.length - 1].name;
-      // dispatch(selectComponent(latestComponent));
-      setSelectedIdx(components.length - 1);
-    }
-  }, [components, dispatch]);
+  // useEffect(() => {
+  //   if (components.length > 0) {
+  //     // const latestComponent = components[components.length - 1].name;
+  //     // dispatch(selectComponent(latestComponent));
+  //     setSelectedIdx(components.length - 1);
+  //   }
+  // }, [components, dispatch]);
 
   // useEffect to listen to changes in selectedIdx - will select the corresponding rectangle clicked in workspaceLeft
   useEffect(() => {

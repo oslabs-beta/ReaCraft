@@ -22,6 +22,9 @@ export default function ParentSelector({ childIdx }) {
     return (
       <TextField
         select
+        display='flex'
+        fullWidth={true}
+        size='small'
         key={childIdx}
         label='parent'
         name='parent'
@@ -62,6 +65,7 @@ export default function ParentSelector({ childIdx }) {
         {components.map((item, i) =>
           i !== childIdx ? (
             <MenuItem
+              size='small'
               key={i}
               value={JSON.stringify({ name: item.name, index: i })}
             >
