@@ -51,7 +51,8 @@ export function jsxCode(components, tree) {
         propKeys = new Set([...propKeys, ...oldPropKeys]);
       }
     }
-    const propsCode = '{ ' + [...propKeys].join(', ') + ' }';
+    const propsCode =
+      [...propKeys].length === 0 ? '' : '{ ' + [...propKeys].join(', ') + ' }';
     code[name] = `import React from 'react';
 export default function ${name}(${propsCode}) {
 ${html}
