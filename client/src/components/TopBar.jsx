@@ -21,7 +21,7 @@ import { useAuth } from '../hooks/useAuth';
 import {
   AppBarButtonsStyleLight,
   AppBarButtonsStyleDark,
-} from '../styles/ThemeGlobal';
+} from '../Styles/ThemeGlobal';
 
 export default function TopBar({ toggleDarkMode, darkMode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -44,21 +44,18 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
           display: 'flex',
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
-        }}
-      >
+        }}>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'start',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <Button
             variant='contained'
             disableElevation
             onClick={() => setDrawerOpen(!drawerOpen)}
-            sx={AppBarButtonsStyle}
-          >
+            sx={AppBarButtonsStyle}>
             <MenuIcon />
           </Button>
           <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
@@ -72,7 +69,6 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
           }}
         >
           <DarkModeSwitch toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
-
           <Tooltip title='Home'>
             <Button
               variant='contained'

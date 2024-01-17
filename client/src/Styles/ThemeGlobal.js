@@ -33,6 +33,7 @@ export const themeLight = createTheme({
       secondary: '#D8D6D6',
     },
   },
+
   components: {
     MuiTab: {
       styleOverrides: {
@@ -41,6 +42,7 @@ export const themeLight = createTheme({
         },
       },
     },
+
     MuiListItemText: {
       styleOverrides: {
         root: {
@@ -50,6 +52,7 @@ export const themeLight = createTheme({
         },
       },
     },
+
     MuiTextField: {
       styleOverrides: {
         root: {
@@ -90,5 +93,6 @@ export const AppBarButtonsStyleLight = {
 
 export const AppBarButtonsStyleDark = {
   backgroundColor: 'transparent',
+
   color: '#E0E1DD',
 };
