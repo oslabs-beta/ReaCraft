@@ -95,11 +95,13 @@ export default function ComponentEditorForm({
     <Modal open={open} onClose={closeEditor}>
       <Box
         component='form'
+        className='componentEditor'
         sx={boxStyle}
         display='grid'
         gridTemplateColumns='repeat(12, 1fr)'
         gap={2}
-        onSubmit={handleSumbit}>
+        onSubmit={handleSumbit}
+      >
         <NameAndParent idx={idx} name={component.name} />
 
         {isLeaf && (
@@ -125,11 +127,12 @@ export default function ComponentEditorForm({
               color='error'
               onClick={() => {
                 if (isLeaf) {
-                  dispatch(deleteComponent(component._id));
+                  disp;
                   closeEditor();
                 }
                 dispatch(setMessage(deleteMessage));
-              }}>
+              }}
+            >
               Delete
             </Button>
           )}
@@ -215,7 +218,8 @@ function AddData({ data, setData, dataName }) {
                 value: '',
               },
             ])
-          }>
+          }
+        >
           <AddCircleIcon color='primary' />
         </IconButton>
       </Box>
@@ -281,7 +285,8 @@ function AddData({ data, setData, dataName }) {
             <IconButton
               onClick={() => {
                 setData(data.filter((_, i) => i !== idx));
-              }}>
+              }}
+            >
               <RemoveCircleIcon />
             </IconButton>
           </Box>

@@ -12,32 +12,39 @@ import ComponentEditor from '../userInputs/ComponentEditorForm';
 import HtmlTagSelector from '../userInputs/HtmlTagSelector';
 import DeleteComponentButton from '../functionalButtons/DeleteComponentButton';
 import ColorPicker from '../ColorPicker';
+import { ThemeProvider, useTheme } from '@mui/material';
+import { WorkspaceLeftLightTheme } from '../../styles/WorkspaceLeftTheme';
 
 export default function WorkspaceLeft({ selectedIdx, setSelectedIdx }) {
   const components = useSelector((state) => state.designV2.components);
+  const theme = useTheme();
+  const WorkspaceLeftTheme =
+    theme.palette.mode === 'dark' ? theme : WorkspaceLeftLightTheme;
 
   return (
-    <Box value='NewComponentBox' maxHeight='45px'>
-      <AddNewComponent setSelectedIdx={setSelectedIdx} />
-      <List>
-        {components.map((item, idx) => (
-          <ComponentDisplay
-            component={item}
-            key={idx}
-            idx={idx}
-            handleListItemClick={(e) => {
-              e.stopPropagation();
-              setSelectedIdx(idx);
-            }}
-            selectedIdx={selectedIdx}
-            isLeaf={
-              idx > 0 &&
-              components.filter((e) => e.parent_id === item._id).length === 0
-            }
-          />
-        ))}
-      </List>
-    </Box>
+    <ThemeProvider theme={WorkspaceLeftTheme}>
+      <Box>
+        <AddNewComponent setSelectedIdx={setSelectedIdx} />
+        <List sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {components.map((item, idx) => (
+            <ComponentDisplay
+              component={item}
+              key={idx}
+              idx={idx}
+              handleListItemClick={(e) => {
+                e.stopPropagation();
+                setSelectedIdx(idx);
+              }}
+              selectedIdx={selectedIdx}
+              isLeaf={
+                idx > 0 &&
+                components.filter((e) => e.parent_id === item._id).length === 0
+              }
+            />
+          ))}
+        </List>
+      </Box>
+    </ThemeProvider>
   );
 }
 

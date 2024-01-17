@@ -54,6 +54,10 @@ const StyledMenu = styled((props) => (
     borderRadius: 6,
     marginTop: theme.spacing(1),
     minWidth: 180,
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? '#ffffff'
+        : theme.palette.background.paper,
     color:
       theme.palette.mode === 'light'
         ? 'rgb(55, 65, 81)'
@@ -66,7 +70,10 @@ const StyledMenu = styled((props) => (
     '& .MuiMenuItem-root': {
       '& .MuiSvgIcon-root': {
         fontSize: 18,
-        color: theme.palette.text.secondary,
+        color:
+          theme.palette.mode === 'light'
+            ? 'rgb(55, 65, 81)'
+            : theme.palette.text.secondary,
         marginRight: theme.spacing(1.5),
       },
       '&:active': {
@@ -100,6 +107,7 @@ export default function UserMenu() {
         disableElevation
         onClick={(e) => setAnchorEl(e.currentTarget)}
         endIcon={<KeyboardArrowDownIcon />}
+        sx={{ backgroundColor: 'transparent', color: '#E0E1DD' }}
       >
         <Avatar src={avatar} sx={{ width: 40, height: 40 }} />
       </Button>
