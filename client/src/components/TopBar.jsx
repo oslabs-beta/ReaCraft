@@ -65,8 +65,7 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             display: 'flex',
             justifyContent: 'end',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <DarkModeSwitch toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
           <Button
             variant='contained'
