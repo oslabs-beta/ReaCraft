@@ -66,8 +66,7 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             display: 'flex',
             justifyContent: 'end',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <DarkModeSwitch toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
           <Tooltip title='Home'>
             <Button
