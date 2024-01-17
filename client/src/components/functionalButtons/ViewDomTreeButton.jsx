@@ -1,8 +1,11 @@
 import React, { useRef, useState, Fragment } from 'react';
 import Tree from 'react-d3-tree';
-import { convertToTree } from '../../utils/treeNode';
-import { Button, Backdrop, Fab } from '@mui/material';
+//import { convertToTree } from '../../utils/treeNode';
+import { Button, Backdrop, Fab, List, FormLabel } from '@mui/material';
 import { ImTree } from 'react-icons/im';
+import { themeDOMTreeLight } from '../../Styles/ThemeDOMTree';
+import { ThemeProvider } from '@mui/material/styles';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import '../../utils/treeNode.css';
 
@@ -13,8 +16,7 @@ export default function ViewDomTreeButton({ tree }) {
       <Button
         variant='contained'
         onClick={() => setViewTree(true)}
-        startIcon={<ImTree />}
-      >
+        startIcon={<ImTree />}>
         Dom Tree
       </Button>
 
@@ -30,45 +32,56 @@ export default function ViewDomTreeButton({ tree }) {
 const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
   const textLength = Number(nodeDatum.name.length);
   const estimatedCharWidth =
-    nodeDatum.name.length === 1 ? 60 : nodeDatum.name.length <= 5 ? 30 : 20;
+    nodeDatum.name.length === 1 ? 60 : nodeDatum.name.length <= 5 ? 35 : 20;
   const textWidth = textLength * estimatedCharWidth;
   const padding = 20;
   const paddedWidth = textWidth * 2;
 
+  console.log('=> This is nodeDatum: ', nodeDatum);
+  // const [htmlTag, setHtmlTag] = React.useState('');
+
+  // const handleChange = (event) => {
+  //   setHtmlTag(event.target.value);
+  // };
+
   return (
-    <g transform={`translate(${-textWidth / 2}, 0)`}>
-      <foreignObject x={0} y={-45} width={textWidth} height={50}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            y: '-50px',
-            padding: `${padding}px`,
-          }}
-        >
-          <Fab
-            variant='extended'
-            onClick={toggleNode}
+    <ThemeProvider theme={themeDOMTreeLight}>
+      <g transform={`translate(${-textWidth / 2}, 0)`}>
+        <foreignObject x={0} y={-45} height={50} width={textWidth + 10}>
+          <div
             style={{
-              width: `${paddedWidth}px`,
-              height: `40px`,
-              borderWidth: `3px`,
-            }}
-          >
-            <p fontSize='small' fill='black' strokeWidth='1' x='0' y='0'>
-              {nodeDatum.name}
-            </p>
-          </Fab>
-        </div>
-      </foreignObject>
-      {nodeDatum.attributes?.department && (
-        <text fill='black' x='-15' dy='-15' strokeWidth='1'>
-          Department: {nodeDatum.attributes?.department}
-        </text>
-      )}
-    </g>
+              display: 'flex',
+              alignItems: 'center',
+              height: '100%',
+              y: '-50px',
+              padding: `${padding}px`,
+            }}>
+            <Fab
+              variant='extended'
+              onClick={toggleNode}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                width: `${paddedWidth}px`,
+                alignItems: 'center',
+              }}>
+              <FormLabel
+                sx={{
+                  fontSize: '8px',
+                }}>
+                {nodeDatum.attributes.tag}
+              </FormLabel>
+              <List>{nodeDatum.name}</List>
+            </Fab>
+          </div>
+        </foreignObject>
+        {nodeDatum.attributes?.department && (
+          <text fill='black' x='-15' dy='-15' strokeWidth='1'>
+            Department: {nodeDatum.attributes?.department}
+          </text>
+        )}
+      </g>
+    </ThemeProvider>
   );
 };
 
@@ -83,8 +96,7 @@ function DOMTreeBackdrop({ viewTree, tree, toggleViewTree }) {
         backgroundColor: '#ffffff4D',
       }}
       open={viewTree}
-      onDoubleClickCapture={toggleViewTree}
-    >
+      onDoubleClickCapture={toggleViewTree}>
       <Tree
         data={tree}
         rootNodeClassName='node__root'

@@ -49,6 +49,10 @@ export const themeLight = createTheme({
 });
 
 export const themeDark = createTheme({
+  typography: {
+    fontFamily: globalFont,
+    fontSize: 12,
+  },
   palette: {
     mode: 'light',
     primary: {
