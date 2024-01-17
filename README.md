@@ -90,6 +90,10 @@ Streamlining React Development from Design to Deployment
 
 ### Built With
 
+[![javascript](https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://www.javascript.com/)
+[![html5](https://img.shields.io/badge/html%205-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://html.spec.whatwg.org/)
+[![css3](https://img.shields.io/badge/css%203-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://en.wikipedia.org/wiki/CSS)
+
 [![React](https://img.shields.io/badge/react-v18.2.0-61DAFB?logo=react)](https://react.dev/)
 [![JQuery](https://img.shields.io/badge/jquery-v3.7.1-0769AD?logo=jquery)](https://jquery.com/)
 [![Redux](https://img.shields.io/badge/redux-v9.0.4-764ABC?logo=redux)](https://redux.js.org/)
@@ -104,6 +108,7 @@ Streamlining React Development from Design to Deployment
 [![Electron](https://img.shields.io/badge/electron-v28.1.3-47848F?logo=electron&logoColor=white)](https://www.electronjs.org/)
 [![Babel](https://img.shields.io/badge/babel-v7.23.7-F9DC3E?logo=babel)](https://babeljs.io/)
 [![Bootstrap](https://img.shields.io/badge/bootstrap-v5.3-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![sass](https://img.shields.io/badge/sass-v1.69.7-CC6699?logo=sass)](https://sass-lang.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
