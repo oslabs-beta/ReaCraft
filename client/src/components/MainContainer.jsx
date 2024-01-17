@@ -19,8 +19,9 @@ export default function MainContainer() {
       style={{
         justifyContent: 'center',
         alignItems: 'center',
-      }}
-    >
+        position: 'relative',
+        marginTop: '10vw',
+      }}>
       {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && <Home />}
       {page === 'PAST_DESIGNS' && <UserDesigns />}
@@ -29,8 +30,7 @@ export default function MainContainer() {
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={Boolean(message)}
         onClose={() => dispatch(resetMessage())}
-        autoHideDuration={6000}
-      >
+        autoHideDuration={6000}>
         {message && <Alert severity={message.severity}>{message.text}</Alert>}
       </Snackbar>
     </Container>

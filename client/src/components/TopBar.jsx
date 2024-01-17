@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material';
@@ -36,9 +37,10 @@ export default function TopBar({ toggleDarkMode }) {
       ? AppBarButtonsStyleDark
       : AppBarButtonsStyleLight;
   return (
-    <AppBar position='static'>
+    <AppBar display='flex' position='absolute'>
       <Toolbar
         disableGutters={true}
+        to
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -77,9 +79,10 @@ export default function TopBar({ toggleDarkMode }) {
           <Button
             variant='contained'
             disableElevation
-            onClick={() => handlePageClick('PAST_DESIGNS')}
-            sx={AppBarButtonsStyle}>
-            <BackupTableIcon />
+            onClick={() => handlePageClick('NEW_DESIGN')}
+            sx={AppBarButtonsStyle}
+            startIcon={<AddPhotoAlternateIcon />}>
+            New Design
           </Button>
           {user && <UserMenu />}
         </Box>

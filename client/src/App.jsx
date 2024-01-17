@@ -36,7 +36,7 @@ export default function App() {
     fetchData();
   }, []);
 
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   const theme = darkMode ? themeLight : themeDark;
 
@@ -45,9 +45,14 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <Container>
         <TopBar toggleDarkMode={toggleDarkMode} />
-        <MainContainer />
+        <MainContainer
+          sx={{
+            position: 'absolute',
+            top: '25%',
+          }}
+        />
       </Container>
     </ThemeProvider>
   );
