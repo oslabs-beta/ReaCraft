@@ -3,9 +3,7 @@ import { useAuth } from './hooks/useAuth';
 import Cookies from 'js-cookie';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-// import { themeLight, themeDark } from './components/ThemeGlobal.ts';
-import { themeLight, themeDark } from './styles/ThemeGlobal';
-
+import { themeLight, themeDark } from './Styles/ThemeGlobal';
 import Container from '@mui/material/Container';
 import TopBar from './components/TopBar';
 import MainContainer from './components/MainContainer';
@@ -39,7 +37,8 @@ export default function App() {
   }, []);
 
   const [darkMode, setDarkMode] = useState(false);
-  const theme = darkMode ? themeDark : themeLight;
+
+  const theme = darkMode ? themeLight : themeDark;
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
@@ -47,7 +46,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Container sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <TopBar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+        <TopBar toggleDarkMode={toggleDarkMode} />
         <MainContainer />
       </Container>
     </ThemeProvider>
