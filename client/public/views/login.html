@@ -10,6 +10,13 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/views/global.css" />
     <script
       src="https://code.jquery.com/jquery-3.7.1.js"
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
@@ -17,9 +24,21 @@
     ></script>
     <script>
       $(document).ready(function () {
+        let mode = window.localStorage.getItem('mode');
+        if (mode) $('*').addClass('dark');
         $('#signup').click((e) => {
           e.preventDefault();
           window.location.href = '/signup';
+        });
+        $('#switch-base').click((e) => {
+          mode = window.localStorage.getItem('mode');
+          if (mode) {
+            $('*').removeClass('dark');
+            window.localStorage.removeItem('mode');
+          } else {
+            $('*').addClass('dark');
+            window.localStorage.setItem('mode', 'dark');
+          }
         });
       });
     </script>
@@ -29,8 +48,16 @@
       class="form-signin w-100 m-auto d-flex flex-column justify-content-center align-items-center"
       style="padding-top: 100px"
     >
+      <span id="dark-mode-switch-root">
+        <span id="switch-base">
+          <input type="checkbox" id="dark-mode-switch" />
+          <span id="switch-thumb"></span>
+          <span class="MuiTouchRipple-root"></span>
+        </span>
+        <span id="switch-track"></span>
+      </span>
       <img src="../assets/React-icon.svg" width="200px" class="pb-5 pt-3" />
-      <form id="login" action="/login" method="POST" style="width: 400px">
+      <form id="login" action="/login" method="POST" class="login">
         <h1 class="h3 mb-3 fw-normal">Please Login</h1>
         <div class="form-floating">
           <input

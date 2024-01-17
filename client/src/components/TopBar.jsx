@@ -22,7 +22,7 @@ import {
   AppBarButtonsStyleDark,
 } from '../Styles/ThemeGlobal';
 
-export default function TopBar({ toggleDarkMode }) {
+export default function TopBar({ toggleDarkMode, darkMode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const dispatch = useDispatch();
   function handlePageClick(page) {
@@ -65,8 +65,9 @@ export default function TopBar({ toggleDarkMode }) {
             display: 'flex',
             justifyContent: 'end',
             alignItems: 'center',
-          }}>
-          <DarkModeSwitch toggleDarkMode={toggleDarkMode} />
+          }}
+        >
+          <DarkModeSwitch toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
           <Button
             variant='contained'
             disableElevation

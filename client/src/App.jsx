@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from './hooks/useAuth';
 import Cookies from 'js-cookie';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { themeLight, themeDark } from './Styles/ThemeGlobal';
+import { themeLight, themeDark } from './styles/ThemeGlobal';
 import Container from '@mui/material/Container';
 import TopBar from './components/TopBar';
 import MainContainer from './components/MainContainer';
@@ -36,12 +36,14 @@ export default function App() {
     fetchData();
   }, []);
 
-  const [darkMode, setDarkMode] = useState(false);
 
-  const theme = darkMode ? themeLight : themeDark;
+  const mode = window.localStorage.getItem('mode');
+  const [darkMode, setDarkMode] = useState(Boolean(mode));
+  const theme = darkMode ? themeDark : themeLight;
+  if (!darkMode) window.localStorage.removeItem('mode');
+  else window.localStorage.setItem('mode', 'dark');
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
