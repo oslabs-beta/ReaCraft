@@ -5,6 +5,7 @@ import { setMessage } from '../../utils/reducers/appSlice';
 import TextField from '@mui/material/TextField';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import isValidReactComponentName from '../../utils/isValidReactComponentName';
 import { addNewComponent } from '../../utils/reducers/designSliceV2';
 
@@ -51,6 +52,7 @@ export default function AddNewComponentButton() {
       }}
     >
       <TextField
+        size='small'
         id='new-component'
         name='newComponent'
         label='New Component'
@@ -58,9 +60,12 @@ export default function AddNewComponentButton() {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <IconButton type='submit'>
-        <AddCircleIcon />
-      </IconButton>
+      <Tooltip title='Add new component'>
+        <IconButton size='small' type='submit'>
+          {/*controls the size of the "+" button next to the TextField */}
+          <AddCircleIcon fontSize='small' />
+        </IconButton>
+      </Tooltip>
     </form>
   );
 }
