@@ -40,8 +40,8 @@
   height: 34px;
 }
 
-html {
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+html * {
+  font-family: 'Avenir', 'Roboto', 'Helvetica', 'Arial', sans-serif !important ;
 }
 
 #dark-mode-switch-root {

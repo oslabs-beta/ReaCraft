@@ -21,16 +21,17 @@ export default function MainContainer() {
         alignItems: 'center',
         position: 'relative',
         marginTop: '7vw',
-      }}>
+      }}
+    >
       {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && <Home />}
-      {page === 'PAST_DESIGNS' && <UserDesigns />}
       <Snackbar
         value='SnackbarUnderWorkSpaceCont'
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={Boolean(message)}
         onClose={() => dispatch(resetMessage())}
-        autoHideDuration={6000}>
+        autoHideDuration={6000}
+      >
         {message && <Alert severity={message.severity}>{message.text}</Alert>}
       </Snackbar>
     </Container>
