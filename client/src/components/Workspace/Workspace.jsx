@@ -40,8 +40,14 @@ export default function Workspace() {
     <Box maxWidth='false' display='grid' gridTemplateColumns='repeat(12, 1fr)'>
       <Box
         gridColumn='span 12'
-        sx={{ display: 'flex', justifyContent: 'center' }}>
-
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '10px',
+          gap: '10px',
+        }}
+      >
         <DesignTitleInput />
         <UserImageUpload />
         <DeleteDesignButton designId={_id} />
@@ -68,7 +74,8 @@ export default function Workspace() {
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
-        }}>
+        }}
+      >
         <WorkspaceRight selectedIdx={selectedIdx} />
       </Box>
     </Box>
