@@ -4,18 +4,16 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useDispatch } from 'react-redux';
 import { getDesignDetails } from '../../utils/reducers/designSliceV2';
-import EditableText from '../../utils/EditableText';
-import { goToPage } from '../../utils/reducers/appSlice';
-
+import EditableText from '../userInputs/EditableText';
 
 export default function DesignCard({ design }) {
   const dispatch = useDispatch();
   const created_at = new Date(design.created_at).toLocaleDateString();
   const last_updated = new Date(design.last_updated).toLocaleDateString();
+  console.log('design is', design);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -29,6 +27,7 @@ export default function DesignCard({ design }) {
       />
       <CardContent name='CardContent_DesignCard'>
         <EditableText
+          designId={design._id}
           initialText={design.title}
           fontSize='40px'
           aling='center'
@@ -38,19 +37,18 @@ export default function DesignCard({ design }) {
           sx={{
             fontSize: '1vw',
           }}
-
           variant='body2'
-          color='text.secondary'>
+          color='text.secondary'
+        >
           Created On: {created_at.toLocaleString()}
-
         </Typography>
         <Typography
           sx={{
             fontSize: '1vw',
           }}
           variant='body2'
-          color='text.secondary'>
-
+          color='text.secondary'
+        >
           Updated On: {last_updated.toLocaleString()}
         </Typography>
       </CardContent>

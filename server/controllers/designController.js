@@ -47,7 +47,7 @@ const updateDesign = (req, res, next) => {
   const { onlineImageUrl } = res.locals;
   const { title } = req.body;
   const { designId } = req.params;
-  console.log(onlineImageUrl, designId);
+  console.log('onlineUrl, title, id', onlineImageUrl, title, designId);
 
   const columnToUpdate = onlineImageUrl ? 'image_url' : 'title';
   const updatedValue = onlineImageUrl ? onlineImageUrl : title;
