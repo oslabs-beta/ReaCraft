@@ -95,6 +95,7 @@ export default function ComponentEditorForm({
     <Modal open={open} onClose={closeEditor}>
       <Box
         component='form'
+        className='componentEditor'
         sx={boxStyle}
         display='grid'
         gridTemplateColumns='repeat(12, 1fr)'
@@ -125,7 +126,7 @@ export default function ComponentEditorForm({
               color='error'
               onClick={() => {
                 if (isLeaf) {
-                  dispatch(deleteComponent(component._id));
+                  disp;
                   closeEditor();
                 }
                 dispatch(setMessage(deleteMessage));

@@ -6,7 +6,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const getUser = async () => {
     try {
-      console.log('fetching user');
       const response = await fetch('/user');
       const data = await response.json();
       setUser(data);
@@ -22,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await fetch('/logout');
-      window.location.href = '/login';
+      window.location.reload();
     } catch (error) {
       console.error('Error logging out:', error);
       throw error;
