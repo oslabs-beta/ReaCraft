@@ -36,17 +36,15 @@ router.post(
   (req, res) => res.status(200).json({ imageUrl: res.locals.onlineImageUrl })
 );
 
-router.get('/home', cookieController.checkCookie, (req, res) => {
-  console.log(res.locals.verified);
-  const filePath = res.locals.verified
-    ? '../../build/index.html'
-    : '../../client/public/views/login.html';
-  console.log(filePath);
-  return res.status(200).sendFile(path.join(__dirname, filePath));
-});
-
 router.get('/', (req, res) => {
   return res.redirect('/home');
+});
+
+router.get('/home', cookieController.checkCookie, (req, res) => {
+  const filePath = res.locals.verified
+    ? '../../build/index.html'
+    : '../../client/public/views/landingPage.html';
+  return res.status(200).sendFile(path.join(__dirname, filePath));
 });
 
 module.exports = router;

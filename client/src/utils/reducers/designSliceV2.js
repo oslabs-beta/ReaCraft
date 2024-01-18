@@ -114,16 +114,17 @@ const initialState = {
 const designSliceV2 = createSlice({
   name: 'design_v2',
   initialState,
-  reducers: { 
+  reducers: {
     resetDesign: () => initialState,
     updateComponentBorderColor: (state, action) => {
       const { id, borderColor } = action.payload;
       // find component with the given _id and update its border color
-      const component = state.components.find(comp => comp._id === id);
+      const component = state.components.find((comp) => comp._id === id);
       if (component) {
         component.borderColor = borderColor;
       }
     },
+
     setIsPastDesign: (state, action) => {
       state.isPastDesign = action.payload;
     },
@@ -178,9 +179,9 @@ const designSliceV2 = createSlice({
       })
       .addCase(updateComponentHtmlTag.fulfilled, (state, action) => {
         state.loading = false;
-        const { componentId, htmlTag } = action.payload;
+        const { componentName, htmlTag } = action.payload;
         state.components.forEach((item) => {
-          if (item._id == componentId) item.html_tag = htmlTag;
+          if (item.name == componentName) item.html_tag = htmlTag;
         });
       })
       .addCase(submitComponentForm.fulfilled, (state, action) => {
@@ -190,6 +191,9 @@ const designSliceV2 = createSlice({
         state.components.forEach((item, idx) => {
           if (item._id == updatedComponent._id) {
             state.components[idx] = updatedComponent;
+          }
+          if (item.name === updatedComponent.name) {
+            item.inner_html = updatedComponent.inner_html;
           }
         });
       })
@@ -214,6 +218,7 @@ const designSliceV2 = createSlice({
       });
   },
 });
+
 
 export const { resetDesign, updateComponentBorderColor, setIsPastDesign } = designSliceV2.actions;
 

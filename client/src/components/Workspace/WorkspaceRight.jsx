@@ -1,11 +1,22 @@
 import React from 'react';
-import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import ViewDomTreeButton from '../functionalButtons/ViewDomTreeButton';
+import ViewCodeButton from '../functionalButtons/ViewCodeButton';
+import { useSelector } from 'react-redux';
+import { convertToTree } from '../../utils/treeNode';
+import { jsxCode } from '../../utils/jsxCode';
 
-export default function WorkspaceRight() {
+export default function WorkspaceRight({ selectedIdx }) {
+  const components = useSelector((state) => state.designV2.components);
+  const tree = convertToTree(components);
+  const code = jsxCode(components, tree);
   return (
-    <Box display='flex' flexDirection='column' alignItems='center'>
-      <ViewDomTreeButton />
-    </Box>
+    <Stack direction='column' gap={2}>
+      <ViewDomTreeButton tree={tree} />
+      <ViewCodeButton
+        code={code}
+        name={selectedIdx !== null ? components[selectedIdx].name : null}
+      />
+    </Stack>
   );
 }
