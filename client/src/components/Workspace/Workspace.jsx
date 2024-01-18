@@ -13,16 +13,10 @@ export default function Workspace() {
   const { image_url, _id, components } = useSelector((state) => state.designV2);
   if (selectedIdx === components.length) setSelectedIdx(null);
   return (
-    <Box
-      maxWidth='false'
-      display='grid'
-      gridTemplateColumns='repeat(12, 1fr)'
-      marginTop='10px'
-    >
+    <Box maxWidth='false' display='grid' gridTemplateColumns='repeat(12, 1fr)'>
       <Box
         gridColumn='span 12'
-        sx={{ display: 'flex', justifyContent: 'center', gap: '10px' }}
-      >
+        sx={{ display: 'flex', justifyContent: 'center' }}>
         <DesignTitleInput />
         <UserImageUpload />
         <DeleteDesignButton designId={_id} />
@@ -48,8 +42,7 @@ export default function Workspace() {
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
-        }}
-      >
+        }}>
         <WorkspaceRight selectedIdx={selectedIdx} />
       </Box>
     </Box>

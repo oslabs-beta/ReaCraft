@@ -4,10 +4,10 @@ import Switch from '@mui/material/Switch';
 
 const MuiSwitch = styled(Switch)(({ theme }) => ({
   width: 62,
-  height: 34,
-  padding: 7,
+  height: 27,
+  padding: 6,
   '& .MuiSwitch-switchBase': {
-    margin: 1,
+    margin: 0,
     padding: 0,
     transform: 'translateX(6px)',
     '&.Mui-checked': {
@@ -20,14 +20,16 @@ const MuiSwitch = styled(Switch)(({ theme }) => ({
       },
       '& + .MuiSwitch-track': {
         opacity: 1,
+        width: 30,
         backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
       },
     },
   },
   '& .MuiSwitch-thumb': {
     backgroundColor: theme.palette.mode === 'dark' ? '#E0E1DD' : '#001e3c',
-    width: 32,
-    height: 32,
+    width: 25,
+    height: 25,
+    x: '10px',
     '&::before': {
       content: "''",
       position: 'absolute',
@@ -44,8 +46,8 @@ const MuiSwitch = styled(Switch)(({ theme }) => ({
   },
   '& .MuiSwitch-track': {
     opacity: 1,
+    width: 40,
     backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-    borderRadius: 20 / 2,
   },
 }));
 
