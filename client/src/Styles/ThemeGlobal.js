@@ -81,6 +81,9 @@ export const themeLight = createTheme({
 });
 
 export const themeDark = createTheme({
+  typography: {
+    fontFamily: 'Avenir',
+  },
   palette: {
     mode: 'dark',
     primary: {
@@ -102,7 +105,7 @@ export const themeDark = createTheme({
 
 export const AppBarButtonsStyleLight = {
   backgroundColor: 'transparent',
-  color: '#0D1B2A',
+  color: '#736c6c',
 };
 
 export const AppBarButtonsStyleDark = {
