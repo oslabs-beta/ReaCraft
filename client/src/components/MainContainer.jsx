@@ -20,9 +20,9 @@ export default function MainContainer() {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
-        marginTop: '7vw',
-      }}
-    >
+        marginTop: '80px',
+      }}>
+
       {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && <Home />}
       <Snackbar
