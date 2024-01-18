@@ -11,6 +11,7 @@ export default function DesignTitleInput() {
     <TextField
       variant='filled'
       label='Design Name'
+      className='designTitle'
       value={title}
       onChange={(e) => setTitle(e.target.value)}
       onBlur={() => {
