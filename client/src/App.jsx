@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from './hooks/useAuth';
 import Cookies from 'js-cookie';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-
+import { themeLight, themeDark } from './styles/ThemeGlobal';
 import Container from '@mui/material/Container';
 import TopBar from './components/TopBar';
 import MainContainer from './components/MainContainer';
@@ -13,7 +13,7 @@ import { setMessage } from './utils/reducers/appSlice';
 export default function App() {
   const sessionID = Cookies.get('sessionID');
   if (!sessionID) {
-    window.location.href = '/login';
+    window.location.href = '/home';
     return;
   }
   const { getUser } = useAuth();
@@ -36,19 +36,29 @@ export default function App() {
     fetchData();
   }, []);
 
-  const [darkMode, setDarkMode] = useState(false);
-  const theme = createTheme({
-    palette: { mode: darkMode ? 'dark' : 'light' },
-  });
+
+  const [darkMode, setDarkMode] = useState(true);
+
+  const mode = window.localStorage.getItem('mode');
+  const [darkMode, setDarkMode] = useState(Boolean(mode));
+  const theme = darkMode ? themeDark : themeLight;
+  if (!darkMode) window.localStorage.removeItem('mode');
+  else window.localStorage.setItem('mode', 'dark');
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <TopBar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
-        <MainContainer />
+
+      <Container>
+        <TopBar toggleDarkMode={toggleDarkMode} darkMode={darkMode}/>
+        <MainContainer
+          sx={{
+            position: 'absolute',
+            top: '10%',
+          }}
+        />
+
       </Container>
     </ThemeProvider>
   );

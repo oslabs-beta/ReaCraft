@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --verbose",
-    "dev": "npm run build && concurrently \"npm start\" \"nodemon server/server.js\"",
+    "dev": "npm run build && concurrently \"npm start\" \"nodemon server/server.js\" CHOKIDAR_USEPOLLING=true",
     "start": "webpack-dev-server --mode development --open --hot",
     "build": "webpack"
   },
@@ -23,6 +23,9 @@
     "html-webpack-plugin": "^5.6.0",
     "jest": "^27.5.1",
     "nodemon": "^2.0.7",
+    "sass": "^1.69.7",
+    "sass-loader": "^14.0.0",
+    "style-loader": "^3.3.4",
     "supertest": "^6.3.3",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
@@ -33,7 +36,9 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.15.3",
+    "@mui/lab": "^5.0.0-alpha.161",
     "@mui/material": "^5.15.3",
+    "@mui/styles": "^5.15.4",
     "@reduxjs/toolkit": "^2.0.1",
     "aws-sdk": "^2.1534.0",
     "cookie": "^0.6.0",
@@ -55,7 +60,6 @@
     "react-konva": "^18.2.10",
     "react-redux": "^9.0.4",
     "react-scripts": "^5.0.1",
-    "sass": "^1.69.6",
     "session-file-store": "^1.5.0",
     "use-image": "^1.1.1",
     "uuid": "^9.0.1"
