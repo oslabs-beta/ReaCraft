@@ -30,9 +30,15 @@ router.post(
 );
 
 router.post(
+  '/update-position/:componentId',
+  rectangleController.updateComponentRectangle,
+  (req, res) => res.status(200).send(res.locals)
+);
+
+router.post(
   '/submit/:componentId',
   componentController.updateComponentForm,
-  (req, res) => res.status(200).send(res.locals.updatedComponent)
+  (req, res) => res.status(200).send(res.locals)
 );
 
 module.exports = router;

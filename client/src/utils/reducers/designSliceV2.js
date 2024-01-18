@@ -8,11 +8,26 @@ import {
   updateComponentParentRequest,
   updateComponentHtmlTagRequest,
   submitComponentFormRequest,
+  updateComponentRectangleRequest,
 } from '../fetchRequests';
+
+const normalizeRectangle = (rectangle) => ({
+  ...rectangle,
+  x: Number(rectangle.x_position),
+  y: Number(rectangle.y_position),
+  width: Number(rectangle.width),
+  height: Number(rectangle.height),
+  isResizeable: rectangle.isresizable === 'true',
+  stroke: rectangle.stroke || '#000',
+});
 
 export const newDesign = createAsyncThunk(
   'designs/new',
-  async (body) => await addDesignRequest(body)
+  async (body, { dispatch }) => {
+    const response = await addDesignRequest(body);
+    dispatch(designSliceV2.actions.setIsPastDesign(false));
+    return response;
+}
 );
 export const updateDesign = createAsyncThunk(
   'designs/update/:designId',
@@ -20,7 +35,18 @@ export const updateDesign = createAsyncThunk(
 );
 export const getDesignDetails = createAsyncThunk(
   'designs/detail/:designId',
-  async (designId) => await getDesignDetailsRequest(designId)
+  async (designId, { dispatch }) => {
+    const response = await getDesignDetailsRequest(designId);
+    response.components.forEach(component => {
+      if (component.rectangle) {
+        console.log('this is component.rectangle from getdesign', component.rectangle);
+        component.rectangle = normalizeRectangle(component.rectangle);
+      }
+    });
+    dispatch(designSliceV2.actions.setIsPastDesign(true));
+    console.log('this is the response', response);
+    return response;
+}
 );
 export const addNewComponent = createAsyncThunk(
   'designs/new-component/:designId',
@@ -42,6 +68,16 @@ export const updateComponentHtmlTag = createAsyncThunk(
     await updateComponentHtmlTagRequest(componentId, body)
 );
 
+export const updateComponentRectangle = createAsyncThunk(
+  'components/update-position/:componentId',
+  async ({ componentId, body }) => {
+    console.log('this is dispatch from updateComponentRectangle', componentId, body);
+    const response = await updateComponentRectangleRequest(componentId, body);
+    console.log('this is the response from fetch request: component_id', componentId, 'this is the response:', response);
+    return { componentId: componentId, body: response };
+  }
+);
+
 export const submitComponentForm = createAsyncThunk(
   'components/submit/:componentId',
   async ({ componentId, body }) =>
@@ -56,6 +92,7 @@ const asyncThunks = [
   deleteComponent,
   updateComponentParent,
   updateComponentHtmlTag,
+  updateComponentRectangle,
   submitComponentForm,
 ];
 
@@ -71,6 +108,7 @@ const initialState = {
   loading: false,
   error: null,
   borderColor: '#000000',
+  isPastDesign: false,
 };
 
 const designSliceV2 = createSlice({
@@ -85,6 +123,9 @@ const designSliceV2 = createSlice({
       if (component) {
         component.borderColor = borderColor;
       }
+    },
+    setIsPastDesign: (state, action) => {
+      state.isPastDesign = action.payload;
     },
    },
   extraReducers: (builder) => {
@@ -101,6 +142,7 @@ const designSliceV2 = createSlice({
     designThunks.forEach((thunk) => {
       builder.addCase(thunk.fulfilled, (state, action) => {
         Object.assign(state, action.payload);
+        console.log('this is action.payload in designThunks', action.payload);
         state.loading = false;
       });
     });
@@ -150,10 +192,29 @@ const designSliceV2 = createSlice({
             state.components[idx] = updatedComponent;
           }
         });
+      })
+      .addCase(updateComponentRectangle.fulfilled, (state, action) => {
+        console.log('updateComponentRectangle fulfilled');
+        state.loading = false;
+        const { componentId, body } = action.payload;
+        console.log('this is the action.payload from addCase', body);
+        const componentIndex = state.components.findIndex(component => component._id === componentId);
+        console.log('this is the componentIndex', componentIndex);
+        if (componentIndex !== -1) {
+          console.log('if statement in updateComponentRect fulfilled passed');
+          state.components[componentIndex].rectangle = {
+            x: +body.updatedComponent.x_position,
+            y: +body.updatedComponent.y_position,
+            width: +body.updatedComponent.width,
+            height: +body.updatedComponent.height,
+            isResizeable: body.updatedComponent.isresizable,
+            stroke: body.updatedComponent.stroke,
+          };
+        }
       });
   },
 });
 
-export const { resetDesign, updateComponentBorderColor } = designSliceV2.actions;
+export const { resetDesign, updateComponentBorderColor, setIsPastDesign } = designSliceV2.actions;
 
 export default designSliceV2.reducer;

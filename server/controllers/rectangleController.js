@@ -47,6 +47,30 @@ const createComponentRectangle = (req, res, next) => {
     );
 };
 
+const updateComponentRectangle = (req, res, next) => {
+  const { componentId } = req.params;
+  const { x, y, width, height, isResizable, stroke } = req.body;
+  console.log('this is req.body from updateComponentRectangle', req.body);
+
+  return db
+    .query(
+      'UPDATE rectangles SET x_position = $1, y_position = $2, width = $3, height = $4, isResizable = $5, stroke = $6 WHERE component_id = $7 RETURNING *;',
+      [x, y, width, height, isResizable, stroke, componentId]
+    )
+    .then((data) => {
+      res.locals.componentId = componentId;
+      res.locals.updatedComponent = data.rows[0];
+      console.log('this is data from updateComponentRectangle', data.rows[0]);
+      return next();
+    })
+    .catch((err) => 
+      next({
+        log: `Express error handler caught rectangleController.updateComponentRectangle middleware error ${err}`,
+        message: { err: `updateComponentRectangle: ${err}` },
+      })
+    );
+};
+
 const deleteDesignRectangles = (req, res, next) => {
   const ids = res.locals.deletedComponentIds.map(({ _id }) => _id);
   console.log(ids);
@@ -67,7 +91,7 @@ const getRectangles = async (req, res, next) => {
   try {
     const components = res.locals.design.components;
     const rectanglePromises = components.map((item) =>
-      db.query('SELECT * FROM rectangles WHERE component_id = $1;', [item._id])
+      db.query('SELECT component_id, x_position, y_position, width, height, isresizable, stroke FROM rectangles WHERE component_id = $1;', [item._id])
     );
     const results = await Promise.all(rectanglePromises);
     results.forEach((data, i) => {
@@ -105,4 +129,5 @@ module.exports = {
   getRectangles,
   createComponentRectangle,
   deleteComponentRectangle,
+  updateComponentRectangle,
 };
