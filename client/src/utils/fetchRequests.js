@@ -130,3 +130,22 @@ export function updateProfilePictureRequest(body) {
     .then((res) => res.json())
     .catch((err) => console.log('App: update profile picture: ERROR: ', err));
 }
+
+export function updateComponentRectangleRequest(componentId, body) {
+  return fetch(`/components/update-position/${componentId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      console.log('this is the console.log from updateComponentRectangle fetch request', res);
+      if (!res.ok) {
+        throw new Error('Server responded with an error');
+      }
+      console.log('returning from fetch request');
+      return res.json();
+    })
+    .catch((err) => console.log('App: update rectangle: ERROR: ', err));
+}
