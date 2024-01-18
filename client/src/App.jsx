@@ -46,7 +46,6 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-
       <Container>
         <TopBar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
         <MainContainer
