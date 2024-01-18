@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --verbose",
-    "dev": "npm run build && concurrently \"npm start\" \"nodemon server/server.js\"",
+    "dev": "npm run build && concurrently \"npm start\" \"nodemon server/server.js\" CHOKIDAR_USEPOLLING=true",
     "start": "webpack-dev-server --mode development --open --hot",
     "build": "webpack"
   },

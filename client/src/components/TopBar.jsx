@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material';
@@ -36,9 +37,10 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
       ? AppBarButtonsStyleDark
       : AppBarButtonsStyleLight;
   return (
-    <AppBar position='static'>
+    <AppBar display='flex' position='absolute'>
       <Toolbar
         disableGutters={true}
+        to
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -52,13 +54,14 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
           }}>
           <Button
             variant='contained'
+            size='large'
             disableElevation
             onClick={() => setDrawerOpen(!drawerOpen)}
             sx={AppBarButtonsStyle}>
             <MenuIcon />
           </Button>
           <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-          <Typography>Reactraft</Typography>
+          <Typography fontSize='25px'>Reactraft</Typography>
         </Box>
         <Box
           sx={{
@@ -66,7 +69,11 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             justifyContent: 'end',
             alignItems: 'center',
           }}>
+<<<<<<< HEAD
           <DarkModeSwitch toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+=======
+          <DarkModeSwitch size='xs' toggleDarkMode={toggleDarkMode} />
+>>>>>>> feature/component_alignment
           <Button
             variant='contained'
             disableElevation
@@ -77,9 +84,10 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
           <Button
             variant='contained'
             disableElevation
-            onClick={() => handlePageClick('PAST_DESIGNS')}
-            sx={AppBarButtonsStyle}>
-            <BackupTableIcon />
+            onClick={() => handlePageClick('NEW_DESIGN')}
+            sx={AppBarButtonsStyle}
+            startIcon={<AddPhotoAlternateIcon />}>
+            New Design
           </Button>
           {user && <UserMenu />}
         </Box>
