@@ -1,0 +1,207 @@
+.btn-primary {
+  background-color: #e0e1dd;
+  border: 0;
+  box-shadow: 1px 2px #cacbc8;
+  color: #415a77 !important;
+}
+
+.btn-primary:hover {
+  background-color: #cacbc8;
+}
+
+.text-body-emphasis {
+  color: #415a77 !important;
+}
+
+.description {
+  color: #778da9 !important;
+}
+
+.text-body-secondary {
+  color: #778da9 !important;
+}
+
+.login {
+  width: 400px;
+}
+
+.login h1 {
+  color: #415a77 !important;
+}
+
+.login label {
+  color: #778da9 !important;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+html * {
+  font-family: 'Avenir', 'Roboto', 'Helvetica', 'Arial', sans-serif !important ;
+}
+
+#dark-mode-switch-root {
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-shrink: 0;
+  height: 34px;
+  letter-spacing: 0.15008px;
+  line-height: 24px;
+  overflow: hidden;
+  padding: 7px;
+  position: relative;
+  text-size-adjust: 100%;
+  vertical-align: middle;
+  width: 62px;
+  z-index: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+#dark-mode-switch-root * {
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  left: 0;
+  top: 0;
+}
+
+#dark-mode-switch-root #switch-base {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  appearance: none;
+  background-color: transparent;
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+  transform: translateX(22px);
+  margin: 1px;
+  outline: none;
+  padding: 0;
+  position: absolute;
+  text-decoration: none;
+  transition: left 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+#dark-mode-switch-root #switch-base.dark {
+  transform: translateX(6px);
+}
+
+#dark-mode-switch-root input {
+  appearance: auto;
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  display: block;
+  font-family: Arial;
+  font-size: 13.3333px;
+  height: 32px;
+  width: 96px;
+  left: -32px;
+  position: absolute;
+  margin: 0px;
+  opacity: 0;
+  padding: 0px;
+  text-align: start;
+  z-index: 1;
+}
+
+#dark-mode-switch-root #switch-thumb {
+  background-color: rgb(0, 30, 60);
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px,
+    rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: block;
+  height: 32px;
+  letter-spacing: 0.15008px;
+  line-height: 24px;
+  text-size-adjust: 100%;
+  width: 32px;
+  background-image: url('../assets/dark-mode.svg');
+  content: '';
+  position: 'absolute';
+  width: 100%;
+  height: '100%';
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#dark-mode-switch-root #switch-thumb.dark {
+  background-image: url('../assets/light-mode.svg');
+  background-color: #e0e1dd;
+}
+
+#dark-mode-switch-root #switch-track {
+  background-color: #8796a5;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.87);
+  display: block;
+  height: 20px;
+  width: 48px;
+  letter-spacing: 0.15008px;
+  line-height: 24px;
+  opacity: 1;
+  text-size-adjust: 100%;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+body.dark {
+  background-color: #0d1b2a;
+}
+
+.container.dark * {
+  background-color: #131722 !important;
+}
+
+.btn-primary.dark {
+  background-color: #e0e1dd !important;
+  border: 0;
+  box-shadow: 1px 2px #b2b4af;
+  color: #36414f !important;
+}
+
+.dark.btn-outline-secondary {
+  color: #b1b4ab !important;
+}
+
+.text-body-emphasis.dark {
+  color: #e0e1dd !important;
+}
+
+.login.dark h1 {
+  color: #e0e1dd !important;
+}
+
+.login.dark input {
+  background-color: #131722 !important;
+  border-color: #2d3844 !important;
+  color: #cacbc8 !important;
+}
+
+.login.dark label {
+  color: #b1b4ab !important;
+}
+
+#dark-mode-switch-root #switch-track.dark {
+  background-color: #aab4be;
+}

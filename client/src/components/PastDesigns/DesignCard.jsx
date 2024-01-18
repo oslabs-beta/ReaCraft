@@ -7,34 +7,64 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useDispatch } from 'react-redux';
 import { getDesignDetails } from '../../utils/reducers/designSliceV2';
+import EditableText from '../userInputs/EditableText';
 
 export default function DesignCard({ design }) {
   const dispatch = useDispatch();
-  const created_at = new Date(design.created_at);
-  const last_updated = new Date(design.last_updated);
+  const created_at = new Date(design.created_at).toLocaleDateString();
+  const last_updated = new Date(design.last_updated).toLocaleDateString();
+  console.log('design is', design);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
-        sx={{ height: 140 }}
+        aling='center'
+        sx={{
+          height: 140,
+        }}
         image={design.image_url}
         title={design.title}
       />
-      <CardContent>
-        <Typography gutterBottom variant='h5' component='div'>
-          {design.title}
+      <CardContent name='CardContent_DesignCard'>
+        <EditableText
+          designId={design._id}
+          initialText={design.title}
+          fontSize='40px'
+          aling='center'
+        />
+        <Typography gutterBottom variant='h5' component='div'></Typography>
+        <Typography
+          sx={{
+            fontSize: '1vw',
+          }}
+          variant='body2'
+          color='text.secondary'
+        >
+          Created On: {created_at.toLocaleString()}
         </Typography>
-        <Typography variant='body2' color='text.secondary'>
-          created_at: {created_at.toLocaleString()}
-        </Typography>
-        <Typography variant='body2' color='text.secondary'>
-          updated_at: {last_updated.toLocaleString()}
+        <Typography
+          sx={{
+            fontSize: '1vw',
+          }}
+          variant='body2'
+          color='text.secondary'
+        >
+          Updated On: {last_updated.toLocaleString()}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size='small'>Share</Button>
+      <CardActions
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+        }}
+      >
+        <Button variant='outlined' size='small'>
+          Share
+        </Button>
         <Button
           size='small'
+          variant='outlined'
           onClick={async () => {
             try {
               dispatch(getDesignDetails(design._id));

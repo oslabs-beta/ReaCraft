@@ -12,6 +12,9 @@ export default function HtmlTagSelector({ idx }) {
   return (
     <TextField
       select
+      sx={{ marginTop: '15px' }}
+      size='small'
+      fullWidth={true}
       key={idx}
       label='html tag'
       name='htmlTag'

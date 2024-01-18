@@ -5,7 +5,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useAuth } from '../../hooks/useAuth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import InfoIcon from '@mui/icons-material/Info';
@@ -55,6 +54,10 @@ const StyledMenu = styled((props) => (
     borderRadius: 6,
     marginTop: theme.spacing(1),
     minWidth: 180,
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? '#ffffff'
+        : theme.palette.background.paper,
     color:
       theme.palette.mode === 'light'
         ? 'rgb(55, 65, 81)'
@@ -67,7 +70,10 @@ const StyledMenu = styled((props) => (
     '& .MuiMenuItem-root': {
       '& .MuiSvgIcon-root': {
         fontSize: 18,
-        color: theme.palette.text.secondary,
+        color:
+          theme.palette.mode === 'light'
+            ? 'rgb(55, 65, 81)'
+            : theme.palette.text.secondary,
         marginRight: theme.spacing(1.5),
       },
       '&:active': {
@@ -101,6 +107,7 @@ export default function UserMenu() {
         disableElevation
         onClick={(e) => setAnchorEl(e.currentTarget)}
         endIcon={<KeyboardArrowDownIcon />}
+        sx={{ backgroundColor: 'transparent', color: '#736c6c' }}
       >
         <Avatar src={avatar} sx={{ width: 40, height: 40 }} />
       </Button>
@@ -153,7 +160,7 @@ export default function UserMenu() {
                     data={created_at.toLocaleString()}
                   />
                   <UserData
-                    label='created_at'
+                    label='last_login'
                     data={last_login.toLocaleString()}
                   />
                 </TableBody>
@@ -184,7 +191,6 @@ function UserData({ label, data }) {
 
 function UserProfileImage({ avatar, setAvatar }) {
   let url;
-  console.log(setAvatar);
   if (avatar) url = new URL(avatar);
   const dispatch = useDispatch();
   return (
@@ -208,7 +214,6 @@ function UserProfileImage({ avatar, setAvatar }) {
             accept='image/*'
             onChange={(e) => {
               const file = e.target.files[0];
-              console.log(file);
               if (file) {
                 dispatch(
                   setMessage({
@@ -223,7 +228,6 @@ function UserProfileImage({ avatar, setAvatar }) {
                     userImage,
                     imageToDelete: url ? url.pathname.slice(1) : null,
                   });
-                  console.log(response.imageUrl);
                   setAvatar(response.imageUrl);
                 };
                 reader.readAsDataURL(file);

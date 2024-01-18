@@ -19,11 +19,12 @@ export default function MainContainer() {
       style={{
         justifyContent: 'center',
         alignItems: 'center',
-      }}
-    >
+        position: 'relative',
+        marginTop: '80px',
+      }}>
+
       {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && <Home />}
-      {page === 'PAST_DESIGNS' && <UserDesigns />}
       <Snackbar
         value='SnackbarUnderWorkSpaceCont'
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

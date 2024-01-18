@@ -26,6 +26,7 @@ router.post(
 router.post(
   '/update-tag/:componentId',
   componentController.updateParentOrTag,
+  componentController.updateHtmlForAllSameComponents,
   (req, res) => res.status(200).send(res.locals)
 );
 
@@ -38,7 +39,8 @@ router.post(
 router.post(
   '/submit/:componentId',
   componentController.updateComponentForm,
-  (req, res) => res.status(200).send(res.locals)
+  componentController.updateHtmlForAllSameComponents,
+  (req, res) => res.status(200).send(res.locals.updatedComponent)
 );
 
 module.exports = router;

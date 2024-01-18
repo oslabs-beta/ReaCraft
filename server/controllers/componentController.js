@@ -148,14 +148,17 @@ const updateParentOrTag = (req, res, next) => {
   const columnKey = parentId ? 'parent_id' : 'html_tag';
   const columnValue = parentId ? parentId : htmlTag;
   return db
-    .query(`UPDATE components SET ${columnKey} = $1 WHERE _id = $2;`, [
-      columnValue,
-      componentId,
-    ])
-    .then(() => {
+    .query(
+      `UPDATE components SET ${columnKey} = $1 WHERE _id = $2 RETURNING *;`,
+      [columnValue, componentId]
+    )
+    .then((data) => {
       res.locals.componentId = componentId;
       res.locals.parentId = parentId;
       res.locals.htmlTag = htmlTag;
+      res.locals.componentName = data.rows[0].name;
+      res.locals.designId = data.rows[0].design_id;
+      res.locals.innerHtml = data.rows[0].inner_html;
       return next();
     })
     .catch((err) =>
@@ -164,6 +167,26 @@ const updateParentOrTag = (req, res, next) => {
           'Express error handler caught componentController.updateParent middleware error' +
           err,
         message: { err: 'updateParent: ' + err },
+      })
+    );
+};
+
+const updateHtmlForAllSameComponents = (req, res, next) => {
+  const { componentName, htmlTag, designId, innerHtml } = res.locals;
+  console.log('updating html for all same components');
+  if (!htmlTag) return next();
+  return db
+    .query(
+      'UPDATE components SET html_tag = $1, inner_html = $4 WHERE name = $2 AND design_id = $3 RETURNING *;',
+      [htmlTag, componentName, designId, innerHtml]
+    )
+    .then(() => next())
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught componentController.updateHtmlForAllSameComponents middleware error' +
+          err,
+        message: { err: 'updateHtmlForAllSameComponents: ' + err },
       })
     );
 };
@@ -208,6 +231,10 @@ const updateComponentForm = (req, res, next) => {
     )
     .then((data) => {
       res.locals.updatedComponent = data.rows[0];
+      res.locals.htmlTag = data.rows[0].html_tag;
+      res.locals.componentName = data.rows[0].name;
+      res.locals.designId = data.rows[0].design_id;
+      res.locals.innerHtml = data.rows[0].inner_html;
       return next();
     })
     .catch((err) =>
@@ -231,4 +258,5 @@ module.exports = {
   updateParentOrTag,
   resetParentHtml,
   updateComponentForm,
+  updateHtmlForAllSameComponents,
 };

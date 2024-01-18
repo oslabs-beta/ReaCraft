@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateComponentRectangle } from '../utils/reducers/designSliceV2';
 
 const KonvaStage = ({ userImage, selectedIdx, setSelectedIdx }) => {
+
     const [image, status] = useImage(userImage);
     const maxWidth = 800;
     const dispatch = useDispatch();
@@ -182,6 +183,7 @@ const KonvaStage = ({ userImage, selectedIdx, setSelectedIdx }) => {
           body: updatedRect
       }));
     };
+
 
     return (
         <Stage
