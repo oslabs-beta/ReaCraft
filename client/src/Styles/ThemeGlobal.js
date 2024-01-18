@@ -64,6 +64,17 @@ export const themeLight = createTheme({
       },
     },
   },
+
+  MuiToolbar: {
+    disableGutters: 'true',
+    styleOverrides: {
+      root: {
+        display: 'flex',
+        flexDiretion: 'column',
+        width: '100%',
+      },
+    },
+  },
 });
 
 export const themeDark = createTheme({
