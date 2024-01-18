@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
+import Tooltip from '@mui/material/Tooltip';
 
 const MuiSwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -52,5 +53,9 @@ const MuiSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function DarkModeSwitch({ toggleDarkMode, darkMode }) {
-  return <MuiSwitch onChange={toggleDarkMode} checked={!darkMode} />;
+  return (
+    <Tooltip title={`switch to ${darkMode ? 'light' : 'dark'} mode`}>
+      <MuiSwitch onChange={toggleDarkMode} checked={!darkMode} />
+    </Tooltip>
+  );
 }
