@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteDesign } from '../../utils/fetchRequests';
 import { setMessage } from '../../utils/reducers/appSlice';
@@ -15,6 +15,17 @@ export default function DeleteDesignButton({ designId }) {
   const dispatch = useDispatch();
 
   const handleClose = () => setOpen(false);
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'd' || e.key === 'D') setOpen(true);
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [open]);
 
   return (
     <Fragment>

@@ -36,7 +36,6 @@ export default function App() {
     fetchData();
   }, []);
 
-
   const mode = window.localStorage.getItem('mode');
   const [darkMode, setDarkMode] = useState(Boolean(mode));
   const theme = darkMode ? themeDark : themeLight;
@@ -48,7 +47,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Container sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <TopBar toggleDarkMode={toggleDarkMode} />
+        <TopBar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
         <MainContainer />
       </Container>
     </ThemeProvider>
