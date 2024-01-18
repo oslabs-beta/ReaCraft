@@ -107,7 +107,7 @@ export default function UserMenu() {
         disableElevation
         onClick={(e) => setAnchorEl(e.currentTarget)}
         endIcon={<KeyboardArrowDownIcon />}
-        sx={{ backgroundColor: 'transparent', color: '#E0E1DD' }}
+        sx={{ backgroundColor: 'transparent', color: '#736c6c' }}
       >
         <Avatar src={avatar} sx={{ width: 40, height: 40 }} />
       </Button>
