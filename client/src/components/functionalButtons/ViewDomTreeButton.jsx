@@ -4,7 +4,7 @@ import Tooltip from '@mui/material/Tooltip';
 import BackdropSnackbar from './BackdropSnackbar';
 import { Button, Backdrop, Fab, List, FormLabel } from '@mui/material';
 import { ImTree } from 'react-icons/im';
-import { themeDOMTreeLight } from '../../Styles/ThemeDOMTree';
+import { themeDOMTreeLight } from '../../styles/ThemeDOMTree';
 import { ThemeProvider } from '@mui/material/styles';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
@@ -67,7 +67,7 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
   const padding = 20;
   const paddedWidth = textWidth * 2;
 
-  console.log('=> This is nodeDatum: ', nodeDatum);
+  // console.log('=> This is nodeDatum: ', nodeDatum);
   // const [htmlTag, setHtmlTag] = React.useState('');
 
   // const handleChange = (event) => {
@@ -85,7 +85,8 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
               height: '100%',
               y: '-50px',
               padding: `${padding}px`,
-            }}>
+            }}
+          >
             <Fab
               variant='extended'
               onClick={toggleNode}
@@ -94,11 +95,13 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
                 flexDirection: 'row',
                 width: `${paddedWidth}px`,
                 alignItems: 'center',
-              }}>
+              }}
+            >
               <FormLabel
                 sx={{
                   fontSize: '8px',
-                }}>
+                }}
+              >
                 {nodeDatum.attributes.tag}
               </FormLabel>
               <List>{nodeDatum.name}</List>

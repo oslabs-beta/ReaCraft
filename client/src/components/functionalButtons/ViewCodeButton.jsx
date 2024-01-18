@@ -44,7 +44,6 @@ function CopyCodeBackdrop({ viewCode, setViewCode, code, name }) {
     if (name) setValue(name);
   }, [name]);
 
-  console.log('value', value);
   return (
     <Backdrop
       sx={{
