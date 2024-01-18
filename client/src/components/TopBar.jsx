@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
@@ -38,9 +39,10 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
       ? AppBarButtonsStyleDark
       : AppBarButtonsStyleLight;
   return (
-    <AppBar position='static'>
+    <AppBar display='flex' position='absolute'>
       <Toolbar
         disableGutters={true}
+        to
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -56,6 +58,7 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
         >
           <Button
             variant='contained'
+            size='large'
             disableElevation
             onClick={() => setDrawerOpen(!drawerOpen)}
             sx={AppBarButtonsStyle}
@@ -63,7 +66,9 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             <MenuIcon />
           </Button>
           <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-          <Typography>ReaCraft</Typography>
+
+          <Typography fontSize='25px'>Reactraft</Typography>
+
         </Box>
         <Box
           sx={{
@@ -71,7 +76,25 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             justifyContent: 'end',
             alignItems: 'center',
           }}>
-          <DarkModeSwitch toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+
+          <DarkModeSwitch size='xs' toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+
+          <Button
+            variant='contained'
+            disableElevation
+            onClick={() => handlePageClick('HOME')}
+            sx={AppBarButtonsStyle}>
+            <HomeIcon />
+          </Button>
+          <Button
+            variant='contained'
+            disableElevation
+            onClick={() => handlePageClick('NEW_DESIGN')}
+            sx={AppBarButtonsStyle}
+            startIcon={<AddPhotoAlternateIcon />}>
+            New Design
+          </Button>
+
           <Tooltip title='Home'>
             <Button
               variant='contained'
@@ -93,6 +116,7 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
               <BackupTableIcon />
             </Button>
           </Tooltip>
+
 
           {user && <UserMenu />}
         </Box>
