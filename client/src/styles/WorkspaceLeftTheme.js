@@ -27,15 +27,6 @@ export const WorkspaceLeftLightTheme = createTheme({
         },
       },
     },
-    MuiListItemText: {
-      styleOverrides: {
-        root: {
-          '& .MuiTypography-root': {
-            fontWeight: '800',
-          },
-        },
-      },
-    },
     MuiModal: {
       styleOverrides: {
         root: {
