@@ -14,6 +14,9 @@ const globalFont = [
 ].join(',');
 
 export const themeLight = createTheme({
+  typography: {
+    fontFamily: 'Avenir',
+  },
   palette: {
     mode: 'light',
     primary: {
