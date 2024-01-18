@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { useSelector } from 'react-redux';
 import WorkspaceLeft from './WorkspaceLeft';
@@ -13,6 +13,29 @@ export default function Workspace() {
   const [selectedIdx, setSelectedIdx] = useState(null);
   const { image_url, _id, components } = useSelector((state) => state.designV2);
   if (selectedIdx === components.length) setSelectedIdx(null);
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'w' || e.key === 'W') {
+      if (selectedIdx === null) setSelectedIdx(0);
+      else {
+        setSelectedIdx(Math.max(selectedIdx - 1, 0));
+      }
+    }
+    if (e.key === 's' || e.key === 'S') {
+      if (selectedIdx === null) setSelectedIdx(components.length - 1);
+      else {
+        setSelectedIdx(Math.min(selectedIdx + 1, components.length - 1));
+      }
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [selectedIdx]);
+
   return (
     <Box
       maxWidth='false'

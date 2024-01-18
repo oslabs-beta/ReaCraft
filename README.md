@@ -94,6 +94,7 @@ Streamlining React Development from Design to Deployment
 [![html5](https://img.shields.io/badge/html%205-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://html.spec.whatwg.org/)
 [![css3](https://img.shields.io/badge/css%203-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://en.wikipedia.org/wiki/CSS)
 
+[![npm](https://img.shields.io/badge/npm-v10.3.0-CB3837?logo=npm)](https://docs.npmjs.com/)
 [![React](https://img.shields.io/badge/react-v18.2.0-61DAFB?logo=react)](https://react.dev/)
 [![JQuery](https://img.shields.io/badge/jquery-v3.7.1-0769AD?logo=jquery)](https://jquery.com/)
 [![Redux](https://img.shields.io/badge/redux-v9.0.4-764ABC?logo=redux)](https://redux.js.org/)

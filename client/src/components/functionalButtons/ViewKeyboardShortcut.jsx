@@ -6,7 +6,20 @@ import Tooltip from '@mui/material/Tooltip';
 import BackdropSnackbar from './BackdropSnackbar';
 import Backdrop from '@mui/material/Backdrop';
 
-import { TbSquareLetterT } from 'react-icons/tb';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+
+import {
+  TbSquareLetterT,
+  TbSquareLetterD,
+  TbSquareLetterW,
+  TbSquareLetterS,
+} from 'react-icons/tb';
+
+import '../../styles/keyboardShortcut.scss';
 
 export default function ViewKeyboardShortcut() {
   const [open, setOpen] = useState(false);
@@ -34,6 +47,40 @@ function ShortcutBackdrop({ open, setOpen }) {
       }}
       open={open}
       onDoubleClick={() => setOpen(false)}
-    ></Backdrop>
+    >
+      <List className='keyboard-shortcuts'>
+        <ListItem className='shortcut'>
+          <ListItemIcon>esc</ListItemIcon>
+          <ListItemText>Exit full screen</ListItemText>
+        </ListItem>
+
+        <Shortcut
+          icon={<TbSquareLetterT size='20px' />}
+          text='Toggle view Dom tree'
+        />
+
+        <Shortcut icon={<TbSquareLetterD size='20px' />} text='Delete Design' />
+        <Shortcut
+          icon={<TbSquareLetterW size='20px' />}
+          text='Select Previous Component'
+        />
+        <Shortcut
+          icon={<TbSquareLetterW size='20px' />}
+          text='Select Next Component'
+        />
+      </List>
+    </Backdrop>
+  );
+}
+
+function Shortcut({ icon, text }) {
+  return (
+    <Fragment>
+      <Divider />
+      <ListItem className='shortcut'>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText>{text}</ListItemText>
+      </ListItem>
+    </Fragment>
   );
 }
