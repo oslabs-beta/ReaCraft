@@ -54,13 +54,14 @@ export default function TopBar({ toggleDarkMode }) {
           }}>
           <Button
             variant='contained'
+            size='large'
             disableElevation
             onClick={() => setDrawerOpen(!drawerOpen)}
             sx={AppBarButtonsStyle}>
             <MenuIcon />
           </Button>
           <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-          <Typography>Reactraft</Typography>
+          <Typography fontSize='25px'>Reactraft</Typography>
         </Box>
         <Box
           sx={{
@@ -68,7 +69,7 @@ export default function TopBar({ toggleDarkMode }) {
             justifyContent: 'end',
             alignItems: 'center',
           }}>
-          <DarkModeSwitch toggleDarkMode={toggleDarkMode} />
+          <DarkModeSwitch size='xs' toggleDarkMode={toggleDarkMode} />
           <Button
             variant='contained'
             disableElevation

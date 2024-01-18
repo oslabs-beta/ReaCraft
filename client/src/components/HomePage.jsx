@@ -23,8 +23,8 @@ export default function Home() {
     return (
       //Box container below controlls margin size @ homepage
       <Container>
-        <Box display='grid' margin='2vw' gridTemplateColumns='1fr 1fr' gap={2}>
-          <Typography variant='h4' gridColumn='span 2' color='text.disabled'>
+        <Box marginBottom='2vw'>
+          <Typography variant='h3' gridColumn='span 2' color='text.disabled'>
             Welcome back, {user.username}!
           </Typography>
           {/* <Button

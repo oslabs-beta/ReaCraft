@@ -50,7 +50,7 @@ export default function App() {
         <MainContainer
           sx={{
             position: 'absolute',
-            top: '25%',
+            top: '10%',
           }}
         />
       </Container>

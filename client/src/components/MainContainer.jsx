@@ -20,7 +20,7 @@ export default function MainContainer() {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
-        marginTop: '10vw',
+        marginTop: '7vw',
       }}>
       {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && <Home />}
