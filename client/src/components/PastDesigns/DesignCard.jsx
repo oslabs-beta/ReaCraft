@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import { useDispatch } from 'react-redux';
 import { getDesignDetails } from '../../utils/reducers/designSliceV2';
 import EditableText from '../../utils/EditableText';
+import { goToPage } from '../../utils/reducers/appSlice';
+
 
 export default function DesignCard({ design }) {
   const dispatch = useDispatch();
@@ -36,9 +38,11 @@ export default function DesignCard({ design }) {
           sx={{
             fontSize: '1vw',
           }}
+
           variant='body2'
           color='text.secondary'>
           Created On: {created_at.toLocaleString()}
+
         </Typography>
         <Typography
           sx={{
@@ -46,6 +50,7 @@ export default function DesignCard({ design }) {
           }}
           variant='body2'
           color='text.secondary'>
+
           Updated On: {last_updated.toLocaleString()}
         </Typography>
       </CardContent>
@@ -54,7 +59,8 @@ export default function DesignCard({ design }) {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-around',
-        }}>
+        }}
+      >
         <Button variant='outlined' size='small'>
           Share
         </Button>
@@ -67,7 +73,8 @@ export default function DesignCard({ design }) {
             } catch (err) {
               console.log('error: ' + err);
             }
-          }}>
+          }}
+        >
           View design
         </Button>
       </CardActions>

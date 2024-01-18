@@ -23,7 +23,6 @@ import {
   AppBarButtonsStyleLight,
   AppBarButtonsStyleDark,
 } from '../styles/ThemeGlobal';
-import ViewKeyboardShortcut from './functionalButtons/ViewKeyboardShortcut';
 
 export default function TopBar({ toggleDarkMode, darkMode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -67,57 +66,43 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
           </Button>
           <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
 
-          <Typography fontSize='25px'>Reactraft</Typography>
-
+          <Typography fontSize='25px'>ReaCraft</Typography>
         </Box>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'end',
             alignItems: 'center',
-          }}>
-
-          <DarkModeSwitch size='xs' toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+          }}
+        >
+          <DarkModeSwitch
+            size='xs'
+            toggleDarkMode={toggleDarkMode}
+            darkMode={darkMode}
+          />
 
           <Button
             variant='contained'
             disableElevation
             onClick={() => handlePageClick('HOME')}
-            sx={AppBarButtonsStyle}>
+            sx={AppBarButtonsStyle}
+          >
             <HomeIcon />
           </Button>
           <Button
             variant='contained'
             disableElevation
             onClick={() => handlePageClick('NEW_DESIGN')}
-            sx={AppBarButtonsStyle}
-            startIcon={<AddPhotoAlternateIcon />}>
+            sx={{
+              ...AppBarButtonsStyle,
+              backgroundColor: darkMode ? '#2a3f5a' : '#736c6c',
+              color: '#e2e2d3',
+              boxShadow: '1px 1px 5px white',
+            }}
+            startIcon={<AddPhotoAlternateIcon />}
+          >
             New Design
           </Button>
-
-          <Tooltip title='Home'>
-            <Button
-              variant='contained'
-              disableElevation
-              onClick={() => handlePageClick('HOME')}
-              sx={AppBarButtonsStyle}
-            >
-              <HomeIcon />
-            </Button>
-          </Tooltip>
-
-          <Tooltip title='Past designs'>
-            <Button
-              variant='contained'
-              disableElevation
-              onClick={() => handlePageClick('PAST_DESIGNS')}
-              sx={AppBarButtonsStyle}
-            >
-              <BackupTableIcon />
-            </Button>
-          </Tooltip>
-
-
           {user && <UserMenu />}
         </Box>
       </Toolbar>
