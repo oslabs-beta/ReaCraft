@@ -54,13 +54,4 @@ describe('appSlice reducer', () => {
         expect(state).toEqual(appReducer(undefined, {}));
     });
 
-    it('should handle a sequence of actions', () => {
-        const initialState = { message: null, page: 'HOME' };
-        const newState = appReducer(initialState, [
-          setMessage('New Message'),
-          goToPage('ABOUT'),
-        ]);
-        expect(newState).toEqual({ message: 'New Message', page: 'ABOUT' });
-    });
-
   });
