@@ -15,20 +15,29 @@ export function jsxCode(components, tree) {
     const { html_tag, inner_html, name } = component;
     const children = cur.children;
     let html;
+    let importChildren = '';
+    const classAndId = ` className='${component.name}' id='component-${component.index}'>`;
     if (children.length === 0) {
-      html = `  return (\n    ${html_tag}${inner_html}${html_tag.replace(
-        '<',
-        '</'
-      )}
+      html = `  return (\n    ${html_tag.replace(
+        '>',
+        classAndId
+      )}${inner_html}${html_tag.replace('<', '</')}
   );`;
     } else {
+      const childrenComps = children.map((child) =>
+        components.find((item) => item._id === child.id)
+      );
+      const childrenNames = new Set(
+        childrenComps.map((childComponent) => childComponent.name)
+      );
+      childrenNames.forEach((name) => {
+        importChildren += `import ${name} from './${name}.jsx'\n`;
+      });
+
       html =
-        '  return (\n    <div>\n' +
-        children
-          .map((child) => {
-            const childComponent = components.find(
-              (item) => item._id === child.id
-            );
+        `  return (\n    <div${classAndId}\n` +
+        childrenComps
+          .map((childComponent) => {
             const props = convertObjToArr(JSON.parse(childComponent.props));
             return `      <${childComponent.name} ${props
               .map(({ key, value }) => `${key}={${value}}`)
@@ -54,6 +63,7 @@ export function jsxCode(components, tree) {
     const propsCode =
       [...propKeys].length === 0 ? '' : '{ ' + [...propKeys].join(', ') + ' }';
     code[name] = `import React from 'react';
+${importChildren}
 export default function ${name}(${propsCode}) {
 ${html}
 }`;
