@@ -11,6 +11,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
+import AddIcon from '@mui/icons-material/Add';
+import Stack from '@mui/material/Stack';
 
 import {
   TbSquareLetterT,
@@ -20,6 +22,7 @@ import {
 } from 'react-icons/tb';
 
 import '../../styles/keyboardShortcut.scss';
+import { Typography } from '@mui/material';
 
 export default function ViewKeyboardShortcut() {
   const [open, setOpen] = useState(false);
@@ -53,8 +56,10 @@ function ShortcutBackdrop({ open, setOpen }) {
       onDoubleClick={() => setOpen(false)}>
       <List className='keyboard-shortcuts'>
         <ListItem className='shortcut'>
-          <ListItemIcon>esc</ListItemIcon>
-          <ListItemText>Exit full screen</ListItemText>
+          <ListItemIcon sx={{ color: 'white' }}>esc</ListItemIcon>
+          <ListItemText sx={{ marginLeft: '10px' }}>
+            Exit full screen
+          </ListItemText>
         </ListItem>
 
         <Shortcut
@@ -68,7 +73,7 @@ function ShortcutBackdrop({ open, setOpen }) {
           text='Select Previous Component'
         />
         <Shortcut
-          icon={<TbSquareLetterW size='20px' />}
+          icon={<TbSquareLetterS size='20px' />}
           text='Select Next Component'
         />
       </List>
@@ -81,8 +86,11 @@ function Shortcut({ icon, text }) {
     <Fragment>
       <Divider />
       <ListItem className='shortcut'>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText>{text}</ListItemText>
+        <Stack direction='row'>
+          <Typography>alt + </Typography>
+          {icon}
+        </Stack>
+        <ListItemText sx={{ marginLeft: '10px' }}>{text}</ListItemText>
       </ListItem>
     </Fragment>
   );

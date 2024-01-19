@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import { setMessage } from '../../utils/reducers/appSlice';
@@ -10,45 +10,67 @@ export default function UserImageUploadButton() {
   const dispatch = useDispatch();
   const designId = useSelector((state) => state.designV2._id);
   const image_url = useSelector((state) => state.designV2.image_url);
-  return (
-    <Button
-      component='label'
-      variant='contained'
-      startIcon={<CloudUploadIcon />}>
-      <VisuallyHiddenInput
-        type='file'
-        name='userImage'
-        accept='image/*'
-        onChange={(e) => {
-          const file = e.target.files[0];
-          console.log(file);
-          if (file) {
+
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    if (file) {
+      dispatch(
+        setMessage({ severity: 'success', text: 'Upload successfully' })
+      );
+
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const userImage = reader.result;
+        const img = new Image();
+
+        img.onload = () => {
+          console.log('width, height are', img.width, img.height);
+
+          const maxWidth = 800;
+          const imageWidth = Math.min(img.width, maxWidth);
+          const imageHeight = img.height * (imageWidth / img.width);
+
+          if (!designId) {
+            dispatch(newDesign({ userImage, imageWidth, imageHeight }));
+          } else {
+            const url = new URL(image_url);
             dispatch(
-              setMessage({ severity: 'success', text: 'Upload successfully' })
+              updateDesign({
+                designId,
+                body: {
+                  userImage,
+                  imageToDelete: url.pathname.slice(1),
+                  imageWidth,
+                  imageHeight,
+                },
+              })
             );
-            const reader = new FileReader();
-            reader.onloadend = async () => {
-              const userImage = reader.result;
-              if (!designId) {
-                dispatch(newDesign({ userImage }));
-              } else {
-                const url = new URL(image_url);
-                dispatch(
-                  updateDesign({
-                    designId,
-                    body: {
-                      userImage,
-                      imageToDelete: url.pathname.slice(1),
-                    },
-                  })
-                );
-              }
-            };
-            reader.readAsDataURL(file);
           }
-        }}
-      />
-    </Button>
+        };
+
+        img.src = userImage;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  return (
+    <Fragment>
+      <Button
+        component='label'
+        variant='contained'
+        startIcon={<CloudUploadIcon />}
+      >
+        {designId ? 'Replace Image' : 'Upload Image'}
+        <VisuallyHiddenInput
+          type='file'
+          name='userImage'
+          accept='image/*'
+          onChange={handleFileChange}
+        />
+      </Button>
+      <img id='user-image' style={{ display: 'none' }} />
+    </Fragment>
   );
 }
 

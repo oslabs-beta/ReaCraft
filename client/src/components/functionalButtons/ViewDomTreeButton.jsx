@@ -12,8 +12,9 @@ import '../../utils/treeNode.css';
 
 export default function ViewDomTreeButton({ tree }) {
   const [viewTree, setViewTree] = useState(false);
+
   const handleKeyPress = (e) => {
-    if (e.key === 't' || e.key === 'T') setViewTree(!viewTree);
+    if (e.altKey && e.keyCode === 84) setViewTree(!viewTree);
   };
 
   useEffect(() => {
