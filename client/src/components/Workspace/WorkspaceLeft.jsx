@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { useSelector } from 'react-redux';
@@ -11,7 +11,6 @@ import AddNewComponent from '../functionalButtons/AddNewComponentButton';
 import ComponentEditor from '../userInputs/ComponentEditorForm';
 import HtmlTagSelector from '../userInputs/HtmlTagSelector';
 import DeleteComponentButton from '../functionalButtons/DeleteComponentButton';
-import ColorPicker from '../ColorPicker';
 import { ThemeProvider, useTheme } from '@mui/material';
 import { WorkspaceLeftLightTheme } from '../../styles/WorkspaceLeftTheme';
 
@@ -105,10 +104,6 @@ function ComponentDisplay({
         <Fragment>
           <ParentSelector childIdx={idx} />
           {isLeaf && <HtmlTagSelector idx={idx} isLeaf={isLeaf} />}
-          <ColorPicker
-            componentId={component._id}
-            initialColor={component.borderColor || '#fff'}
-          />
         </Fragment>
       )}
     </ListItemButton>
