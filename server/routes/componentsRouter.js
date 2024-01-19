@@ -32,8 +32,14 @@ router.post(
 
 router.post(
   '/update-position/:componentId',
-  rectangleController.updateComponentRectangle,
-  (req, res) => res.status(200).send(res.locals)
+  rectangleController.updateComponentRectanglePosition,
+  (req, res) => res.status(200).send(res.locals.updatedRectangle)
+);
+
+router.post(
+  '/update-rectangle-style/:componentId',
+  rectangleController.updateComponentRectangleStyle,
+  (req, res) => res.status(200).send(res.locals.updatedRectangle)
 );
 
 router.post(
