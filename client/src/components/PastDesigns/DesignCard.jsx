@@ -6,14 +6,24 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useDispatch } from 'react-redux';
-import { getDesignDetails } from '../../utils/reducers/designSliceV2';
+import { getDesignDetails, setSearchTerm } from '../../utils/reducers/designSliceV2';
 import EditableText from '../userInputs/EditableText';
 
-export default function DesignCard({ design }) {
+export default function DesignCard({ design, setLocalSelectedDesignId }) {
   const dispatch = useDispatch();
   const created_at = new Date(design.created_at).toLocaleDateString();
   const last_updated = new Date(design.last_updated).toLocaleDateString();
   console.log('design is', design);
+
+  const handleViewDesign = async () => {
+    try {
+      dispatch(getDesignDetails(design._id));
+      // setLocalSelectedDesignId(design._id);
+      dispatch(setSearchTerm(''));
+    } catch(err) {
+      console.log('error ' + err);
+    }
+  };
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -65,13 +75,14 @@ export default function DesignCard({ design }) {
         <Button
           size='small'
           variant='outlined'
-          onClick={async () => {
-            try {
-              dispatch(getDesignDetails(design._id));
-            } catch (err) {
-              console.log('error: ' + err);
-            }
-          }}
+          onClick={handleViewDesign}
+          //   async () => {
+          //   try {
+          //     dispatch(getDesignDetails(design._id));
+          //   } catch (err) {
+          //     console.log('error: ' + err);
+          //   }
+          // }}
         >
           View design
         </Button>
