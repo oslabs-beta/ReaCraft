@@ -51,7 +51,7 @@ export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
         />
         <Tab
           icon={<BackupTableIcon />}
-          label='Past Desgins'
+          label='Past Designs'
           onClick={() => handleClick('PAST_DESIGNS')}
         />
       </Tabs>
