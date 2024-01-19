@@ -1,16 +1,11 @@
 import React, { Fragment, useState } from 'react';
 
-import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import { MuiColorInput } from 'mui-color-input';
 import { useDispatch } from 'react-redux';
 import { updateComponentRectangleStyle } from '../../utils/reducers/designSliceV2';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import SquareRoundedIcon from '@mui/icons-material/SquareRounded';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import LineStyleRoundedIcon from '@mui/icons-material/LineStyleRounded';
@@ -38,16 +33,15 @@ export default function WorkspaceToolbar({ rectangle }) {
   return (
     <ButtonGroup variant='outlined'>
       <Tooltip title='Change background color'>
-        <Button variant='outlined' className='background-picker'>
-          <MuiColorInput
-            sx={{ border: 'none' }}
-            value={color}
-            onChange={(val) => {
-              setColor(val);
-              handleSubmit('backgroundColor', val);
-            }}
-          />
-        </Button>
+        <MuiColorInput
+          className='background-picker'
+          sx={{ border: 'none' }}
+          value={color}
+          onChange={(val) => {
+            setColor(val);
+            handleSubmit('backgroundColor', val);
+          }}
+        />
       </Tooltip>
 
       <Fragment>
@@ -75,9 +69,10 @@ function BorderMenu({
   rectangle,
   handleSubmit,
 }) {
-  const [color, setColor] = useState(rectangle.stroke);
-  const [borderWidth, setBorderWidth] = useState(rectangle.borderwidth);
-  const [borderRadius, setBorderRadius] = useState(rectangle.borderradius);
+  const { stroke, borderwidth, borderradius } = rectangle;
+  const [color, setColor] = useState(stroke);
+  const [borderWidth, setBorderWidth] = useState(Number(borderwidth));
+  const [borderRadius, setBorderRadius] = useState(Number(borderradius));
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -119,6 +114,8 @@ function BorderMenu({
             valueLabelDisplay='auto'
             onChange={(e) => setBorderRadius(e.target.value)}
             onChangeCommitted={() => handleSubmit('borderRadius', borderRadius)}
+            min={0}
+            max={50}
           />
         </Tooltip>
       </MenuItem>
