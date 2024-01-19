@@ -57,6 +57,10 @@ router.post(
   '/new-component/:designId',
   componentController.addNewComponent,
   rectangleController.createComponentRectangle,
+  (req, res, next) => {
+    console.log(res.locals.component);
+    return next();
+  },
   (req, res) => res.status(200).send(res.locals.component)
 );
 
