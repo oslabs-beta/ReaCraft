@@ -17,7 +17,7 @@ export default function DeleteDesignButton({ designId }) {
   const handleClose = () => setOpen(false);
 
   const handleKeyPress = (e) => {
-    if (e.key === 'd' || e.key === 'D') setOpen(true);
+    if (e.altKey && e.keyCode === 68) setOpen(true);
   };
 
   useEffect(() => {
@@ -33,7 +33,8 @@ export default function DeleteDesignButton({ designId }) {
         variant='contained'
         color='error'
         startIcon={<Delete />}
-        onClick={() => setOpen(true)}>
+        onClick={() => setOpen(true)}
+      >
         {/* Delete */}
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -62,7 +63,8 @@ export default function DeleteDesignButton({ designId }) {
                   })
                 );
               }
-            }}>
+            }}
+          >
             Yes
           </Button>
           <Button onClick={handleClose} autoFocus>
