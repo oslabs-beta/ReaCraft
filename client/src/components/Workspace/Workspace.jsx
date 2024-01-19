@@ -3,9 +3,6 @@ import Box from '@mui/material/Box';
 import { useSelector } from 'react-redux';
 import WorkspaceLeft from './WorkspaceLeft';
 import WorkspaceRight from './WorkspaceRight';
-import KonvaStage from '../KonvaStage';
-import DesignTitleInput from '../userInputs/DesignTitleInput';
-import UserImageUpload from '../functionalButtons/UserImageUploadButton';
 import KonvaStage from '../KonvaStageV2';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import DesignTitleInput from '../userInputs/DesignTitleInput';
@@ -48,7 +45,8 @@ export default function Workspace() {
           display: 'flex',
           marginBottom: '10px',
           gap: '10px',
-        }}>
+        }}
+      >
         <DesignTitleInput />
       </Box>
 
@@ -91,7 +89,8 @@ export default function Workspace() {
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
-        }}>
+        }}
+      >
         <WorkspaceRight selectedIdx={selectedIdx} />
       </Box>
     </Box>
