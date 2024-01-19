@@ -40,15 +40,15 @@ CREATE TABLE components (
 
 CREATE TABLE rectangles (
   component_id INTEGER NOT NULL,
-  x_position VARCHAR(255),
-  y_position VARCHAR(255),
-  z_index INTEGER,
-  width VARCHAR(255),
-  height VARCHAR(255),
+  x_position DECIMAL(10, 2) DEFAULT 0,
+  y_position DECIMAL(10, 2) DEFAULT 0,
+  z_index INTEGER DEFAULT 0,
+  width DECIMAL(10, 2) DEFAULT 100,
+  height DECIMAL(10, 2) DEFAULT 100,
   isResizable BOOLEAN DEFAULT TRUE,
-  borderWidth VARCHAR(255),
+  borderWidth INT DEFAULT 3,
   borderRadius VARCHAR(255),
-  stroke VARCHAR(255),
+  stroke VARCHAR(255) DEFAULT '#fff',
   backgroundColor VARCHAR(255),
   FOREIGN KEY (component_id) REFERENCES components(_id)
 );
