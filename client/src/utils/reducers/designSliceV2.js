@@ -8,26 +8,13 @@ import {
   updateComponentParentRequest,
   updateComponentHtmlTagRequest,
   submitComponentFormRequest,
-  updateComponentRectangleRequest,
+  updateComponentRectanglePositionRequest,
+  updateComponentRectangleStyleRequest,
 } from '../fetchRequests';
-
-const normalizeRectangle = (rectangle) => ({
-  ...rectangle,
-  x: Number(rectangle.x_position),
-  y: Number(rectangle.y_position),
-  width: Number(rectangle.width),
-  height: Number(rectangle.height),
-  isResizeable: rectangle.isresizable === 'true',
-  stroke: rectangle.stroke || '#000',
-});
 
 export const newDesign = createAsyncThunk(
   'designs/new',
-  async (body, { dispatch }) => {
-    const response = await addDesignRequest(body);
-    dispatch(designSliceV2.actions.setIsPastDesign(false));
-    return response;
-}
+  async (body) => await addDesignRequest(body)
 );
 export const updateDesign = createAsyncThunk(
   'designs/update/:designId',
@@ -35,18 +22,7 @@ export const updateDesign = createAsyncThunk(
 );
 export const getDesignDetails = createAsyncThunk(
   'designs/detail/:designId',
-  async (designId, { dispatch }) => {
-    const response = await getDesignDetailsRequest(designId);
-    response.components.forEach(component => {
-      if (component.rectangle) {
-        console.log('this is component.rectangle from getdesign', component.rectangle);
-        component.rectangle = normalizeRectangle(component.rectangle);
-      }
-    });
-    dispatch(designSliceV2.actions.setIsPastDesign(true));
-    console.log('this is the response', response);
-    return response;
-}
+  async (designId) => await getDesignDetailsRequest(designId)
 );
 export const addNewComponent = createAsyncThunk(
   'designs/new-component/:designId',
@@ -68,20 +44,22 @@ export const updateComponentHtmlTag = createAsyncThunk(
     await updateComponentHtmlTagRequest(componentId, body)
 );
 
-export const updateComponentRectangle = createAsyncThunk(
-  'components/update-position/:componentId',
-  async ({ componentId, body }) => {
-    console.log('this is dispatch from updateComponentRectangle', componentId, body);
-    const response = await updateComponentRectangleRequest(componentId, body);
-    console.log('this is the response from fetch request: component_id', componentId, 'this is the response:', response);
-    return { componentId: componentId, body: response };
-  }
-);
-
 export const submitComponentForm = createAsyncThunk(
   'components/submit/:componentId',
   async ({ componentId, body }) =>
     await submitComponentFormRequest(componentId, body)
+);
+
+export const updateComponentRectanglePosition = createAsyncThunk(
+  'components/update-position/:componentId',
+  async ({ componentId, body }) =>
+    await updateComponentRectanglePositionRequest(componentId, body)
+);
+
+export const updateComponentRectangleStyle = createAsyncThunk(
+  'components/update-rectangle-style/:componentId',
+  async ({ componentId, body }) =>
+    await updateComponentRectangleStyleRequest(componentId, body)
 );
 
 const asyncThunks = [
@@ -92,11 +70,17 @@ const asyncThunks = [
   deleteComponent,
   updateComponentParent,
   updateComponentHtmlTag,
-  updateComponentRectangle,
   submitComponentForm,
+  updateComponentRectanglePosition,
+  updateComponentRectangleStyle,
 ];
 
 const designThunks = [newDesign, updateDesign, getDesignDetails];
+
+const rectangleThunks = [
+  updateComponentRectanglePosition,
+  updateComponentRectangleStyle,
+];
 
 const initialState = {
   _id: null,
@@ -108,7 +92,6 @@ const initialState = {
   loading: false,
   error: null,
   borderColor: '#000000',
-  isPastDesign: false,
 };
 
 const designSliceV2 = createSlice({
@@ -124,11 +107,7 @@ const designSliceV2 = createSlice({
         component.borderColor = borderColor;
       }
     },
-
-    setIsPastDesign: (state, action) => {
-      state.isPastDesign = action.payload;
-    },
-   },
+  },
   extraReducers: (builder) => {
     asyncThunks.forEach((thunk) => {
       builder
@@ -143,8 +122,17 @@ const designSliceV2 = createSlice({
     designThunks.forEach((thunk) => {
       builder.addCase(thunk.fulfilled, (state, action) => {
         Object.assign(state, action.payload);
-        console.log('this is action.payload in designThunks', action.payload);
         state.loading = false;
+      });
+    });
+    rectangleThunks.forEach((thunk) => {
+      builder.addCase(thunk.fulfilled, (state, action) => {
+        state.loading = false;
+        const updatedRectangle = action.payload;
+        const index = state.components.findIndex(
+          (item) => item._id === updatedRectangle.component_id
+        );
+        state.components[index].rectangle = updatedRectangle;
       });
     });
     builder.addCase(addNewComponent.fulfilled, (state, action) => {
@@ -187,7 +175,6 @@ const designSliceV2 = createSlice({
       .addCase(submitComponentForm.fulfilled, (state, action) => {
         state.loading = false;
         const updatedComponent = action.payload;
-        console.log('uploaded : ', updatedComponent);
         state.components.forEach((item, idx) => {
           if (item._id == updatedComponent._id) {
             state.components[idx] = updatedComponent;
@@ -196,30 +183,11 @@ const designSliceV2 = createSlice({
             item.inner_html = updatedComponent.inner_html;
           }
         });
-      })
-      .addCase(updateComponentRectangle.fulfilled, (state, action) => {
-        console.log('updateComponentRectangle fulfilled');
-        state.loading = false;
-        const { componentId, body } = action.payload;
-        console.log('this is the action.payload from addCase', body);
-        const componentIndex = state.components.findIndex(component => component._id === componentId);
-        console.log('this is the componentIndex', componentIndex);
-        if (componentIndex !== -1) {
-          console.log('if statement in updateComponentRect fulfilled passed');
-          state.components[componentIndex].rectangle = {
-            x: +body.updatedComponent.x_position,
-            y: +body.updatedComponent.y_position,
-            width: +body.updatedComponent.width,
-            height: +body.updatedComponent.height,
-            isResizeable: body.updatedComponent.isresizable,
-            stroke: body.updatedComponent.stroke,
-          };
-        }
       });
   },
 });
 
-
-export const { resetDesign, updateComponentBorderColor, setIsPastDesign } = designSliceV2.actions;
+export const { resetDesign, updateComponentBorderColor } =
+  designSliceV2.actions;
 
 export default designSliceV2.reducer;
