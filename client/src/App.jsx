@@ -46,7 +46,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container>
+      <Container maxWidth='false'>
         <TopBar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
         <MainContainer
           sx={{

@@ -22,11 +22,12 @@ export default function WorkspaceLeft({ selectedIdx, setSelectedIdx }) {
 
   return (
     <ThemeProvider theme={WorkspaceLeftTheme}>
-      <Box>
-        <AddNewComponent setSelectedIdx={setSelectedIdx} />
-        <List sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <AddNewComponent size='sm' setSelectedIdx={setSelectedIdx} />
+        <List width='75%'>
           {components.map((item, idx) => (
             <ComponentDisplay
+              width='75%'
               component={item}
               key={idx}
               idx={idx}
@@ -67,11 +68,15 @@ function ComponentDisplay({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        padding: 0,
-        width: '100%',
-      }}
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        justifyContent: 'center',
+        padding: '10px',
+        width: '75%',
+      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          width: '75%',
+        }}>
         <ListItemText primary={component.name} />
         {selected && (
           <IconButton
@@ -79,8 +84,7 @@ function ComponentDisplay({
             onClick={(e) => {
               e.stopPropagation();
               setOpenEditor(true);
-            }}
-          >
+            }}>
             <EditIcon />
           </IconButton>
         )}
