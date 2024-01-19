@@ -72,7 +72,7 @@ export default function KonvaStage({ userImage, selectedIdx, setSelectedIdx }) {
                   strokeWidth={Number(rect.borderwidth)}
                   onClick={(e) => handleRectClick(e, component_id)}
                   fill={rect.backgroundcolor}
-                  cornerRadius={rect.borderradius}
+                  cornerRadius={Number(rect.borderradius)}
                   onDragEnd={(e) =>
                     handleChangeEnd(component_id, e.target.attrs)
                   }
