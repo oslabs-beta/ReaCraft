@@ -31,6 +31,18 @@ router.post(
 );
 
 router.post(
+  '/update-position/:componentId',
+  rectangleController.updateComponentRectanglePosition,
+  (req, res) => res.status(200).send(res.locals.updatedRectangle)
+);
+
+router.post(
+  '/update-rectangle-style/:componentId',
+  rectangleController.updateComponentRectangleStyle,
+  (req, res) => res.status(200).send(res.locals.updatedRectangle)
+);
+
+router.post(
   '/submit/:componentId',
   componentController.updateComponentForm,
   componentController.updateHtmlForAllSameComponents,

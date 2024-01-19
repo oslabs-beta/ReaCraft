@@ -1,6 +1,8 @@
 const db = require('../models/dbModel');
 
+// Create a default RootContainer component for a new design
 const createRootComponent = (req, res, next) => {
+  // designId from designController.addNewDesign
   const designId = res.locals.design._id;
   return db
     .query(
@@ -11,7 +13,7 @@ const createRootComponent = (req, res, next) => {
     )
     .then((data) => {
       res.locals.design.components = [data.rows[0]];
-      return next();
+      return next(); // next middleware is rectangleController.createRootRectangle
     })
     .catch((err) =>
       next({
