@@ -109,6 +109,7 @@ const initialState = {
   error: null,
   borderColor: '#000000',
   isPastDesign: false,
+  searchTerm: '',
 };
 
 const designSliceV2 = createSlice({
@@ -124,10 +125,12 @@ const designSliceV2 = createSlice({
         component.borderColor = borderColor;
       }
     },
-
     setIsPastDesign: (state, action) => {
       state.isPastDesign = action.payload;
     },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    }
    },
   extraReducers: (builder) => {
     asyncThunks.forEach((thunk) => {
@@ -220,6 +223,6 @@ const designSliceV2 = createSlice({
 });
 
 
-export const { resetDesign, updateComponentBorderColor, setIsPastDesign } = designSliceV2.actions;
+export const { resetDesign, updateComponentBorderColor, setIsPastDesign, setSearchTerm } = designSliceV2.actions;
 
 export default designSliceV2.reducer;
