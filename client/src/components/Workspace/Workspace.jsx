@@ -4,10 +4,8 @@ import { useSelector } from 'react-redux';
 import WorkspaceLeft from './WorkspaceLeft';
 import WorkspaceRight from './WorkspaceRight';
 import KonvaStage from '../KonvaStage';
-import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import DesignTitleInput from '../userInputs/DesignTitleInput';
 import UserImageUpload from '../functionalButtons/UserImageUploadButton';
-import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 
 export default function Workspace() {
   const [selectedIdx, setSelectedIdx] = useState(null);
@@ -42,16 +40,10 @@ export default function Workspace() {
         gridColumn='span 12'
         sx={{
           display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
           marginBottom: '10px',
           gap: '10px',
-        }}
-      >
+        }}>
         <DesignTitleInput />
-        <UserImageUpload />
-        <DeleteDesignButton designId={_id} />
-        <ViewKeyboardShortcut />
       </Box>
       <Box gridColumn='span 2'>
         <WorkspaceLeft
@@ -74,8 +66,7 @@ export default function Workspace() {
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
-        }}
-      >
+        }}>
         <WorkspaceRight selectedIdx={selectedIdx} />
       </Box>
     </Box>
