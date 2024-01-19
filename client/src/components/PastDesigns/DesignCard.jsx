@@ -13,8 +13,6 @@ export default function DesignCard({ design }) {
   const dispatch = useDispatch();
   const created_at = new Date(design.created_at).toLocaleDateString();
   const last_updated = new Date(design.last_updated).toLocaleDateString();
-  console.log('design is', design);
-
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
