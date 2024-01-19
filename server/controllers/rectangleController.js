@@ -1,17 +1,19 @@
 const db = require('../models/dbModel');
 
+// create rectangle for RootContainer component
 const createRootRectangle = (req, res, next) => {
   const rootId = res.locals.design.components[0]._id;
-  console.log(rootId);
+  const { imageWidth, imageHeight } = req.body;
+  console.log(rootId, imageWidth, imageHeight);
   return db
     .query(
-      'INSERT INTO rectangles (component_id, isResizable) ' +
-        'VALUES ($1, $2) ' +
+      'INSERT INTO rectangles (component_id, isResizable, width, height) ' + //isResizable false
+        'VALUES ($1, $2, $3, $4) ' +
         'RETURNING *;',
-      [rootId, false]
+      [rootId, false, imageWidth, imageHeight]
     )
     .then((data) => {
-      res.locals.design.components.rectangle = data.rows[0];
+      res.locals.design.components[0].rectangle = data.rows[0];
       return next();
     })
     .catch((err) =>
@@ -28,10 +30,10 @@ const createComponentRectangle = (req, res, next) => {
   const componentId = res.locals.component._id;
   return db
     .query(
-      'INSERT INTO rectangles (component_id) ' +
-        'VALUES ($1) ' +
+      'INSERT INTO rectangles (component_id, width, height) ' +
+        'VALUES ($1, $2, $3) ' +
         'RETURNING *;',
-      [componentId]
+      [componentId, 100, 100]
     )
     .then((data) => {
       res.locals.component.rectangle = data.rows[0];
@@ -43,6 +45,46 @@ const createComponentRectangle = (req, res, next) => {
           'Express error handler caught rectangleController.createComponentRectangle middleware error' +
           err,
         message: { err: 'createComponentRectangle: ' + err },
+      })
+    );
+};
+
+const updateComponentRectanglePosition = (req, res, next) => {
+  const { componentId } = req.params;
+  const { x, y, width, height } = req.body;
+  return db
+    .query(
+      'UPDATE rectangles SET x_position = $1, y_position = $2, width = $3, height = $4 WHERE component_id = $5 RETURNING *;',
+      [x, y, width, height, componentId]
+    )
+    .then((data) => {
+      res.locals.updatedRectangle = data.rows[0];
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log: `Express error handler caught rectangleController.updateComponentRectangle middleware error ${err}`,
+        message: { err: `updateComponentRectangle: ${err}` },
+      })
+    );
+};
+
+const updateComponentRectangleStyle = (req, res, next) => {
+  const { componentId } = req.params;
+  const { styleToChange, value } = req.body;
+  return db
+    .query(
+      `UPDATE rectangles SET  ${styleToChange} = $1 WHERE component_id = $2 RETURNING *;`,
+      [value, componentId]
+    )
+    .then((data) => {
+      res.locals.updatedRectangle = data.rows[0];
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log: `Express error handler caught rectangleController.updateComponentRectangle middleware error ${err}`,
+        message: { err: `updateComponentRectangle: ${err}` },
       })
     );
 };
@@ -105,4 +147,6 @@ module.exports = {
   getRectangles,
   createComponentRectangle,
   deleteComponentRectangle,
+  updateComponentRectanglePosition,
+  updateComponentRectangleStyle,
 };

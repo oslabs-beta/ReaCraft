@@ -1,0 +1,12 @@
+.background-picker {
+  .MuiInputBase-input {
+    display: none !important;
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border: none !important;
+  }
+
+  padding: 0 !important;
+  padding-right: 5px !important;
+}

@@ -8,6 +8,9 @@ import { getDesigns } from '../../utils/fetchRequests';
 export default function UserDesigns() {
   const [pastDesigns, setPastDesigns] = useState([]);
   const selectedDesign = useSelector((state) => state.designV2);
+  const searchTerm = useSelector((state) => state.designV2.searchTerm);
+  const [localSelectedDesignId, setLocalSelectedDesignId] = useState(null);
+  const selectedDesignId = useSelector((state) => state.designV2._id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,11 +26,49 @@ export default function UserDesigns() {
     fetchData();
   }, [selectedDesign._id]);
 
+  // useEffect(() => {
+  //     const fetchData = async () => {
+  //       try {
+  //         const designs = await getDesigns();
+  //         setPastDesigns(designs.sort((a, b) => a._id - b._id));
+  //       } catch (err) {
+  //         console.log(err);
+  //       }
+  //     };
+  //     if (!selectedDesignId) {
+  //       fetchData();
+  //     }
+  // }, [selectedDesign._id]);
+
+  // useEffect(() => {
+  //   setLocalSelectedDesignId(selectedDesignId);
+  // }, [selectedDesignId]);
+
+  const getFilteredDesigns = () => {
+    if (!searchTerm) {
+      return pastDesigns;
+    }
+    return pastDesigns.filter((design) =>
+      design.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  };
+
+  const visibleDesigns = getFilteredDesigns();
+
+  // if (localSelectedDesignId) {
+  //   return <Workspace />
+  // }
+
+  // if (selectedDesign._id) {
+  //   return <Workspace />
+  // };
+
   if (!selectedDesign._id) {
     return (
       <Box display='grid' gridTemplateColumns='repeat(3, 1fr)' gap={2}>
-        {pastDesigns.map((design) => (
-          <DesignCard design={design} key={design._id} />
+        {visibleDesigns.map((design) => ( // used pastDesigns here before
+          <DesignCard design={design} key={design._id}
+          setLocalSelectedDesignId={setLocalSelectedDesignId} />
         ))}
       </Box>
     );

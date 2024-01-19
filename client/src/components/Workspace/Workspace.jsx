@@ -6,6 +6,12 @@ import WorkspaceRight from './WorkspaceRight';
 import KonvaStage from '../KonvaStage';
 import DesignTitleInput from '../userInputs/DesignTitleInput';
 import UserImageUpload from '../functionalButtons/UserImageUploadButton';
+import KonvaStage from '../KonvaStageV2';
+import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
+import DesignTitleInput from '../userInputs/DesignTitleInput';
+import UserImageUpload from '../functionalButtons/UserImageUploadButton';
+import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
+import WorkspaceToolbar from './WorkspaceToolbar';
 
 export default function Workspace() {
   const [selectedIdx, setSelectedIdx] = useState(null);
@@ -13,13 +19,13 @@ export default function Workspace() {
   if (selectedIdx === components.length) setSelectedIdx(null);
 
   const handleKeyPress = (e) => {
-    if (e.key === 'w' || e.key === 'W') {
+    if (e.altKey && e.keyCode === 87) {
       if (selectedIdx === null) setSelectedIdx(0);
       else {
         setSelectedIdx(Math.max(selectedIdx - 1, 0));
       }
     }
-    if (e.key === 's' || e.key === 'S') {
+    if (e.altKey && e.keyCode === 83) {
       if (selectedIdx === null) setSelectedIdx(components.length - 1);
       else {
         setSelectedIdx(Math.min(selectedIdx + 1, components.length - 1));
@@ -45,6 +51,25 @@ export default function Workspace() {
         }}>
         <DesignTitleInput />
       </Box>
+
+      <Box
+        gridColumn='span 12'
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '10px',
+          gap: '10px',
+        }}
+      >
+        {selectedIdx !== null && (
+          <WorkspaceToolbar
+            rectangle={components[selectedIdx].rectangle}
+            key={selectedIdx}
+          />
+        )}
+      </Box>
+
       <Box gridColumn='span 2'>
         <WorkspaceLeft
           selectedIdx={selectedIdx}
