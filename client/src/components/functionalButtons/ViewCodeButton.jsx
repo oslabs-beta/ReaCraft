@@ -21,9 +21,8 @@ export default function ViewCodeButton({ code, name }) {
         <Button
           variant='contained'
           onClick={() => setViewCode(true)}
-          startIcon={<PiFileJsx />}
-        >
-          {name ? name : 'View All'}
+          startIcon={<PiFileJsx />}>
+          {/* {name ? name : 'View All'} */}
         </Button>
       </Tooltip>
       <CopyCodeBackdrop
@@ -52,21 +51,18 @@ function CopyCodeBackdrop({ viewCode, setViewCode, code, name }) {
         backgroundColor: '#ffffff4D',
       }}
       open={viewCode}
-      onDoubleClick={() => setViewCode(false)}
-    >
+      onDoubleClick={() => setViewCode(false)}>
       <Box
         sx={{
           backgroundColor: '#5D5F58',
           borderRadius: '10px',
-        }}
-      >
+        }}>
         <TabContext value={value}>
           <Box
             sx={{
               borderBottom: 1,
               borderColor: 'divider',
-            }}
-          >
+            }}>
             <TabList onChange={(e, newVal) => setValue(newVal)}>
               {Object.keys(code).map((key) => (
                 <Tab

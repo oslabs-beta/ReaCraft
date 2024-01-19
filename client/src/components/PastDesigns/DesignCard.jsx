@@ -27,22 +27,19 @@ export default function DesignCard({ design, setLocalSelectedDesignId }) {
 
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Paper sx={{ maxWidth: 345 }} elevation={3} square={false}>
       <CardMedia
-        aling='center'
+        align='center'
         sx={{
+          borderRadius: '5px',
           height: 140,
+          boxShadow: '0px 15px 200px -9px #5B5B5B',
         }}
         image={design.image_url}
         title={design.title}
       />
       <CardContent name='CardContent_DesignCard'>
-        <EditableText
-          designId={design._id}
-          initialText={design.title}
-          fontSize='40px'
-          aling='center'
-        />
+        <EditableText initialText={design.title} align='center' />
         <Typography gutterBottom variant='h5' component='div'></Typography>
         <Typography
           sx={{
@@ -68,8 +65,7 @@ export default function DesignCard({ design, setLocalSelectedDesignId }) {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-around',
-        }}
-      >
+        }}>
         <Button variant='outlined' size='small'>
           Share
         </Button>
@@ -88,6 +84,6 @@ export default function DesignCard({ design, setLocalSelectedDesignId }) {
           View design
         </Button>
       </CardActions>
-    </Card>
+    </Paper>
   );
 }
