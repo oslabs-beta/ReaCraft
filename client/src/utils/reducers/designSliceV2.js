@@ -110,8 +110,8 @@ const designSliceV2 = createSlice({
     },
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
-    }
-   },
+    },
+  },
   extraReducers: (builder) => {
     asyncThunks.forEach((thunk) => {
       builder
@@ -133,6 +133,7 @@ const designSliceV2 = createSlice({
       builder.addCase(thunk.fulfilled, (state, action) => {
         state.loading = false;
         const updatedRectangle = action.payload;
+        console.log('updatedRectangle is', updatedRectangle);
         const index = state.components.findIndex(
           (item) => item._id === updatedRectangle.component_id
         );
@@ -191,5 +192,6 @@ const designSliceV2 = createSlice({
   },
 });
 
-export const { resetDesign, updateComponentBorderColor, setSearchTerm } = designSliceV2.actions
+export const { resetDesign, updateComponentBorderColor, setSearchTerm } =
+  designSliceV2.actions;
 export default designSliceV2.reducer;

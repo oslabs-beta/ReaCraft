@@ -6,8 +6,12 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useDispatch } from 'react-redux';
-import { getDesignDetails, setSearchTerm } from '../../utils/reducers/designSliceV2';
+import {
+  getDesignDetails,
+  setSearchTerm,
+} from '../../utils/reducers/designSliceV2';
 import EditableText from '../userInputs/EditableText';
+import Paper from '@mui/material/Paper';
 
 export default function DesignCard({ design, setLocalSelectedDesignId }) {
   const dispatch = useDispatch();
@@ -20,11 +24,10 @@ export default function DesignCard({ design, setLocalSelectedDesignId }) {
       dispatch(getDesignDetails(design._id));
       // setLocalSelectedDesignId(design._id);
       dispatch(setSearchTerm(''));
-    } catch(err) {
+    } catch (err) {
       console.log('error ' + err);
     }
   };
-
 
   return (
     <Paper sx={{ maxWidth: 345 }} elevation={3} square={false}>
@@ -65,7 +68,8 @@ export default function DesignCard({ design, setLocalSelectedDesignId }) {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-around',
-        }}>
+        }}
+      >
         <Button variant='outlined' size='small'>
           Share
         </Button>
