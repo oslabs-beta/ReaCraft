@@ -184,7 +184,6 @@ const KonvaStage = ({ userImage, selectedIdx, setSelectedIdx }) => {
       }));
     };
 
-
     return (
         <Stage
           width={window.innerWidth}
