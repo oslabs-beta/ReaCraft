@@ -68,6 +68,7 @@ export default function KonvaStage({ userImage, selectedIdx, setSelectedIdx }) {
                   width={Number(rect.width)}
                   height={Number(rect.height)}
                   stroke={rect.stroke}
+                  strokeScaleEnabled={false}
                   draggable={rect.isresizable}
                   strokeWidth={Number(rect.borderwidth)}
                   onClick={(e) => handleRectClick(e, component_id)}
@@ -98,7 +99,7 @@ export default function KonvaStage({ userImage, selectedIdx, setSelectedIdx }) {
                     });
                   }}
                 />
-                {selectedIdx !== null &&
+                {selectedIdx > 0 &&
                   components[selectedIdx]._id === component_id && (
                     <Transformer ref={trRef} rotateEnabled={false} />
                   )}

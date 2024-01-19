@@ -12,6 +12,7 @@ import LineStyleRoundedIcon from '@mui/icons-material/LineStyleRounded';
 import Slider from '@mui/material/Slider';
 
 import '../../styles/workspaceToolbar.scss';
+import { useTheme, createTheme, ThemeProvider } from '@mui/material';
 
 export default function WorkspaceToolbar({ rectangle }) {
   const [color, setColor] = useState(rectangle.backgroundcolor || '#00000000');
@@ -19,10 +20,8 @@ export default function WorkspaceToolbar({ rectangle }) {
   const openBorderMenu = Boolean(anchorEl);
 
   const dispatch = useDispatch();
-
   function handleSubmit(styleToChange, value) {
     const componentId = rectangle.component_id;
-    console.log(styleToChange, value);
     dispatch(
       updateComponentRectangleStyle({
         componentId,
@@ -30,35 +29,81 @@ export default function WorkspaceToolbar({ rectangle }) {
       })
     );
   }
-  return (
-    <ButtonGroup variant='outlined'>
-      <Tooltip title='Change background color'>
-        <MuiColorInput
-          className='background-picker'
-          sx={{ border: 'none' }}
-          value={color}
-          onChange={(val) => {
-            setColor(val);
-            handleSubmit('backgroundColor', val);
-          }}
-        />
-      </Tooltip>
 
-      <Fragment>
-        <Tooltip title='border styles'>
-          <Button onClick={(e) => setAnchorEl(e.currentTarget)}>
-            <LineStyleRoundedIcon />
-          </Button>
+  const theme = useTheme();
+
+  const themeDark = createTheme({
+    palette: theme.palette,
+    components: {
+      MuiFormControl: {
+        styleOverrides: {
+          root: {
+            '& .MuiButton-root': {
+              border: '1px solid rgba(224, 225, 221, 0.5)',
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const themeLight = createTheme({
+    palette: theme.palette,
+    components: {
+      MuiButtonGroup: {
+        styleOverrides: {
+          root: {
+            '& .MuiButton-root': {
+              color: '#998e8e',
+              borderColor: '#ada6a6ab',
+            },
+          },
+        },
+      },
+      MuiFormControl: {
+        styleOverrides: {
+          root: {
+            '& .MuiButton-root': {
+              border: '1px solid #ada6a6ab',
+            },
+          },
+        },
+      },
+    },
+  });
+  return (
+    <ThemeProvider
+      theme={theme.palette.mode === 'dark' ? themeDark : themeLight}
+    >
+      <ButtonGroup variant='outlined'>
+        <Tooltip title='Change background color'>
+          <MuiColorInput
+            className='background-picker'
+            sx={{ border: 'none' }}
+            value={color}
+            onChange={(val) => {
+              setColor(val);
+              handleSubmit('backgroundColor', val);
+            }}
+          />
         </Tooltip>
-        <BorderMenu
-          openBorderMenu={openBorderMenu}
-          anchorEl={anchorEl}
-          setAnchorEl={setAnchorEl}
-          handleSubmit={handleSubmit}
-          rectangle={rectangle}
-        />
-      </Fragment>
-    </ButtonGroup>
+
+        <Fragment>
+          <Tooltip title='border styles'>
+            <Button onClick={(e) => setAnchorEl(e.currentTarget)}>
+              <LineStyleRoundedIcon />
+            </Button>
+          </Tooltip>
+          <BorderMenu
+            openBorderMenu={openBorderMenu}
+            anchorEl={anchorEl}
+            setAnchorEl={setAnchorEl}
+            handleSubmit={handleSubmit}
+            rectangle={rectangle}
+          />
+        </Fragment>
+      </ButtonGroup>
+    </ThemeProvider>
   );
 }
 

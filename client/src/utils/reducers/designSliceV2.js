@@ -175,9 +175,9 @@ const designSliceV2 = createSlice({
       .addCase(submitComponentForm.fulfilled, (state, action) => {
         state.loading = false;
         const updatedComponent = action.payload;
-        state.components.forEach((item, idx) => {
+        state.components.forEach((item) => {
           if (item._id == updatedComponent._id) {
-            state.components[idx] = updatedComponent;
+            Object.assign(item, updatedComponent);
           }
           if (item.name === updatedComponent.name) {
             item.inner_html = updatedComponent.inner_html;
