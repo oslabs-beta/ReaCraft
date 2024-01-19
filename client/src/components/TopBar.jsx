@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import BackupTableIcon from '@mui/icons-material/BackupTable';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import { useTheme } from '@mui/material';

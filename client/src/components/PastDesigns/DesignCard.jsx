@@ -25,6 +25,7 @@ export default function DesignCard({ design, setLocalSelectedDesignId }) {
     }
   };
 
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
