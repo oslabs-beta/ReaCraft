@@ -95,7 +95,6 @@ export function updateComponentParentRequest(componentId, body) {
 }
 
 export function updateComponentHtmlTagRequest(componentId, body) {
-  console.log(componentId, body);
   return fetch(`/components/update-tag/${componentId}`, {
     method: 'POST',
     headers: {
@@ -131,7 +130,7 @@ export function updateProfilePictureRequest(body) {
     .catch((err) => console.log('App: update profile picture: ERROR: ', err));
 }
 
-export function updateComponentRectangleRequest(componentId, body) {
+export function updateComponentRectanglePositionRequest(componentId, body) {
   return fetch(`/components/update-position/${componentId}`, {
     method: 'POST',
     headers: {
@@ -140,12 +139,31 @@ export function updateComponentRectangleRequest(componentId, body) {
     body: JSON.stringify(body),
   })
     .then((res) => {
-      console.log('this is the console.log from updateComponentRectangle fetch request', res);
       if (!res.ok) {
         throw new Error('Server responded with an error');
       }
       console.log('returning from fetch request');
       return res.json();
     })
-    .catch((err) => console.log('App: update rectangle: ERROR: ', err));
+    .catch((err) =>
+      console.log('App: update rectangle position(size): ERROR: ', err)
+    );
+}
+
+export function updateComponentRectangleStyleRequest(componentId, body) {
+  return fetch(`/components/update-rectangle-style/${componentId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error('Server responded with an error');
+      }
+      console.log('returning from fetch request');
+      return res.json();
+    })
+    .catch((err) => console.log('App: update rectangle style: ERROR: ', err));
 }
