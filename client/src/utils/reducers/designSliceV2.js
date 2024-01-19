@@ -8,6 +8,8 @@ import {
   updateComponentParentRequest,
   updateComponentHtmlTagRequest,
   submitComponentFormRequest,
+  updateComponentRectanglePositionRequest,
+  updateComponentRectangleStyleRequest,
 } from '../fetchRequests';
 
 export const newDesign = createAsyncThunk(
@@ -48,6 +50,18 @@ export const submitComponentForm = createAsyncThunk(
     await submitComponentFormRequest(componentId, body)
 );
 
+export const updateComponentRectanglePosition = createAsyncThunk(
+  'components/update-position/:componentId',
+  async ({ componentId, body }) =>
+    await updateComponentRectanglePositionRequest(componentId, body)
+);
+
+export const updateComponentRectangleStyle = createAsyncThunk(
+  'components/update-rectangle-style/:componentId',
+  async ({ componentId, body }) =>
+    await updateComponentRectangleStyleRequest(componentId, body)
+);
+
 const asyncThunks = [
   newDesign,
   updateDesign,
@@ -57,9 +71,16 @@ const asyncThunks = [
   updateComponentParent,
   updateComponentHtmlTag,
   submitComponentForm,
+  updateComponentRectanglePosition,
+  updateComponentRectangleStyle,
 ];
 
 const designThunks = [newDesign, updateDesign, getDesignDetails];
+
+const rectangleThunks = [
+  updateComponentRectanglePosition,
+  updateComponentRectangleStyle,
+];
 
 const initialState = {
   _id: null,
@@ -104,6 +125,16 @@ const designSliceV2 = createSlice({
         state.loading = false;
       });
     });
+    rectangleThunks.forEach((thunk) => {
+      builder.addCase(thunk.fulfilled, (state, action) => {
+        state.loading = false;
+        const updatedRectangle = action.payload;
+        const index = state.components.findIndex(
+          (item) => item._id === updatedRectangle.component_id
+        );
+        state.components[index].rectangle = updatedRectangle;
+      });
+    });
     builder.addCase(addNewComponent.fulfilled, (state, action) => {
       state.loading = false;
       state.components.push(action.payload);
@@ -144,10 +175,9 @@ const designSliceV2 = createSlice({
       .addCase(submitComponentForm.fulfilled, (state, action) => {
         state.loading = false;
         const updatedComponent = action.payload;
-        console.log('uploaded : ', updatedComponent);
-        state.components.forEach((item, idx) => {
+        state.components.forEach((item) => {
           if (item._id == updatedComponent._id) {
-            state.components[idx] = updatedComponent;
+            Object.assign(item, updatedComponent);
           }
           if (item.name === updatedComponent.name) {
             item.inner_html = updatedComponent.inner_html;
