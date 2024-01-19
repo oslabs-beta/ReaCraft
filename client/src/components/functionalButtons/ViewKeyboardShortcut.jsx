@@ -27,7 +27,11 @@ import { Typography } from '@mui/material';
 export default function ViewKeyboardShortcut() {
   const [open, setOpen] = useState(false);
   return (
-    <Fragment>
+    <Fragment
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+      }}>
       <Tooltip title='View keyboard shortcuts'>
         <IconButton onClick={() => setOpen(true)}>
           <KeyboardIcon />
@@ -49,8 +53,7 @@ function ShortcutBackdrop({ open, setOpen }) {
         backgroundColor: '#ffffff4D',
       }}
       open={open}
-      onDoubleClick={() => setOpen(false)}
-    >
+      onDoubleClick={() => setOpen(false)}>
       <List className='keyboard-shortcuts'>
         <ListItem className='shortcut'>
           <ListItemIcon sx={{ color: 'white' }}>esc</ListItemIcon>
