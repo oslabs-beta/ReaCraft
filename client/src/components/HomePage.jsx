@@ -11,7 +11,7 @@ export default function Home() {
   const designId = useSelector((state) => state.designV2._id);
   if (user)
     return (
-      <Container>
+      <Container maxWidth='false'>
         <Box marginBottom='2vw'>
           {!designId && (
             <Typography variant='h3' gridColumn='span 2' color='text.disabled'>
