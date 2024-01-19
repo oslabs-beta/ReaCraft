@@ -92,6 +92,7 @@ const initialState = {
   loading: false,
   error: null,
   borderColor: '#000000',
+  searchTerm: '',
 };
 
 const designSliceV2 = createSlice({
@@ -107,7 +108,10 @@ const designSliceV2 = createSlice({
         component.borderColor = borderColor;
       }
     },
-  },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    }
+   },
   extraReducers: (builder) => {
     asyncThunks.forEach((thunk) => {
       builder
@@ -187,7 +191,5 @@ const designSliceV2 = createSlice({
   },
 });
 
-export const { resetDesign, updateComponentBorderColor } =
-  designSliceV2.actions;
-
+export const { resetDesign, updateComponentBorderColor, setSearchTerm } = designSliceV2.actions
 export default designSliceV2.reducer;
