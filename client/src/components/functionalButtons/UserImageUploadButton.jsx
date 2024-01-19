@@ -14,9 +14,7 @@ export default function UserImageUploadButton() {
     <Button
       component='label'
       variant='contained'
-      startIcon={<CloudUploadIcon />}
-    >
-      {designId ? 'Replace Image' : 'Upload Image'}
+      startIcon={<CloudUploadIcon />}>
       <VisuallyHiddenInput
         type='file'
         name='userImage'
