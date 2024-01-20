@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Typography, Paper, Box, TextField, Button, IconButton } from '@mui/material';
+import { Typography, Paper, Box, TextField, IconButton, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useAuth } from '../hooks/useAuth';
 import { getDesignDetails, setSearchTerm } from '../utils/reducers/designSliceV2';
@@ -8,14 +8,17 @@ import { getDesignDetails, setSearchTerm } from '../utils/reducers/designSliceV2
 export default function HomePageSearch() {
     const { user } = useAuth();
     const dispatch = useDispatch();
+    const theme = useTheme();
+    // state to set the search bar text
     const searchTerm = useSelector((state) => state.designV2.searchTerm);
     const [searchText, setSearchText] = useState('');
+    const searchBarTheme = theme.palette.mode === 'dark' ? 'linear-gradient(to right, #778DA9, #1B263B)' : 'linear-gradient(to right, #EDEDE9, #D5BDAF)';
 
     const handleSearchChange = (event) => {
         setSearchText(event.target.value);
         dispatch(setSearchTerm(event.target.value));
     };
-
+    // useEffect that checks if searchTerm in state changes
     useEffect(() => {
         setSearchTerm(searchTerm);
     }, [searchTerm]);
@@ -25,8 +28,7 @@ export default function HomePageSearch() {
         <Paper elevation={2} sx={{ 
             padding: 4, 
             margin: 4, 
-            // backgroundColor: '#E0E1DD', 
-            backgroundImage: 'linear-gradient(to right, #EDEDE9, #D5BDAF)',
+            backgroundImage: searchBarTheme,
             width: 'auto' 
             }}>
             {/* Typography is used for title text */}
@@ -39,6 +41,7 @@ export default function HomePageSearch() {
                 <TextField
                     fullWidth
                     variant='outlined'
+                    // onChange will call event handler when user types in search bar
                     onChange={handleSearchChange}
                     placeholder='Search your content'
                     sx={{
