@@ -69,7 +69,9 @@ export default function KonvaStage({ userImage, selectedIdx, setSelectedIdx }) {
                   height={Number(rect.height)}
                   stroke={rect.stroke}
                   strokeScaleEnabled={false}
-                  draggable={rect.isresizable}
+                  draggable={
+                    components.findIndex((c) => c._id === component_id) > 0
+                  }
                   strokeWidth={Number(rect.borderwidth)}
                   onClick={(e) => handleRectClick(e, component_id)}
                   fill={rect.backgroundcolor}
