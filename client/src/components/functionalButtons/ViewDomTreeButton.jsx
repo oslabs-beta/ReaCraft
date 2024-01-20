@@ -2,19 +2,9 @@ import React, { useRef, useState, Fragment, useEffect } from 'react';
 import Tree from 'react-d3-tree';
 import Tooltip from '@mui/material/Tooltip';
 import BackdropSnackbar from './BackdropSnackbar';
-import {
-  Button,
-  Backdrop,
-  Fab,
-  List,
-  FormLabel,
-  Box,
-  IconButton,
-} from '@mui/material';
-import { ImTree } from 'react-icons/im';
+import { Backdrop, Fab, List, FormLabel, Box } from '@mui/material';
 import { themeDOMTreeLight } from '../../styles/ThemeDOMTree';
 import { ThemeProvider } from '@mui/material/styles';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import '../../utils/treeNode.css';
 
