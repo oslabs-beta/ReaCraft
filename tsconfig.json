@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "jsx": "react",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "allowJs": true,
+    "moduleResolution": "node"
+  },
+  "files": [
+    "docs/types.ts",
+    "client/src/utils/fetchRequests.ts",
+    "server/server.ts"
+  ]
+}
