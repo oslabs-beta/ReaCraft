@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
-import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import Fab from '@mui/material/Fab';
+
 import Tooltip from '@mui/material/Tooltip';
 
 import BackdropSnackbar from './BackdropSnackbar';
@@ -30,12 +32,17 @@ export default function ViewKeyboardShortcut() {
     <Fragment
       sx={{
         display: 'flex',
+        width: '40px',
         justifyContent: 'center',
       }}>
       <Tooltip title='View keyboard shortcuts'>
-        <IconButton onClick={() => setOpen(true)}>
+        <Fab
+          size='small'
+          component='label'
+          variant='contained'
+          onClick={() => setOpen(true)}>
           <KeyboardIcon />
-        </IconButton>
+        </Fab>
       </Tooltip>
       <BackdropSnackbar open={open} setOpen={setOpen} />
 
