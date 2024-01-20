@@ -45,6 +45,7 @@ export default function AddNewComponentButton() {
             })
           );
           dispatch(setMessage(successMess));
+          setName('');
         } else {
           const errMessage = name.length === 0 ? emptyNameErr : firstCharErr;
           dispatch(setMessage(errMessage));
