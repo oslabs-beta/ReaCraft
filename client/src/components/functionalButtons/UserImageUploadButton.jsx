@@ -5,12 +5,16 @@ import { setMessage } from '../../utils/reducers/appSlice';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
-import { newDesign, updateDesign } from '../../utils/reducers/designSliceV2';
+import {
+  newDesign,
+  updateDesign,
+  updateRootHeight,
+} from '../../utils/reducers/designSliceV2';
 
 export default function UserImageUploadButton() {
   const dispatch = useDispatch();
   const designId = useSelector((state) => state.designV2._id);
-  const image_url = useSelector((state) => state.designV2.image_url);
+  const { image_url, components } = useSelector((state) => state.designV2);
   const tooltip = designId ? 'upload a new image' : 'replace image';
 
   function handleFileChange(e) {
@@ -26,16 +30,10 @@ export default function UserImageUploadButton() {
         const img = new Image();
 
         img.onload = () => {
-          console.log('width, height are', img.width, img.height);
-
           const setWidth = 800;
           const imageHeight = img.height * (setWidth / img.width);
-          console.log(imageHeight);
-
           if (!designId) {
-            dispatch(
-              newDesign({ userImage, imageWidth: setWidth, imageHeight })
-            );
+            dispatch(newDesign({ userImage, imageHeight }));
           } else {
             const url = new URL(image_url);
             dispatch(
@@ -44,11 +42,12 @@ export default function UserImageUploadButton() {
                 body: {
                   userImage,
                   imageToDelete: url.pathname.slice(1),
-                  imageWidth: setWidth,
                   imageHeight,
+                  rootId: components[0]._id,
                 },
               })
             );
+            dispatch(updateRootHeight(imageHeight));
           }
         };
 
