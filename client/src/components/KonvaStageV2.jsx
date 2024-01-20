@@ -49,7 +49,7 @@ export default function KonvaStage({ userImage, selectedIdx, setSelectedIdx }) {
 
   if (image) {
     return (
-      <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Stage width={window.innerWidth * 0.7} height={window.innerHeight * 0.7}>
         <Layer>
           <Image
             image={image}

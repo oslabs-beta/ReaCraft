@@ -13,6 +13,7 @@ import HtmlTagSelector from '../userInputs/HtmlTagSelector';
 import DeleteComponentButton from '../functionalButtons/DeleteComponentButton';
 import { ThemeProvider, useTheme } from '@mui/material';
 import { WorkspaceLeftLightTheme } from '../../styles/WorkspaceLeftTheme';
+import DesignTitleInput from '../userInputs/DesignTitleInput';
 
 export default function WorkspaceLeft({ selectedIdx, setSelectedIdx }) {
   const components = useSelector((state) => state.designV2.components);
@@ -59,57 +60,69 @@ function ComponentDisplay({
   const selected = selectedIdx === idx;
 
   return (
-    <ListItemButton
-      value='NewComponentInputBox'
-      selected={selected}
-      // onClick={() => handleListItemClick(idx)}
-      // i added this
-      onClick={handleListItemClick}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        padding: '10px',
-        width: '75%',
-      }}>
+    <Box>
       <Box
         sx={{
           display: 'flex',
+        }}>
+        <DesignTitleInput />
+      </Box>
+      <ListItemButton
+        value='NewComponentInputBox'
+        selected={selected}
+        // onClick={() => handleListItemClick(idx)}
+        // i added this
+        onClick={handleListItemClick}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '10px',
           width: '75%',
         }}>
-        <ListItemText primary={component.name} />
+        <Box
+          sx={{
+            display: 'flex',
+            width: '75%',
+          }}>
+          <Box>
+            <ListItemText primary={component.name} />
+            {selected && (
+              <IconButton
+                sx={{ marginLeft: '20px' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenEditor(true);
+                }}>
+                <EditIcon />
+              </IconButton>
+            )}
+          </Box>
+          <Box>
+            <ComponentEditor
+              idx={idx}
+              open={openEditor}
+              closeEditor={() => setOpenEditor(false)}
+              isLeaf={isLeaf}
+            />
+
+            {idx > 0 && selected && (
+              <DeleteComponentButton
+                name={component.name}
+                componentId={component._id}
+                canDelete={isLeaf}
+              />
+            )}
+          </Box>
+        </Box>
+
         {selected && (
-          <IconButton
-            sx={{ marginLeft: '20px' }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpenEditor(true);
-            }}>
-            <EditIcon />
-          </IconButton>
+          <Fragment>
+            <ParentSelector childIdx={idx} />
+            {isLeaf && <HtmlTagSelector idx={idx} isLeaf={isLeaf} />}
+          </Fragment>
         )}
-        <ComponentEditor
-          idx={idx}
-          open={openEditor}
-          closeEditor={() => setOpenEditor(false)}
-          isLeaf={isLeaf}
-        />
-
-        {idx > 0 && selected && (
-          <DeleteComponentButton
-            name={component.name}
-            componentId={component._id}
-            canDelete={isLeaf}
-          />
-        )}
-      </Box>
-
-      {selected && (
-        <Fragment>
-          <ParentSelector childIdx={idx} />
-          {isLeaf && <HtmlTagSelector idx={idx} isLeaf={isLeaf} />}
-        </Fragment>
-      )}
-    </ListItemButton>
+      </ListItemButton>
+    </Box>
   );
 }
