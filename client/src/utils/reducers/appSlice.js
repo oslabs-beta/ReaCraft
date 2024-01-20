@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   message: null,
   page: 'HOME',
+  selectedIdx: null,
 };
 
 const appSlice = createSlice({
@@ -18,11 +19,14 @@ const appSlice = createSlice({
     goToPage: (state, action) => {
       state.page = action.payload;
     },
-    resetApp: (state) => initialState,
+    resetApp: () => initialState,
+    setSelectedIdx: (state, action) => {
+      state.selectedIdx = action.payload;
+    },
   },
 });
 
-export const { setMessage, resetMessage, goToPage, resetApp } =
+export const { setMessage, resetMessage, goToPage, resetApp, setSelectedIdx } =
   appSlice.actions;
 
 export default appSlice.reducer;
