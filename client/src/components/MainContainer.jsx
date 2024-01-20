@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { resetMessage } from '../utils/reducers/appSlice';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import UserDesigns from './PastDesigns/PastDesigns';
 import Home from './HomePage';
 import NewDesign from './NewDesign';
 
@@ -21,8 +20,8 @@ export default function MainContainer() {
         alignItems: 'center',
         position: 'relative',
         marginTop: '80px',
-      }}>
-
+      }}
+    >
       {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && <Home />}
       <Snackbar

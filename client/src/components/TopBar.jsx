@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
@@ -22,13 +22,19 @@ import {
   AppBarButtonsStyleDark,
 } from '../styles/ThemeGlobal';
 
-export default function TopBar({ toggleDarkMode, darkMode }) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+export default function TopBar({
+  toggleDarkMode,
+  darkMode,
+  drawerOpen,
+  setDrawerOpen,
+}) {
   const dispatch = useDispatch();
   function handlePageClick(page) {
     dispatch(goToPage(page));
     dispatch(resetDesign());
   }
+
+  const designId = useSelector((state) => state.designV2._id);
   const { user } = useAuth();
   const theme = useTheme();
   const AppBarButtonsStyle =
@@ -45,22 +51,32 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
           height: '56px',
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
-        }}>
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'start',
             alignItems: 'center',
-          }}>
-          <Button
-            variant='contained'
-            size='large'
-            disableElevation
-            onClick={() => setDrawerOpen(!drawerOpen)}
-            sx={AppBarButtonsStyle}>
-            <MenuIcon />
-          </Button>
-          <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+          }}
+        >
+          {!designId && (
+            <Fragment>
+              <Button
+                variant='contained'
+                size='large'
+                disableElevation
+                onClick={() => setDrawerOpen(!drawerOpen)}
+                sx={AppBarButtonsStyle}
+              >
+                <MenuIcon />
+              </Button>
+              <SideDrawer
+                drawerOpen={drawerOpen}
+                setDrawerOpen={setDrawerOpen}
+              />
+            </Fragment>
+          )}
 
           <Typography fontSize='25px'>ReaCraft</Typography>
         </Box>
@@ -69,7 +85,8 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             display: 'flex',
             justifyContent: 'end',
             alignItems: 'center',
-          }}>
+          }}
+        >
           <DarkModeSwitch
             size='xs'
             toggleDarkMode={toggleDarkMode}
@@ -80,7 +97,8 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             variant='contained'
             disableElevation
             onClick={() => handlePageClick('HOME')}
-            sx={AppBarButtonsStyle}>
+            sx={AppBarButtonsStyle}
+          >
             <HomeIcon />
           </Button>
           {/* <Button
