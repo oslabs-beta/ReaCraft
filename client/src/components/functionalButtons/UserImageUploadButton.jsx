@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '@mui/material/Button';
+import Fab from '@mui/material/Fab';
 import { setMessage } from '../../utils/reducers/appSlice';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Tooltip from '@mui/material/Tooltip';
@@ -60,12 +60,9 @@ export default function UserImageUploadButton() {
 
   return (
     <Fragment>
-      <Tooltip title={tooltip}>
-        <Button
-          component='label'
-          variant='contained'
-          startIcon={<CloudUploadIcon />}
-        >
+      <Tooltip width='36px' title={tooltip}>
+        <Fab size='small' component='label' variant='contained'>
+          <CloudUploadIcon />
           {designId ? '' : 'Upload Image'}
           <VisuallyHiddenInput
             type='file'
@@ -73,7 +70,7 @@ export default function UserImageUploadButton() {
             accept='image/*'
             onChange={handleFileChange}
           />
-        </Button>
+        </Fab>
       </Tooltip>
     </Fragment>
   );
