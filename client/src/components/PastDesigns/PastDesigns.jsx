@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import DesignCard from './DesignCard';
 import Workspace from '../Workspace/Workspace';
 import { getDesigns } from '../../utils/fetchRequests';
+import { Typography } from '@mui/material';
 
 export default function UserDesigns() {
   const [pastDesigns, setPastDesigns] = useState([]);
@@ -66,11 +67,23 @@ export default function UserDesigns() {
 
   if (!selectedDesign._id) {
     return (
-      <Box display='grid' gridTemplateColumns='repeat(3, 1fr)' gap={2}>
-        {visibleDesigns.map((design) => ( // used pastDesigns here before
-          <DesignCard design={design} key={design._id}
-          setLocalSelectedDesignId={setLocalSelectedDesignId} />
-        ))}
+      <Box>
+        <Typography 
+        sx={{
+          fontSize: "16", 
+          color: "black",
+          fontWeight: "bold",
+          marginBottom: 2,
+        }}
+        >
+          Recent designs
+        </Typography>
+        <Box display='grid' gridTemplateColumns='repeat(3, 1fr)' gap={2}>
+          {visibleDesigns.map((design) => ( // used pastDesigns here before
+            <DesignCard design={design} key={design._id}
+            setLocalSelectedDesignId={setLocalSelectedDesignId} />
+          ))}
+        </Box>
       </Box>
     );
   } else {
