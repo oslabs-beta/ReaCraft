@@ -3,6 +3,7 @@ import Container from '@mui/material/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetMessage } from '../utils/reducers/appSlice';
 import Snackbar from '@mui/material/Snackbar';
+import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import UserDesigns from './PastDesigns/PastDesigns';
 import Home from './HomePage';
@@ -24,7 +25,10 @@ export default function MainContainer() {
       }}>
 
       {page === 'NEW_DESIGN' && <NewDesign />}
-      {page === 'HOME' && <Home />}
+      {page === 'HOME' && 
+        <Box display='flex' justifyContent='center' >
+          <Home maxWidth='false'/>
+        </Box>}
       <Snackbar
         value='SnackbarUnderWorkSpaceCont'
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
