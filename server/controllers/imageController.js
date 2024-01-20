@@ -47,9 +47,9 @@ const deleteImage = (req, res, next) => {
     .catch((err) =>
       next({
         log:
-          'Express error handler caught imageController.uploadImage middleware error' +
+          'Express error handler caught imageController.deleteImage middleware error' +
           err,
-        message: 'Upload image err: ' + err,
+        message: 'deleteImage: ' + err,
       })
     );
 };
