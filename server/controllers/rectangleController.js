@@ -7,10 +7,10 @@ const createRootRectangle = (req, res, next) => {
   console.log(rootId, imageWidth, imageHeight);
   return db
     .query(
-      'INSERT INTO rectangles (component_id, isResizable, width, height) ' + //isResizable false
-        'VALUES ($1, $2, $3, $4) ' +
+      'INSERT INTO rectangles (component_id, width, height) ' +
+        'VALUES ($1, $2, $3) ' +
         'RETURNING *;',
-      [rootId, false, imageWidth, imageHeight]
+      [rootId, imageWidth, imageHeight]
     )
     .then((data) => {
       res.locals.design.components[0].rectangle = data.rows[0];

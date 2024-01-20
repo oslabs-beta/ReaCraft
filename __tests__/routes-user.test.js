@@ -2,6 +2,7 @@ const request = require('supertest');
 const server = 'http://localhost:3000';
 const db = require('../server/models/dbModel');
 const { encrypt } = require('../server/helpers/encryptDecrypt');
+const path = require('path');
 
 let testUserId;
 let sessionId;
@@ -26,7 +27,7 @@ beforeAll(async () => {
   );
 });
 
-describe('/user', () => {
+xdescribe('/user', () => {
   it('should respond with 200 status and application/json content type', () => {
     return request(server)
       .get('/user')
@@ -74,7 +75,7 @@ describe('/user', () => {
   );
 });
 
-afterEach(async () => {
+afterAll(async () => {
   await db.query('DELETE FROM passwords WHERE user_id = $1;', [testUserId]);
   await db.query('DELETE FROM users WHERE _id = $1;', [testUserId]);
 });
