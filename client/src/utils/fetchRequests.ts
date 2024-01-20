@@ -20,7 +20,7 @@ export function updateDesignRequest(
   designId: number,
   body: {
     userImage: string;
-    imageToDelete: string;
+    imageToDelete?: string;
     imageWidth: number;
     imageHeight: number;
   }
