@@ -1,5 +1,7 @@
+import express, { Request, Response, NextFunction } from 'express';
+import { DefaultError } from '../docs/types';
 require('dotenv').config();
-const express = require('express');
+
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -22,7 +24,7 @@ app.use(
 );
 
 //Logging the request method and endpoint
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`${req.method} request for '${req.url}'`);
   return next();
 });
@@ -30,19 +32,23 @@ app.use((req, res, next) => {
 app.use('/', router);
 
 //404 Error Handler
-app.get('*', (req, res) => res.status(404).send('Page not found'));
+app.get('*', (req: Request, res: Response) =>
+  res.status(404).send('Page not found')
+);
 
 //Global Error Handler
-app.use((err, req, res, next) => {
-  const defaultErr = {
-    log: 'Express error handler caught unknown middleware error' + err,
-    status: 500,
-    message: { err: 'An error occurred' + err },
-  };
-  const errorObj = Object.assign({}, defaultErr, err);
-  console.log(errorObj);
-  return res.status(errorObj.status).json(errorObj.message);
-});
+app.use(
+  (err: DefaultError, req: Request, res: Response, next: NextFunction) => {
+    const defaultErr = {
+      log: 'Express error handler caught unknown middleware error' + err,
+      status: 500,
+      message: { err: 'An error occurred' + err },
+    };
+    const errorObj = Object.assign({}, defaultErr, err);
+    console.log(errorObj);
+    return res.status(errorObj.status).json(errorObj.message);
+  }
+);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}...`);
