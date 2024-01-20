@@ -44,6 +44,7 @@ export default function UserDesigns() {
   //   setLocalSelectedDesignId(selectedDesignId);
   // }, [selectedDesignId]);
 
+  // ensures if there's no search term, all past designs are displayed OR when the user types in the search bar, only the designs whose titles match the search term are displayed
   const getFilteredDesigns = () => {
     if (!searchTerm) {
       return pastDesigns;

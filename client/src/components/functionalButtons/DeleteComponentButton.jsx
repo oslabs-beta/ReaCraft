@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
-import { setMessage } from '../../utils/reducers/appSlice';
+import { setMessage, setSelectedIdx } from '../../utils/reducers/appSlice';
 import { deleteComponent } from '../../utils/reducers/designSliceV2';
 
 export default function DeleteComponentButton({
@@ -32,6 +32,7 @@ export default function DeleteComponentButton({
             dispatch(deleteComponent(componentId));
           }
           dispatch(setMessage(message));
+          dispatch(setSelectedIdx(null));
         }}
       >
         <DeleteIcon />

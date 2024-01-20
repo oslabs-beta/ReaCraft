@@ -10,24 +10,27 @@ import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import UserImageUpload from '../functionalButtons/UserImageUploadButton';
 
-export default function WorkspaceRight({ selectedIdx }) {
+export default function WorkspaceRight() {
   const components = useSelector((state) => state.designV2.components);
+  const { selectedIdx } = useSelector((state) => state.app);
   const { _id } = useSelector((state) => state.designV2);
   const tree = convertToTree(components);
   const code = jsxCode(components, tree);
   return (
-    <Stack direction='column' gap={2}>
+    <Stack width='36px' direction='column' gap={2}>
       <Box
-        maxWidth='false'
+        width='36px'
+        height='200px'
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          alignContent: 'flex-start',
-        }}>
-        <UserImageUpload />
+          justifyContent: 'space-between',
+        }}
+      >
         <ViewKeyboardShortcut
           sx={{ position: 'absolute', justifySelf: 'end' }}
         />
+        <UserImageUpload height='64px' />
         <ViewDomTreeButton tree={tree} />
         <ViewCodeButton
           code={code}
