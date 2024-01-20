@@ -45,8 +45,7 @@ export default function Workspace() {
           display: 'flex',
           marginBottom: '10px',
           gap: '10px',
-        }}
-      >
+        }}>
         <DesignTitleInput />
       </Box>
 
@@ -58,8 +57,7 @@ export default function Workspace() {
           alignItems: 'center',
           marginBottom: '10px',
           gap: '10px',
-        }}
-      >
+        }}>
         {selectedIdx !== null && (
           <WorkspaceToolbar
             rectangle={components[selectedIdx].rectangle}
@@ -89,8 +87,7 @@ export default function Workspace() {
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
-        }}
-      >
+        }}>
         <WorkspaceRight selectedIdx={selectedIdx} />
       </Box>
     </Box>
