@@ -21,8 +21,9 @@ export function updateDesignRequest(
   body: {
     userImage: string;
     imageToDelete?: string;
-    imageWidth: number;
-    imageHeight: number;
+    imageHeight?: number;
+    title?: string;
+    rootId?: number;
   }
 ) {
   return fetch(`/designs/update/${designId}`, {
