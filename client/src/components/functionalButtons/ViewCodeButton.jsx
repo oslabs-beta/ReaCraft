@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import Button from '@mui/material/Button';
+import Fab from '@mui/material/Fab';
 import Backdrop from '@mui/material/Backdrop';
 import { PiFileJsx } from 'react-icons/pi';
 import { CodeBlock, monokai } from 'react-code-blocks';
@@ -18,10 +18,10 @@ export default function ViewCodeButton({ code, name }) {
   return (
     <Fragment>
       <Tooltip title='View jsx code for components'>
-        <Button variant='contained' onClick={() => setViewCode(true)}>
+        <Fab size='small' variant='contained' onClick={() => setViewCode(true)}>
           <PiFileJsx />
           {/* {name ? name : 'View All'} */}
-        </Button>
+        </Fab>
       </Tooltip>
       <CopyCodeBackdrop
         viewCode={viewCode}
