@@ -28,12 +28,14 @@ export default function UserImageUploadButton() {
         img.onload = () => {
           console.log('width, height are', img.width, img.height);
 
-          const maxWidth = 800;
-          const imageWidth = Math.min(img.width, maxWidth);
-          const imageHeight = img.height * (imageWidth / img.width);
+          const setWidth = 800;
+          const imageHeight = img.height * (setWidth / img.width);
+          console.log(imageHeight);
 
           if (!designId) {
-            dispatch(newDesign({ userImage, imageWidth, imageHeight }));
+            dispatch(
+              newDesign({ userImage, imageWidth: setWidth, imageHeight })
+            );
           } else {
             const url = new URL(image_url);
             dispatch(
@@ -42,7 +44,7 @@ export default function UserImageUploadButton() {
                 body: {
                   userImage,
                   imageToDelete: url.pathname.slice(1),
-                  imageWidth,
+                  imageWidth: setWidth,
                   imageHeight,
                 },
               })
