@@ -19,10 +19,11 @@ export default function WorkspaceRight({ selectedIdx }) {
     <Stack width='36px' direction='column' gap={2}>
       <Box
         width='36px'
+        height='200px'
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          alignContent: 'flex-start',
+          justifyContent: 'space-between',
         }}>
         <ViewKeyboardShortcut
           sx={{ position: 'absolute', justifySelf: 'end' }}
