@@ -3,13 +3,19 @@ import { Stage, Layer, Rect, Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateComponentRectanglePosition } from '../utils/reducers/designSliceV2';
+import { setSelectedIdx } from '../utils/reducers/appSlice';
 
-export default function KonvaStage({ userImage, selectedIdx, setSelectedIdx }) {
+export default function KonvaStage({ userImage }) {
   const [image] = useImage(userImage);
 
   // redux state
   const components = useSelector((state) => state.designV2.components);
-  const rectangles = components.map((item) => item.rectangle);
+  const selectedIdx = useSelector((state) => state.app.selectedIdx);
+  console.log('components are', components);
+  const rectangles = components.map((item) => {
+    console.log(item);
+    return item.rectangle;
+  });
   const dispatch = useDispatch();
 
   // refs and other state
@@ -37,7 +43,7 @@ export default function KonvaStage({ userImage, selectedIdx, setSelectedIdx }) {
     // prevent stage from deselecting the shape
     e.cancelBubble = true;
     const clickedIdx = components.findIndex((item) => item._id === componentId);
-    setSelectedIdx(clickedIdx);
+    dispatch(setSelectedIdx(clickedIdx));
   }
 
   // handle drag and transform

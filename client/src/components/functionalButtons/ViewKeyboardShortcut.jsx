@@ -13,7 +13,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import AddIcon from '@mui/icons-material/Add';
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
 import {
@@ -29,25 +29,27 @@ import { Typography } from '@mui/material';
 export default function ViewKeyboardShortcut() {
   const [open, setOpen] = useState(false);
   return (
-    <Fragment
+    <Box
       sx={{
         display: 'flex',
         width: '40px',
         justifyContent: 'center',
-      }}>
+      }}
+    >
       <Tooltip title='View keyboard shortcuts'>
         <Fab
           size='small'
           component='label'
           variant='contained'
-          onClick={() => setOpen(true)}>
+          onClick={() => setOpen(true)}
+        >
           <KeyboardIcon />
         </Fab>
       </Tooltip>
       <BackdropSnackbar open={open} setOpen={setOpen} />
 
       <ShortcutBackdrop open={open} setOpen={setOpen} />
-    </Fragment>
+    </Box>
   );
 }
 
@@ -60,7 +62,8 @@ function ShortcutBackdrop({ open, setOpen }) {
         backgroundColor: '#ffffff4D',
       }}
       open={open}
-      onDoubleClick={() => setOpen(false)}>
+      onDoubleClick={() => setOpen(false)}
+    >
       <List className='keyboard-shortcuts'>
         <ListItem className='shortcut'>
           <ListItemIcon sx={{ color: 'white' }}>esc</ListItemIcon>

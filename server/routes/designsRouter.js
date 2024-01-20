@@ -31,6 +31,7 @@ router.post(
   imageController.deleteImage,
   imageController.uploadImage,
   designController.updateDesign,
+  rectangleController.updateRootRectangle,
   sendDesign
 );
 
