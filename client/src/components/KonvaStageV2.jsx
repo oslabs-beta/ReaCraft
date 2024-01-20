@@ -11,11 +11,7 @@ export default function KonvaStage({ userImage }) {
   // redux state
   const components = useSelector((state) => state.designV2.components);
   const selectedIdx = useSelector((state) => state.app.selectedIdx);
-  console.log('components are', components);
-  const rectangles = components.map((item) => {
-    console.log(item);
-    return item.rectangle;
-  });
+  const rectangles = components.map((item) => item.rectangle);
   const dispatch = useDispatch();
 
   // refs and other state
