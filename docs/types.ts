@@ -5,7 +5,6 @@ export type Rectangle = {
   z_index: number;
   width: number;
   height: number;
-  isresizable?: boolean;
   borderwidth: number;
   borderradius?: number;
   backgroundcolor?: string;
