@@ -36,7 +36,7 @@ export default function HomePageSearch() {
                 What will you design today, {user.username}?
             </Typography>
             {/* Box is a wrapper tool, using it to contain the 'TextField and SearchIcon */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, maxWidth: 800, justifyContent: 'center', margin: 'auto' }}>
                 {/* TextField lets users enter and edit text. using it to represent search bar with an InputProps to include a search button inside the text field*/}
                 <TextField
                     fullWidth
