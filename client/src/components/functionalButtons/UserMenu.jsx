@@ -99,6 +99,7 @@ export default function UserMenu() {
   return (
     <div>
       <Button
+        size='sm'
         id='demo-customized-button'
         aria-controls={open ? 'demo-customized-menu' : undefined}
         aria-haspopup='true'
@@ -107,26 +108,24 @@ export default function UserMenu() {
         disableElevation
         onClick={(e) => setAnchorEl(e.currentTarget)}
         endIcon={<KeyboardArrowDownIcon />}
-        sx={{ backgroundColor: 'transparent', color: '#736c6c' }}
-      >
-        <Avatar src={avatar} sx={{ width: 40, height: 40 }} />
+        sx={{ backgroundColor: 'transparent', color: '#736c6c' }}>
+        <Avatar src={avatar} sx={{ width: 25, height: 25 }} />
       </Button>
       <StyledMenu
         id='demo-customized-menu'
+        size='sm'
         MenuListProps={{
           'aria-labelledby': 'demo-customized-button',
         }}
         anchorEl={anchorEl}
         open={open}
-        onClose={() => setAnchorEl(null)}
-      >
+        onClose={() => setAnchorEl(null)}>
         <MenuItem
           onClick={() => {
             setModal(true);
             setAnchorEl(null);
           }}
-          disableRipple
-        >
+          disableRipple>
           <InfoIcon />
           Account
         </MenuItem>
@@ -141,8 +140,7 @@ export default function UserMenu() {
           open={modal}
           onClose={() => setModal(false)}
           aria-labelledby='modal-user-menu'
-          aria-describedby='modal-user-menu'
-        >
+          aria-describedby='modal-user-menu'>
           <Box sx={style}>
             <Typography id='modal-modal-title' variant='h6' component='h2'>
               Account Info
@@ -179,8 +177,7 @@ function UserData({ label, data }) {
       key={label}
       sx={{
         '&:last-child td, &:last-child th': { border: 0 },
-      }}
-    >
+      }}>
       <TableCell component='th' scope='row'>
         {label}
       </TableCell>
@@ -202,8 +199,7 @@ function UserProfileImage({ avatar, setAvatar }) {
         justifyContent: 'center',
         alignItems: 'center',
         padding: '20px',
-      }}
-    >
+      }}>
       <Avatar src={avatar} sx={{ width: 100, height: 100 }} />
       <Stack direction='row'>
         <Button component='label'>
@@ -249,8 +245,7 @@ function UserProfileImage({ avatar, setAvatar }) {
                   text: 'Delete profile picutre successfully',
                 })
               );
-            }}
-          >
+            }}>
             Delete
           </Button>
         )}
