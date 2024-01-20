@@ -15,7 +15,12 @@ export default function DesignTitleInput() {
       value={title}
       onChange={(e) => setTitle(e.target.value)}
       onBlur={() => {
-        dispatch(updateDesign({ designId: design._id, body: { title } }));
+        dispatch(
+          updateDesign({
+            designId: design._id,
+            body: { title },
+          })
+        );
       }}
     />
   );
