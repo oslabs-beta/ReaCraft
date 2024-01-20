@@ -77,7 +77,16 @@ export default function Workspace() {
       </Box>
 
       <Box gridColumn='span 8' align-items='center'>
-        {image_url && <KonvaStage userImage={image_url} />}
+
+        {/* <img src={image_url} style={{ maxWidth: '100%' }} /> */}
+        {image_url && (
+          <KonvaStage
+            userImage={image_url}
+            selectedIdx={selectedIdx}
+            setSelectedIdx={setSelectedIdx}
+          />
+        )}
+      /* {image_url && <KonvaStage userImage={image_url} />} */
       </Box>
       <Box
         gridColumn='span 2'
