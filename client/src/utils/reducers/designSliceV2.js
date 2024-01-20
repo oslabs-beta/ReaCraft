@@ -100,13 +100,8 @@ const designSliceV2 = createSlice({
   initialState,
   reducers: {
     resetDesign: () => initialState,
-    updateComponentBorderColor: (state, action) => {
-      const { id, borderColor } = action.payload;
-      // find component with the given _id and update its border color
-      const component = state.components.find((comp) => comp._id === id);
-      if (component) {
-        component.borderColor = borderColor;
-      }
+    updateRootHeight: (state, action) => {
+      state.components[0].rectangle.height = action.payload;
     },
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
@@ -192,6 +187,6 @@ const designSliceV2 = createSlice({
   },
 });
 
-export const { resetDesign, updateComponentBorderColor, setSearchTerm } =
+export const { resetDesign, setSearchTerm, updateRootHeight } =
   designSliceV2.actions;
 export default designSliceV2.reducer;
