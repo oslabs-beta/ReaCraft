@@ -23,6 +23,7 @@ export default function DesignCard({ design, setLocalSelectedDesignId }) {
     try {
       dispatch(getDesignDetails(design._id));
       // setLocalSelectedDesignId(design._id);
+      // resets the search term in redux state
       dispatch(setSearchTerm(''));
     } catch (err) {
       console.log('error ' + err);

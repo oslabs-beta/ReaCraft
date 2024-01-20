@@ -11,6 +11,7 @@ export default function Home() {
   if (user)
     return (
       <Container maxWidth='false'>
+        {/* conditional rendering of HomPageSearch. if a design is selected, the search bar will not appear in the workspace */}
         {selectedDesignId ? null : <HomePageSearch />}
         {/* <HomePageSearch /> */}
         <PastDesigns />
