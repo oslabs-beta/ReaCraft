@@ -86,6 +86,7 @@ export default function Workspace() {
         gridColumn='span 2'
         sx={{
           display: 'flex',
+
           justifyContent: 'center',
         }}>
         <WorkspaceRight selectedIdx={selectedIdx} />
