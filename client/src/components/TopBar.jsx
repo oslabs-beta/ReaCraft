@@ -70,12 +70,6 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             justifyContent: 'end',
             alignItems: 'center',
           }}>
-          <DarkModeSwitch
-            size='xs'
-            toggleDarkMode={toggleDarkMode}
-            darkMode={darkMode}
-          />
-
           <Button
             variant='contained'
             disableElevation
@@ -83,7 +77,7 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             sx={AppBarButtonsStyle}>
             <HomeIcon />
           </Button>
-          {/* <Button
+          <Button
             variant='contained'
             disableElevation
             onClick={() => handlePageClick('NEW_DESIGN')}
@@ -95,8 +89,13 @@ export default function TopBar({ toggleDarkMode, darkMode }) {
             }}
             startIcon={<AddPhotoAlternateIcon />}>
             New Design
-          </Button> */}
+          </Button>
           {user && <UserMenu />}
+          <DarkModeSwitch
+            size='xs'
+            toggleDarkMode={toggleDarkMode}
+            darkMode={darkMode}
+          />
         </Box>
       </Toolbar>
     </AppBar>

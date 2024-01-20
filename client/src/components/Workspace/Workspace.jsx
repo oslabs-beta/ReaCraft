@@ -8,7 +8,6 @@ import WorkspaceRight from './WorkspaceRight';
 import KonvaStage from '../KonvaStageV2';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import UserImageUpload from '../functionalButtons/UserImageUploadButton';
-import DesignTitleInput from '../userInputs/DesignTitleInput';
 import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import WorkspaceToolbar from './WorkspaceToolbar';
 
@@ -42,13 +41,6 @@ export default function Workspace() {
   return (
     <Box maxWidth='false' display='flex'>
       <Box
-        sx={{
-          display: 'flex',
-        }}>
-        <DesignTitleInput />
-      </Box>
-
-      <Box
         gridColumn='span 12'
         sx={{
           display: 'flex',
@@ -65,7 +57,7 @@ export default function Workspace() {
         )}
       </Box>
 
-      <Box gridColumn='span 2'>
+      <Box gridColumn='span 1'>
         <WorkspaceLeft
           selectedIdx={selectedIdx}
           setSelectedIdx={setSelectedIdx}
@@ -73,14 +65,13 @@ export default function Workspace() {
       </Box>
 
       <Box gridColumn='span 8' align-items='center'>
-        {/* <img src={image_url} style={{ maxWidth: '100%' }} />
         {image_url && (
           <KonvaStage
             userImage={image_url}
             selectedIdx={selectedIdx}
             setSelectedIdx={setSelectedIdx}
           />
-        )} */}
+        )}
       </Box>
       <Box
         gridColumn='span 2'
