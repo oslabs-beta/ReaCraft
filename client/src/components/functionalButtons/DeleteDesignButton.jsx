@@ -29,13 +29,8 @@ export default function DeleteDesignButton({ designId }) {
 
   return (
     <Fragment>
-      <Button
-        variant='contained'
-        color='error'
-        startIcon={<Delete />}
-        onClick={() => setOpen(true)}
-      >
-        {/* Delete */}
+      <Button variant='contained' color='error' onClick={() => setOpen(true)}>
+        <Delete />
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
@@ -63,8 +58,7 @@ export default function DeleteDesignButton({ designId }) {
                   })
                 );
               }
-            }}
-          >
+            }}>
             Yes
           </Button>
           <Button onClick={handleClose} autoFocus>

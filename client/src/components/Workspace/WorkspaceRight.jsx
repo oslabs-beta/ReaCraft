@@ -16,18 +16,18 @@ export default function WorkspaceRight({ selectedIdx }) {
   const tree = convertToTree(components);
   const code = jsxCode(components, tree);
   return (
-    <Stack direction='column' gap={2}>
+    <Stack width='36px' direction='column' gap={2}>
       <Box
-        maxWidth='false'
+        width='36px'
         sx={{
           display: 'flex',
           flexDirection: 'column',
           alignContent: 'flex-start',
         }}>
-        <UserImageUpload />
         <ViewKeyboardShortcut
           sx={{ position: 'absolute', justifySelf: 'end' }}
         />
+        <UserImageUpload height='64px' />
         <ViewDomTreeButton tree={tree} />
         <ViewCodeButton
           code={code}
