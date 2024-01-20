@@ -10,8 +10,9 @@ import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import UserImageUpload from '../functionalButtons/UserImageUploadButton';
 
-export default function WorkspaceRight({ selectedIdx }) {
+export default function WorkspaceRight() {
   const components = useSelector((state) => state.designV2.components);
+  const { selectedIdx } = useSelector((state) => state.app);
   const { _id } = useSelector((state) => state.designV2);
   const tree = convertToTree(components);
   const code = jsxCode(components, tree);
@@ -24,7 +25,8 @@ export default function WorkspaceRight({ selectedIdx }) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-        }}>
+        }}
+      >
         <ViewKeyboardShortcut
           sx={{ position: 'absolute', justifySelf: 'end' }}
         />

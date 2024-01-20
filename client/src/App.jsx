@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from './hooks/useAuth';
 import Cookies from 'js-cookie';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { themeLight, themeDark } from './styles/ThemeGlobal';
 import Container from '@mui/material/Container';
@@ -9,6 +9,25 @@ import TopBar from './components/TopBar';
 import MainContainer from './components/MainContainer';
 import { useDispatch } from 'react-redux';
 import { setMessage } from './utils/reducers/appSlice';
+
+const drawerWidth = 150;
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: `${drawerWidth}px`,
+    }),
+  })
+);
 
 export default function App() {
   const sessionID = Cookies.get('sessionID');
@@ -18,6 +37,9 @@ export default function App() {
   }
   const { getUser } = useAuth();
   const dispatch = useDispatch();
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  console.log('is drawer open?', drawerOpen);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,15 +68,20 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth='false'>
-        <TopBar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+      <Main open={drawerOpen}>
+        <TopBar
+          toggleDarkMode={toggleDarkMode}
+          darkMode={darkMode}
+          drawerOpen={drawerOpen}
+          setDrawerOpen={setDrawerOpen}
+        />
+
         <MainContainer
           sx={{
-            position: 'absolute',
             top: '10%',
           }}
         />
-      </Container>
+      </Main>
     </ThemeProvider>
   );
 }
