@@ -18,10 +18,8 @@ export default function ViewCodeButton({ code, name }) {
   return (
     <Fragment>
       <Tooltip title='View jsx code for components'>
-        <Button
-          variant='contained'
-          onClick={() => setViewCode(true)}
-          startIcon={<PiFileJsx />}>
+        <Button variant='contained' onClick={() => setViewCode(true)}>
+          <PiFileJsx />
           {/* {name ? name : 'View All'} */}
         </Button>
       </Tooltip>
