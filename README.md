@@ -35,7 +35,7 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a> -->
 
-<h3 align="center">Reactraft</h3>
+<h3 align="center">ReaCraft</h3>
 
   <p align="center">
 Streamlining React Development from Design to Deployment
