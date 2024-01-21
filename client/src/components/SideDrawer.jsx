@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import React from 'react';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import HomeIcon from '@mui/icons-material/Home';
 import Drawer from '@mui/material/Drawer';
@@ -15,7 +13,6 @@ import Stack from '@mui/material/Stack';
 import Fab from '@mui/material/Fab';
 
 export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
-  const [value, setValue] = useState(0);
   const dispatch = useDispatch();
 
   function handleClick(page) {
