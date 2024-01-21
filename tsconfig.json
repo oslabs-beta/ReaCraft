@@ -11,6 +11,7 @@
   "files": [
     "docs/types.ts",
     "client/src/utils/fetchRequests.ts",
-    "server/server.ts"
+    "server/server.ts",
+    "client/src/utils/reducers/appSlice.ts"
   ]
 }
