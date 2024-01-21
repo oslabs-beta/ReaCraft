@@ -4,7 +4,7 @@ const db = require('../models/dbModel');
 const createRootRectangle = (req, res, next) => {
   const rootId = res.locals.design.components[0]._id;
   const { imageHeight } = req.body;
-  console.log(rootId, imageWidth, imageHeight);
+  console.log(rootId, imageHeight);
   return db
     .query(
       'INSERT INTO rectangles (component_id, width, height) ' +

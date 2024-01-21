@@ -9,12 +9,12 @@ const fs = require('fs');
 let testUserId;
 let sessionId;
 const testUser = {
-  username: 'test_design5',
-  email: 'test_design3341@1234.com',
+  username: `test_design_${Date.now()}`,
+  email: `test_design_${Date.now()}@123.com`,
 };
 
 const testImage = fs.readFileSync(path.join(__dirname, './test.png'));
-const base64Image = Buffer.from(testImage).toString('base64');
+const testImageBuffer = Buffer.from(testImage).toString('base64');
 
 beforeAll(async () => {
   const { username, email } = testUser;
@@ -26,21 +26,26 @@ beforeAll(async () => {
   sessionId = encrypt(String(testUserId));
 });
 
+afterAll(async () => {
+  await db.query('DELETE FROM users WHERE _id = $1;', [testUserId]);
+});
+
 describe('/designs', () => {
   // test for making a new design
   describe('/new', () => {
-    let testOnlineUrl;
-    let newDesignId;
-    let newRootComponentId;
+    let testImageUrl;
+    let testDesignId;
+    let testRootComponentId;
 
     // success
-    it('should respond with 200 status with and application/json content type', async () => {
-      const response = await request(server)
+    it('responds with 200 status with application/json content type', async () => {
+      const testRes = await request(server)
         .post('/designs/new')
         .set('Cookie', `sessionID=${sessionId}`)
-        .send({ userImage: base64Image, imageWidth: 100, imageHeight: 100 })
+        .send({ userImage: testImageBuffer, imageHeight: 100 })
         .expect('Content-Type', /application\/json/)
         .expect(200);
+
       const {
         _id,
         user_id,
@@ -49,13 +54,19 @@ describe('/designs', () => {
         last_updated,
         image_url,
         components,
-      } = response.body;
-      const designsResponse = await db.query(
+      } = testRes.body;
+
+      expect(components.length).toEqual(1);
+      expect(components[0].name).toEqual('RootContainer');
+      expect(components[0].rectangle).toBeTruthy();
+
+      const dbRes = await db.query(
         'SELECT * FROM designs WHERE user_id = $1;',
         [testUserId]
       );
-      expect(designsResponse.rows.length).toEqual(1);
-      expect(JSON.stringify(designsResponse.rows[0])).toEqual(
+
+      expect(dbRes.rows.length).toEqual(1);
+      expect(
         JSON.stringify({
           _id,
           user_id,
@@ -64,13 +75,11 @@ describe('/designs', () => {
           last_updated,
           image_url,
         })
-      );
-      expect(components.length).toEqual(1);
-      expect(components[0].name).toEqual('RootContainer');
-      expect(components[0].rectangle).toBeTruthy();
-      testOnlineUrl = image_url;
-      newDesignId = _id;
-      newRootComponentId = components[0]._id;
+      ).toEqual(JSON.stringify(dbRes.rows[0]));
+
+      testImageUrl = image_url;
+      testDesignId = _id;
+      testRootComponentId = components[0]._id;
     });
 
     // When there is no cookie
@@ -80,7 +89,7 @@ describe('/designs', () => {
       () => {
         return request(server)
           .post('/designs/new')
-          .send({ userImage: base64Image, imageWidth: 100, imageHeight: 100 })
+          .send({ userImage: testImageBuffer, imageHeight: 100 })
           .expect('Content-Type', /application\/json/)
           .expect(500)
           .expect((res) => {
@@ -97,7 +106,7 @@ describe('/designs', () => {
         return request(server)
           .post('/designs/new')
           .set('Cookie', `sessionID=${encrypt('test')}`)
-          .send({ userImage: base64Image, imageWidth: 100, imageHeight: 100 })
+          .send({ userImage: testImageBuffer, imageHeight: 100 })
           .expect('Content-Type', /application\/json/)
           .expect(500)
           .expect((res) => {
@@ -106,34 +115,57 @@ describe('/designs', () => {
       }
     );
 
-    afterAll(async () => {
-      s3.deleteObject({ Bucket: 'reactraft', Key: testOnlineUrl });
-      await db.query('DELETE FROM rectangles WHERE component_id = $1;', [
-        newRootComponentId,
-      ]);
-      await db.query('DELETE FROM components WHERE design_id = $1;', [
-        newDesignId,
-      ]);
+    afterEach(async () => {
+      if (testImageUrl)
+        s3.deleteObject({ Bucket: 'reactraft', Key: testImageUrl });
+      if (testRootComponentId)
+        await db.query('DELETE FROM rectangles WHERE component_id = $1;', [
+          testRootComponentId,
+        ]);
+      if (testDesignId) {
+        await db.query('DELETE FROM components WHERE design_id = $1;', [
+          testDesignId,
+        ]);
+        await db.query('DELETE FROM designs WHERE _id = $1;', [testDesignId]);
+      }
     });
   });
 
-  // update design image, add new design tests must pass first
+  // test for updatel, add new design tests must pass first
   describe('/update/:designId', () => {
-    // set up testDesign
     let testDesign;
-    beforeAll(async () => {
+
+    beforeEach(async () => {
       const response = await request(server)
         .post('/designs/new')
         .set('Cookie', `sessionID=${sessionId}`)
-        .send({ userImage: base64Image, imageWidth: 100, imageHeight: 100 });
+        .send({ userImage: testImageBuffer, imageHeight: 100 });
       testDesign = response.body;
     });
 
+    afterEach(async () => {
+      if (testDesign) {
+        s3.deleteObject({ Bucket: 'reactraft', Key: testDesign.image_url });
+        if (testDesign.components[0])
+          await db.query('DELETE FROM rectangles WHERE component_id = $1;', [
+            testDesign.components[0]._id,
+          ]);
+        await db.query('DELETE FROM components WHERE design_id = $1;', [
+          testDesign._id,
+        ]);
+        await db.query('DELETE FROM designs WHERE _id = $1;', [testDesign._id]);
+      }
+    });
+
+    // success updating image
     it('should respond with 200 status and application/json content type', () => {
       return request(server)
         .post(`/designs/update/${testDesign._id}`)
         .set('Cookie', `sessionID=${sessionId}`)
-        .send({ userImage: base64Image, imageToDelete: testDesign.image_url })
+        .send({
+          userImage: testImageBuffer,
+          imageToDelete: testDesign.image_url,
+        })
         .expect('Content-Type', /application\/json/)
         .expect(200)
         .expect((res) => {
@@ -150,12 +182,14 @@ describe('/designs', () => {
         });
     });
 
-    // update title
+    // success updating title
     it('should respond with 200 status and application/json content type', () => {
       return request(server)
         .post(`/designs/update/${testDesign._id}`)
         .set('Cookie', `sessionID=${sessionId}`)
-        .send({ title: 'new_title' })
+        .send({
+          title: 'new_title',
+        })
         .expect('Content-Type', /application\/json/)
         .expect(200)
         .expect((res) => {
@@ -203,34 +237,60 @@ describe('/designs', () => {
           });
       }
     );
-
-    afterAll(async () => {
-      if (testDesign) {
-        await db.query('DELETE FROM rectangles WHERE component_id = $1;', [
-          testDesign.components[0]._id,
-        ]);
-        await db.query('DELETE FROM components WHERE design_id = $1;', [
-          testDesign._id,
-        ]);
-        s3.deleteObject({ Bucket: 'reactraft', Key: testDesign.image_url });
-      }
-    });
   });
 
+  // get designs for users. Need to pass tests for /new first
   describe('/get', () => {
     let testDesign0;
     let testDesign1;
-    beforeAll(async () => {
+    beforeEach(async () => {
       const response0 = await request(server)
         .post('/designs/new')
         .set('Cookie', `sessionID=${sessionId}`)
-        .send({ userImage: base64Image, imageWidth: 100, imageHeight: 100 });
+        .send({
+          userImage: testImageBuffer,
+          imageWidth: 100,
+          imageHeight: 100,
+        });
       testDesign0 = response0.body;
       const response1 = await request(server)
         .post('/designs/new')
         .set('Cookie', `sessionID=${sessionId}`)
-        .send({ userImage: base64Image, imageWidth: 100, imageHeight: 100 });
+        .send({
+          userImage: testImageBuffer,
+          imageWidth: 100,
+          imageHeight: 100,
+        });
       testDesign1 = response1.body;
+    });
+
+    afterEach(async () => {
+      if (testDesign0) {
+        await db.query('DELETE FROM rectangles WHERE component_id = $1;', [
+          testDesign0.components[0]._id,
+        ]);
+
+        await db.query('DELETE FROM components WHERE design_id = $1;', [
+          testDesign0._id,
+        ]);
+        await db.query('DELETE FROM designs WHERE _id = $1;', [
+          testDesign0._id,
+        ]);
+        s3.deleteObject({ Bucket: 'reactraft', Key: testDesign0.image_url });
+      }
+      if (testDesign1) {
+        await db.query('DELETE FROM rectangles WHERE component_id = $1;', [
+          testDesign1.components[0]._id,
+        ]);
+
+        await db.query('DELETE FROM components WHERE design_id = $1;', [
+          testDesign1._id,
+        ]);
+        await db.query('DELETE FROM designs WHERE _id = $1;', [
+          testDesign1._id,
+        ]);
+        s3.deleteObject({ Bucket: 'reactraft', Key: testDesign0.image_url });
+      }
     });
 
     it('should respond with 200 status with and application/json content type', () => {
@@ -241,37 +301,30 @@ describe('/designs', () => {
         .expect(200)
         .expect((res) => {
           const designs = res.body;
-          console.log('designs are', designs);
-          expect(designs.length).toEqual(4);
+          designs.sort((a, b) => a._id - b._id);
+          expect(designs.length).toEqual(2);
 
-          expect(designs[2]._id).toEqual(testDesign0._id);
-          expect(designs[3]._id).toEqual(testDesign1._id);
+          expect(designs[0]._id).toEqual(testDesign0._id);
+          expect(designs[1]._id).toEqual(testDesign1._id);
 
-          expect(designs[2].user_id).toEqual(designs[3].user_id);
-          expect(designs[2].user_id).toEqual(testUserId);
+          expect(designs[0].user_id).toEqual(designs[1].user_id);
+          expect(designs[0].user_id).toEqual(testUserId);
 
-          expect(designs[2].title).toEqual(designs[3].title);
-          expect(designs[2].title).toEqual('Untitled');
+          expect(designs[1].title).toEqual(designs[0].title);
+          expect(designs[1].title).toEqual('Untitled');
 
-          expect(new Date(designs[2].created_at)).toEqual(
-            new Date(testDesign0.created_at)
-          );
-          expect(new Date(designs[3].created_at)).toEqual(
-            new Date(testDesign1.created_at)
-          );
+          expect(designs[0].created_at).toEqual(testDesign0.created_at);
+          expect(designs[1].created_at).toEqual(testDesign1.created_at);
 
-          expect(new Date(designs[2].last_updated)).toEqual(
-            new Date(testDesign0.last_updated)
-          );
-          expect(new Date(designs[3].last_updated)).toEqual(
-            new Date(testDesign1.last_updated)
-          );
+          expect(designs[0].last_updated).toEqual(testDesign0.last_updated);
+          expect(designs[1].last_updated).toEqual(testDesign1.last_updated);
 
-          expect(designs[2].image_url).toEqual(testDesign0.image_url);
-          expect(designs[3].image_url).toEqual(testDesign1.image_url);
+          expect(designs[0].image_url).toEqual(testDesign0.image_url);
+          expect(designs[1].image_url).toEqual(testDesign1.image_url);
         });
     });
 
+    //no cookie
     it(
       'should respond with 500 status and application/json content type ' +
         ' and Cookie error message',
@@ -285,31 +338,246 @@ describe('/designs', () => {
           });
       }
     );
+  });
 
-    afterAll(async () => {
-      if (testDesign0) {
-        await db.query(
-          'DELETE FROM rectangles WHERE component_id = $1 OR component_id = $2;',
-          [testDesign0.components[0]._id, testDesign1.components[0]._id]
-        );
-        s3.deleteObject({ Bucket: 'reactraft', Key: testDesign0.image_url });
+  describe('/new-component/:designId', () => {
+    let testDesign;
+
+    beforeEach(async () => {
+      const response = await request(server)
+        .post('/designs/new')
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({ userImage: testImageBuffer, imageHeight: 100 });
+      testDesign = response.body;
+    });
+
+    //successfully add a new component
+    it('should respond with 200 status with and application/json content type', async () => {
+      const testRes = await request(server)
+        .post(`/designs/new-component/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({
+          name: 'newComponent',
+          index: 1,
+          rootId: testDesign.components[0]._id,
+        })
+        .expect('Content-Type', /application\/json/)
+        .expect(200);
+      const {
+        _id,
+        design_id,
+        parent_id,
+        index,
+        name,
+        html_tag,
+        inner_html,
+        props,
+        styles,
+        created_at,
+        rectangle,
+      } = testRes.body;
+      const dbCompRes = await db.query(
+        'SELECT * FROM components WHERE _id = $1;',
+        [_id]
+      );
+      expect(dbCompRes.rows.length).toEqual(1);
+      const dbRectRes = await db.query(
+        'SELECT * FROM rectangles WHERE component_id = $1;',
+        [_id]
+      );
+      expect(dbRectRes.rows.length).toEqual(1);
+
+      expect(design_id).toEqual(testDesign._id);
+      expect(parent_id).toEqual(testDesign.components[0]._id);
+      expect(index).toEqual(1);
+      expect(name).toEqual('newComponent');
+      expect(html_tag).toEqual('<div>');
+      expect(inner_html).toEqual('');
+      expect(props).toEqual('{}');
+      expect(styles).toEqual('{}');
+      expect(new Date(created_at)).toBeInstanceOf(Date);
+      expect(rectangle.component_id).toEqual(_id);
+      expect(rectangle.x_position).toEqual('0.00');
+      expect(rectangle.y_position).toEqual('0.00');
+      expect(rectangle.width).toEqual('100.00');
+      expect(rectangle.height).toEqual('100.00');
+      expect(rectangle.stroke).toEqual('black');
+    });
+
+    //no cookie
+    it(
+      'should respond with 500 status and application/json content type ' +
+        ' and Cookie error message',
+      () => {
+        return request(server)
+          .post(`/designs/new-component/${testDesign._id}`)
+          .send({
+            name: 'newComponent',
+            index: 1,
+            rootId: testDesign.components[0]._id,
+          })
+          .expect(500)
+          .expect((res) => {
+            expect(res.body).toContain('Cookie err');
+          });
       }
-      if (testDesign1) {
-        await db.query(
-          'DELETE FROM components WHERE design_id = $1 OR design_id = $2;',
-          [testDesign0._id, testDesign1._id]
+    );
+
+    afterEach(async () => {
+      if (testDesign) {
+        s3.deleteObject({ Bucket: 'reactraft', Key: testDesign.image_url });
+
+        const compRes = await db.query(
+          'SELECT * FROM components WHERE design_id = $1;',
+          [testDesign._id]
         );
-        s3.deleteObject({ Bucket: 'reactraft', Key: testDesign1.image_url });
+        if (testDesign.components) {
+          const componentIds = compRes.rows.map((item) => item._id);
+          await db.query(
+            'DELETE FROM rectangles WHERE component_id = ANY($1);',
+            [componentIds]
+          );
+        }
+        await db.query('DELETE FROM components WHERE design_id = $1;', [
+          testDesign._id,
+        ]);
+        await db.query('DELETE FROM designs WHERE _id = $1;', [testDesign._id]);
       }
     });
   });
 
-  // describe('/details/:designId', async () => {
-  //   await
-  // });
-});
+  // test the delete design feature; need to pass /new /new-components tests first
+  describe('/delete/:designId', () => {
+    let testDesign;
 
-afterAll(async () => {
-  await db.query('DELETE FROM designs WHERE user_id = $1;', [testUserId]);
-  await db.query('DELETE FROM users WHERE _id = $1;', [testUserId]);
+    beforeEach(async () => {
+      const response = await request(server)
+        .post('/designs/new')
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({ userImage: testImageBuffer, imageHeight: 100 });
+      testDesign = response.body;
+    });
+
+    // successfully delete when there is only one default rootcontainer
+    it('should respond with 200 status with and application/json content type', () => {
+      return request(server)
+        .delete(`/designs/delete/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .expect('Content-Type', /application\/json/)
+        .expect(200);
+    });
+
+    // successfully delete when there are more than one components, need to pass /new-components tests first
+    it('should respond with 200 status with and application/json content type', async () => {
+      await request(server)
+        .post(`/designs/new-component/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({
+          name: 'newComponent',
+          index: 1,
+          rootId: testDesign.components[0]._id,
+        });
+      await request(server)
+        .post(`/designs/new-component/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({
+          name: 'newComponent',
+          index: 1,
+          rootId: testDesign.components[0]._id,
+        });
+      return request(server)
+        .delete(`/designs/delete/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .expect('Content-Type', /application\/json/)
+        .expect(200);
+    });
+
+    afterEach(async () => {
+      s3.deleteObject({ Bucket: 'reactraft', Key: testDesign.image_url });
+      const compRes = await db.query(
+        'SELECT * FROM components WHERE design_id = $1;',
+        [testDesign._id]
+      );
+      if (testDesign.components) {
+        const componentIds = compRes.rows.map((item) => item._id);
+        await db.query('DELETE FROM rectangles WHERE component_id = ANY($1);', [
+          componentIds,
+        ]);
+      }
+      await db.query('DELETE FROM components WHERE design_id = $1;', [
+        testDesign._id,
+      ]);
+      await db.query('DELETE FROM designs WHERE _id = $1;', [testDesign._id]);
+    });
+  });
+
+  // test the get design details feature; need to pass /new, /new-components tests first
+  describe('/detail/:designId', () => {
+    let testDesign;
+
+    beforeEach(async () => {
+      const response = await request(server)
+        .post('/designs/new')
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({ userImage: testImageBuffer, imageHeight: 100 });
+      testDesign = response.body;
+    });
+
+    // successfully get detail when there is only one default rootcontainer
+    it('should respond with 200 status with and application/json content type', () => {
+      return request(server)
+        .get(`/designs/details/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .expect('Content-Type', /application\/json/)
+        .expect(200)
+        .expect((res) => expect(res.body).toEqual(testDesign));
+    });
+
+    // successfully delete when there are more than one components, need to pass /new-components tests first
+    it('should respond with 200 status with and application/json content type', async () => {
+      const newCompRes1 = await request(server)
+        .post(`/designs/new-component/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({
+          name: 'newComponent1',
+          index: 1,
+          rootId: testDesign.components[0]._id,
+        });
+      const newCompRes2 = await request(server)
+        .post(`/designs/new-component/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({
+          name: 'newComponent2',
+          index: 1,
+          rootId: testDesign.components[0]._id,
+        });
+
+      testDesign.components.push(newCompRes1.body);
+      testDesign.components.push(newCompRes2.body);
+      return request(server)
+        .get(`/designs/details/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .expect('Content-Type', /application\/json/)
+        .expect(200)
+        .expect((res) => expect(res.body).toEqual(testDesign));
+    });
+
+    afterEach(async () => {
+      s3.deleteObject({ Bucket: 'reactraft', Key: testDesign.image_url });
+      const compRes = await db.query(
+        'SELECT * FROM components WHERE design_id = $1;',
+        [testDesign._id]
+      );
+      if (testDesign.components) {
+        const componentIds = compRes.rows.map((item) => item._id);
+        await db.query('DELETE FROM rectangles WHERE component_id = ANY($1);', [
+          componentIds,
+        ]);
+      }
+      await db.query('DELETE FROM components WHERE design_id = $1;', [
+        testDesign._id,
+      ]);
+      await db.query('DELETE FROM designs WHERE _id = $1;', [testDesign._id]);
+    });
+  });
 });

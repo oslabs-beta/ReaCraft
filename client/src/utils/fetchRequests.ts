@@ -2,7 +2,6 @@ import { HtmlTag } from '../../../docs/types';
 
 export function addDesignRequest(body: {
   userImage: string;
-  imageWidth: number;
   imageHeight: number;
 }) {
   return fetch('/designs/new', {
