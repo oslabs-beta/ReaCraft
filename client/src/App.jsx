@@ -4,13 +4,12 @@ import Cookies from 'js-cookie';
 import { ThemeProvider, styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { themeLight, themeDark } from './styles/ThemeGlobal';
-import Container from '@mui/material/Container';
 import TopBar from './components/TopBar';
 import MainContainer from './components/MainContainer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setMessage } from './utils/reducers/appSlice';
 
-const drawerWidth = 150;
+const drawerWidth = 100;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     flexGrow: 1,
@@ -35,11 +34,18 @@ export default function App() {
     window.location.href = '/home';
     return;
   }
+
+  const error = useSelector((state) => state.designV2.error);
+  if (error) {
+    setMessage({
+      severity: 'error',
+      text: error,
+    });
+  }
   const { getUser } = useAuth();
   const dispatch = useDispatch();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  console.log('is drawer open?', drawerOpen);
 
   useEffect(() => {
     const fetchData = async () => {

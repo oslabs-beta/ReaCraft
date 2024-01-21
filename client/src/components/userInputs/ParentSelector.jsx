@@ -50,16 +50,25 @@ export default function ParentSelector({ childIdx }) {
               : { ...item, parent_id: components[parentIdx]._id }
           );
           const success = validTree(updatedComponents);
-          if (success) {
+          try {
+            if (success) {
+              dispatch(
+                updateComponentParent({
+                  componentId: child._id,
+                  body: { parentId: components[parentIdx]._id },
+                })
+              );
+              setParentValue(e.target.value);
+            }
+            dispatch(setMessage(success ? successMess : errorMess));
+          } catch (error) {
             dispatch(
-              updateComponentParent({
-                componentId: child._id,
-                body: { parentId: components[parentIdx]._id },
+              setMessage({
+                severity: 'error',
+                text: 'Design: update component parent' + err,
               })
             );
-            setParentValue(e.target.value);
           }
-          dispatch(setMessage(success ? successMess : errorMess));
         }}
       >
         {components.map((item, i) =>

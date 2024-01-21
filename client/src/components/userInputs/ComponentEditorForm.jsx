@@ -15,10 +15,7 @@ import {
   convertArrToObj,
   convertObjToArr,
 } from '../../utils/convertBetweenObjArr';
-import {
-  deleteComponent,
-  submitComponentForm,
-} from '../../utils/reducers/designSliceV2';
+import { submitComponentForm } from '../../utils/reducers/designSliceV2';
 
 const boxStyle = {
   position: 'absolute',
@@ -78,7 +75,7 @@ export default function ComponentEditorForm({
       } catch (err) {
         setMessage({
           severity: 'error',
-          text: 'Saving component: ' + err,
+          text: 'Design: update component: ' + err,
         });
       }
     } else {
@@ -100,7 +97,8 @@ export default function ComponentEditorForm({
         display='grid'
         gridTemplateColumns='repeat(12, 1fr)'
         gap={2}
-        onSubmit={handleSumbit}>
+        onSubmit={handleSumbit}
+      >
         <NameAndParent idx={idx} name={component.name} />
 
         {isLeaf && (
@@ -130,7 +128,8 @@ export default function ComponentEditorForm({
                   closeEditor();
                 }
                 dispatch(setMessage(deleteMessage));
-              }}>
+              }}
+            >
               Delete
             </Button>
           )}
@@ -216,7 +215,8 @@ function AddData({ data, setData, dataName }) {
                 value: '',
               },
             ])
-          }>
+          }
+        >
           <AddCircleIcon color='primary' />
         </IconButton>
       </Box>
@@ -282,7 +282,8 @@ function AddData({ data, setData, dataName }) {
             <IconButton
               onClick={() => {
                 setData(data.filter((_, i) => i !== idx));
-              }}>
+              }}
+            >
               <RemoveCircleIcon />
             </IconButton>
           </Box>
