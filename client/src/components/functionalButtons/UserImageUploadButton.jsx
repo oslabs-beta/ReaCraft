@@ -33,21 +33,39 @@ export default function UserImageUploadButton() {
           const setWidth = 800;
           const imageHeight = img.height * (setWidth / img.width);
           if (!designId) {
-            dispatch(newDesign({ userImage, imageHeight }));
+            try {
+              dispatch(newDesign({ userImage, imageHeight }));
+            } catch (err) {
+              dispatch(
+                setMessage({
+                  severity: 'error',
+                  text: 'App: add new design ' + err,
+                })
+              );
+            }
           } else {
             const url = new URL(image_url);
-            dispatch(
-              updateDesign({
-                designId,
-                body: {
-                  userImage,
-                  imageToDelete: url.pathname.slice(1),
-                  imageHeight,
-                  rootId: components[0]._id,
-                },
-              })
-            );
-            dispatch(updateRootHeight(imageHeight));
+            try {
+              dispatch(
+                updateDesign({
+                  designId,
+                  body: {
+                    userImage,
+                    imageToDelete: url.pathname.slice(1),
+                    imageHeight,
+                    rootId: components[0]._id,
+                  },
+                })
+              );
+              dispatch(updateRootHeight(imageHeight));
+            } catch (err) {
+              dispatch(
+                setMessage({
+                  severity: 'error',
+                  text: 'App: replace design image' + err,
+                })
+              );
+            }
           }
         };
 

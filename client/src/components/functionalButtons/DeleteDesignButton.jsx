@@ -35,7 +35,8 @@ export default function DeleteDesignButton({ designId }) {
         size='small'
         variant='contained'
         color='error'
-        onClick={() => setOpen(true)}>
+        onClick={() => setOpen(true)}
+      >
         <Delete />
       </Fab>
       <Dialog open={open} onClose={handleClose}>
@@ -60,11 +61,12 @@ export default function DeleteDesignButton({ designId }) {
                 dispatch(
                   setMessage({
                     severity: 'error',
-                    text: 'Delete failed' + err,
+                    text: 'Design: delete design ' + err,
                   })
                 );
               }
-            }}>
+            }}
+          >
             Yes
           </Button>
           <Button onClick={handleClose} autoFocus>

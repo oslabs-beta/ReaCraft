@@ -6,6 +6,7 @@ import Workspace from '../Workspace/Workspace';
 import { getDesigns } from '../../utils/fetchRequests';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import { setMessage } from '../../utils/reducers/appSlice';
 
 export default function UserDesigns() {
   const [pastDesigns, setPastDesigns] = useState([]);
@@ -21,7 +22,12 @@ export default function UserDesigns() {
         designs.sort((a, b) => a._id - b._id);
         setPastDesigns(designs);
       } catch (err) {
-        console.log(err);
+        dispatch(
+          setMessage({
+            severity: 'error',
+            text: 'App: fetch past designs ' + error,
+          })
+        );
       }
     };
 

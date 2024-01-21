@@ -15,6 +15,7 @@ export type HtmlTag = '<div>' | '<p>' | '<button>';
 
 export type Component = {
   _id: number;
+  parent_id: number;
   design_id: number;
   index: number;
   name: string;

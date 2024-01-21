@@ -28,11 +28,20 @@ export default function DeleteComponentButton({
     <Tooltip title='Delete component'>
       <IconButton
         onClick={() => {
-          if (canDelete) {
-            dispatch(deleteComponent(componentId));
+          try {
+            if (canDelete) {
+              dispatch(deleteComponent(componentId));
+            }
+            dispatch(setMessage(message));
+            dispatch(setSelectedIdx(null));
+          } catch (error) {
+            dispatch(
+              setMessage({
+                severity: 'error',
+                text: 'Design: delete component ' + error,
+              })
+            );
           }
-          dispatch(setMessage(message));
-          dispatch(setSelectedIdx(null));
         }}
       >
         <DeleteIcon />

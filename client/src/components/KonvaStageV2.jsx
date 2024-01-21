@@ -46,7 +46,16 @@ export default function KonvaStage({ userImage }) {
   function handleChangeEnd(componentId, attrs) {
     const { x, y, width, height } = attrs;
     const body = { x, y, width, height };
-    dispatch(updateComponentRectanglePosition({ componentId, body }));
+    try {
+      dispatch(updateComponentRectanglePosition({ componentId, body }));
+    } catch (error) {
+      dispatch(
+        setMessage({
+          severity: 'error',
+          text: 'Design: update component rectangle position' + error,
+        })
+      );
+    }
   }
 
   if (image) {
@@ -55,8 +64,8 @@ export default function KonvaStage({ userImage }) {
         <Layer>
           <Image
             image={image}
-            width={Number(components[0].rectangle.width)}
-            height={Number(components[0].rectangle.height)}
+            width={components[0].rectangle.width}
+            height={components[0].rectangle.height}
           />
           {rectangles.map((rect, i) => {
             if (!rectRefs.current[i]) rectRefs.current[i] = createRef();
@@ -65,19 +74,19 @@ export default function KonvaStage({ userImage }) {
               <Fragment key={component_id}>
                 <Rect
                   ref={rectRefs.current[i]}
-                  x={Number(rect.x_position)}
-                  y={Number(rect.y_position)}
-                  width={Number(rect.width)}
-                  height={Number(rect.height)}
+                  x={rect.x_position}
+                  y={rect.y_position}
+                  width={rect.width}
+                  height={rect.height}
                   stroke={rect.stroke}
                   strokeScaleEnabled={false}
                   draggable={
                     components.findIndex((c) => c._id === component_id) > 0
                   }
-                  strokeWidth={Number(rect.borderwidth)}
+                  strokeWidth={rect.borderwidth}
                   onClick={(e) => handleRectClick(e, component_id)}
                   fill={rect.backgroundcolor}
-                  cornerRadius={Number(rect.borderradius)}
+                  cornerRadius={rect.borderradius}
                   onDragEnd={(e) =>
                     handleChangeEnd(component_id, e.target.attrs)
                   }
