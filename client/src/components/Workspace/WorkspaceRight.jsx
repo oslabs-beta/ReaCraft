@@ -5,7 +5,7 @@ import ViewDomTreeButton from '../functionalButtons/ViewDomTreeButton';
 import ViewCodeButton from '../functionalButtons/ViewCodeButton';
 import { useSelector } from 'react-redux';
 import { convertToTree } from '../../utils/treeNode';
-import { jsxCode } from '../../utils/jsxCode';
+import Codes from '../../utils/Codes';
 import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import UserImageUpload from '../functionalButtons/UserImageUploadButton';
@@ -15,7 +15,8 @@ export default function WorkspaceRight() {
   const { selectedIdx } = useSelector((state) => state.app);
   const { _id } = useSelector((state) => state.designV2);
   const tree = convertToTree(components);
-  const code = jsxCode(components, tree);
+  const codes = new Codes(components, tree);
+  const jsx = codes.converToJsx();
   return (
     <Stack width='36px' direction='column' gap={2}>
       <Box
@@ -33,7 +34,7 @@ export default function WorkspaceRight() {
         <UserImageUpload height='64px' />
         <ViewDomTreeButton tree={tree} />
         <ViewCodeButton
-          code={code}
+          jsx={jsx}
           name={selectedIdx !== null ? components[selectedIdx].name : null}
         />
       </Box>
