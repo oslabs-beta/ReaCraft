@@ -13,7 +13,7 @@ import '../../styles/ViewCode.scss';
 import Grow from '@mui/material/Grow';
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-export default function ViewCodeButton({ code, name }) {
+export default function ViewCodeButton({ jsx, css, name }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -39,7 +39,8 @@ export default function ViewCodeButton({ code, name }) {
       {anchorEl && (
         <CopyCodePopper
           anchorEl={anchorEl}
-          code={code}
+          jsx={jsx}
+          css={css}
           name={name}
           onClose={closePopper}
           isTransitioning={isTransitioning}
@@ -49,9 +50,8 @@ export default function ViewCodeButton({ code, name }) {
   );
 }
 
-function GrowTransition({ code, name, isTransitioning }) {
+function GrowTransition({ jsx, css, name, isTransitioning }) {
   const [value, setValue] = useState('RootContainer');
-  console.log('value is ', value);
   useEffect(() => {
     if (name) setValue(name);
   }, [name]);
@@ -76,7 +76,7 @@ function GrowTransition({ code, name, isTransitioning }) {
             }}
           >
             <TabList onChange={(e, newVal) => setValue(newVal)}>
-              {Object.keys(code).map((key) => (
+              {Object.keys(jsx).map((key) => (
                 <Tab
                   label={key}
                   value={key}
@@ -86,10 +86,10 @@ function GrowTransition({ code, name, isTransitioning }) {
               ))}
             </TabList>
           </Box>
-          {Object.keys(code).map((key) => (
+          {Object.keys(jsx).map((key) => (
             <TabPanel value={key} key={key} className='code-panel'>
               <CodeBlock
-                text={code[key]}
+                text={jsx[key]}
                 language='jsx'
                 showLineNumbers={true}
                 theme={monokai}
@@ -102,7 +102,14 @@ function GrowTransition({ code, name, isTransitioning }) {
   );
 }
 
-function CopyCodePopper({ anchorEl, code, name, onClose, isTransitioning }) {
+function CopyCodePopper({
+  anchorEl,
+  jsx,
+  css,
+  name,
+  onClose,
+  isTransitioning,
+}) {
   const popperRef = useRef(null);
 
   // Close Popper when clicked outside
@@ -121,7 +128,8 @@ function CopyCodePopper({ anchorEl, code, name, onClose, isTransitioning }) {
       anchorEl={anchorEl}
     >
       <GrowTransition
-        code={code}
+        jsx={jsx}
+        css={css}
         name={name}
         isTransitioning={isTransitioning}
       />
