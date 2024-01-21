@@ -5,6 +5,7 @@ import DesignCard from './DesignCard';
 import Workspace from '../Workspace/Workspace';
 import { getDesigns } from '../../utils/fetchRequests';
 import { Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 
 export default function UserDesigns() {
   const [pastDesigns, setPastDesigns] = useState([]);
@@ -68,22 +69,34 @@ export default function UserDesigns() {
   if (!selectedDesign._id) {
     return (
       <Box>
-        <Typography 
-        sx={{
-          fontSize: "16", 
-          color: "black",
-          fontWeight: "bold",
-          marginBottom: 2,
-        }}
+        <Typography
+          sx={{
+            fontSize: '16',
+            color: 'black',
+            fontWeight: 'bold',
+            marginBottom: 2,
+          }}
         >
           Recent designs
         </Typography>
-        <Box display='grid' gridTemplateColumns='repeat(3, 1fr)' gap={2}>
-          {visibleDesigns.map((design) => ( // used pastDesigns here before
-            <DesignCard design={design} key={design._id}
-            setLocalSelectedDesignId={setLocalSelectedDesignId} />
-          ))}
-        </Box>
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 12, md: 12 }}
+        >
+          {visibleDesigns.map(
+            (
+              design // used pastDesigns here before
+            ) => (
+              <Grid item xs={2} sm={4} md={3} key={design._id}>
+                <DesignCard
+                  design={design}
+                  setLocalSelectedDesignId={setLocalSelectedDesignId}
+                />
+              </Grid>
+            )
+          )}
+        </Grid>
       </Box>
     );
   } else {
