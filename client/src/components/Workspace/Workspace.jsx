@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 
 import { useDispatch, useSelector } from 'react-redux';
 import WorkspaceLeft from './WorkspaceLeft';
 import WorkspaceRight from './WorkspaceRight';
 import KonvaStage from '../KonvaStageV2';
-import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
-import UserImageUpload from '../functionalButtons/UserImageUploadButton';
 import DesignTitleInput from '../userInputs/DesignTitleInput';
-import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import WorkspaceToolbar from './WorkspaceToolbar';
 import { setSelectedIdx } from '../../utils/reducers/appSlice';
 
@@ -77,16 +73,7 @@ export default function Workspace() {
       </Box>
 
       <Box gridColumn='span 8' align-items='center'>
-
-        {/* <img src={image_url} style={{ maxWidth: '100%' }} /> */}
-        {image_url && (
-          <KonvaStage
-            userImage={image_url}
-            selectedIdx={selectedIdx}
-            setSelectedIdx={setSelectedIdx}
-          />
-        )}
-      /* {image_url && <KonvaStage userImage={image_url} />} */
+        {image_url && <KonvaStage userImage={image_url} />}
       </Box>
       <Box
         gridColumn='span 2'
