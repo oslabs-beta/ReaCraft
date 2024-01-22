@@ -5,7 +5,6 @@ import ViewDomTreeButton from '../functionalButtons/ViewDomTreeButton';
 import ViewCodeButton from '../functionalButtons/ViewCodeButton';
 import { useSelector } from 'react-redux';
 import { convertToTree } from '../../utils/treeNode';
-import { jsxCode } from '../../utils/jsxCode';
 import Codes from '../../utils/Codes';
 import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
@@ -27,6 +26,7 @@ export default function WorkspaceRight() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+        }}>
         <ViewDomTreeButton tree={tree} />
         <ViewCodeButton
           css={css}

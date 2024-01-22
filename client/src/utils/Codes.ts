@@ -107,7 +107,6 @@ ${html}
     }
     const rootWidth = components[0].rectangle.width;
     const rootHeight = components[0].rectangle.height;
-    console.log('rootWidth, rootHeight', rootWidth, rootHeight);
     components.forEach((component, i) => {
       const { name, rectangle } = component;
       if (!rectangle) {

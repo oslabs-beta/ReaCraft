@@ -35,7 +35,6 @@ export default function UserImageUploadButton() {
         const img = new Image();
 
         img.onload = () => {
-
           const setWidth = 800;
           const imageHeight = img.height * (setWidth / img.width);
           if (!designId) {
@@ -83,31 +82,21 @@ export default function UserImageUploadButton() {
   return (
     <Fragment>
       <Tooltip title={tooltip}>
-
         <IconButton
           size='sm'
           type='file'
           name='userImage'
           accept='image/*'
           onClick={handleFileChange}>
+          {designId ? '' : ''}
           <CloudUploadRoundedIcon />
-          {/* <VisuallyHiddenInput /> */}
+          <VisuallyHiddenInput
+            type='file'
+            name='userImage'
+            accept='image/*'
+            onChange={handleFileChange}
+          />
         </IconButton>
-
-//         <Button
-//           component='label'
-//           variant='contained'
-//           startIcon={<CloudUploadIcon />}
-//         >
-//           {designId ? '' : 'Upload Image'}
-//           <VisuallyHiddenInput
-//             type='file'
-//             name='userImage'
-//             accept='image/*'
-//             onChange={handleFileChange}
-//           />
-//         </Button>
-
       </Tooltip>
     </Fragment>
   );
