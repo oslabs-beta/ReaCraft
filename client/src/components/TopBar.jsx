@@ -1,4 +1,3 @@
-
 import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -72,15 +71,13 @@ export default function TopBar({
           height: '56px',
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
-        }}
-      >
+        }}>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'start',
             alignItems: 'center',
-          }}
-        >
+          }}>
           {!designId && (
             <Fragment>
               <Button
@@ -88,8 +85,7 @@ export default function TopBar({
                 size='large'
                 disableElevation
                 onClick={() => setDrawerOpen(!drawerOpen)}
-                sx={AppBarButtonsStyle}
-              >
+                sx={AppBarButtonsStyle}>
                 <MenuIcon />
               </Button>
               <SideDrawer
@@ -102,33 +98,17 @@ export default function TopBar({
           <DesignTitleInput />
         </Box>
         <Tooltip title='Delete Current Project'>
-          <DeleteDesignButton designId={_id} />
+          {/* <DeleteDesignButton designId={_id} /> */}
         </Tooltip>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'end',
             alignItems: 'center',
-          }}
-        >
-          <DarkModeSwitch
-            size='xs'
-            toggleDarkMode={toggleDarkMode}
-            darkMode={darkMode}
-          />
-
+          }}>
           <Button
             variant='contained'
             disableElevation
-            onClick={() => handlePageClick('HOME')}
-            sx={AppBarButtonsStyle}
-          >
-            <HomeIcon />
-          </Button>
-          {/* <Button
-            variant='contained'
-            disableElevation
-
             onClick={() => handlePageClick('NEW_DESIGN')}
             sx={{
               ...AppBarButtonsStyle,
