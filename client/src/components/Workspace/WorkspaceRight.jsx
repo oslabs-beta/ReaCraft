@@ -16,7 +16,8 @@ export default function WorkspaceRight() {
   const { _id } = useSelector((state) => state.designV2);
   const tree = convertToTree(components);
   const codes = new Codes(components, tree);
-  const jsx = codes.converToJsx();
+  const jsx = codes.convertToJsx();
+  const css = codes.convertToCss();
   return (
     <Stack width='36px' direction='column' gap={2}>
       <Box
@@ -34,6 +35,7 @@ export default function WorkspaceRight() {
         <UserImageUpload height='64px' />
         <ViewDomTreeButton tree={tree} />
         <ViewCodeButton
+          css={css}
           jsx={jsx}
           name={selectedIdx !== null ? components[selectedIdx].name : null}
         />
