@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Fab from '@mui/material/Fab';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import { setMessage } from '../../utils/reducers/appSlice';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
 import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import { newDesign, updateDesign } from '../../utils/reducers/designSliceV2';
@@ -11,7 +12,7 @@ export default function UserImageUploadButton() {
   const dispatch = useDispatch();
   const designId = useSelector((state) => state.designV2._id);
   const image_url = useSelector((state) => state.designV2.image_url);
-  const tooltip = designId ? 'upload a new image' : 'replace image';
+  const tooltip = designId ? 'Upload New Image' : 'Replace Current Image';
 
   function handleFileChange(e) {
     const file = e.target.files[0];
@@ -26,11 +27,10 @@ export default function UserImageUploadButton() {
         const img = new Image();
 
         img.onload = () => {
-          console.log('width, height are', img.width, img.height);
-
+          // console.log('width, height are', img.width, img.height);
           const setWidth = 800;
           const imageHeight = img.height * (setWidth / img.width);
-          console.log(imageHeight);
+          // console.log(imageHeight);
 
           if (!designId) {
             dispatch(
@@ -51,7 +51,6 @@ export default function UserImageUploadButton() {
             );
           }
         };
-
         img.src = userImage;
       };
       reader.readAsDataURL(file);
@@ -60,17 +59,16 @@ export default function UserImageUploadButton() {
 
   return (
     <Fragment>
-      <Tooltip width='36px' title={tooltip}>
-        <Fab size='small' component='label' variant='contained'>
-          <CloudUploadIcon />
-          {designId ? '' : 'Upload Image'}
-          <VisuallyHiddenInput
-            type='file'
-            name='userImage'
-            accept='image/*'
-            onChange={handleFileChange}
-          />
-        </Fab>
+      <Tooltip title={tooltip}>
+        <IconButton
+          size='sm'
+          type='file'
+          name='userImage'
+          accept='image/*'
+          onClick={handleFileChange}>
+          <CloudUploadRoundedIcon />
+          {/* <VisuallyHiddenInput /> */}
+        </IconButton>
       </Tooltip>
     </Fragment>
   );

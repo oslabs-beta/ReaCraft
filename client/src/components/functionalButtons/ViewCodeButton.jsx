@@ -1,7 +1,9 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import Fab from '@mui/material/Fab';
+import IconButton from '@mui/material/IconButton';
 import Backdrop from '@mui/material/Backdrop';
 import { PiFileJsx } from 'react-icons/pi';
+import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { CodeBlock, monokai } from 'react-code-blocks';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
@@ -17,11 +19,14 @@ export default function ViewCodeButton({ code, name }) {
 
   return (
     <Fragment>
-      <Tooltip title='View jsx code for components'>
-        <Fab size='small' variant='contained' onClick={() => setViewCode(true)}>
-          <PiFileJsx />
+      <Tooltip title='View JSX Code for Components'>
+        <IconButton
+          size='small'
+          variant='contained'
+          onClick={() => setViewCode(true)}>
+          <CodeRoundedIcon />
           {/* {name ? name : 'View All'} */}
-        </Fab>
+        </IconButton>
       </Tooltip>
       <CopyCodeBackdrop
         viewCode={viewCode}

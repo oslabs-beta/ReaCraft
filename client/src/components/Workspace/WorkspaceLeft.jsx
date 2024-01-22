@@ -61,12 +61,6 @@ function ComponentDisplay({
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: 'flex',
-        }}>
-        <DesignTitleInput />
-      </Box>
       <ListItemButton
         value='NewComponentInputBox'
         selected={selected}
