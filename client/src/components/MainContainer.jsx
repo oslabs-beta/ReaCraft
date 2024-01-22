@@ -24,10 +24,11 @@ export default function MainContainer() {
       }}
     >
       {page === 'NEW_DESIGN' && <NewDesign />}
-      {page === 'HOME' && 
-        <Box display='flex' justifyContent='center' >
-          <Home maxWidth='false'/>
-        </Box>}
+      {page === 'HOME' && (
+        <Box display='flex' justifyContent='center'>
+          <Home maxWidth='false' />
+        </Box>
+      )}
       <Snackbar
         value='SnackbarUnderWorkSpaceCont'
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
