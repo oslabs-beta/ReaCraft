@@ -1,9 +1,9 @@
-export default function isValidVariableName(name) {
+export default function isValidVariableName(name: string): boolean {
   const validNameRegex = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
   return validNameRegex.test(name) && !isReservedWord(name);
 }
 
-function isReservedWord(name) {
+function isReservedWord(name: string): boolean {
   // List of reserved words in JavaScript
   const reservedWords = [
     'break',

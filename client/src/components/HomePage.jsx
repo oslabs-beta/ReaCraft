@@ -12,7 +12,6 @@ export default function Home() {
     return (
       <Container maxWidth='false'>
         {selectedDesignId ? null : <HomePageSearch />}
-        {/* <HomePageSearch /> */}
         <PastDesigns />
       </Container>
     );

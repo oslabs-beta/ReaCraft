@@ -35,7 +35,7 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a> -->
 
-<h3 align="center">Reactraft</h3>
+<h3 align="center">ReaCraft</h3>
 
   <p align="center">
 Streamlining React Development from Design to Deployment
@@ -91,6 +91,7 @@ Streamlining React Development from Design to Deployment
 ### Built With
 
 [![javascript](https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://www.javascript.com/)
+[![typescript](https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=black)](https://www.typescriptlang.org/)
 [![html5](https://img.shields.io/badge/html%205-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://html.spec.whatwg.org/)
 [![css3](https://img.shields.io/badge/css%203-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://en.wikipedia.org/wiki/CSS)
 
@@ -219,6 +220,7 @@ Project Link: [https://github.com/oslabs-beta/Reactraft](https://github.com/osla
 - [react-d3-tree](https://www.npmjs.com/package/react-d3-tree)
 - [react-code-blocks](https://github.com/rajinwonderland/react-code-blocks)
 - [Bootstrap](https://getbootstrap.com/)
+- [mui-color-input](https://www.npmjs.com/package/mui-color-input)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

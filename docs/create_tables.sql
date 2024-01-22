@@ -45,10 +45,9 @@ CREATE TABLE rectangles (
   z_index INTEGER DEFAULT 0,
   width DECIMAL(10, 2) DEFAULT 100,
   height DECIMAL(10, 2) DEFAULT 100,
-  isResizable BOOLEAN DEFAULT TRUE,
   borderWidth INT DEFAULT 3,
   borderRadius VARCHAR(255),
-  stroke VARCHAR(255) DEFAULT '#fff',
+  stroke VARCHAR(255) DEFAULT 'black',
   backgroundColor VARCHAR(255),
   FOREIGN KEY (component_id) REFERENCES components(_id)
 );
