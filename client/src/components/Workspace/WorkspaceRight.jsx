@@ -6,13 +6,18 @@ import ViewCodeButton from '../functionalButtons/ViewCodeButton';
 import { useSelector } from 'react-redux';
 import { convertToTree } from '../../utils/treeNode';
 import { jsxCode } from '../../utils/jsxCode';
+import Codes from '../../utils/Codes';
+import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 
-export default function WorkspaceRight({ selectedIdx }) {
+export default function WorkspaceRight() {
   const components = useSelector((state) => state.designV2.components);
-  // const { _id } = useSelector((state) => state.designV2);
+  const { selectedIdx } = useSelector((state) => state.app);
+  const { _id } = useSelector((state) => state.designV2);
   const tree = convertToTree(components);
-  const code = jsxCode(components, tree);
+  const codes = new Codes(components, tree);
+  const jsx = codes.convertToJsx();
+  const css = codes.convertToCss();
   return (
     <Stack width='36px' direction='column' gap={2}>
       <Box
@@ -22,10 +27,10 @@ export default function WorkspaceRight({ selectedIdx }) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-        }}>
         <ViewDomTreeButton tree={tree} />
         <ViewCodeButton
-          code={code}
+          css={css}
+          jsx={jsx}
           name={selectedIdx !== null ? components[selectedIdx].name : null}
         />
       </Box>

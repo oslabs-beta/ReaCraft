@@ -20,12 +20,21 @@ export default function HtmlTagSelector({ idx }) {
       name='htmlTag'
       value={component.html_tag}
       onChange={(e) => {
-        dispatch(
-          setMessage({
-            severity: 'success',
-            text: `Successfully set the html tag for ${component.name} (${idx}) to be ${e.target.value}`,
-          })
-        );
+        try {
+          dispatch(
+            setMessage({
+              severity: 'success',
+              text: `Successfully set the html tag for ${component.name} (${idx}) to be ${e.target.value}`,
+            })
+          );
+        } catch (error) {
+          dispatch(
+            setMessage({
+              severity: 'error',
+              text: 'Design: update component html tag' + err,
+            })
+          );
+        }
         dispatch(
           updateComponentHtmlTag({
             componentId: component._id,

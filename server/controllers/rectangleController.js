@@ -3,14 +3,14 @@ const db = require('../models/dbModel');
 // create rectangle for RootContainer component
 const createRootRectangle = (req, res, next) => {
   const rootId = res.locals.design.components[0]._id;
-  const { imageWidth, imageHeight } = req.body;
-  console.log(rootId, imageWidth, imageHeight);
+  const { imageHeight } = req.body;
+  console.log(rootId, imageHeight);
   return db
     .query(
       'INSERT INTO rectangles (component_id, width, height) ' +
         'VALUES ($1, $2, $3) ' +
         'RETURNING *;',
-      [rootId, imageWidth, imageHeight]
+      [rootId, 800, imageHeight]
     )
     .then((data) => {
       res.locals.design.components[0].rectangle = data.rows[0];
@@ -22,6 +22,24 @@ const createRootRectangle = (req, res, next) => {
           'Express error handler caught rectangleController.createRootRectangle middleware error' +
           err,
         message: { err: 'createRootRectangle: ' + err },
+      })
+    );
+};
+
+const updateRootRectangle = (req, res, next) => {
+  const { rootId, imageHeight } = req.body;
+  return db
+    .query('UPDATE rectangles SET height = $1 WHERE component_id = $2;', [
+      imageHeight,
+      rootId,
+    ])
+    .then(() => next())
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught rectangleController.createComponentRectangle middleware error' +
+          err,
+        message: { err: 'createComponentRectangle: ' + err },
       })
     );
 };
@@ -149,4 +167,5 @@ module.exports = {
   deleteComponentRectangle,
   updateComponentRectanglePosition,
   updateComponentRectangleStyle,
+  updateRootRectangle,
 };

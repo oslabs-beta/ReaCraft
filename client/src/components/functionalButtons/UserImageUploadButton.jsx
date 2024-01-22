@@ -1,17 +1,25 @@
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
+
+import Button from '@mui/material/Button';
+
 import { setMessage } from '../../utils/reducers/appSlice';
 import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
 import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
-import { newDesign, updateDesign } from '../../utils/reducers/designSliceV2';
+import {
+  newDesign,
+  updateDesign,
+  updateRootHeight,
+} from '../../utils/reducers/designSliceV2';
 
 export default function UserImageUploadButton() {
   const dispatch = useDispatch();
   const designId = useSelector((state) => state.designV2._id);
-  const image_url = useSelector((state) => state.designV2.image_url);
+  const { image_url, components } = useSelector((state) => state.designV2);
   const tooltip = designId ? 'Upload New Image' : 'Replace Current Image';
 
   function handleFileChange(e) {
@@ -27,28 +35,43 @@ export default function UserImageUploadButton() {
         const img = new Image();
 
         img.onload = () => {
-          // console.log('width, height are', img.width, img.height);
+
           const setWidth = 800;
           const imageHeight = img.height * (setWidth / img.width);
-          // console.log(imageHeight);
-
           if (!designId) {
-            dispatch(
-              newDesign({ userImage, imageWidth: setWidth, imageHeight })
-            );
+            try {
+              dispatch(newDesign({ userImage, imageHeight }));
+            } catch (err) {
+              dispatch(
+                setMessage({
+                  severity: 'error',
+                  text: 'App: add new design ' + err,
+                })
+              );
+            }
           } else {
             const url = new URL(image_url);
-            dispatch(
-              updateDesign({
-                designId,
-                body: {
-                  userImage,
-                  imageToDelete: url.pathname.slice(1),
-                  imageWidth: setWidth,
-                  imageHeight,
-                },
-              })
-            );
+            try {
+              dispatch(
+                updateDesign({
+                  designId,
+                  body: {
+                    userImage,
+                    imageToDelete: url.pathname.slice(1),
+                    imageHeight,
+                    rootId: components[0]._id,
+                  },
+                })
+              );
+              dispatch(updateRootHeight(imageHeight));
+            } catch (err) {
+              dispatch(
+                setMessage({
+                  severity: 'error',
+                  text: 'App: replace design image' + err,
+                })
+              );
+            }
           }
         };
         img.src = userImage;
@@ -60,6 +83,7 @@ export default function UserImageUploadButton() {
   return (
     <Fragment>
       <Tooltip title={tooltip}>
+
         <IconButton
           size='sm'
           type='file'
@@ -69,6 +93,21 @@ export default function UserImageUploadButton() {
           <CloudUploadRoundedIcon />
           {/* <VisuallyHiddenInput /> */}
         </IconButton>
+
+//         <Button
+//           component='label'
+//           variant='contained'
+//           startIcon={<CloudUploadIcon />}
+//         >
+//           {designId ? '' : 'Upload Image'}
+//           <VisuallyHiddenInput
+//             type='file'
+//             name='userImage'
+//             accept='image/*'
+//             onChange={handleFileChange}
+//           />
+//         </Button>
+
       </Tooltip>
     </Fragment>
   );

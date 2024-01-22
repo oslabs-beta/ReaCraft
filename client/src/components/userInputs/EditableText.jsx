@@ -29,8 +29,17 @@ const EditableText = ({ initialText, designId }) => {
               <InputAdornment position='end'>
                 <IconButton
                   onClick={async () => {
-                    setIsEditing(false);
-                    await updateDesignRequest(designId, { title: text });
+                    try {
+                      await updateDesignRequest(designId, { title: text });
+                      setIsEditing(false);
+                    } catch (error) {
+                      dispatch(
+                        setMessage({
+                          severity: 'error',
+                          text: 'Design: update title at homepage ' + err,
+                        })
+                      );
+                    }
                   }}
                 >
                   <CheckCircleIcon />

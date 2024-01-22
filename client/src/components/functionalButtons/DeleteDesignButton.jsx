@@ -57,11 +57,12 @@ export default function DeleteDesignButton({ designId }) {
                 dispatch(
                   setMessage({
                     severity: 'error',
-                    text: 'Delete failed' + err,
+                    text: 'Design: delete design ' + err,
                   })
                 );
               }
-            }}>
+            }}
+          >
             Yes
           </Button>
           <Button onClick={handleClose} autoFocus>
