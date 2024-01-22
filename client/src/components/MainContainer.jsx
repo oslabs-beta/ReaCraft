@@ -23,7 +23,7 @@ export default function MainContainer() {
         marginTop: '80px',
       }}
     >
-      {page === 'DESIGN' && <NewDesign />}
+      {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && (
         <Box display='flex' justifyContent='center'>
           <Home maxWidth='false' />
