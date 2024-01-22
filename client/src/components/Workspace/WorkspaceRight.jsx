@@ -10,7 +10,10 @@ import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import UserImageUploadButton from '../functionalButtons/UserImageUploadButton';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import DownloadFilesButton from '../functionalButtons/DownloadFilesButton';
+=======
+>>>>>>> a0ef5fb (workspace&topbar styling)
 =======
 >>>>>>> a0ef5fb (workspace&topbar styling)
 
@@ -31,7 +34,10 @@ export default function WorkspaceRight() {
         name={selectedIdx !== null ? components[selectedIdx].name : null}
       />
 <<<<<<< HEAD
+<<<<<<< HEAD
       <DownloadFilesButton jsx={jsx} css={css} />
+=======
+>>>>>>> a0ef5fb (workspace&topbar styling)
 =======
 >>>>>>> a0ef5fb (workspace&topbar styling)
       <DeleteDesignButton />
