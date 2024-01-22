@@ -14,7 +14,8 @@ export default function DesignTitleInput() {
         component='form'
         sx={{
           '& .MuiTextField-root': { m: '10px', width: '20ch' },
-        }}>
+        }}
+      >
         <TextField
           variant='filled'
           label='Design Name'
