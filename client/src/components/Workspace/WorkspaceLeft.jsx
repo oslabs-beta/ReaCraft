@@ -58,70 +58,57 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
   const selected = selectedIdx === idx;
 
   return (
-   <Box>
-    <ListItemButton
-      value='NewComponentInputBox'
-      selected={selected}
-      onClick={handleListItemClick}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        padding: '10px',
-        width: '75%',
-      }}
-    >
-      <Box
-
+    <Box>
+      <ListItemButton
+        value='NewComponentInputBox'
+        selected={selected}
+        onClick={handleListItemClick}
         sx={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           padding: '10px',
           width: '75%',
-        }}
-      >
+        }}>
         <Box
           sx={{
             display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            padding: '10px',
             width: '75%',
           }}>
-        <ListItemText primary={component.name} />
-        {selected && (
-          <IconButton
-            sx={{ marginLeft: '20px' }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpenEditor(true);
-            }}
-          >
-            <EditIcon />
-          </IconButton>
-        )}
-        <ComponentEditor
-          idx={idx}
-          open={openEditor}
-          closeEditor={() => setOpenEditor(false)}
-          isLeaf={isLeaf}
-        />
-            </Box>
-
-            {idx > 0 && selected && (
-              <DeleteComponentButton
-                name={component.name}
-                componentId={component._id}
-                canDelete={isLeaf}
-              />
+          <Box
+            sx={{
+              display: 'flex',
+              width: '75%',
+            }}>
+            <ListItemText primary={component.name} />
+            {selected && (
+              <IconButton
+                sx={{ marginLeft: '20px' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenEditor(true);
+                }}>
+                <EditIcon />
+              </IconButton>
             )}
+            <ComponentEditor
+              idx={idx}
+              open={openEditor}
+              closeEditor={() => setOpenEditor(false)}
+              isLeaf={isLeaf}
+            />
           </Box>
+          {idx > 0 && selected && (
+            <DeleteComponentButton
+              name={component.name}
+              componentId={component._id}
+              canDelete={isLeaf}
+            />
+          )}
         </Box>
-
-        {selected && (
-          <Fragment>
-            <ParentSelector childIdx={idx} />
-            {isLeaf && <HtmlTagSelector idx={idx} isLeaf={isLeaf} />}
-          </Fragment>
-        )}
       </ListItemButton>
     </Box>
   );
