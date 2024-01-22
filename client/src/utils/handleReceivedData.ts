@@ -36,16 +36,19 @@ export type ComponentRes = {
   props: string;
   styles: string;
   created_at: string;
-  rectangle: RectangleRes;
+  rectangle?: RectangleRes;
 };
 
 export function handleComponentRes(data: ComponentRes): Component {
   const { props, styles, rectangle } = data;
+  const dataToReturn: any = { ...data };
+  if (rectangle) {
+    dataToReturn.rectangle = handleRectangleRes(rectangle);
+  }
   return {
-    ...data,
+    ...dataToReturn,
     props: convertObjToArr(JSON.parse(props)),
     styles: convertObjToArr(JSON.parse(styles)),
-    rectangle: rectangle ? handleRectangleRes(rectangle) : undefined,
   };
 }
 
