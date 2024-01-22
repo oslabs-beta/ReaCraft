@@ -41,49 +41,46 @@ export default function Workspace() {
   }, [selectedIdx]);
 
   return (
-    <Box sx={{ flexGrow: 1 }} maxWidth='1500px' minWidth='1000px'>
-      <Grid container spacing={1}>
-        <Grid item xs={3} sx={{ paddingTop: 0 }}></Grid>
-        <Grid
-          item
-          xs={8}
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            height: '50px',
-            paddingTop: 0,
-          }}>
-          {selectedIdx !== null && components[selectedIdx] && (
-            <WorkspaceToolbar
-              rectangle={components[selectedIdx].rectangle}
-              key={selectedIdx}
-            />
-          )}
-        </Grid>
-        <Grid item xs={1} sx={{ paddingTop: 0 }}></Grid>
-        <Grid
-          item
-          xs={3}
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            justifyItems: 'flex-start',
-          }}>
-          <WorkspaceLeft />
-        </Grid>
-        <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'center' }}>
-          {image_url && <KonvaStage userImage={image_url} />}
-        </Grid>
-        <Grid
-          item
-          xs={1}
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}>
-          <WorkspaceRight />
-        </Grid>
-      </Grid>
+    <Box maxWidth='false' display='flex'>
+      {/* <Box
+        sx={{
+          display: 'flex',
+        }}
+      >
+        <DesignTitleInput />
+      </Box> */}
+      <Box
+        gridColumn='span 12'
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '10px',
+          gap: '10px',
+        }}>
+        {selectedIdx !== null && components[selectedIdx] && (
+          <WorkspaceToolbar
+            rectangle={components[selectedIdx].rectangle}
+            key={selectedIdx}
+          />
+        )}
+      </Box>
+
+      <Box gridColumn='span 2'>
+        <WorkspaceLeft />
+      </Box>
+      <Box gridColumn='span 8' align-items='center'>
+        {image_url && <KonvaStage userImage={image_url} />}
+      </Box>
+      <Box
+        gridColumn='span 2'
+        sx={{
+          display: 'flex',
+
+          justifyContent: 'center',
+        }}>
+        <WorkspaceRight />
+      </Box>
     </Box>
   );
 }
