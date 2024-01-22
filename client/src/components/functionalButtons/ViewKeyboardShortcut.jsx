@@ -26,23 +26,20 @@ import '../../styles/keyboardShortcut.scss';
 export default function ViewKeyboardShortcut() {
   const [open, setOpen] = useState(false);
   return (
-
     <Fragment>
       <Tooltip title='View keyboard Shortcuts Button'>
         <IconButton
-
           size='small'
           component='label'
           variant='contained'
-          onClick={() => setOpen(true)}
-        >
+          onClick={() => setOpen(true)}>
           <KeyboardIcon />
         </IconButton>
       </Tooltip>
       <BackdropSnackbar open={open} setOpen={setOpen} />
 
       <ShortcutBackdrop open={open} setOpen={setOpen} />
-    </Box>
+    </Fragment>
   );
 }
 
@@ -55,8 +52,7 @@ function ShortcutBackdrop({ open, setOpen }) {
         backgroundColor: '#ffffff4D',
       }}
       open={open}
-      onDoubleClick={() => setOpen(false)}
-    >
+      onDoubleClick={() => setOpen(false)}>
       <List className='keyboard-shortcuts'>
         <ListItem className='shortcut'>
           <ListItemIcon sx={{ color: 'white' }}>esc</ListItemIcon>
