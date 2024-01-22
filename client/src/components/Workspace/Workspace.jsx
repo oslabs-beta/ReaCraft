@@ -45,13 +45,13 @@ export default function Workspace() {
 
   return (
     <Box maxWidth='false' display='flex'>
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
         }}
       >
         <DesignTitleInput />
-      </Box>
+      </Box> */}
       <Box
         gridColumn='span 12'
         sx={{
@@ -74,21 +74,17 @@ export default function Workspace() {
         <WorkspaceLeft />
       </Box>
       <Box gridColumn='span 8' align-items='center'>
-
         {image_url && <KonvaStage userImage={image_url} />}
-
       </Box>
       <Box
         gridColumn='span 2'
         sx={{
           display: 'flex',
 
-
           justifyContent: 'center',
         }}
       >
         <WorkspaceRight />
-
       </Box>
     </Box>
   );
