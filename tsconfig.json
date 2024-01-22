@@ -8,10 +8,6 @@
     "allowJs": true,
     "moduleResolution": "node"
   },
-  "files": [
-    "docs/types.ts",
-    "client/src/utils/fetchRequests.ts",
-    "server/server.ts",
-    "client/src/utils/reducers/appSlice.ts"
-  ]
+  "files": ["docs/types.ts", "server/server.ts"],
+  "include": ["client/utils/**/*"]
 }

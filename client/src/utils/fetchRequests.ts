@@ -1,4 +1,9 @@
 import { Component, Design, HtmlTag, Rectangle } from '../../../docs/types';
+import {
+  handleComponentRes,
+  handleDesignRes,
+  handleRectangleRes,
+} from './handleReceivedData';
 
 export function addDesignRequest(body: {
   userImage: string;
@@ -17,17 +22,7 @@ export function addDesignRequest(body: {
       }
       return res.json();
     })
-    .then((data) => {
-      const rectangle = data.components[0].rectangle;
-      data.components[0].rectangle = {
-        ...rectangle,
-        width: parseFloat(rectangle.width),
-        height: parseFloat(rectangle.height),
-        x_position: parseFloat(rectangle.x_position),
-        y_position: parseFloat(rectangle.y_position),
-      };
-      return data;
-    })
+    .then(handleDesignRes)
     .catch((err) => {
       console.log('App: add design: ERROR: ', err);
       throw err;
@@ -57,19 +52,7 @@ export function updateDesignRequest(
       }
       return res.json();
     })
-    .then((data) => {
-      data.components.forEach((component: any) => {
-        const rectangle = component.rectangle;
-        component.rectangle = {
-          ...rectangle,
-          width: parseFloat(rectangle.width),
-          height: parseFloat(rectangle.height),
-          x_position: parseFloat(rectangle.x_position),
-          y_position: parseFloat(rectangle.y_position),
-        };
-      });
-      return data;
-    })
+    .then(handleDesignRes)
     .catch((err) => {
       throw err;
     });
@@ -92,17 +75,7 @@ export function addNewComponentRequest(
       }
       return res.json();
     })
-    .then((data) => {
-      const rectangle = data.rectangle;
-      data.rectangle = {
-        ...rectangle,
-        width: parseFloat(rectangle.width),
-        height: parseFloat(rectangle.height),
-        x_position: parseFloat(rectangle.x_position),
-        y_position: parseFloat(rectangle.y_position),
-      };
-      return data;
-    })
+    .then(handleComponentRes)
     .catch((err) => {
       throw err;
     });
@@ -139,19 +112,7 @@ export function getDesignDetailsRequest(designId: number): Promise<Design> {
       }
       return res.json();
     })
-    .then((data) => {
-      data.components.forEach((component: any) => {
-        const rectangle = component.rectangle;
-        component.rectangle = {
-          ...rectangle,
-          width: parseFloat(rectangle.width),
-          height: parseFloat(rectangle.height),
-          x_position: parseFloat(rectangle.x_position),
-          y_position: parseFloat(rectangle.y_position),
-        };
-      });
-      return data;
-    })
+    .then(handleDesignRes)
     .catch((err) => {
       throw err;
     });
@@ -264,6 +225,7 @@ export function submitComponentFormRequest(
       }
       return res.json();
     })
+    .then(handleComponentRes)
     .catch((err) => {
       throw err;
     });
@@ -313,15 +275,7 @@ export function updateComponentRectanglePositionRequest(
       }
       return res.json();
     })
-    .then((data): Rectangle => {
-      return {
-        ...data,
-        width: parseFloat(data.width),
-        height: parseFloat(data.height),
-        x_position: parseFloat(data.x_position),
-        y_position: parseFloat(data.y_position),
-      };
-    })
+    .then(handleRectangleRes)
     .catch((err) => {
       throw err;
     });
@@ -351,15 +305,7 @@ export function updateComponentRectangleStyleRequest(
       }
       return res.json();
     })
-    .then((data): Rectangle => {
-      return {
-        ...data,
-        width: parseFloat(data.width),
-        height: parseFloat(data.height),
-        x_position: parseFloat(data.x_position),
-        y_position: parseFloat(data.y_position),
-      };
-    })
+    .then(handleRectangleRes)
     .catch((err) => {
       throw err;
     });

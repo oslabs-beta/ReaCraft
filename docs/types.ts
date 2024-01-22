@@ -15,14 +15,14 @@ export type HtmlTag = '<div>' | '<p>' | '<button>';
 
 export type Component = {
   _id: number;
-  parent_id: number;
   design_id: number;
+  parent_id: number;
   index: number;
   name: string;
   html_tag: HtmlTag;
   inner_html: string;
-  props: [key: string, value: string] | { [key: string]: any };
-  styles: [key: string, value: string] | { [key: string]: any };
+  props: { key: string; value: string }[];
+  styles: { key: string; value: string }[];
   created_at: string;
   rectangle?: Rectangle;
 };
