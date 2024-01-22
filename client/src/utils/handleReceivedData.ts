@@ -9,7 +9,7 @@ export type RectangleRes = {
   width: string;
   height: string;
   borderwidth: number;
-  borderradius?: number;
+  borderradius?: string;
   backgroundcolor?: string;
   stroke: string;
 };
@@ -17,6 +17,7 @@ export type RectangleRes = {
 export function handleRectangleRes(data: RectangleRes): Rectangle {
   return {
     ...data,
+    borderradius: Number(data.borderradius),
     width: parseFloat(data.width),
     height: parseFloat(data.height),
     x_position: parseFloat(data.x_position),
@@ -35,16 +36,19 @@ export type ComponentRes = {
   props: string;
   styles: string;
   created_at: string;
-  rectangle: RectangleRes;
+  rectangle?: RectangleRes;
 };
 
 export function handleComponentRes(data: ComponentRes): Component {
   const { props, styles, rectangle } = data;
+  const dataToReturn: any = { ...data };
+  if (rectangle) {
+    dataToReturn.rectangle = handleRectangleRes(rectangle);
+  }
   return {
-    ...data,
+    ...dataToReturn,
     props: convertObjToArr(JSON.parse(props)),
     styles: convertObjToArr(JSON.parse(styles)),
-    rectangle: rectangle ? handleRectangleRes(rectangle) : undefined,
   };
 }
 
