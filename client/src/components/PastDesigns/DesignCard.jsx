@@ -12,20 +12,25 @@ import {
 } from '../../utils/reducers/designSliceV2';
 import EditableText from '../userInputs/EditableText';
 import Paper from '@mui/material/Paper';
+import { setMessage } from '../../utils/reducers/appSlice';
 
 export default function DesignCard({ design, setLocalSelectedDesignId }) {
   const dispatch = useDispatch();
   const created_at = new Date(design.created_at).toLocaleDateString();
   const last_updated = new Date(design.last_updated).toLocaleDateString();
-  console.log('design is', design);
 
   const handleViewDesign = async () => {
     try {
       dispatch(getDesignDetails(design._id));
-      // setLocalSelectedDesignId(design._id);
+      // resets the search term in redux state
       dispatch(setSearchTerm(''));
     } catch (err) {
-      console.log('error ' + err);
+      dispatch(
+        setMessage({
+          severity: 'error',
+          text: 'Design: view past design detail ' + err,
+        })
+      );
     }
   };
 

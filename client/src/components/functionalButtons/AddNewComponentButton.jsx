@@ -34,17 +34,27 @@ export default function AddNewComponentButton() {
       onSubmit={(e) => {
         e.preventDefault();
         if (isValidReactComponentName(name)) {
-          dispatch(
-            addNewComponent({
-              designId: design._id,
-              body: {
-                index: design.components.length,
-                rootId: design.components[0]._id,
-                name,
-              },
-            })
-          );
-          dispatch(setMessage(successMess));
+          try {
+            dispatch(
+              addNewComponent({
+                designId: design._id,
+                body: {
+                  index: design.components.length,
+                  rootId: design.components[0]._id,
+                  name,
+                },
+              })
+            );
+            dispatch(setMessage(successMess));
+            setName('');
+          } catch (error) {
+            dispatch(
+              setMessage({
+                severity: 'error',
+                text: 'Design: add new component ' + error,
+              })
+            );
+          }
         } else {
           const errMessage = name.length === 0 ? emptyNameErr : firstCharErr;
           dispatch(setMessage(errMessage));
