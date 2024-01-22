@@ -30,7 +30,7 @@ export default function AddNewComponentButton() {
   const design = useSelector((state) => state.designV2);
   return (
     <form
-      style={{ display: 'flex' }}
+      style={{ display: 'flex', width: '200px' }}
       onSubmit={(e) => {
         e.preventDefault();
         if (isValidReactComponentName(name)) {

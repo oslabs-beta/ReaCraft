@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteDesign } from '../../utils/fetchRequests';
 import { setMessage } from '../../utils/reducers/appSlice';
 import Delete from '@mui/icons-material/Delete';
@@ -13,7 +13,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import { resetDesign } from '../../utils/reducers/designSliceV2';
 
-export default function DeleteDesignButton({ designId }) {
+export default function DeleteDesignButton() {
+  const designId = useSelector((state) => state.designV2._id);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -32,9 +33,9 @@ export default function DeleteDesignButton({ designId }) {
 
   return (
     <Fragment>
-      <IconButton size='small' onClick={() => setOpen(true)}>
+      <Fab size='small' onClick={() => setOpen(true)} color='error'>
         <Delete />
-      </IconButton>
+      </Fab>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>
