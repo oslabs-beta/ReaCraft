@@ -36,13 +36,10 @@ export default function ViewCodeButton({ css, jsx, name }) {
   return (
     <Fragment>
       <Tooltip title='View JSX Code for Components'>
-        <IconButton
-          size='small'
-          variant='contained'
-          onClick={openPopper}>
+        <Fab size='small' variant='contained' onClick={openPopper}>
           <CodeRoundedIcon />
           {/* {name ? name : 'View All'} */}
-        </IconButton>
+        </Fab>
       </Tooltip>
       {anchorEl && (
         <CopyCodePopper
