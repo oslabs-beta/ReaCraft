@@ -1,24 +1,32 @@
+import { Component, HtmlTag } from '../../../docs/types';
+
 export default class TreeNode {
-  constructor(component, id) {
+  name: string;
+  attributes: { tag: HtmlTag };
+  id: number;
+  children: TreeNode[];
+
+  constructor(component: Component, id: number) {
     this.name = component.name;
     this.attributes = { tag: component.html_tag };
     this.id = id;
     this.children = [];
   }
 
-  addChild(child) {
+  addChild(child: TreeNode): void {
     this.children.push(child);
   }
 
-  removeChild(child) {
+  removeChild(child: TreeNode): void {
     this.children = this.children.filter((c) => c.id !== child.id);
   }
 
-  searchNode(id) {
+  searchNode(id: number | undefined) {
+    if (!id) throw new Error('TreeNode: searchNode is passed in undefined.');
     if (this.id === id) return this;
     else if (this.children.length === 0) return;
     else {
-      let res;
+      let res: TreeNode | undefined = undefined;
       this.children.forEach((child) => {
         const searchChild = child.searchNode(id);
         if (searchChild) {
@@ -30,7 +38,7 @@ export default class TreeNode {
   }
 }
 
-export function validTree(components) {
+export function validTree(components: Component[]) {
   const seen = new Set();
   const stack = [components[0]._id];
   while (stack.length > 0) {
@@ -39,7 +47,7 @@ export function validTree(components) {
     const children = components.flatMap((item) =>
       item.parent_id === cur ? item._id : []
     );
-    children.forEach((i) => {
+    children.forEach((i: number) => {
       if (seen.has(i)) return false;
       stack.push(i);
     });
@@ -47,7 +55,7 @@ export function validTree(components) {
   return seen.size === components.length;
 }
 
-export function convertToTree(components) {
+export function convertToTree(components: Component[]) {
   if (components.length === 0) return null;
   const rootId = components[0]._id;
   const stack = [rootId];
@@ -56,11 +64,12 @@ export function convertToTree(components) {
   while (stack.length > 0) {
     const cur = stack.pop();
     const node = tree.searchNode(cur);
-    const childrenIndices = components.flatMap((item, idx) =>
+    if (!node) throw new Error('TreeNode: searchNode returned undefined.');
+    const childrenIndices = components.flatMap((item: Component, idx: number) =>
       item.parent_id === cur ? idx : []
     );
 
-    childrenIndices.forEach((i) => {
+    childrenIndices.forEach((i: number) => {
       const child = components[i];
       const childId = child._id;
       stack.push(childId);

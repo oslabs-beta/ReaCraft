@@ -31,6 +31,7 @@ router.post(
   imageController.deleteImage,
   imageController.uploadImage,
   designController.updateDesign,
+  rectangleController.updateRootRectangle,
   sendDesign
 );
 
@@ -50,7 +51,7 @@ router.delete(
   componentController.deleteDesignComponents,
   designController.deleteDesign,
   imageController.deleteImage,
-  (req, res) => res.status(200).send({})
+  (req, res) => res.status(200).send('deleted design successfully')
 );
 
 router.post(

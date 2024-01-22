@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import React from 'react';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import HomeIcon from '@mui/icons-material/Home';
-import BackupTableIcon from '@mui/icons-material/BackupTable';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -11,9 +8,11 @@ import Divider from '@mui/material/Divider';
 import { useDispatch } from 'react-redux';
 import { goToPage } from '../utils/reducers/appSlice';
 import { resetDesign } from '../utils/reducers/designSliceV2';
+import Tooltip from '@mui/material/Tooltip';
+import Stack from '@mui/material/Stack';
+import Fab from '@mui/material/Fab';
 
 export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
-  const [value, setValue] = useState(0);
   const dispatch = useDispatch();
 
   function handleClick(page) {
@@ -22,39 +21,34 @@ export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
   }
   return (
     <Drawer
-      sx={{ width: 200 }}
       anchor='left'
+      variant='persistent'
       open={drawerOpen}
-      onClose={() => setDrawerOpen(false)}
+      sx={{
+        width: 100,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: 100,
+          boxSizing: 'border-box',
+        },
+      }}
     >
-      <Button onClick={() => setDrawerOpen(false)}>
+      <Button onClick={() => setDrawerOpen(false)} sx={{ height: '56px' }}>
         <ChevronLeftIcon />
       </Button>
       <Divider />
-      <Tabs
-        orientation='vertical'
-        variant='scrollable'
-        onChange={(_, val) => setValue(val)}
-        value={value}
-        aria-label='Vertical tabs example'
-        sx={{ borderRight: 1, borderColor: 'divider' }}
-      >
-        <Tab
-          icon={<AddPhotoAlternateIcon />}
-          label='New Design'
-          onClick={() => handleClick('NEW_DESIGN')}
-        />
-        <Tab
-          icon={<HomeIcon />}
-          label='Home'
-          onClick={() => handleClick('HOME')}
-        />
-        <Tab
-          icon={<BackupTableIcon />}
-          label='Past Designs'
-          onClick={() => handleClick('PAST_DESIGNS')}
-        />
-      </Tabs>
+      <Stack gap={2} sx={{ alignItems: 'center', marginTop: '15px' }}>
+        <Tooltip title='New Design'>
+          <Fab color='primary' onClick={() => handleClick('NEW_DESIGN')}>
+            <AddPhotoAlternateIcon />
+          </Fab>
+        </Tooltip>
+        <Tooltip title='Home'>
+          <Fab color='primary' onClick={() => handleClick('HOME')}>
+            <HomeIcon />
+          </Fab>
+        </Tooltip>
+      </Stack>
     </Drawer>
   );
 }
