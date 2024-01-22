@@ -1,10 +1,14 @@
 import React, { useRef, useState, Fragment, useEffect } from 'react';
 import Tree from 'react-d3-tree';
 import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 import BackdropSnackbar from './BackdropSnackbar';
-import { Backdrop, Fab, List, FormLabel, Box } from '@mui/material';
+import { Button, Backdrop, Fab, List, FormLabel, Box } from '@mui/material';
+import { ImTree } from 'react-icons/im';
 import { themeDOMTreeLight } from '../../styles/ThemeDOMTree';
 import { ThemeProvider } from '@mui/material/styles';
+import SchemaRoundedIcon from '@mui/icons-material/SchemaRounded';
+
 
 import '../../utils/treeNode.css';
 
@@ -22,6 +26,9 @@ export default function ViewDomTreeButton({ tree }) {
     };
   }, [viewTree]);
   return (
+
+    <Fragment>
+
     <Box
       sx={{
         display: 'flex',
@@ -29,13 +36,15 @@ export default function ViewDomTreeButton({ tree }) {
         justifyContent: 'center',
       }}
     >
+
       <Tooltip title='View Dom tree'>
-        <Fab size='small' variant='contained' onClick={() => setViewTree(true)}>
+        <IconButton onClick={() => setViewTree(true)}>
           <svg
             xmlns='http://www.w3.org/2000/svg'
-            width='16'
-            height='16'
-            fill='currentColor'
+            width='20'
+            height='20'
+            fontSize='inherit'
+            // fill='989897'
             className='bi bi-diagram-3-fill'
             viewBox='0 0 16 16'
           >
@@ -44,7 +53,7 @@ export default function ViewDomTreeButton({ tree }) {
               d='M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5zm-6 8A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5zm6 0A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5zm6 0a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5z'
             />
           </svg>
-        </Fab>
+        </IconButton>
       </Tooltip>
 
       <BackdropSnackbar open={viewTree} setOpen={setViewTree} />

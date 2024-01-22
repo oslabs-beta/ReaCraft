@@ -13,6 +13,7 @@ import HtmlTagSelector from '../userInputs/HtmlTagSelector';
 import DeleteComponentButton from '../functionalButtons/DeleteComponentButton';
 import { ThemeProvider, useTheme } from '@mui/material';
 import { WorkspaceLeftLightTheme } from '../../styles/WorkspaceLeftTheme';
+import DesignTitleInput from '../userInputs/DesignTitleInput';
 
 import { setSelectedIdx } from '../../utils/reducers/appSlice';
 
@@ -57,6 +58,7 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
   const selected = selectedIdx === idx;
 
   return (
+   <Box>
     <ListItemButton
       value='NewComponentInputBox'
       selected={selected}
@@ -70,11 +72,20 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
       }}
     >
       <Box
+
         sx={{
           display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '10px',
           width: '75%',
         }}
       >
+        <Box
+          sx={{
+            display: 'flex',
+            width: '75%',
+          }}>
         <ListItemText primary={component.name} />
         {selected && (
           <IconButton
@@ -93,22 +104,25 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
           closeEditor={() => setOpenEditor(false)}
           isLeaf={isLeaf}
         />
+            </Box>
 
-        {idx > 0 && selected && (
-          <DeleteComponentButton
-            name={component.name}
-            componentId={component._id}
-            canDelete={isLeaf}
-          />
+            {idx > 0 && selected && (
+              <DeleteComponentButton
+                name={component.name}
+                componentId={component._id}
+                canDelete={isLeaf}
+              />
+            )}
+          </Box>
+        </Box>
+
+        {selected && (
+          <Fragment>
+            <ParentSelector childIdx={idx} />
+            {isLeaf && <HtmlTagSelector idx={idx} isLeaf={isLeaf} />}
+          </Fragment>
         )}
-      </Box>
-
-      {selected && (
-        <Fragment>
-          <ParentSelector childIdx={idx} />
-          {isLeaf && <HtmlTagSelector idx={idx} isLeaf={isLeaf} />}
-        </Fragment>
-      )}
-    </ListItemButton>
+      </ListItemButton>
+    </Box>
   );
 }
