@@ -16,8 +16,6 @@ import { useTheme } from '@mui/material';
 
 /* MUI Icon Imports */
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import HomeIcon from '@mui/icons-material/Home';
-import MenuIcon from '@mui/icons-material/Menu';
 import Padding from '@mui/icons-material';
 
 import DarkModeSwitch from './functionalButtons/DarkModeSwitch';
@@ -73,13 +71,15 @@ export default function TopBar({
           height: '56px',
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
-        }}>
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'start',
             alignItems: 'center',
-          }}>
+          }}
+        >
           {!designId && (
             <Fragment>
               <Button
@@ -87,7 +87,8 @@ export default function TopBar({
                 size='large'
                 disableElevation
                 onClick={() => setDrawerOpen(!drawerOpen)}
-                sx={AppBarButtonsStyle}>
+                sx={AppBarButtonsStyle}
+              >
                 <MenuIcon />
               </Button>
               <SideDrawer
@@ -107,7 +108,8 @@ export default function TopBar({
             display: 'flex',
             justifyContent: 'end',
             alignItems: 'center',
-          }}>
+          }}
+        >
           <Button
             variant='contained'
             disableElevation
@@ -118,7 +120,8 @@ export default function TopBar({
               color: '#e2e2d3',
               boxShadow: '1px 1px 5px white',
             }}
-            startIcon={<AddPhotoAlternateIcon />}>
+            startIcon={<AddPhotoAlternateIcon />}
+          >
             New Design
           </Button>
           <PanToolButton />
@@ -138,7 +141,8 @@ export default function TopBar({
               disableElevation
               onClick={() => handlePageClick('HOME')}
               width='30px'
-              size='sm'>
+              size='sm'
+            >
               <HomeIcon />
             </IconButton>
           </Tooltip>
