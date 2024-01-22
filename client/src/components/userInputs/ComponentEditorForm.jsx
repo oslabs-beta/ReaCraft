@@ -11,10 +11,7 @@ import { setMessage } from '../../utils/reducers/appSlice';
 import isValidVariableName from '../../utils/isValidVariableName';
 import Button from '@mui/material/Button';
 import HtmlTagSelector from './HtmlTagSelector';
-import {
-  convertArrToObj,
-  convertObjToArr,
-} from '../../utils/convertBetweenObjArr';
+import { convertArrToObj } from '../../utils/convertBetweenObjArr';
 import { submitComponentForm } from '../../utils/reducers/designSliceV2';
 
 const boxStyle = {
@@ -37,12 +34,8 @@ export default function ComponentEditorForm({
   const dispatch = useDispatch();
   const component = useSelector((state) => state.designV2.components)[idx];
 
-  const [props, setProps] = useState(
-    convertObjToArr(JSON.parse(component.props))
-  );
-  const [styles, setStyles] = useState(
-    convertObjToArr(JSON.parse(component.styles))
-  );
+  const [props, setProps] = useState(component.props);
+  const [styles, setStyles] = useState(component.styles);
 
   const deleteMessage = isLeaf
     ? {
