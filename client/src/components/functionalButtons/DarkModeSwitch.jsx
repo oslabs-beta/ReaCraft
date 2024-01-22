@@ -4,7 +4,7 @@ import Switch from '@mui/material/Switch';
 import Tooltip from '@mui/material/Tooltip';
 
 const MuiSwitch = styled(Switch)(({ theme }) => ({
-  width: 62,
+  width: 50,
   height: 27,
   padding: 6,
   '& .MuiSwitch-switchBase': {

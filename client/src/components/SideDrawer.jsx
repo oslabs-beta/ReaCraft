@@ -25,7 +25,7 @@ export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
       variant='persistent'
       open={drawerOpen}
       sx={{
-        width: 100,
+        width: drawerOpen ? 100 : 0,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
           width: 100,
