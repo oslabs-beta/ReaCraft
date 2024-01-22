@@ -8,7 +8,6 @@ import { convertToTree } from '../../utils/treeNode';
 import Codes from '../../utils/Codes';
 import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
-import UserImageUpload from '../functionalButtons/UserImageUploadButton';
 
 export default function WorkspaceRight() {
   const components = useSelector((state) => state.designV2.components);
@@ -22,17 +21,12 @@ export default function WorkspaceRight() {
     <Stack width='36px' direction='column' gap={2}>
       <Box
         width='36px'
-        height='200px'
+        height='100px'
         sx={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-        }}
-      >
-        <ViewKeyboardShortcut
-          sx={{ position: 'absolute', justifySelf: 'end' }}
-        />
-        <UserImageUpload height='64px' />
+        }}>
         <ViewDomTreeButton tree={tree} />
         <ViewCodeButton
           css={css}
@@ -40,9 +34,9 @@ export default function WorkspaceRight() {
           name={selectedIdx !== null ? components[selectedIdx].name : null}
         />
       </Box>
-      <Box maxWidth='false' sx={{ position: 'absolute', top: '50vh' }}>
+      {/* <Box maxWidth='false' sx={{ position: 'absolute', top: '50vh' }}>
         <DeleteDesignButton designId={_id} />
-      </Box>
+      </Box> */}
     </Stack>
   );
 }
