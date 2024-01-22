@@ -33,10 +33,7 @@ export default function DeleteDesignButton() {
 
   return (
     <Fragment>
-      <Fab
-        size='small'
-        onClick={() => setOpen(true)}
-        sx={{ backgroundColor: '#F6D5D5' }}>
+      <Fab size='small' onClick={() => setOpen(true)} color='error'>
         <Delete />
       </Fab>
       <Dialog open={open} onClose={handleClose}>
