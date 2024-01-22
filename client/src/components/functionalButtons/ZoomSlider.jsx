@@ -1,0 +1,22 @@
+import React, { useState } from 'react';
+import Slider from '@mui/material/Slider';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
+import { Typography } from '@mui/material';
+
+export default function ZoomSlider() {
+  const [zoom, setZoom] = useState(100);
+  return (
+    <Stack direction='row' alignItems='center'>
+      <IconButton onClick={() => setZoom(zoom - 10)}>
+        <RemoveCircleRoundedIcon />
+      </IconButton>
+      <Typography>{zoom}%</Typography>
+      <IconButton onClick={() => setZoom(zoom + 10)}>
+        <AddCircleRoundedIcon />
+      </IconButton>
+    </Stack>
+  );
+}

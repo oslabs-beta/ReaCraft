@@ -7,6 +7,21 @@
     border: none !important;
   }
 
+  .MuiButtonBase-root {
+    position: absolute;
+    right: -5px;
+    top: 0;
+    height: 30px;
+    box-shadow: none;
+  }
+
   padding: 0 !important;
   padding-right: 5px !important;
+}
+
+.MuiButtonGroup-root {
+  .MuiButtonBase-root {
+    height: 30px;
+    width: 40px;
+  }
 }
