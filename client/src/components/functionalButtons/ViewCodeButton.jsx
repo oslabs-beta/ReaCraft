@@ -13,7 +13,7 @@ import '../../styles/ViewCode.scss';
 import Grow from '@mui/material/Grow';
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-export default function ViewCodeButton({ jsx, css, name }) {
+export default function ViewCodeButton({ css, jsx, name }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -78,12 +78,17 @@ function GrowTransition({ jsx, css, name, isTransitioning }) {
             <TabList onChange={(e, newVal) => setValue(newVal)}>
               {Object.keys(jsx).map((key) => (
                 <Tab
-                  label={key}
+                  label={key + '.jsx'}
                   value={key}
                   key={key}
                   className='code-block-tab'
                 />
               ))}
+              <Tab
+                label={'styles.css'}
+                value='css'
+                className='code-block-tab'
+              />
             </TabList>
           </Box>
           {Object.keys(jsx).map((key) => (
@@ -96,6 +101,14 @@ function GrowTransition({ jsx, css, name, isTransitioning }) {
               />
             </TabPanel>
           ))}
+          <TabPanel value='css' className='code-panel'>
+            <CodeBlock
+              text={Object.values(css).join('\n\n')}
+              language='css'
+              showLineNumbers={true}
+              theme={monokai}
+            />
+          </TabPanel>
         </TabContext>
       </Box>
     </Grow>
