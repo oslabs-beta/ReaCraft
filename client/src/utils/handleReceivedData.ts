@@ -9,7 +9,7 @@ export type RectangleRes = {
   width: string;
   height: string;
   borderwidth: number;
-  borderradius?: number;
+  borderradius?: string;
   backgroundcolor?: string;
   stroke: string;
 };
@@ -17,6 +17,7 @@ export type RectangleRes = {
 export function handleRectangleRes(data: RectangleRes): Rectangle {
   return {
     ...data,
+    borderradius: Number(data.borderradius),
     width: parseFloat(data.width),
     height: parseFloat(data.height),
     x_position: parseFloat(data.x_position),
