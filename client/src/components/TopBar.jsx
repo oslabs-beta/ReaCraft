@@ -1,6 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+/* MUI Material Imports */
+
 import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -8,10 +13,21 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material';
-import SideDrawer from './SideDrawer';
-import UserMenu from './functionalButtons/UserMenu';
-import DarkModeSwitch from './functionalButtons/DarkModeSwitch';
 
+/* MUI Icon Imports */
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import HomeIcon from '@mui/icons-material/Home';
+import MenuIcon from '@mui/icons-material/Menu';
+import Padding from '@mui/icons-material';
+
+import DarkModeSwitch from './functionalButtons/DarkModeSwitch';
+import DeleteDesignButton from './functionalButtons/DeleteDesignButton';
+import DesignTitleInput from './userInputs/DesignTitleInput';
+import PanToolButton from './functionalButtons/PanHandButton';
+import UserImageUpload from './functionalButtons/UserImageUploadButton';
+import UserMenu from './functionalButtons/UserMenu';
+import SideDrawer from './SideDrawer';
+import ViewKeyboardShortcut from './functionalButtons/ViewKeyboardShortcut';
 import { goToPage } from '../utils/reducers/appSlice';
 import { resetDesign } from '../utils/reducers/designSliceV2';
 import { useAuth } from '../hooks/useAuth';
@@ -33,31 +49,37 @@ export default function TopBar({
   }
 
   const designId = useSelector((state) => state.designV2._id);
+
   const { user } = useAuth();
   const theme = useTheme();
+
+  //GlobalTheme Light/Dark Mode Switch
   const AppBarButtonsStyle =
     theme.palette.mode === 'dark'
       ? AppBarButtonsStyleDark
       : AppBarButtonsStyleLight;
+
+  function handlePageClick(page) {
+    dispatch(goToPage(page));
+    dispatch(resetDesign());
+  }
+
   return (
     <AppBar display='block' position='fixed' height='56px'>
       <Toolbar
         disableGutters={true}
-        variant='dense'
         sx={{
           display: 'flex',
           height: '56px',
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
-        }}
-      >
+        }}>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'start',
             alignItems: 'center',
-          }}
-        >
+          }}>
           {!designId && (
             <Fragment>
               <Button
@@ -65,8 +87,7 @@ export default function TopBar({
                 size='large'
                 disableElevation
                 onClick={() => setDrawerOpen(!drawerOpen)}
-                sx={AppBarButtonsStyle}
-              >
+                sx={AppBarButtonsStyle}>
                 <MenuIcon />
               </Button>
               <SideDrawer
@@ -75,31 +96,19 @@ export default function TopBar({
               />
             </Fragment>
           )}
-
           <Typography fontSize='25px'>ReaCraft</Typography>
+          <DesignTitleInput />
         </Box>
+        <Tooltip title='Delete Current Project'>
+          {/* <DeleteDesignButton designId={_id} /> */}
+        </Tooltip>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'end',
             alignItems: 'center',
-          }}
-        >
-          <DarkModeSwitch
-            size='xs'
-            toggleDarkMode={toggleDarkMode}
-            darkMode={darkMode}
-          />
-
+          }}>
           <Button
-            variant='contained'
-            disableElevation
-            onClick={() => handlePageClick('HOME')}
-            sx={AppBarButtonsStyle}
-          >
-            <HomeIcon />
-          </Button>
-          {/* <Button
             variant='contained'
             disableElevation
             onClick={() => handlePageClick('NEW_DESIGN')}
@@ -111,8 +120,31 @@ export default function TopBar({
             }}
             startIcon={<AddPhotoAlternateIcon />}>
             New Design
-          </Button> */}
-          {user && <UserMenu />}
+          </Button>
+          <PanToolButton />
+          <ViewKeyboardShortcut
+            sx={{ position: 'absolute', justifySelf: 'end' }}
+          />
+          <UserImageUpload height='64px' />
+          <DarkModeSwitch
+            size='xs'
+            toggleDarkMode={toggleDarkMode}
+            darkMode={darkMode}
+          />
+
+          <Tooltip title='Home Button'>
+            <IconButton
+              variant='contained'
+              disableElevation
+              onClick={() => handlePageClick('HOME')}
+              width='30px'
+              size='sm'>
+              <HomeIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='User Settings Dropdown'>
+            {user && <UserMenu />}
+          </Tooltip>
         </Box>
       </Toolbar>
     </AppBar>

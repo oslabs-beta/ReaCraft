@@ -4,6 +4,7 @@ import { deleteDesign } from '../../utils/fetchRequests';
 import { setMessage } from '../../utils/reducers/appSlice';
 import Delete from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Fab from '@mui/material/Fab';
 
 import Dialog from '@mui/material/Dialog';
@@ -31,14 +32,9 @@ export default function DeleteDesignButton({ designId }) {
 
   return (
     <Fragment>
-      <Fab
-        size='small'
-        variant='contained'
-        color='error'
-        onClick={() => setOpen(true)}
-      >
+      <IconButton size='small' onClick={() => setOpen(true)}>
         <Delete />
-      </Fab>
+      </IconButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>
