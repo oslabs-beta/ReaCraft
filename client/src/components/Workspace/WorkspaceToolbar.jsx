@@ -24,12 +24,22 @@ export default function WorkspaceToolbar({ rectangle }) {
   const dispatch = useDispatch();
   function handleSubmit(styleToChange, value) {
     const componentId = rectangle.component_id;
-    dispatch(
-      updateComponentRectangleStyle({
-        componentId,
-        body: { styleToChange, value },
-      })
-    );
+    try {
+      dispatch(
+        updateComponentRectangleStyle({
+          componentId,
+          body: { styleToChange, value },
+        })
+      );
+    } catch (error) {
+      dispatch(
+        setMessage({
+          severity: 'error',
+          text:
+            'Design: update component rectangle ' + styleToChange + ' ' + error,
+        })
+      );
+    }
   }
 
   const theme = useTheme();

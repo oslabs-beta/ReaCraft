@@ -9,23 +9,36 @@ export default function DesignTitleInput() {
   const design = useSelector((state) => state.designV2);
   const [title, setTitle] = useState(design.title);
   return (
+
     <Box
       component='form'
       sx={{
-        '& .MuiTextField-root': { m: '10px', width: '20ch' },
+        '& .MuiTextField-root': { m: '10px', width: '20ch' }}>
+    <TextField
+      variant='filled'
+      label='Design Name'
+      className='designTitle'
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+      onBlur={() => {
+        try {
+          dispatch(
+            updateDesign({
+              designId: design._id,
+              body: { title },
+            })
+          );
+        } catch (error) {
+          dispatch(
+            setMessage({
+              severity: 'error',
+              text: 'Design: update title in workspace ' + err,
+            })
+          );
+        }
       }}
       noValidate
       autoComplete='off'>
-      <TextField
-        className='designTitle'
-        size='xm'
-        maxHeight='36'
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        onBlur={() => {
-          dispatch(updateDesign({ designId: design._id, body: { title } }));
-        }}
-      />
     </Box>
   );
 }

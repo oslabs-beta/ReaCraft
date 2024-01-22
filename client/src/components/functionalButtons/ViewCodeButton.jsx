@@ -1,7 +1,9 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment, useEffect, useRef } from 'react';
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
 import Backdrop from '@mui/material/Backdrop';
+import Popper from '@mui/material/Popper';
+
 import { PiFileJsx } from 'react-icons/pi';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { CodeBlock, monokai } from 'react-code-blocks';
@@ -12,10 +14,24 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import '../../styles/ViewCode.scss';
-import BackdropSnackbar from './BackdropSnackbar';
+import Grow from '@mui/material/Grow';
+import useOutsideClick from '../../hooks/useOutsideClick';
 
-export default function ViewCodeButton({ code, name }) {
-  const [viewCode, setViewCode] = useState(false);
+export default function ViewCodeButton({ css, jsx, name }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const openPopper = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const closePopper = () => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setAnchorEl(null);
+      setIsTransitioning(false);
+    }, 225); // Ensure this matches the Grow component's timeout
+  };
 
   return (
     <Fragment>
@@ -23,72 +39,121 @@ export default function ViewCodeButton({ code, name }) {
         <IconButton
           size='small'
           variant='contained'
-          onClick={() => setViewCode(true)}>
+          onClick={openPopper}>
           <CodeRoundedIcon />
           {/* {name ? name : 'View All'} */}
         </IconButton>
       </Tooltip>
-      <CopyCodeBackdrop
-        viewCode={viewCode}
-        setViewCode={setViewCode}
-        code={code}
-        name={name}
-      />
-      <BackdropSnackbar open={viewCode} setOpen={setViewCode} />
+      {anchorEl && (
+        <CopyCodePopper
+          anchorEl={anchorEl}
+          jsx={jsx}
+          css={css}
+          name={name}
+          onClose={closePopper}
+          isTransitioning={isTransitioning}
+        />
+      )}
     </Fragment>
   );
 }
 
-function CopyCodeBackdrop({ viewCode, setViewCode, code, name }) {
+function GrowTransition({ jsx, css, name, isTransitioning }) {
   const [value, setValue] = useState('RootContainer');
-
   useEffect(() => {
     if (name) setValue(name);
   }, [name]);
-
   return (
-    <Backdrop
-      sx={{
-        color: '#fff',
-        zIndex: (theme) => theme.zIndex.drawer + 1,
-        backgroundColor: '#ffffff4D',
-      }}
-      open={viewCode}
-      onDoubleClick={() => setViewCode(false)}>
+    <Grow
+      in={!isTransitioning}
+      style={{ transformOrigin: 'center right' }}
+      timeout={255}
+    >
       <Box
         sx={{
           backgroundColor: '#5D5F58',
           borderRadius: '10px',
-        }}>
+          marginTop: '60px',
+        }}
+      >
         <TabContext value={value}>
           <Box
             sx={{
               borderBottom: 1,
               borderColor: 'divider',
-            }}>
+            }}
+          >
             <TabList onChange={(e, newVal) => setValue(newVal)}>
-              {Object.keys(code).map((key) => (
+              {Object.keys(jsx).map((key) => (
                 <Tab
-                  label={key}
+                  label={key + '.jsx'}
                   value={key}
                   key={key}
                   className='code-block-tab'
                 />
               ))}
+              <Tab
+                label={'styles.css'}
+                value='css'
+                className='code-block-tab'
+              />
             </TabList>
           </Box>
-          {Object.keys(code).map((key) => (
+          {Object.keys(jsx).map((key) => (
             <TabPanel value={key} key={key} className='code-panel'>
               <CodeBlock
-                text={code[key]}
+                text={jsx[key]}
                 language='jsx'
                 showLineNumbers={true}
                 theme={monokai}
               />
             </TabPanel>
           ))}
+          <TabPanel value='css' className='code-panel'>
+            <CodeBlock
+              text={Object.values(css).join('\n\n')}
+              language='css'
+              showLineNumbers={true}
+              theme={monokai}
+            />
+          </TabPanel>
         </TabContext>
       </Box>
-    </Backdrop>
+    </Grow>
+  );
+}
+
+function CopyCodePopper({
+  anchorEl,
+  jsx,
+  css,
+  name,
+  onClose,
+  isTransitioning,
+}) {
+  const popperRef = useRef(null);
+
+  // Close Popper when clicked outside
+  useOutsideClick(popperRef, () => {
+    if (anchorEl && onClose) onClose();
+  });
+  return (
+    <Popper
+      ref={popperRef}
+      sx={{
+        color: '#fff',
+        backgroundColor: '#ffffff4D',
+      }}
+      open={Boolean(anchorEl)}
+      placement='left'
+      anchorEl={anchorEl}
+    >
+      <GrowTransition
+        jsx={jsx}
+        css={css}
+        name={name}
+        isTransitioning={isTransitioning}
+      />
+    </Popper>
   );
 }
