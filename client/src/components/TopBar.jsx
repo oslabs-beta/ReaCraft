@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 /* MUI Material Imports */
 
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
+import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
+import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material';
 
 /* MUI Icon Imports */
