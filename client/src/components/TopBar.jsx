@@ -17,6 +17,7 @@ import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 
 /* MUI Icon Imports */
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import Padding from '@mui/icons-material';
 
 import DarkModeSwitch from './functionalButtons/DarkModeSwitch';
 import DesignTitleInput from './userInputs/DesignTitleInput';
@@ -72,8 +73,10 @@ export default function TopBar({
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
         }}
+      
       >
-        <Stack direction='row' alignItems='center'>
+        <Stack direction='row' alignItems='center'
+        >
           {!designId && (
             <Fragment>
               <Button
@@ -81,6 +84,7 @@ export default function TopBar({
                 size='large'
                 onClick={() => setDrawerOpen(!drawerOpen)}
                 sx={AppBarButtonsStyle}
+              
               >
                 <MenuIcon />
               </Button>
@@ -91,34 +95,19 @@ export default function TopBar({
               <Typography fontSize='25px'>ReaCraft</Typography>
             </Fragment>
           )}
-          {designId && (
-            <Fragment>
-              <Tooltip title='placeholder for logo'>
-                <img
-                  src='./assets/logo_thickoutline_3.svg'
-                  style={{
-                    marginLeft: '20px',
-                    width: 40,
-                    height: 40,
-                    color: '#736c6c',
-                  }}
-                />
-              </Tooltip>
-              <DesignTitleInput />
-            </Fragment>
-          )}
-        </Stack>
-
-        <Stack direction='row' alignItems='center'>
-          {designId && (
-            <Fragment>
-              <ZoomSlider />
-              <Divider orientation='vertical' flexItem />
-              <PanToolButton />
-              <Divider orientation='vertical' flexItem />
-            </Fragment>
-          )}
-
+          <Typography fontSize='25px'>ReaCraft</Typography>
+          <DesignTitleInput />
+        </Box>
+        <Tooltip title='Delete Current Project'>
+          {/* <DeleteDesignButton designId={_id} /> */}
+        </Tooltip>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'end',
+            alignItems: 'center',
+          }}
+        >
           <Button
             variant='contained'
             onClick={() => handlePageClick('NEW_DESIGN')}
@@ -130,6 +119,7 @@ export default function TopBar({
               margin: '0 5px',
             }}
             startIcon={<AddPhotoAlternateIcon />}
+          
           >
             New Design
           </Button>
@@ -142,8 +132,7 @@ export default function TopBar({
               variant='contained'
               onClick={() => handlePageClick('HOME')}
               width='30px'
-              size='sm'
-            >
+              size='sm'>
               <HomeIcon />
             </IconButton>
           </Tooltip>
@@ -153,8 +142,22 @@ export default function TopBar({
             toggleDarkMode={toggleDarkMode}
             darkMode={darkMode}
           />
-          {user && <UserMenu />}
-        </Stack>
+
+          <Tooltip title='Home Button'>
+            <IconButton
+              variant='contained'
+              disableElevation
+              onClick={() => handlePageClick('HOME')}
+              width='30px'
+              size='sm'
+            >
+              <HomeIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='User Settings Dropdown'>
+            {user && <UserMenu />}
+          </Tooltip>
+        </Box>
       </Toolbar>
     </AppBar>
   );
