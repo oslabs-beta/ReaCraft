@@ -2,9 +2,6 @@ import React, { Fragment, useState } from 'react';
 
 import KeyboardIcon from '@mui/icons-material/Keyboard';
 import Fab from '@mui/material/Fab';
-
-
-import KeyboardIcon from '@mui/icons-material/Keyboard';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Backdrop from '@mui/material/Backdrop';
@@ -36,7 +33,8 @@ export default function ViewKeyboardShortcut() {
           size='small'
           component='label'
           variant='contained'
-          onClick={() => setOpen(true)}>
+          onClick={() => setOpen(true)}
+        >
           <KeyboardIcon />
         </IconButton>
       </Tooltip>
@@ -56,7 +54,8 @@ function ShortcutBackdrop({ open, setOpen }) {
         backgroundColor: '#ffffff4D',
       }}
       open={open}
-      onDoubleClick={() => setOpen(false)}>
+      onDoubleClick={() => setOpen(false)}
+    >
       <List className='keyboard-shortcuts'>
         <ListItem className='shortcut'>
           <ListItemIcon sx={{ color: 'white' }}>esc</ListItemIcon>
