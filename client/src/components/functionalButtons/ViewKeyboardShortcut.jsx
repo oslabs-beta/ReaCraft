@@ -1,21 +1,16 @@
 import React, { Fragment, useState } from 'react';
+
 import KeyboardIcon from '@mui/icons-material/Keyboard';
-import Button from '@mui/material/Button';
-import Fab from '@mui/material/Fab';
-
+import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-
-import BackdropSnackbar from './BackdropSnackbar';
 import Backdrop from '@mui/material/Backdrop';
-
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import AddIcon from '@mui/icons-material/Add';
 import Stack from '@mui/material/Stack';
-
+import Typography from '@mui/material/Typography';
 import {
   TbSquareLetterT,
   TbSquareLetterD,
@@ -23,26 +18,21 @@ import {
   TbSquareLetterS,
 } from 'react-icons/tb';
 
+import BackdropSnackbar from './BackdropSnackbar';
 import '../../styles/keyboardShortcut.scss';
-import { Typography } from '@mui/material';
 
 export default function ViewKeyboardShortcut() {
   const [open, setOpen] = useState(false);
   return (
-    <Fragment
-      sx={{
-        display: 'flex',
-        width: '40px',
-        justifyContent: 'center',
-      }}>
-      <Tooltip title='View keyboard shortcuts'>
-        <Fab
+    <Fragment>
+      <Tooltip title='View keyboard Shortcuts Button'>
+        <IconButton
           size='small'
           component='label'
           variant='contained'
           onClick={() => setOpen(true)}>
           <KeyboardIcon />
-        </Fab>
+        </IconButton>
       </Tooltip>
       <BackdropSnackbar open={open} setOpen={setOpen} />
 

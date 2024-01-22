@@ -9,11 +9,17 @@ export default function DesignTitleInput() {
   const design = useSelector((state) => state.designV2);
   const [title, setTitle] = useState(design.title);
   return (
-    <Box>
+    <Box
+      component='form'
+      sx={{
+        '& .MuiTextField-root': { m: '10px', width: '20ch' },
+      }}
+      noValidate
+      autoComplete='off'>
       <TextField
-        variant='filled'
-        label='Design Name'
         className='designTitle'
+        size='xm'
+        maxHeight='36'
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         onBlur={() => {
