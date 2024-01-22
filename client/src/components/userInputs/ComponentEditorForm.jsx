@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import HtmlTagSelector from './HtmlTagSelector';
 import { convertArrToObj } from '../../utils/convertBetweenObjArr';
 import { submitComponentForm } from '../../utils/reducers/designSliceV2';
+import Tooltip from '@mui/material/Tooltip';
 
 const boxStyle = {
   position: 'absolute',
@@ -25,6 +26,34 @@ const boxStyle = {
   boxShadow: 24,
   p: 4,
 };
+
+const basicCssProperties = [
+  'border',
+  'color',
+  'font-size',
+  'font-style',
+  'font-weight',
+  'line-height',
+  'margin',
+  'margin-bottom',
+  'margin-left',
+  'margin-right',
+  'margin-top',
+  'padding',
+  'padding-bottom',
+  'padding-left',
+  'padding-right',
+  'padding-top',
+  'text-align',
+  'text-decoration',
+  'word-spacing',
+  'letter-spacing',
+  'overflow',
+  'box-shadow',
+  'text-shadow',
+  'cursor',
+];
+
 export default function ComponentEditorForm({
   idx,
   open,
@@ -189,14 +218,21 @@ function HtmlData({ idx, isLeaf, innerHtml }) {
 function AddData({ data, setData, dataName }) {
   const keys = data.map((item) => item.key);
   const dispatch = useDispatch();
+  const title =
+    dataName === 'Props'
+      ? 'You can specify your component props in key-value pairs. '
+      : 'You can specify some basic html in key-value pairs.';
 
   return (
     <Fragment>
       <Typography variant='h5'>{dataName}</Typography>
       <Box gridColumn='span 12' display='flex'>
-        <Typography variant='h6' sx={{ mr: 2 }}>
-          Add {dataName}
-        </Typography>
+        <Tooltip title={title}>
+          <Typography variant='h6' sx={{ mr: 2 }}>
+            Add {dataName}
+          </Typography>
+        </Tooltip>
+
         <IconButton
           onClick={() =>
             setData([

@@ -23,11 +23,12 @@ export default function MainContainer() {
         marginTop: '80px',
       }}
     >
-      {page === 'NEW_DESIGN' && <NewDesign />}
-      {page === 'HOME' && 
-        <Box display='flex' justifyContent='center' >
-          <Home maxWidth='false'/>
-        </Box>}
+      {page === 'DESIGN' && <NewDesign />}
+      {page === 'HOME' && (
+        <Box display='flex' justifyContent='center'>
+          <Home maxWidth='false' />
+        </Box>
+      )}
       <Snackbar
         value='SnackbarUnderWorkSpaceCont'
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
