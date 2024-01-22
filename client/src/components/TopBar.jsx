@@ -11,13 +11,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
+import Box from '@mui/material/Box';
 import { Stack, useTheme } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 
 /* MUI Icon Imports */
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import Padding from '@mui/icons-material';
 
 import DarkModeSwitch from './functionalButtons/DarkModeSwitch';
 import DesignTitleInput from './userInputs/DesignTitleInput';
@@ -72,23 +72,15 @@ export default function TopBar({
           height: '56px',
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'start',
-            alignItems: 'center',
-          }}
-        >
+        }}>
+        <Stack direction='row' alignItems='center'>
           {!designId && (
             <Fragment>
               <Button
                 variant='contained'
                 size='large'
                 onClick={() => setDrawerOpen(!drawerOpen)}
-                sx={AppBarButtonsStyle}
-              >
+                sx={AppBarButtonsStyle}>
                 <MenuIcon />
               </Button>
               <SideDrawer
@@ -98,19 +90,33 @@ export default function TopBar({
               <Typography fontSize='25px'>ReaCraft</Typography>
             </Fragment>
           )}
-          <Typography fontSize='25px'>ReaCraft</Typography>
-          <DesignTitleInput />
-        </Box>
-        <Tooltip title='Delete Current Project'>
-          {/* <DeleteDesignButton designId={_id} /> */}
-        </Tooltip>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'end',
-            alignItems: 'center',
-          }}
-        >
+          {designId && (
+            <Fragment>
+              <Tooltip title='placeholder for logo'>
+                <CatchingPokemonIcon
+                  sx={{
+                    marginLeft: '20px',
+                    width: 40,
+                    height: 40,
+                    color: '#736c6c',
+                  }}
+                />
+              </Tooltip>
+              <DesignTitleInput />
+            </Fragment>
+          )}
+        </Stack>
+
+        <Stack direction='row' alignItems='center'>
+          {designId && (
+            <Fragment>
+              <ZoomSlider />
+              <Divider orientation='vertical' flexItem />
+              <PanToolButton />
+              <Divider orientation='vertical' flexItem />
+            </Fragment>
+          )}
+
           <Button
             variant='contained'
             onClick={() => handlePageClick('NEW_DESIGN')}
@@ -121,8 +127,7 @@ export default function TopBar({
               boxShadow: '1px 1px 5px white',
               margin: '0 5px',
             }}
-            startIcon={<AddPhotoAlternateIcon />}
-          >
+            startIcon={<AddPhotoAlternateIcon />}>
             New Design
           </Button>
           <Divider orientation='vertical' flexItem />
@@ -134,8 +139,7 @@ export default function TopBar({
               variant='contained'
               onClick={() => handlePageClick('HOME')}
               width='30px'
-              size='sm'
-            >
+              size='sm'>
               <HomeIcon />
             </IconButton>
           </Tooltip>

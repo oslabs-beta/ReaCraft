@@ -25,42 +25,28 @@ export default function WorkspaceLeft() {
 
   return (
     <ThemeProvider theme={WorkspaceLeftTheme}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          zIndex: 1,
-        }}>
-        <Box sx={{ paddingLeft: '10px', marginRight: '10px' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
+        <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
           <AddNewComponent />
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-          <List
-            sx={{
-              zIndex: 1,
-            }}>
-            {components.map((item, idx) => (
-              <Box>
-                <ComponentDisplay
-                  alignItems='start'
-                  component={item}
-                  key={idx}
-                  idx={idx}
-                  handleListItemClick={(e) => {
-                    e.stopPropagation();
-                    dispatch(setSelectedIdx(idx));
-                  }}
-                  isLeaf={
-                    idx > 0 &&
-                    components.filter((e) => e.parent_id === item._id)
-                      .length === 0
-                  }></ComponentDisplay>
-                <Divider variant='middle' />
-              </Box>
-            ))}
-          </List>
-        </Box>
+
+        <List>
+          {components.map((item, idx) => (
+            <ComponentDisplay
+              component={item}
+              key={idx}
+              idx={idx}
+              handleListItemClick={(e) => {
+                e.stopPropagation();
+                dispatch(setSelectedIdx(idx));
+              }}
+              isLeaf={
+                idx > 0 &&
+                components.filter((e) => e.parent_id === item._id).length === 0
+              }
+            />
+          ))}
+        </List>
       </Box>
     </ThemeProvider>
   );
@@ -72,16 +58,15 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
   const selected = selectedIdx === idx;
 
   return (
-    <Box sx={{ width: '200px', paddingLeft: '10px' }}>
+    <Box sx={{ marginRight: '20px', width: '200px' }}>
       <ListItemButton
         value='NewComponentInputBox'
         selected={selected}
-        onClick={handleListItemClick}
-        sx={{ justifyContent: 'flex-start' }}>
-        <ListItemText primary={component.name} width='200px' />
+        onClick={handleListItemClick}>
+        <ListItemText primary={component.name} />
         {selected && (
           <IconButton
-            sx={{ left: '100px' }}
+            sx={{ marginLeft: '20px' }}
             onClick={(e) => {
               e.stopPropagation();
               setOpenEditor(true);
@@ -97,7 +82,6 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
         />
         {idx > 0 && selected && (
           <DeleteComponentButton
-            sx={{ left: '200px' }}
             name={component.name}
             componentId={component._id}
             canDelete={isLeaf}

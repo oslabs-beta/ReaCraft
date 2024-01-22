@@ -24,6 +24,7 @@ export default function UserImageUploadButton() {
   const tooltip = !designId
     ? 'Upload Your Design Image'
     : 'Replace Current Image';
+  console.log('tooltip', tooltip);
 
   function handleFileChange(e) {
     const file = e.target.files[0];
@@ -85,18 +86,30 @@ export default function UserImageUploadButton() {
   return (
     <Fragment>
       <Tooltip title={tooltip}>
-        <Button
-          component='label'
-          variant='contained'
-          startIcon={<CloudUploadRoundedIcon />}>
-          {designId ? '' : 'Upload Image'}
-          <VisuallyHiddenInput
-            type='file'
-            name='userImage'
-            accept='image/*'
-            onChange={handleFileChange}
-          />
-        </Button>
+        {!designId ? (
+          <Button
+            component='label'
+            variant='contained'
+            startIcon={<CloudUploadRoundedIcon />}>
+            Upload Image
+            <VisuallyHiddenInput
+              type='file'
+              name='userImage'
+              accept='image/*'
+              onChange={handleFileChange}
+            />
+          </Button>
+        ) : (
+          <Fab component='label' variant='contained' size='small' color='info'>
+            <CloudUploadRoundedIcon />
+            <VisuallyHiddenInput
+              type='file'
+              name='userImage'
+              accept='image/*'
+              onChange={handleFileChange}
+            />
+          </Fab>
+        )}
       </Tooltip>
     </Fragment>
   );
