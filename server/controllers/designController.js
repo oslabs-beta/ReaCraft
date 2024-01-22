@@ -70,6 +70,10 @@ const deleteDesign = (req, res, next) => {
   return db
     .query('DELETE FROM designs WHERE _id = $1 RETURNING *;', [designId])
     .then((data) => {
+      console.log(
+        'in designController.deleteDesign, the design deleted is ',
+        data.rows[0]
+      );
       const image_url = new URL(data.rows[0].image_url);
       res.locals.imageToDelete = image_url.pathname.slice(1);
       return next();
@@ -77,9 +81,9 @@ const deleteDesign = (req, res, next) => {
     .catch((err) =>
       next({
         log:
-          'Express error handler caught componentController.deleteDesignComponents middleware error' +
+          'Express error handler caught designController.deleteDesign middleware error' +
           err,
-        message: { err: 'deleteDesignComponents: ' + err },
+        message: { err: 'deleteDesign: ' + err },
       })
     );
 };

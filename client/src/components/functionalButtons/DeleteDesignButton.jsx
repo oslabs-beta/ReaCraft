@@ -58,6 +58,7 @@ export default function DeleteDesignButton({ designId }) {
                 );
                 dispatch(resetDesign());
               } catch (err) {
+                console.log(err);
                 dispatch(
                   setMessage({
                     severity: 'error',
