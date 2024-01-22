@@ -1,16 +1,17 @@
-
 import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 /* MUI Material Imports */
 
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
+import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
+import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material';
 
 /* MUI Icon Imports */
@@ -72,15 +73,13 @@ export default function TopBar({
           height: '56px',
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
-        }}
-      >
+        }}>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'start',
             alignItems: 'center',
-          }}
-        >
+          }}>
           {!designId && (
             <Fragment>
               <Button
@@ -88,8 +87,7 @@ export default function TopBar({
                 size='large'
                 disableElevation
                 onClick={() => setDrawerOpen(!drawerOpen)}
-                sx={AppBarButtonsStyle}
-              >
+                sx={AppBarButtonsStyle}>
                 <MenuIcon />
               </Button>
               <SideDrawer
@@ -102,33 +100,17 @@ export default function TopBar({
           <DesignTitleInput />
         </Box>
         <Tooltip title='Delete Current Project'>
-          <DeleteDesignButton designId={_id} />
+          {/* <DeleteDesignButton designId={_id} /> */}
         </Tooltip>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'end',
             alignItems: 'center',
-          }}
-        >
-          <DarkModeSwitch
-            size='xs'
-            toggleDarkMode={toggleDarkMode}
-            darkMode={darkMode}
-          />
-
+          }}>
           <Button
             variant='contained'
             disableElevation
-            onClick={() => handlePageClick('HOME')}
-            sx={AppBarButtonsStyle}
-          >
-            <HomeIcon />
-          </Button>
-          {/* <Button
-            variant='contained'
-            disableElevation
-
             onClick={() => handlePageClick('NEW_DESIGN')}
             sx={{
               ...AppBarButtonsStyle,

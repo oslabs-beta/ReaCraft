@@ -69,6 +69,8 @@ export default function KonvaStage({ userImage }) {
           />
           {rectangles.map((rect, i) => {
             if (!rectRefs.current[i]) rectRefs.current[i] = createRef();
+            const maxSide = Math.max(rect.width, rect.height);
+            const cornerRadius = (rect.borderradius / 100) * maxSide;
             const { component_id } = rect;
             return (
               <Fragment key={component_id}>
@@ -86,7 +88,7 @@ export default function KonvaStage({ userImage }) {
                   strokeWidth={rect.borderwidth}
                   onClick={(e) => handleRectClick(e, component_id)}
                   fill={rect.backgroundcolor}
-                  cornerRadius={rect.borderradius}
+                  cornerRadius={cornerRadius}
                   onDragEnd={(e) =>
                     handleChangeEnd(component_id, e.target.attrs)
                   }

@@ -120,7 +120,7 @@ export function getDesignDetailsRequest(designId: number): Promise<Design> {
 
 export function deleteDesign(
   designId: number
-): Promise<'deleted design successfully'> {
+): Promise<{ design: 'deleted design successfully' }> {
   return fetch(`/designs/delete/${designId}`, {
     method: 'DELETE',
     headers: {
