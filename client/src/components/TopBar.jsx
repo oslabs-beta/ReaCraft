@@ -80,7 +80,6 @@ export default function TopBar({
               <Button
                 variant='contained'
                 size='large'
-                disableElevation
                 onClick={() => setDrawerOpen(!drawerOpen)}
                 sx={AppBarButtonsStyle}
               >
@@ -122,7 +121,6 @@ export default function TopBar({
 
           <Button
             variant='contained'
-            disableElevation
             onClick={() => handlePageClick('NEW_DESIGN')}
             sx={{
               ...AppBarButtonsStyle,
@@ -142,7 +140,6 @@ export default function TopBar({
           <Tooltip title='Home Button'>
             <IconButton
               variant='contained'
-              disableElevation
               onClick={() => handlePageClick('HOME')}
               width='30px'
               size='sm'
