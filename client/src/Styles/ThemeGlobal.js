@@ -105,11 +105,12 @@ export const themeDark = createTheme({
 
 export const AppBarButtonsStyleLight = {
   backgroundColor: 'transparent',
+  boxShadow: 'none',
   color: '#736c6c',
 };
 
 export const AppBarButtonsStyleDark = {
   backgroundColor: 'transparent',
-
+  boxShadow: 'none',
   color: '#E0E1DD',
 };
