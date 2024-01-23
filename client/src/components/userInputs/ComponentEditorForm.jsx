@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -14,6 +14,8 @@ import HtmlTagSelector from './HtmlTagSelector';
 import { convertArrToObj } from '../../utils/convertBetweenObjArr';
 import { submitComponentForm } from '../../utils/reducers/designSliceV2';
 import Tooltip from '@mui/material/Tooltip';
+import Autocomplete from '@mui/material/Autocomplete';
+import Popper from '@mui/material/Popper';
 
 const boxStyle = {
   position: 'absolute',
@@ -27,33 +29,6 @@ const boxStyle = {
   p: 4,
 };
 
-const basicCssProperties = [
-  'border',
-  'color',
-  'font-size',
-  'font-style',
-  'font-weight',
-  'line-height',
-  'margin',
-  'margin-bottom',
-  'margin-left',
-  'margin-right',
-  'margin-top',
-  'padding',
-  'padding-bottom',
-  'padding-left',
-  'padding-right',
-  'padding-top',
-  'text-align',
-  'text-decoration',
-  'word-spacing',
-  'letter-spacing',
-  'overflow',
-  'box-shadow',
-  'text-shadow',
-  'cursor',
-];
-
 export default function ComponentEditorForm({
   idx,
   open,
@@ -65,6 +40,7 @@ export default function ComponentEditorForm({
 
   const [props, setProps] = useState(component.props);
   const [styles, setStyles] = useState(component.styles);
+  console.log('styles', styles);
 
   const deleteMessage = isLeaf
     ? {
@@ -78,11 +54,6 @@ export default function ComponentEditorForm({
 
   function handleSumbit(e) {
     e.preventDefault();
-    console.log('name', e.target.name.value);
-    console.log(
-      'innerHtml',
-      e.target.innerHtml ? e.target.innerHtml.value : ''
-    );
     const body = {
       name: e.target.name.value,
       innerHtml: isLeaf ? e.target.innerHtml.value : '',
@@ -136,7 +107,6 @@ export default function ComponentEditorForm({
         </Box>
 
         <AddData data={props} setData={setProps} dataName={'Props'} />
-
         <AddData data={styles} setData={setStyles} dataName={'Styles'} />
 
         <Box gridColumn='span 4'>
@@ -251,13 +221,23 @@ function AddData({ data, setData, dataName }) {
       {data.map((item, idx) => (
         <Fragment key={idx}>
           <Box gridColumn='span 5'>
-            <PropsTextField
-              idx={idx}
-              item={item}
-              setData={setData}
-              keys={keys}
-              data={data}
-            />
+            {dataName === 'Props' ? (
+              <PropsTextField
+                idx={idx}
+                item={item}
+                setData={setData}
+                keys={keys}
+                data={data}
+              />
+            ) : (
+              <StylesAutocomplete
+                idx={idx}
+                item={item}
+                setData={setData}
+                keys={keys}
+                data={data}
+              />
+            )}
           </Box>
           <Box gridColumn='span 5'>
             <TextField
@@ -337,4 +317,81 @@ function PropsTextField({ idx, item, setData, keys, data }) {
   );
 }
 
-function StylesTextField({ idx, item, setData }) {}
+const basicCssProperties = [
+  'border',
+  'border-style',
+  'color',
+  'font-size',
+  'font-style',
+  'font-weight',
+  'line-height',
+  'padding',
+  'padding-bottom',
+  'padding-left',
+  'padding-right',
+  'padding-top',
+  'text-align',
+  'text-decoration',
+  'text-transform',
+  'word-spacing',
+  'letter-spacing',
+  'overflow',
+  'box-shadow',
+  'text-shadow',
+  'cursor',
+];
+
+function StylesAutocomplete({ idx, item, setData, keys, data }) {
+  const [value, setValue] = useState(
+    item.key.slice(0, 5) === 'style' ? null : item.key
+  );
+  const [inputValue, setInputValue] = useState('');
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const inputRef = useRef();
+
+  return (
+    <Fragment>
+      <Autocomplete
+        value={value}
+        onChange={(e, newValue) => {
+          if (!newValue || newValue.length === 0) {
+            setValue(item.key);
+          } else {
+            setValue(newValue);
+            setData(
+              data.map((el, i) => (i === idx ? { ...el, key: newValue } : el))
+            );
+            if (newValue.slice(0, 6) === 'border' && inputRef.current) {
+              setAnchorEl(inputRef.current);
+              setTimeout(() => setAnchorEl(null), 2000);
+            } else setAnchorEl(null);
+          }
+        }}
+        inputValue={inputValue}
+        onInputChange={(e, newInputValue) => {
+          setInputValue(newInputValue);
+        }}
+        options={basicCssProperties}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label='Common Non-Layour css'
+            inputRef={inputRef}
+          />
+        )}
+      />
+      <Popper
+        open={Boolean(anchorEl)}
+        placement='bottom'
+        anchorEl={anchorEl}
+        sx={{ zIndex: 10000, color: '#fff', backgroundColor: '#ffffff4D' }}
+      >
+        <Typography>
+          Note: setting border-related styles here might not {'\n'}be reflected
+          in the component rectangle
+        </Typography>
+      </Popper>
+    </Fragment>
+  );
+}
