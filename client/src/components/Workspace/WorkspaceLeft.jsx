@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import { useDispatch, useSelector } from 'react-redux';
 import List from '@mui/material/List';
@@ -68,6 +69,7 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
       <ListItemButton
         value='NewComponentInputBox'
         selected={selected}
+
         onClick={handleListItemClick}
       >
         <ListItemText primary={component.name} />
@@ -77,8 +79,8 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
             onClick={(e) => {
               e.stopPropagation();
               setOpenEditor(true);
-            }}
-          >
+
+            }}>
             <EditIcon />
           </IconButton>
         )}

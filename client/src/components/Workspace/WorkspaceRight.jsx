@@ -28,6 +28,7 @@ export default function WorkspaceRight() {
         jsx={jsx}
         name={selectedIdx !== null ? components[selectedIdx].name : null}
       />
+
       <DownloadFilesButton jsx={jsx} css={css} />
       <DeleteDesignButton />
     </Stack>

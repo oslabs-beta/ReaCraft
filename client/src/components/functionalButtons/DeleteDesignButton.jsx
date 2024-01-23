@@ -63,8 +63,7 @@ export default function DeleteDesignButton() {
                   })
                 );
               }
-            }}
-          >
+            }}>
             Yes
           </Button>
           <Button onClick={handleClose} autoFocus>

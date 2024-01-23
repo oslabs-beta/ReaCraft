@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
 
 import { setMessage, setSelectedIdx } from '../../utils/reducers/appSlice';
 import { deleteComponent } from '../../utils/reducers/designSliceV2';
@@ -25,27 +26,29 @@ export default function DeleteComponentButton({
       };
 
   return (
-    <Tooltip title='Delete component'>
-      <IconButton
-        onClick={() => {
-          try {
-            if (canDelete) {
-              dispatch(deleteComponent(componentId));
+    <Box sx={{ left: '100px' }}>
+      <Tooltip title='Delete component'>
+        <IconButton
+          sx={{ left: '100px' }}
+          onClick={() => {
+            try {
+              if (canDelete) {
+                dispatch(deleteComponent(componentId));
+              }
+              dispatch(setMessage(message));
+              dispatch(setSelectedIdx(null));
+            } catch (error) {
+              dispatch(
+                setMessage({
+                  severity: 'error',
+                  text: 'Design: delete component ' + error,
+                })
+              );
             }
-            dispatch(setMessage(message));
-            dispatch(setSelectedIdx(null));
-          } catch (error) {
-            dispatch(
-              setMessage({
-                severity: 'error',
-                text: 'Design: delete component ' + error,
-              })
-            );
-          }
-        }}
-      >
-        <DeleteIcon />
-      </IconButton>
-    </Tooltip>
+          }}>
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+    </Box>
   );
 }
