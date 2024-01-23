@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scroll Snap Example</title>
+    <link rel="stylesheet" type="text/css" href="/views/homepage.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap"
+      rel="stylesheet" />
 
     <script
       src="https://code.jquery.com/jquery-3.7.1.js"
@@ -34,142 +41,6 @@
         });
       });
     </script>
-
-    <style>
-      @keyframes slideUp {
-        from {
-          transform: translateY(300%);
-        }
-        to {
-          transform: translateY(0);
-        }
-      }
-      html {
-        height: 100%;
-        scroll-snap-type: y mandatory;
-        scroll-snap-align: start;
-      }
-      body {
-        margin: 0;
-        padding: 0;
-        scroll-snap-type: y mandatory;
-        overscroll-behavior-y: contain;
-      }
-
-      .logo {
-        filter: drop-shadow(2px 2px 3px #2a2a2a);
-      }
-
-      .floater {
-        position: fixed;
-        right: 0px;
-        top: 0px;
-        z-index: 10;
-        font-size: 65px;
-      }
-
-      #login,
-      #signup {
-        /* remove button background and border */
-        background: none;
-        border: none;
-        /* text color */
-        color: white;
-        text-decoration: none;
-        font-size: 1rem;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-weight: bold;
-        display: inline-block;
-        margin: 0 10px;
-      }
-
-      #login:hover,
-      #signup:hover {
-        text-decoration: underline;
-      }
-
-      .slide2_Background {
-        animation: slideUp 3.5s ease-out forwards;
-        animation-delay: 1.5s;
-        position: relative;
-        z-index: 1;
-        font-size: 65px;
-      }
-
-      .boxContainer {
-        animation: slideUp 2.5s ease-out forwards;
-        animation-delay: 1.5s;
-        display: flex;
-        /* background-color: #7fa1c7;
-        border-radius: 12px; */
-        box-shadow: 5px 5px 15px 0.5rem rgb(53, 53, 53);
-        flex-direction: column;
-        z-index: 1;
-        font-size: 65px;
-      }
-
-      .slide {
-        height: 100vh;
-        scroll-snap-align: start;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        scroll-snap-type: y mandatory;
-      }
-
-      .slide:nth-child(1) {
-        z-index: 4;
-        background-color: #778da9;
-      }
-      .slide:nth-child(2) {
-        z-index: 2;
-        background-color: #415a77;
-      }
-      .slide:nth-child(3) {
-        z-index: 1;
-        flex-direction: column;
-        background-color: #778da9;
-      }
-      .logo-container p {
-        text-align: center;
-      }
-      .team-header {
-        text-align: center;
-        width: 100%;
-        margin-bottom: 80px;
-        font-size: 2rem;
-      }
-      .profiles-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        gap: 100px;
-      }
-      .profile {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        margin-bottom: 20px;
-      }
-      .profile-photos {
-        border-radius: 50%;
-        width: 200px;
-        height: 200px;
-        object-fit: cover;
-        margin-bottom: 10px;
-      }
-      .link-container {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-      }
-      .profile-name {
-        margin-bottom: 5px;
-      }
-    </style>
   </head>
 
   <body>
@@ -187,13 +58,11 @@
         </button>
       </span>
       <span class="logo-container">
-        <img class="logo" src="../assets/logo.svg" width="1100px" />
-        <p class="col-lg-8 mx-auto fs-5 text-muted description">
-          <img
-            class="phrase"
-            src="../assets/homescreen_phrase_.svg"
-            width="800px" />
-        </p>
+        <img class="logo" src="../assets/logo.svg" width="600px" />
+        <img
+          class="phrase"
+          src="../assets/homescreen_phrase_.svg"
+          width="800px" />
       </span>
     </span>
     <!-- slide 2 -->
