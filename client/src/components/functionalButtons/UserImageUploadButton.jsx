@@ -95,19 +95,6 @@ export default function UserImageUploadButton() {
             />
           </Button>
         ) : (
-          // <Button
-          //   component='label'
-          //   variant='contained'
-          //   startIcon={<CloudUploadRoundedIcon />}
-          // >
-          //   Upload Image
-          //   <VisuallyHiddenInput
-          //     type='file'
-          //     name='userImage'
-          //     accept='image/*'
-          //     onChange={handleFileChange}
-          //   />
-          // </Button>
           <Fab component='label' variant='contained' size='small' color='info'>
             <CloudUploadRoundedIcon />
             <VisuallyHiddenInput
