@@ -5,6 +5,7 @@ const path = require('path');
 const userController = require('../controllers/userController');
 const cookieController = require('../controllers/cookieController');
 const imageController = require('../controllers/imageController');
+const fileController = require('../controllers/fileController');
 
 const loginRouter = require('./loginRouter');
 const signupRouter = require('./signupRouter');
@@ -26,6 +27,8 @@ router.get(
   userController.getUser,
   (req, res) => res.status(200).json(res.locals.user)
 );
+
+router.post('/download', fileController.downloadFiles);
 
 router.post(
   '/update-profile',

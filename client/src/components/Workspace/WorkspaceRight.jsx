@@ -9,19 +9,15 @@ import Codes from '../../utils/Codes';
 import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import UserImageUploadButton from '../functionalButtons/UserImageUploadButton';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import DownloadFilesButton from '../functionalButtons/DownloadFilesButton';
-=======
->>>>>>> a0ef5fb (workspace&topbar styling)
-=======
->>>>>>> a0ef5fb (workspace&topbar styling)
+import DownloadFilesButton from '../functionalButtons/DownloadFilesButton';
+
 
 export default function WorkspaceRight() {
-  const components = useSelector((state) => state.designV2.components);
+  const { components, title } = useSelector((state) => state.designV2);
   const { selectedIdx } = useSelector((state) => state.app);
   const tree = convertToTree(components);
-  const codes = new Codes(components, tree);
+  const codes = new Codes(components, tree, title);
   const jsx = codes.convertToJsx();
   const css = codes.convertToCss();
   return (
@@ -33,13 +29,8 @@ export default function WorkspaceRight() {
         jsx={jsx}
         name={selectedIdx !== null ? components[selectedIdx].name : null}
       />
-<<<<<<< HEAD
-<<<<<<< HEAD
+
       <DownloadFilesButton jsx={jsx} css={css} />
-=======
->>>>>>> a0ef5fb (workspace&topbar styling)
-=======
->>>>>>> a0ef5fb (workspace&topbar styling)
       <DeleteDesignButton />
     </Stack>
   );
