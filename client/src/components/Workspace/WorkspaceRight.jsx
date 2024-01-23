@@ -16,8 +16,9 @@ export default function WorkspaceRight() {
   const { selectedIdx } = useSelector((state) => state.app);
   const tree = convertToTree(components);
   const codes = new Codes(components, tree, title);
-  const jsx = codes.convertToJsx();
-  const css = codes.convertToCss();
+  // const jsx = codes.convertToJsx();
+  // const css = codes.convertToCssStr();
+  const { jsx, css } = codes.convertToCode();
   return (
     <Stack direction='column' gap={2}>
       <UserImageUploadButton />

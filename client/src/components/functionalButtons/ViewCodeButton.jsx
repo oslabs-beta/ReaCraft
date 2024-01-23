@@ -108,7 +108,7 @@ function GrowTransition({ jsx, css, name, isTransitioning }) {
           ))}
           <TabPanel value='css' className='code-panel'>
             <CodeBlock
-              text={Object.values(css).join('\n\n')}
+              text={css}
               language='css'
               showLineNumbers={true}
               theme={monokai}
