@@ -25,12 +25,19 @@ export default function WorkspaceLeft() {
 
   return (
     <ThemeProvider theme={WorkspaceLeftTheme}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'end',
+          zIndex: 1,
+        }}
+      >
         <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
           <AddNewComponent />
         </Box>
 
-        <List>
+        <List sx={{ zIndex: 1 }}>
           {components.map((item, idx) => (
             <ComponentDisplay
               component={item}
