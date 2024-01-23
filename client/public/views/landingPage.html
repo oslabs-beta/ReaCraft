@@ -2,28 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/assets/favicon.ico" />
-    <link rel="manifest" href="/assets/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ReaCraft</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/views/global.css" />
+    <title>Scroll Snap Example</title>
+
     <script
       src="https://code.jquery.com/jquery-3.7.1.js"
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-      crossorigin="anonymous"
-    ></script>
+      crossorigin="anonymous"></script>
+
     <script>
       $(document).ready(function () {
         let mode = window.localStorage.getItem('mode');
@@ -48,44 +34,255 @@
         });
       });
     </script>
-  </head>
-  <body id="landing-page">
-    <span id="dark-mode-switch-root">
-      <span id="switch-base">
-        <input type="checkbox" id="dark-mode-switch" />
-        <span id="switch-thumb"></span>
-        <span class="MuiTouchRipple-root"></span>
-      </span>
-      <span id="switch-track"></span>
-    </span>
 
-    <div class="container my-5">
-      <div class="p-5 text-center bg-body-tertiary rounded-3">
-        <img src="../assets/logo.svg" width="200px" />
-        <h1 class="text-body-emphasis mt-3">Welcome to ReaCraft!</h1>
+    <style>
+      @keyframes slideUp {
+        from {
+          transform: translateY(300%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+      html {
+        height: 100%;
+        scroll-snap-type: y mandatory;
+        scroll-snap-align: start;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        scroll-snap-type: y mandatory;
+        overscroll-behavior-y: contain;
+      }
+
+      .logo {
+        filter: drop-shadow(2px 2px 3px #2a2a2a);
+      }
+
+      .floater {
+        position: fixed;
+        right: 0px;
+        top: 0px;
+        z-index: 10;
+        font-size: 65px;
+      }
+
+      #login,
+      #signup {
+        /* remove button background and border */
+        background: none;
+        border: none;
+        /* text color */
+        color: white;
+        text-decoration: none;
+        font-size: 1rem;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-weight: bold;
+        display: inline-block;
+        margin: 0 10px;
+      }
+
+      #login:hover,
+      #signup:hover {
+        text-decoration: underline;
+      }
+
+      .slide2_Background {
+        animation: slideUp 3.5s ease-out forwards;
+        animation-delay: 1.5s;
+        position: relative;
+        z-index: 1;
+        font-size: 65px;
+      }
+
+      .boxContainer {
+        animation: slideUp 2.5s ease-out forwards;
+        animation-delay: 1.5s;
+        display: flex;
+        /* background-color: #7fa1c7;
+        border-radius: 12px; */
+        box-shadow: 5px 5px 15px 0.5rem rgb(53, 53, 53);
+        flex-direction: column;
+        z-index: 1;
+        font-size: 65px;
+      }
+
+      .slide {
+        height: 100vh;
+        scroll-snap-align: start;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        scroll-snap-type: y mandatory;
+      }
+
+      .slide:nth-child(1) {
+        z-index: 4;
+        background-color: #778da9;
+      }
+      .slide:nth-child(2) {
+        z-index: 2;
+        background-color: #415a77;
+      }
+      .slide:nth-child(3) {
+        z-index: 1;
+        flex-direction: column;
+        background-color: #778da9;
+      }
+      .logo-container p {
+        text-align: center;
+      }
+      .team-header {
+        text-align: center;
+        width: 100%;
+        margin-bottom: 80px;
+        font-size: 2rem;
+      }
+      .profiles-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 100px;
+      }
+      .profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .profile-photos {
+        border-radius: 50%;
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        margin-bottom: 10px;
+      }
+      .link-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+      .profile-name {
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- slide 1 -->
+    <span class="slide">
+      <span class="floater">
+        <button class="btn btn-primary btn-lg px-4" type="button" id="login">
+          Login
+        </button>
+        <button
+          class="btn btn-outline-secondary btn-lg px-4"
+          type="button"
+          id="signup">
+          Sign Up
+        </button>
+      </span>
+      <span class="logo-container">
+        <img class="logo" src="../assets/logo.svg" width="1100px" />
         <p class="col-lg-8 mx-auto fs-5 text-muted description">
-          Streamlining React Development from Design to Deployment
+          <img
+            class="phrase"
+            src="../assets/homescreen_phrase_.svg"
+            width="800px" />
         </p>
-        <div class="d-inline-flex gap-2 mb-5">
-          <button
-            class="btn btn-primary btn-lg px-4"
-            type="button"
-            id="login"
-            style="width: 150px"
-          >
-            Login
-          </button>
-          <button
-            class="btn btn-outline-secondary btn-lg px-4"
-            type="button"
-            id="signup"
-            style="width: 150px"
-          >
-            Sign Up
-          </button>
-        </div>
-        <p class="mb-3 text-body-secondary">© 2024 ReaCraft</p>
+      </span>
+    </span>
+    <!-- slide 2 -->
+    <span class="slide">
+      <span class="container">
+        <span>
+          <fieldset class="slide2_Background">I love cheetos</fieldset>
+        </span>
+      </span>
+    </span>
+    <!-- slide 3 -->
+    <span class="slide">
+      <div class="team-header">
+        <h1>Meet the team</h1>
       </div>
-    </div>
+      <span class="profiles-container">
+        <span class="profile">
+          <img
+            src="../assets/1boy.png"
+            class="profile-photos"
+            alt="Amir Profile" />
+          <div class="profile-name">Amir</div>
+          <div class="link-container">
+            <a href="https://github.com/Amunoz-1">
+              <img
+                src="../assets/github-mark-white.svg"
+                width="30px"
+                alt="Github" />
+            </a>
+            <a href="https://www.linkedin.com">
+              <img src="../assets/linked-in.svg" width="30px" alt="LinkedIn" />
+            </a>
+          </div>
+        </span>
+        <span class="profile">
+          <img
+            src="../assets/1landing-page-girl.png"
+            class="profile-photos"
+            alt="Claire Profile" />
+          <div class="profile-name">Claire</div>
+          <div class="link-container">
+            <a href="https://github.com/clairehuang1008">
+              <img
+                src="../assets/github-mark-white.svg"
+                width="30px"
+                alt="Github" />
+            </a>
+            <a href="https://www.linkedin.com">
+              <img src="../assets/linked-in.svg" width="30px" alt="LinkedIn" />
+            </a>
+          </div>
+        </span>
+        <span class="profile">
+          <img
+            src="../assets/1landing-page-girl.png"
+            class="profile-photos"
+            alt="Eunice Profile" />
+          <div class="profile-name">Eunice</div>
+          <div class="link-container">
+            <a href="https://github.com/eunykim92">
+              <img
+                src="../assets/github-mark-white.svg"
+                width="30px"
+                alt="Github" />
+            </a>
+            <a href="https://www.linkedin.com">
+              <img src="../assets/linked-in.svg" width="30px" alt="LinkedIn" />
+            </a>
+          </div>
+        </span>
+        <span class="profile">
+          <img
+            src="../assets/1landing-page-girl.png"
+            class="profile-photos"
+            alt="Tanya Profile" />
+          <div class="profile-name">Tanya</div>
+          <div class="link-container">
+            <a href="https://github.com/tanyahang">
+              <img
+                src="../assets/github-mark-white.svg"
+                width="30px"
+                alt="Github" />
+            </a>
+            <a href="https://www.linkedin.com">
+              <img src="../assets/linked-in.svg" width="30px" alt="LinkedIn" />
+            </a>
+          </div>
+        </span>
+      </span>
+    </span>
   </body>
 </html>
