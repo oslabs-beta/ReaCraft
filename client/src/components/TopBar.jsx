@@ -12,14 +12,14 @@ import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 
 /* MUI Icon Imports */
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import Padding from '@mui/icons-material';
 
 import DarkModeSwitch from './functionalButtons/DarkModeSwitch';
-import DeleteDesignButton from './functionalButtons/DeleteDesignButton';
 import DesignTitleInput from './userInputs/DesignTitleInput';
 import PanToolButton from './functionalButtons/PanHandButton';
 import UserImageUpload from './functionalButtons/UserImageUploadButton';
@@ -33,6 +33,7 @@ import {
   AppBarButtonsStyleLight,
   AppBarButtonsStyleDark,
 } from '../styles/ThemeGlobal';
+import ZoomSlider from './functionalButtons/ZoomSlider';
 
 export default function TopBar({
   toggleDarkMode,
@@ -73,19 +74,12 @@ export default function TopBar({
           backgroundColor: 'transparent',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'start',
-            alignItems: 'center',
-          }}
-        >
+        <Stack direction='row' alignItems='center'>
           {!designId && (
             <Fragment>
               <Button
                 variant='contained'
                 size='large'
-                disableElevation
                 onClick={() => setDrawerOpen(!drawerOpen)}
                 sx={AppBarButtonsStyle}
               >
@@ -95,50 +89,57 @@ export default function TopBar({
                 drawerOpen={drawerOpen}
                 setDrawerOpen={setDrawerOpen}
               />
+              <Typography fontSize='25px'>ReaCraft</Typography>
             </Fragment>
           )}
-          <Typography fontSize='25px'>ReaCraft</Typography>
-          <DesignTitleInput />
-        </Box>
-        <Tooltip title='Delete Current Project'>
-          {/* <DeleteDesignButton designId={_id} /> */}
-        </Tooltip>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'end',
-            alignItems: 'center',
-          }}
-        >
+          {designId && (
+            <Fragment>
+              <Tooltip title='placeholder for logo'>
+                <CatchingPokemonIcon
+                  sx={{
+                    marginLeft: '20px',
+                    width: 40,
+                    height: 40,
+                    color: '#736c6c',
+                  }}
+                />
+              </Tooltip>
+              <DesignTitleInput />
+            </Fragment>
+          )}
+        </Stack>
+
+        <Stack direction='row' alignItems='center'>
+          {designId && (
+            <Fragment>
+              <ZoomSlider />
+              <Divider orientation='vertical' flexItem />
+              <PanToolButton />
+              <Divider orientation='vertical' flexItem />
+            </Fragment>
+          )}
+
           <Button
             variant='contained'
-            disableElevation
             onClick={() => handlePageClick('NEW_DESIGN')}
             sx={{
               ...AppBarButtonsStyle,
               backgroundColor: darkMode ? '#2a3f5a' : '#736c6c',
               color: '#e2e2d3',
               boxShadow: '1px 1px 5px white',
+              margin: '0 5px',
             }}
             startIcon={<AddPhotoAlternateIcon />}
           >
             New Design
           </Button>
-          <PanToolButton />
+          <Divider orientation='vertical' flexItem />
           <ViewKeyboardShortcut
             sx={{ position: 'absolute', justifySelf: 'end' }}
           />
-          <UserImageUpload height='64px' />
-          <DarkModeSwitch
-            size='xs'
-            toggleDarkMode={toggleDarkMode}
-            darkMode={darkMode}
-          />
-
           <Tooltip title='Home Button'>
             <IconButton
               variant='contained'
-              disableElevation
               onClick={() => handlePageClick('HOME')}
               width='30px'
               size='sm'
@@ -146,10 +147,14 @@ export default function TopBar({
               <HomeIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title='User Settings Dropdown'>
-            {user && <UserMenu />}
-          </Tooltip>
-        </Box>
+          <Divider orientation='vertical' flexItem />
+          <DarkModeSwitch
+            size='xs'
+            toggleDarkMode={toggleDarkMode}
+            darkMode={darkMode}
+          />
+          {user && <UserMenu />}
+        </Stack>
       </Toolbar>
     </AppBar>
   );
