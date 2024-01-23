@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 
 import Button from '@mui/material/Button';
+import Fab from '@mui/material/Fab';
 
 import { setMessage } from '../../utils/reducers/appSlice';
 import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
@@ -20,7 +21,9 @@ export default function UserImageUploadButton() {
   const dispatch = useDispatch();
   const designId = useSelector((state) => state.designV2._id);
   const { image_url, components } = useSelector((state) => state.designV2);
-  const tooltip = designId ? 'Upload New Image' : 'Replace Current Image';
+  const tooltip = !designId
+    ? 'Upload Your Design Image'
+    : 'Replace Current Image';
 
   function handleFileChange(e) {
     const file = e.target.files[0];
@@ -82,21 +85,31 @@ export default function UserImageUploadButton() {
   return (
     <Fragment>
       <Tooltip title={tooltip}>
-        <IconButton
-          size='sm'
-          type='file'
-          name='userImage'
-          accept='image/*'
-          onClick={handleFileChange}>
-          {designId ? '' : ''}
-          <CloudUploadRoundedIcon />
-          <VisuallyHiddenInput
-            type='file'
-            name='userImage'
-            accept='image/*'
-            onChange={handleFileChange}
-          />
-        </IconButton>
+        {!designId ? (
+          <Button
+            component='label'
+            variant='contained'
+            startIcon={<CloudUploadRoundedIcon />}
+          >
+            Upload Image
+            <VisuallyHiddenInput
+              type='file'
+              name='userImage'
+              accept='image/*'
+              onChange={handleFileChange}
+            />
+          </Button>
+        ) : (
+          <Fab component='label' variant='contained' size='small' color='info'>
+            <CloudUploadRoundedIcon />
+            <VisuallyHiddenInput
+              type='file'
+              name='userImage'
+              accept='image/*'
+              onChange={handleFileChange}
+            />
+          </Fab>
+        )}
       </Tooltip>
     </Fragment>
   );

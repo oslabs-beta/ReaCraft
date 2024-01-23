@@ -108,7 +108,7 @@ ${html}
     const rootWidth = components[0].rectangle.width;
     const rootHeight = components[0].rectangle.height;
     components.forEach((component, i) => {
-      const { name, rectangle } = component;
+      const { name, rectangle, styles } = component;
       if (!rectangle) {
         throw new Error(`Converting css: component ${name} has no rectangle`);
       }
@@ -128,8 +128,6 @@ ${html}
   width: ${i === 0 ? '100%' : `${Math.round((width / rootWidth) * 100)}%`};
   height: ${i === 0 ? '100%' : `${Math.round((height / rootHeight) * 100)}%`};
   border-color: ${stroke};`;
-      // left: ${i === 0 ? '0' : `${Math.round(x_position / rootWidth) * 100}%`};
-      // top: ${i === 0 ? '0' : `${Math.round(y_position / rootHeight) * 100}%`};
       if (i > 0) {
         cssCode += `
   left: ${Math.round((x_position / rootWidth) * 100)}%;
@@ -140,6 +138,11 @@ ${html}
       if (backgroundcolor)
         cssCode += `\n  background-color: ${backgroundcolor};`;
       if (z_index) cssCode += `\n  z-index: ${z_index};`;
+      styles.forEach(({ key, value }) => {
+        if (value.length > 0) {
+          cssCode += `\n  ${key}: ${value};`;
+        }
+      });
       cssCode += '\n}';
       if (!css[name]) {
         css[name] = cssCode;
