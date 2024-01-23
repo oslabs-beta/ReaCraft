@@ -5,9 +5,11 @@ import TreeNode from './treeNode';
 export default class Codes {
   components: Component[];
   tree: TreeNode;
-  constructor(components: Component[], tree: TreeNode) {
+  title: string;
+  constructor(components: Component[], tree: TreeNode, title: string) {
     this.components = components;
     this.tree = tree;
+    this.title = title;
   }
 
   convertToJsx(): { [key: string]: string } {
@@ -27,13 +29,18 @@ export default class Codes {
 
       const { html_tag, inner_html, name } = component;
       const children = cur.children;
-      let html: string;
+      let html: string = '';
+      if (component.index === 0) {
+        html += `\n  useEffect(() => {
+    document.title = "${this.title}"
+  }, [])\n\n`;
+      }
       let importChildren = '';
       const classAndId = ` className='${component.name}' id=${
         component.index > 0 ? '{id}' : "'RootContainer-0'"
       }>`;
       if (children.length === 0) {
-        html = `  return (\n    ${html_tag.replace(
+        html += `  return (\n    ${html_tag.replace(
           '>',
           classAndId
         )}${inner_html}${html_tag.replace('<', '</')}
@@ -55,7 +62,7 @@ export default class Codes {
           importChildren += `import ${name} from './${name}.jsx'\n`;
         });
 
-        html =
+        html +=
           `  return (\n    <div${classAndId}\n` +
           childrenComps
             .map((childComponent) => {
@@ -96,7 +103,7 @@ export default class Codes {
 
       jsx[name] = `import './styles.css';
 
-import React from 'react';
+import React${component.index === 0 ? ', { useEffect }' : ''} from 'react';
 ${importChildren}
 export default function ${name}(${propsCode}) {
 ${html}

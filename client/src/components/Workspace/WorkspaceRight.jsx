@@ -12,10 +12,10 @@ import UserImageUploadButton from '../functionalButtons/UserImageUploadButton';
 import DownloadFilesButton from '../functionalButtons/DownloadFilesButton';
 
 export default function WorkspaceRight() {
-  const components = useSelector((state) => state.designV2.components);
+  const { components, title } = useSelector((state) => state.designV2);
   const { selectedIdx } = useSelector((state) => state.app);
   const tree = convertToTree(components);
-  const codes = new Codes(components, tree);
+  const codes = new Codes(components, tree, title);
   const jsx = codes.convertToJsx();
   const css = codes.convertToCss();
   return (
