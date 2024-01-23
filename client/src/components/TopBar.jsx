@@ -11,7 +11,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
-import Box from '@mui/material/Box';
 import { Stack, useTheme } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
@@ -93,8 +92,9 @@ export default function TopBar({
           {designId && (
             <Fragment>
               <Tooltip title='placeholder for logo'>
-                <CatchingPokemonIcon
-                  sx={{
+                <img
+                  src='./assets/logo_thickoutline_3.svg'
+                  style={{
                     marginLeft: '20px',
                     width: 40,
                     height: 40,
