@@ -24,7 +24,6 @@ export default function UserImageUploadButton() {
   const tooltip = !designId
     ? 'Upload Your Design Image'
     : 'Replace Current Image';
-  console.log('tooltip', tooltip);
 
   function handleFileChange(e) {
     const file = e.target.files[0];
