@@ -52,8 +52,8 @@ export default function Workspace() {
             justifyContent: 'center',
             height: '50px',
             paddingTop: 0,
-          }}
-        >
+          }}>
+
           {selectedIdx !== null && components[selectedIdx] && (
             <WorkspaceToolbar
               rectangle={components[selectedIdx].rectangle}

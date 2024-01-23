@@ -10,6 +10,8 @@ import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import UserImageUploadButton from '../functionalButtons/UserImageUploadButton';
 import DownloadFilesButton from '../functionalButtons/DownloadFilesButton';
+import DownloadFilesButton from '../functionalButtons/DownloadFilesButton';
+
 
 export default function WorkspaceRight() {
   const { components, title } = useSelector((state) => state.designV2);
@@ -27,6 +29,7 @@ export default function WorkspaceRight() {
         jsx={jsx}
         name={selectedIdx !== null ? components[selectedIdx].name : null}
       />
+
       <DownloadFilesButton jsx={jsx} css={css} />
       <DeleteDesignButton />
     </Stack>
