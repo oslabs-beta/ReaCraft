@@ -94,8 +94,12 @@ export default function UserMenu() {
 
   const { username, email, profile_image } = user;
   const [avatar, setAvatar] = useState(profile_image);
-  const created_at = new Date(user.created_at);
-  const last_login = new Date(user.last_login);
+  const created_at = new Date(
+    new Date(user.created_at).toString().split('-')[0]
+  );
+  const last_login = new Date(
+    new Date(user.last_login).toString().split('-')[0]
+  );
   return (
     <div>
       <Button

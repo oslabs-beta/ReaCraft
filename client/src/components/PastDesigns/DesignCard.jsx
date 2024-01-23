@@ -14,10 +14,9 @@ import EditableText from '../userInputs/EditableText';
 import Paper from '@mui/material/Paper';
 import { setMessage } from '../../utils/reducers/appSlice';
 
-export default function DesignCard({ design, setLocalSelectedDesignId }) {
+export default function DesignCard({ design }) {
   const dispatch = useDispatch();
-  const created_at = new Date(design.created_at).toLocaleDateString();
-  const last_updated = new Date(design.last_updated).toLocaleDateString();
+  const { created_at, last_updated } = design;
 
   const handleViewDesign = async () => {
     try {
@@ -50,22 +49,30 @@ export default function DesignCard({ design, setLocalSelectedDesignId }) {
         <EditableText initialText={design.title} align='center' />
         <Typography gutterBottom variant='h5' component='div'></Typography>
         <Typography
-          sx={{
-            fontSize: '1vw',
-          }}
           variant='body2'
           color='text.secondary'
+          sx={{
+            fontSize: {
+              md: 12,
+              sm: 11,
+              xs: 10,
+            },
+          }}
         >
-          Created On: {created_at.toLocaleString()}
+          Created at: {created_at.toLocaleString()}
         </Typography>
         <Typography
-          sx={{
-            fontSize: '1vw',
-          }}
           variant='body2'
           color='text.secondary'
+          sx={{
+            fontSize: {
+              md: 12,
+              sm: 11,
+              xs: 10,
+            },
+          }}
         >
-          Updated On: {last_updated.toLocaleString()}
+          Updated at: {last_updated.toLocaleString()}
         </Typography>
       </CardContent>
       <CardActions
@@ -78,18 +85,7 @@ export default function DesignCard({ design, setLocalSelectedDesignId }) {
         <Button variant='outlined' size='small'>
           Share
         </Button>
-        <Button
-          size='small'
-          variant='outlined'
-          onClick={handleViewDesign}
-          //   async () => {
-          //   try {
-          //     dispatch(getDesignDetails(design._id));
-          //   } catch (err) {
-          //     console.log('error: ' + err);
-          //   }
-          // }}
-        >
+        <Button size='small' variant='outlined' onClick={handleViewDesign}>
           View design
         </Button>
       </CardActions>
