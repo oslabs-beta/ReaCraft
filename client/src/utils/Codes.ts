@@ -10,7 +10,7 @@ export default class Codes {
     this.tree = tree;
   }
 
-  convertToJsx() {
+  convertToJsx(): { [key: string]: string } {
     const components = this.components;
     const tree = this.tree;
     const jsx: { [key: string]: string } = {};
@@ -19,15 +19,19 @@ export default class Codes {
       const cur = stack.pop();
       if (!cur) throw new Error('Converting to jsx: component is undefined');
 
-      const component = components.find((item) => item._id === cur.id);
+      const component: Component | undefined = components.find(
+        (item: Component) => item._id === cur.id
+      );
       if (!component)
         throw new Error('Converting to jsx: cannot find component');
 
       const { html_tag, inner_html, name } = component;
       const children = cur.children;
-      let html;
+      let html: string;
       let importChildren = '';
-      const classAndId = ` className='${component.name}' id='${component.name}-${component.index}'>`;
+      const classAndId = ` className='${component.name}' id=${
+        component.index > 0 ? '{id}' : "'RootContainer-0'"
+      }>`;
       if (children.length === 0) {
         html = `  return (\n    ${html_tag.replace(
           '>',
@@ -44,7 +48,7 @@ export default class Codes {
               throw new Error(
                 'Converting jsx: component has an undefined child'
               );
-            childComponent.name;
+            return childComponent.name;
           })
         );
         childrenNames.forEach((name) => {
@@ -59,7 +63,9 @@ export default class Codes {
                 throw new Error(
                   'Converting jsx: component has an undefined child'
                 );
-              return `      <${childComponent.name} ${childComponent.props
+              return `      <${childComponent.name} id='${
+                childComponent.name
+              }-${childComponent.index}' ${childComponent.props
                 .map(({ key, value }) => `${key}={${value}}`)
                 .join(' ')}/>`;
             })
@@ -77,14 +83,18 @@ export default class Codes {
         if (matches) {
           const oldPropKeys: Set<string> = new Set(matches[1].split(', '));
           propKeys = new Set([...propKeys, ...oldPropKeys]);
+          propKeys.delete('id');
         }
       }
-      const propsCode =
-        [...propKeys].length === 0
-          ? ''
-          : '{ ' + [...propKeys].join(', ') + ' }';
+      let propsCode: string;
+      if (component.index === 0) {
+        propsCode =
+          propKeys.size > 0 ? '{ ' + [...propKeys].join(', ') + ' }' : '';
+      } else {
+        propsCode = '{ ' + ['id', ...propKeys].join(', ') + ' }';
+      }
 
-      jsx[name] = `import 'styles.css';
+      jsx[name] = `import './styles.css';
 
 import React from 'react';
 ${importChildren}
@@ -96,7 +106,7 @@ ${html}
     return jsx;
   }
 
-  convertToCss() {
+  convertToCss(): { [key: string]: string } {
     const css: { [key: string]: string } = {};
     const components = this.components;
     if (!components || this.components.length === 0) {
@@ -125,8 +135,12 @@ ${html}
       } = rectangle;
       let cssCode = `#${name}-${i} {
   position: ${i === 0 ? 'relative' : 'absolute'};
-  width: ${i === 0 ? '100%' : `${Math.round((width / rootWidth) * 100)}%`};
-  height: ${i === 0 ? '100%' : `${Math.round((height / rootHeight) * 100)}%`};
+  width: ${
+    i === 0 ? `${rootWidth}px` : `${Math.round((width / rootWidth) * 100)}%`
+  };
+  height: ${
+    i === 0 ? `${rootHeight}px` : `${Math.round((height / rootHeight) * 100)}%`
+  };
   border-color: ${stroke};`;
       if (i > 0) {
         cssCode += `
@@ -135,6 +149,10 @@ ${html}
       }
       if (borderwidth > 0) cssCode += `\n  border-width: ${borderwidth}px;`;
       if (borderradius) cssCode += `\n  border-radius: ${borderradius}%;`;
+      if (
+        styles.filter(({ key, value }) => key === 'border-style').length === 0
+      )
+        cssCode += `\n  border-style: solid;`;
       if (backgroundcolor)
         cssCode += `\n  background-color: ${backgroundcolor};`;
       if (z_index) cssCode += `\n  z-index: ${z_index};`;
