@@ -1,5 +1,6 @@
 import { Component, Design, HtmlTag, Rectangle } from '../../../docs/types';
 import {
+  DesignRes,
   handleComponentRes,
   handleDesignRes,
   handleRectangleRes,
@@ -93,6 +94,20 @@ export function getDesigns(): Promise<Design[]> {
         throw new Error(res.statusText);
       }
       return res.json();
+    })
+    .then((data: DesignRes[]): Design[] => {
+      const newData = data.map((designRes: DesignRes) => {
+        const { created_at, last_updated } = designRes;
+        const design: any = { ...designRes };
+        design.created_at = new Date(
+          new Date(created_at).toString().split('-')[0]
+        );
+        design.last_updated = new Date(
+          new Date(last_updated).toString().split('-')[0]
+        );
+        return design;
+      });
+      return newData;
     })
     .catch((err) => {
       throw err;
