@@ -157,28 +157,24 @@ function BorderMenu({
         </Tooltip>
       </MenuItem>
       <MenuItem>
-        <Tooltip title='Border Width'>
-          <Typography width='250px'>Border Width</Typography>
-          <Slider
-            value={borderWidth}
-            valueLabelDisplay='auto'
-            onChange={(e) => setBorderWidth(e.target.value)}
-            onChangeCommitted={() => handleSubmit('borderWidth', borderWidth)}
-          />
-        </Tooltip>
+        <Typography width='250px'>Border Width</Typography>
+        <Slider
+          value={borderWidth}
+          valueLabelDisplay='auto'
+          onChange={(e) => setBorderWidth(e.target.value)}
+          onChangeCommitted={() => handleSubmit('borderWidth', borderWidth)}
+        />
       </MenuItem>
       <MenuItem maxWidth='false'>
-        <Tooltip title='Border Radius'>
-          <Typography width='250px'>Border Radius</Typography>
-          <Slider
-            value={borderRadius}
-            valueLabelDisplay='auto'
-            onChange={(e) => setBorderRadius(e.target.value)}
-            onChangeCommitted={() => handleSubmit('borderRadius', borderRadius)}
-            min={0}
-            max={50}
-          />
-        </Tooltip>
+        <Typography width='250px'>Border Radius</Typography>
+        <Slider
+          value={borderRadius}
+          valueLabelDisplay='auto'
+          onChange={(e) => setBorderRadius(e.target.value)}
+          onChangeCommitted={() => handleSubmit('borderRadius', borderRadius)}
+          min={0}
+          max={50}
+        />
       </MenuItem>
     </Menu>
   );
