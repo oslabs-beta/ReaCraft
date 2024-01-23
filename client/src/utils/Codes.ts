@@ -163,6 +163,7 @@ export default class Codes {
               throw new Error(
                 'Converting jsx: component has an undefined child'
               );
+<<<<<<< HEAD
             return `      <${childComponent.name} id='${childComponent.name}-${
               childComponent.index
             }' ${childComponent.props
@@ -172,6 +173,16 @@ export default class Codes {
           .join('\n') +
         '\n    </div>\n  );';
     }
+=======
+            console.log('childComponent', childComponent);
+            return childComponent.name;
+          })
+        );
+        childrenNames.forEach((name) => {
+          console.log('childrenName,', name);
+          importChildren += `import ${name} from './${name}.jsx'\n`;
+        });
+>>>>>>> 96f527b (export files)
 
     let propKeys = new Set(component.props.map(({ key }) => key));
     if (jsx[name]) {
