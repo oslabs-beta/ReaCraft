@@ -71,8 +71,10 @@ export default function TopBar({
           height: '56px',
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
-        }}
-      >
+
+        }}>
+
+
         <Stack direction='row' alignItems='center'>
           {!designId && (
             <Fragment>
