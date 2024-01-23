@@ -16,6 +16,12 @@ export default function KonvaStage({
   const { zoom, selectedIdx } = useSelector((state) => state.app);
   // const canvasHeight = ((windowHeight - 180) * zoom) / 100;
 
+  const { windowHeight, zoom, selectedIdx } = useSelector((state) => state.app);
+  const canvasHeight = ((windowHeight - 180) * zoom) / 100;
+
+  const { windowHeight, zoom, selectedIdx } = useSelector((state) => state.app);
+  const canvasHeight = ((windowHeight - 180) * zoom) / 100;
+
   // redux state
   const components = useSelector((state) => state.designV2.components);
   const rectangles = components.map((item) => item.rectangle);
