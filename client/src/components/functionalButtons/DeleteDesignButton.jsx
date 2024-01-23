@@ -33,7 +33,10 @@ export default function DeleteDesignButton() {
 
   return (
     <Fragment>
-      <Fab size='small' onClick={() => setOpen(true)} color='error'>
+      <Fab
+        size='small'
+        onClick={() => setOpen(true)}
+        sx={{ backgroundColor: '#F6D5D5' }}>
         <Delete />
       </Fab>
       <Dialog open={open} onClose={handleClose}>
@@ -63,8 +66,7 @@ export default function DeleteDesignButton() {
                   })
                 );
               }
-            }}
-          >
+            }}>
             Yes
           </Button>
           <Button onClick={handleClose} autoFocus>

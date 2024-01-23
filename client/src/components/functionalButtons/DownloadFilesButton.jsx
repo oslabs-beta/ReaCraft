@@ -27,7 +27,10 @@ export default function DownloadFilesButton({ jsx, css }) {
   }
   return (
     <Tooltip title='Download code files'>
-      <Fab size='small' color='success' onClick={handleClick}>
+      <Fab
+        size='small'
+        onClick={handleClick}
+        sx={{ backgroundColor: '#D8F6D5' }}>
         <DownloadForOfflineIcon />
       </Fab>
     </Tooltip>
