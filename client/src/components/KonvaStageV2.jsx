@@ -1,4 +1,4 @@
-import React, { Fragment, createRef, useRef, useEffect } from 'react';
+import React, { Fragment, createRef, useRef, useEffect, useState } from 'react';
 import { Stage, Layer, Rect, Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,10 +8,18 @@ import { setSelectedIdx } from '../utils/reducers/appSlice';
 export default function KonvaStage({ userImage }) {
   const [image] = useImage(userImage);
 
+  const { windowHeight, zoom, selectedIdx } = useSelector((state) => state.app);
+  const canvasHeight = ((windowHeight - 180) * zoom) / 100;
+
   // redux state
   const components = useSelector((state) => state.designV2.components);
-  const selectedIdx = useSelector((state) => state.app.selectedIdx);
   const rectangles = components.map((item) => item.rectangle);
+  const rootWidth = rectangles[0].width;
+  const rootHeight = rectangles[0].height;
+
+  const canvasRootRatio = canvasHeight / rootHeight;
+  const canvasWidth = rootWidth * canvasRootRatio;
+
   const dispatch = useDispatch();
 
   // refs and other state
@@ -45,7 +53,12 @@ export default function KonvaStage({ userImage }) {
   // handle drag and transform
   function handleChangeEnd(componentId, attrs) {
     const { x, y, width, height } = attrs;
-    const body = { x, y, width, height };
+    const body = {
+      x: x / canvasRootRatio,
+      y: y / canvasRootRatio,
+      width: width / canvasRootRatio,
+      height: height / canvasRootRatio,
+    };
     try {
       dispatch(updateComponentRectanglePosition({ componentId, body }));
     } catch (error) {
@@ -60,24 +73,26 @@ export default function KonvaStage({ userImage }) {
 
   if (image) {
     return (
-      <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Stage width={canvasWidth} height={canvasHeight}>
         <Layer>
           <Image
             image={image}
-            width={components[0].rectangle.width}
-            height={components[0].rectangle.height}
+            width={components[0].rectangle.width * canvasRootRatio}
+            height={components[0].rectangle.height * canvasRootRatio}
           />
           {rectangles.map((rect, i) => {
             if (!rectRefs.current[i]) rectRefs.current[i] = createRef();
+            const maxSide = Math.max(rect.width, rect.height) * canvasRootRatio;
+            const cornerRadius = (rect.borderradius / 100) * maxSide;
             const { component_id } = rect;
             return (
               <Fragment key={component_id}>
                 <Rect
                   ref={rectRefs.current[i]}
-                  x={rect.x_position}
-                  y={rect.y_position}
-                  width={rect.width}
-                  height={rect.height}
+                  x={rect.x_position * canvasRootRatio}
+                  y={rect.y_position * canvasRootRatio}
+                  width={rect.width * canvasRootRatio}
+                  height={rect.height * canvasRootRatio}
                   stroke={rect.stroke}
                   strokeScaleEnabled={false}
                   draggable={
@@ -86,7 +101,7 @@ export default function KonvaStage({ userImage }) {
                   strokeWidth={rect.borderwidth}
                   onClick={(e) => handleRectClick(e, component_id)}
                   fill={rect.backgroundcolor}
-                  cornerRadius={rect.borderradius}
+                  cornerRadius={cornerRadius}
                   onDragEnd={(e) =>
                     handleChangeEnd(component_id, e.target.attrs)
                   }
