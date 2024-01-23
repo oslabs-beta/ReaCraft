@@ -7,7 +7,7 @@ import { themeLight, themeDark } from './styles/ThemeGlobal';
 import TopBar from './components/TopBar';
 import MainContainer from './components/MainContainer';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMessage } from './utils/reducers/appSlice';
+import { setMessage, setWindowHeight } from './utils/reducers/appSlice';
 
 const drawerWidth = 100;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -62,6 +62,15 @@ export default function App() {
       }
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      dispatch(setWindowHeight(window.innerHeight));
+    }
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const mode = window.localStorage.getItem('mode');

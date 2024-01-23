@@ -7,25 +7,12 @@ import { setSelectedIdx } from '../utils/reducers/appSlice';
 
 export default function KonvaStage({ userImage }) {
   const [image] = useImage(userImage);
-  const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 180);
-  const [windowSize, setWindowSize] = useState(window.innerHeight);
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize(window.innerHeight);
-    }
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    setCanvasHeight(window.innerHeight - 180);
-  }, [window.innerHeight]);
+  const { windowHeight, zoom, selectedIdx } = useSelector((state) => state.app);
+  const canvasHeight = ((windowHeight - 180) * zoom) / 100;
 
   // redux state
   const components = useSelector((state) => state.designV2.components);
-  const selectedIdx = useSelector((state) => state.app.selectedIdx);
   const rectangles = components.map((item) => item.rectangle);
   const rootWidth = rectangles[0].width;
   const rootHeight = rectangles[0].height;
@@ -33,7 +20,6 @@ export default function KonvaStage({ userImage }) {
   const canvasRootRatio = canvasHeight / rootHeight;
   const canvasWidth = rootWidth * canvasRootRatio;
 
-  console.log('canvasHeight, canvasWidth', canvasHeight, canvasWidth);
   const dispatch = useDispatch();
 
   // refs and other state
