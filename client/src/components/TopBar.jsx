@@ -16,8 +16,6 @@ import { useTheme } from '@mui/material';
 
 /* MUI Icon Imports */
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import HomeIcon from '@mui/icons-material/Home';
-import MenuIcon from '@mui/icons-material/Menu';
 import Padding from '@mui/icons-material';
 
 import DarkModeSwitch from './functionalButtons/DarkModeSwitch';
