@@ -255,6 +255,7 @@ const designSliceV2 = createSlice({
       .addCase(submitComponentForm.fulfilled, (state, action) => {
         state.loading = false;
         const updatedComponent = action.payload;
+        console.log('updatedComponent', updatedComponent);
         state.components.forEach((item) => {
           if (item._id == updatedComponent._id) {
             Object.assign(item, updatedComponent);

@@ -1,7 +1,11 @@
 import React, { useState, Fragment, useEffect, useRef } from 'react';
 import Fab from '@mui/material/Fab';
+import IconButton from '@mui/material/IconButton';
+import Backdrop from '@mui/material/Backdrop';
 import Popper from '@mui/material/Popper';
+
 import { PiFileJsx } from 'react-icons/pi';
+import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { CodeBlock, monokai } from 'react-code-blocks';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
@@ -31,9 +35,10 @@ export default function ViewCodeButton({ css, jsx, name }) {
 
   return (
     <Fragment>
-      <Tooltip title='View jsx code for components'>
+      <Tooltip title='View JSX Code for Components'>
         <Fab size='small' variant='contained' onClick={openPopper}>
-          <PiFileJsx />
+          <CodeRoundedIcon />
+          {/* {name ? name : 'View All'} */}
         </Fab>
       </Tooltip>
       {anchorEl && (

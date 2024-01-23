@@ -13,6 +13,7 @@ import HtmlTagSelector from '../userInputs/HtmlTagSelector';
 import DeleteComponentButton from '../functionalButtons/DeleteComponentButton';
 import { ThemeProvider, useTheme } from '@mui/material';
 import { WorkspaceLeftLightTheme } from '../../styles/WorkspaceLeftTheme';
+import DesignTitleInput from '../userInputs/DesignTitleInput';
 
 import { setSelectedIdx } from '../../utils/reducers/appSlice';
 
@@ -26,12 +27,14 @@ export default function WorkspaceLeft() {
 
   return (
     <ThemeProvider theme={WorkspaceLeftTheme}>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <AddNewComponent size='sm' />
-        <List width='75%'>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
+        <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
+          <AddNewComponent />
+        </Box>
+
+        <List>
           {components.map((item, idx) => (
             <ComponentDisplay
-              width='75%'
               component={item}
               key={idx}
               idx={idx}
@@ -57,23 +60,11 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
   const selected = selectedIdx === idx;
 
   return (
-    <ListItemButton
-      value='NewComponentInputBox'
-      selected={selected}
-      onClick={handleListItemClick}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        padding: '10px',
-        width: '75%',
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          width: '75%',
-        }}
+    <Box sx={{ marginRight: '20px', width: '200px' }}>
+      <ListItemButton
+        value='NewComponentInputBox'
+        selected={selected}
+        onClick={handleListItemClick}
       >
         <ListItemText primary={component.name} />
         {selected && (
@@ -93,7 +84,6 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
           closeEditor={() => setOpenEditor(false)}
           isLeaf={isLeaf}
         />
-
         {idx > 0 && selected && (
           <DeleteComponentButton
             name={component.name}
@@ -101,14 +91,7 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
             canDelete={isLeaf}
           />
         )}
-      </Box>
-
-      {selected && (
-        <Fragment>
-          <ParentSelector childIdx={idx} />
-          {isLeaf && <HtmlTagSelector idx={idx} isLeaf={isLeaf} />}
-        </Fragment>
-      )}
-    </ListItemButton>
+      </ListItemButton>
+    </Box>
   );
 }

@@ -15,19 +15,20 @@ export default function MainContainer() {
     <Container
       value='WorkSpaceContainer'
       disableGutters={true}
-      maxWidth='false'
+      maxWidth='1500px'
       style={{
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
-        marginTop: '80px',
+        marginTop: '60px',
       }}
     >
       {page === 'NEW_DESIGN' && <NewDesign />}
-      {page === 'HOME' && 
-        <Box display='flex' justifyContent='center' >
-          <Home maxWidth='false'/>
-        </Box>}
+      {page === 'HOME' && (
+        <Box display='flex' justifyContent='center'>
+          <Home maxWidth='false' />
+        </Box>
+      )}
       <Snackbar
         value='SnackbarUnderWorkSpaceCont'
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
