@@ -6,14 +6,11 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import EditIcon from '@mui/icons-material/Edit';
-import ParentSelector from '../userInputs/ParentSelector';
 import AddNewComponent from '../functionalButtons/AddNewComponentButton';
 import ComponentEditor from '../userInputs/ComponentEditorForm';
-import HtmlTagSelector from '../userInputs/HtmlTagSelector';
 import DeleteComponentButton from '../functionalButtons/DeleteComponentButton';
 import { ThemeProvider, useTheme } from '@mui/material';
 import { WorkspaceLeftLightTheme } from '../../styles/WorkspaceLeftTheme';
-import DesignTitleInput from '../userInputs/DesignTitleInput';
 
 import { setSelectedIdx } from '../../utils/reducers/appSlice';
 
@@ -27,12 +24,19 @@ export default function WorkspaceLeft() {
 
   return (
     <ThemeProvider theme={WorkspaceLeftTheme}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'end',
+          zIndex: 1,
+        }}
+      >
         <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
           <AddNewComponent />
         </Box>
 
-        <List>
+        <List sx={{ zIndex: 1 }}>
           {components.map((item, idx) => (
             <ComponentDisplay
               component={item}
