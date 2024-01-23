@@ -89,10 +89,7 @@ export default function UserImageUploadButton() {
           <Button
             component='label'
             variant='contained'
-
-            startIcon={<CloudUploadRoundedIcon />}
-          >
-
+            startIcon={<CloudUploadRoundedIcon />}>
             Upload Image
             <VisuallyHiddenInput
               type='file'
