@@ -52,8 +52,7 @@ export default function Workspace() {
             justifyContent: 'center',
             height: '50px',
             paddingTop: 0,
-          }}
-        >
+          }}>
           {selectedIdx !== null && components[selectedIdx] && (
             <WorkspaceToolbar
               rectangle={components[selectedIdx].rectangle}
@@ -62,13 +61,26 @@ export default function Workspace() {
           )}
         </Grid>
         <Grid item xs={1} sx={{ paddingTop: 0 }}></Grid>
-        <Grid item xs={3}>
+        <Grid
+          item
+          xs={3}
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            justifyItems: 'flex-start',
+          }}>
           <WorkspaceLeft />
         </Grid>
         <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'center' }}>
           {image_url && <KonvaStage userImage={image_url} />}
         </Grid>
-        <Grid item xs={1}>
+        <Grid
+          item
+          xs={1}
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}>
           <WorkspaceRight />
         </Grid>
       </Grid>

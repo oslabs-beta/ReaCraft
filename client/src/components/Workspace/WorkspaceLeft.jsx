@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import { useDispatch, useSelector } from 'react-redux';
 import List from '@mui/material/List';
@@ -28,31 +29,38 @@ export default function WorkspaceLeft() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'end',
+          alignItems: 'flex-start',
           zIndex: 1,
-        }}
-      >
-        <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
+        }}>
+        <Box sx={{ paddingLeft: '10px', marginRight: '10px' }}>
           <AddNewComponent />
         </Box>
-
-        <List sx={{ zIndex: 1 }}>
-          {components.map((item, idx) => (
-            <ComponentDisplay
-              component={item}
-              key={idx}
-              idx={idx}
-              handleListItemClick={(e) => {
-                e.stopPropagation();
-                dispatch(setSelectedIdx(idx));
-              }}
-              isLeaf={
-                idx > 0 &&
-                components.filter((e) => e.parent_id === item._id).length === 0
-              }
-            />
-          ))}
-        </List>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+          <List
+            sx={{
+              zIndex: 1,
+            }}>
+            {components.map((item, idx) => (
+              <Box>
+                <ComponentDisplay
+                  alignItems='start'
+                  component={item}
+                  key={idx}
+                  idx={idx}
+                  handleListItemClick={(e) => {
+                    e.stopPropagation();
+                    dispatch(setSelectedIdx(idx));
+                  }}
+                  isLeaf={
+                    idx > 0 &&
+                    components.filter((e) => e.parent_id === item._id)
+                      .length === 0
+                  }></ComponentDisplay>
+                <Divider variant='middle' />
+              </Box>
+            ))}
+          </List>
+        </Box>
       </Box>
     </ThemeProvider>
   );
@@ -64,21 +72,20 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
   const selected = selectedIdx === idx;
 
   return (
-    <Box sx={{ marginRight: '20px', width: '200px' }}>
+    <Box sx={{ width: '200px', paddingLeft: '10px' }}>
       <ListItemButton
         value='NewComponentInputBox'
         selected={selected}
         onClick={handleListItemClick}
-      >
-        <ListItemText primary={component.name} />
+        sx={{ justifyContent: 'flex-start' }}>
+        <ListItemText primary={component.name} width='200px' />
         {selected && (
           <IconButton
-            sx={{ marginLeft: '20px' }}
+            sx={{ left: '100px' }}
             onClick={(e) => {
               e.stopPropagation();
               setOpenEditor(true);
-            }}
-          >
+            }}>
             <EditIcon />
           </IconButton>
         )}
@@ -90,6 +97,7 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
         />
         {idx > 0 && selected && (
           <DeleteComponentButton
+            sx={{ left: '200px' }}
             name={component.name}
             componentId={component._id}
             canDelete={isLeaf}
