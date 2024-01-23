@@ -69,7 +69,9 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
       <ListItemButton
         value='NewComponentInputBox'
         selected={selected}
-        onClick={handleListItemClick}>
+
+        onClick={handleListItemClick}
+      >
         <ListItemText primary={component.name} />
         {selected && (
           <IconButton
@@ -77,6 +79,7 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
             onClick={(e) => {
               e.stopPropagation();
               setOpenEditor(true);
+
             }}>
             <EditIcon />
           </IconButton>

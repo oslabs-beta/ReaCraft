@@ -21,7 +21,10 @@ export default function MainContainer() {
         alignItems: 'center',
         position: 'relative',
         marginTop: '60px',
-      }}>
+        minWidth: '500px',
+      }}
+    >
+
       {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && (
         <Box display='flex' justifyContent='center'>
