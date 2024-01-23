@@ -31,8 +31,8 @@ export type Design = {
   _id: number;
   user_id: number;
   title: string;
-  created_at: string;
-  last_updated: string;
+  created_at: Date;
+  last_updated: Date;
   image_url: string;
   components?: Component[];
 };
