@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap');
+
+/* font-family: 'Baloo Bhaijaan 2', sans-serif; */
+
+@keyframes slideUp {
+  from {
+    transform: translateY(300%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+body {
+  font-family: 'Baloo Bhaijaan 2', sans-serif;
+  margin: 0;
+  overscroll-behavior-y: contain;
+  padding: 0;
+  scroll-snap-type: y mandatory;
+}
+
+.boxContainer {
+  animation: slideUp 2.5s ease-out forwards;
+  animation-delay: 1.5s;
+  display: flex;
+  flex-direction: column;
+  font-size: 65px;
+  /* background-color: #7fa1c7; */
+  /* border-radius: 12px; */
+  box-shadow: 5px 5px 15px 0.5rem rgb(53, 53, 53);
+  z-index: 1;
+}
+
+.floater {
+  font-size: 2.5rem;
+  padding-right: 30px;
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  z-index: 10;
+}
+
+html {
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-type: y mandatory;
+}
+
+.logo {
+  filter: drop-shadow(2px 2px 3px #2a2a2a);
+}
+
+#login,
+#signup {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Baloo Bhaijaan 2', sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-right: 15px;
+  padding: 5px 20px;
+  position: relative;
+  text-decoration: none;
+}
+
+#login::after,
+#signup::after {
+  background: white;
+  bottom: -10px;
+  content: '';
+  display: block;
+  height: 2px;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  transition: width 0.3s ease-in-out;
+  width: 0;
+}
+
+#login:hover::after,
+#signup:hover::after {
+  width: 90%;
+}
+
+.link-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.profile-name {
+  margin-bottom: 5px;
+}
+
+.profile-photos {
+  border-radius: 50%;
+  height: 200px;
+  margin-bottom: 10px;
+  object-fit: cover;
+  width: 200px;
+}
+
+.profiles-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 100px;
+  justify-content: space-around;
+}
+
+.slide {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  scroll-snap-align: start;
+  scroll-snap-type: y mandatory;
+  width: 100%;
+}
+
+.slide:nth-child(1) {
+  background-color: #778da9;
+  z-index: 4;
+}
+
+.slide:nth-child(2) {
+  background-color: #415a77;
+  z-index: 2;
+}
+
+.slide:nth-child(3) {
+  background-color: #778da9;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.slide2_Background {
+  animation: slideUp 3.5s ease-out forwards;
+  animation-delay: 1.5s;
+  font-size: 65px;
+  position: relative;
+  z-index: 1;
+}
+
+.team-header {
+  font-size: 2rem;
+  margin-bottom: 80px;
+  text-align: center;
+  width: 100%;
+}
