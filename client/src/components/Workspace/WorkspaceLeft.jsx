@@ -6,14 +6,11 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import EditIcon from '@mui/icons-material/Edit';
-import ParentSelector from '../userInputs/ParentSelector';
 import AddNewComponent from '../functionalButtons/AddNewComponentButton';
 import ComponentEditor from '../userInputs/ComponentEditorForm';
-import HtmlTagSelector from '../userInputs/HtmlTagSelector';
 import DeleteComponentButton from '../functionalButtons/DeleteComponentButton';
 import { ThemeProvider, useTheme } from '@mui/material';
 import { WorkspaceLeftLightTheme } from '../../styles/WorkspaceLeftTheme';
-import DesignTitleInput from '../userInputs/DesignTitleInput';
 
 import { setSelectedIdx } from '../../utils/reducers/appSlice';
 
@@ -27,12 +24,21 @@ export default function WorkspaceLeft() {
 
   return (
     <ThemeProvider theme={WorkspaceLeftTheme}>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <AddNewComponent size='sm' />
-        <List width='75%'>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'end',
+          zIndex: 1,
+        }}
+      >
+        <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
+          <AddNewComponent />
+        </Box>
+
+        <List sx={{ zIndex: 1 }}>
           {components.map((item, idx) => (
             <ComponentDisplay
-              width='75%'
               component={item}
               key={idx}
               idx={idx}
@@ -58,57 +64,37 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
   const selected = selectedIdx === idx;
 
   return (
-    <Box>
+    <Box sx={{ marginRight: '20px', width: '200px' }}>
       <ListItemButton
         value='NewComponentInputBox'
         selected={selected}
         onClick={handleListItemClick}
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '10px',
-          width: '75%',
-        }}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            padding: '10px',
-            width: '75%',
-          }}>
-          <Box
-            sx={{
-              display: 'flex',
-              width: '75%',
-            }}>
-            <ListItemText primary={component.name} />
-            {selected && (
-              <IconButton
-                sx={{ marginLeft: '20px' }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setOpenEditor(true);
-                }}>
-                <EditIcon />
-              </IconButton>
-            )}
-            <ComponentEditor
-              idx={idx}
-              open={openEditor}
-              closeEditor={() => setOpenEditor(false)}
-              isLeaf={isLeaf}
-            />
-          </Box>
-          {idx > 0 && selected && (
-            <DeleteComponentButton
-              name={component.name}
-              componentId={component._id}
-              canDelete={isLeaf}
-            />
-          )}
-        </Box>
+      >
+        <ListItemText primary={component.name} />
+        {selected && (
+          <IconButton
+            sx={{ marginLeft: '20px' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenEditor(true);
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        )}
+        <ComponentEditor
+          idx={idx}
+          open={openEditor}
+          closeEditor={() => setOpenEditor(false)}
+          isLeaf={isLeaf}
+        />
+        {idx > 0 && selected && (
+          <DeleteComponentButton
+            name={component.name}
+            componentId={component._id}
+            canDelete={isLeaf}
+          />
+        )}
       </ListItemButton>
     </Box>
   );

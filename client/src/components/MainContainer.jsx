@@ -15,12 +15,12 @@ export default function MainContainer() {
     <Container
       value='WorkSpaceContainer'
       disableGutters={true}
-      maxWidth='false'
+      maxWidth='1500px'
       style={{
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
-        marginTop: '80px',
+        marginTop: '60px',
       }}
     >
       {page === 'NEW_DESIGN' && <NewDesign />}

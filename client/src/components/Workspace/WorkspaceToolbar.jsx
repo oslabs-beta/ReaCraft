@@ -85,20 +85,20 @@ export default function WorkspaceToolbar({ rectangle }) {
   });
   return (
     <ThemeProvider
-      theme={theme.palette.mode === 'dark' ? themeDark : themeLight}>
-      <ButtonGroup width='50px' variant='outlined'>
+      theme={theme.palette.mode === 'dark' ? themeDark : themeLight}
+    >
+      <ButtonGroup width='50px' variant='outlined' height='30px'>
         <Fragment>
-          <Tooltip title='Change Fill Color'>
-            <Button onClick={(e) => setAnchorStyle(e.currentTarget)}>
-              <ColorLensRoundedIcon />
-              <MuiColorInput
-                value={color}
-                onChange={(val) => {
-                  setColor(val);
-                  handleSubmit('backgroundColor', val);
-                }}
-              />
-            </Button>
+          <Tooltip title='Change background color'>
+            <MuiColorInput
+              className='background-picker'
+              sx={{ border: 'none' }}
+              value={color}
+              onChange={(val) => {
+                setColor(val);
+                handleSubmit('backgroundColor', val);
+              }}
+            />
           </Tooltip>
         </Fragment>
 
@@ -143,7 +143,8 @@ function BorderMenu({
       onClose={handleClose}
       MenuListProps={{
         'aria-labelledby': 'basic-button',
-      }}>
+      }}
+    >
       <MenuItem>
         <Tooltip title='Border Color'>
           <MuiColorInput
@@ -156,28 +157,24 @@ function BorderMenu({
         </Tooltip>
       </MenuItem>
       <MenuItem>
-        <Tooltip title='Border Width'>
-          <Typography width='250px'>Border Width</Typography>
-          <Slider
-            value={borderWidth}
-            valueLabelDisplay='auto'
-            onChange={(e) => setBorderWidth(e.target.value)}
-            onChangeCommitted={() => handleSubmit('borderWidth', borderWidth)}
-          />
-        </Tooltip>
+        <Typography width='250px'>Border Width</Typography>
+        <Slider
+          value={borderWidth}
+          valueLabelDisplay='auto'
+          onChange={(e) => setBorderWidth(e.target.value)}
+          onChangeCommitted={() => handleSubmit('borderWidth', borderWidth)}
+        />
       </MenuItem>
       <MenuItem maxWidth='false'>
-        <Tooltip title='Border Radius'>
-          <Typography width='250px'>Border Radius</Typography>
-          <Slider
-            value={borderRadius}
-            valueLabelDisplay='auto'
-            onChange={(e) => setBorderRadius(e.target.value)}
-            onChangeCommitted={() => handleSubmit('borderRadius', borderRadius)}
-            min={0}
-            max={50}
-          />
-        </Tooltip>
+        <Typography width='250px'>Border Radius</Typography>
+        <Slider
+          value={borderRadius}
+          valueLabelDisplay='auto'
+          onChange={(e) => setBorderRadius(e.target.value)}
+          onChangeCommitted={() => handleSubmit('borderRadius', borderRadius)}
+          min={0}
+          max={50}
+        />
       </MenuItem>
     </Menu>
   );
