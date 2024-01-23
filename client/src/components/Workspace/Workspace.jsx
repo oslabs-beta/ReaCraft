@@ -53,6 +53,7 @@ export default function Workspace() {
             height: '50px',
             paddingTop: 0,
           }}>
+
           {selectedIdx !== null && components[selectedIdx] && (
             <WorkspaceToolbar
               rectangle={components[selectedIdx].rectangle}

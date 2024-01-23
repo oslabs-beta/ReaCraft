@@ -11,6 +11,7 @@ export default function KonvaStage({ userImage }) {
   const { windowHeight, zoom, selectedIdx } = useSelector((state) => state.app);
   const canvasHeight = ((windowHeight - 180) * zoom) / 100;
 
+
   const { windowHeight, zoom, selectedIdx } = useSelector((state) => state.app);
   const canvasHeight = ((windowHeight - 180) * zoom) / 100;
 
