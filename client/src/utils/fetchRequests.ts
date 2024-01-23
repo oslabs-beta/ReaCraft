@@ -325,3 +325,25 @@ export function updateComponentRectangleStyleRequest(
       throw err;
     });
 }
+
+export function downloadProject(body: {
+  filesData: { filename: string; content: string }[];
+  title: string;
+}) {
+  return fetch('/download', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.blob();
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
