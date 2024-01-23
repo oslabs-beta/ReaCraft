@@ -82,11 +82,18 @@ export default function UserImageUploadButton() {
     <Fragment>
       <Tooltip title={tooltip}>
         {!designId ? (
-          <FileUploader
-            handleChange={handleFileChange}
-            name='userImage'
-            types={['JPG', 'PNG']}
-          />
+          <Button
+            component='label'
+            variant='contained'
+            startIcon={<CloudUploadRoundedIcon />}>
+            Upload Image
+            <VisuallyHiddenInput
+              type='file'
+              name='userImage'
+              accept='image/*'
+              onChange={handleFileChange}
+            />
+          </Button>
         ) : (
           // <Button
           //   component='label'
