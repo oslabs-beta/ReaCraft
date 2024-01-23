@@ -10,6 +10,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import LineStyleRoundedIcon from '@mui/icons-material/LineStyleRounded';
 import Slider from '@mui/material/Slider';
+import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
+import Typography from '@mui/material/Typography';
 
 import '../../styles/workspaceToolbar.scss';
 import { useTheme, createTheme, ThemeProvider } from '@mui/material';
@@ -85,21 +87,23 @@ export default function WorkspaceToolbar({ rectangle }) {
     <ThemeProvider
       theme={theme.palette.mode === 'dark' ? themeDark : themeLight}
     >
-      <ButtonGroup variant='outlined'>
-        <Tooltip title='Change background color'>
-          <MuiColorInput
-            className='background-picker'
-            sx={{ border: 'none' }}
-            value={color}
-            onChange={(val) => {
-              setColor(val);
-              handleSubmit('backgroundColor', val);
-            }}
-          />
-        </Tooltip>
+      <ButtonGroup width='50px' variant='outlined' height='30px'>
+        <Fragment>
+          <Tooltip title='Change background color'>
+            <MuiColorInput
+              className='background-picker'
+              sx={{ border: 'none' }}
+              value={color}
+              onChange={(val) => {
+                setColor(val);
+                handleSubmit('backgroundColor', val);
+              }}
+            />
+          </Tooltip>
+        </Fragment>
 
         <Fragment>
-          <Tooltip title='border styles'>
+          <Tooltip title='Border Styles'>
             <Button onClick={(e) => setAnchorEl(e.currentTarget)}>
               <LineStyleRoundedIcon />
             </Button>
@@ -142,7 +146,7 @@ function BorderMenu({
       }}
     >
       <MenuItem>
-        <Tooltip title='border color'>
+        <Tooltip title='Border Color'>
           <MuiColorInput
             value={color}
             onChange={(val) => {
@@ -153,7 +157,8 @@ function BorderMenu({
         </Tooltip>
       </MenuItem>
       <MenuItem>
-        <Tooltip title='border width'>
+        <Tooltip title='Border Width'>
+          <Typography width='250px'>Border Width</Typography>
           <Slider
             value={borderWidth}
             valueLabelDisplay='auto'
@@ -162,8 +167,9 @@ function BorderMenu({
           />
         </Tooltip>
       </MenuItem>
-      <MenuItem>
-        <Tooltip title='border radius'>
+      <MenuItem maxWidth='false'>
+        <Tooltip title='Border Radius'>
+          <Typography width='250px'>Border Radius</Typography>
           <Slider
             value={borderRadius}
             valueLabelDisplay='auto'

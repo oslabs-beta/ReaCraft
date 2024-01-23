@@ -1,10 +1,13 @@
 import React, { useRef, useState, Fragment, useEffect } from 'react';
 import Tree from 'react-d3-tree';
 import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 import BackdropSnackbar from './BackdropSnackbar';
-import { Backdrop, Fab, List, FormLabel, Box } from '@mui/material';
+import { Button, Backdrop, Fab, List, FormLabel, Box } from '@mui/material';
+import { ImTree } from 'react-icons/im';
 import { themeDOMTreeLight } from '../../styles/ThemeDOMTree';
 import { ThemeProvider } from '@mui/material/styles';
+import SchemaRoundedIcon from '@mui/icons-material/SchemaRounded';
 
 import '../../utils/treeNode.css';
 
@@ -22,20 +25,15 @@ export default function ViewDomTreeButton({ tree }) {
     };
   }, [viewTree]);
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-      }}
-    >
+    <Fragment>
       <Tooltip title='View Dom tree'>
-        <Fab size='small' variant='contained' onClick={() => setViewTree(true)}>
+        <Fab onClick={() => setViewTree(true)} size='small'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
-            width='16'
-            height='16'
-            fill='currentColor'
+            width='20'
+            height='20'
+            fontSize='inherit'
+            // fill='989897'
             className='bi bi-diagram-3-fill'
             viewBox='0 0 16 16'
           >
@@ -54,7 +52,7 @@ export default function ViewDomTreeButton({ tree }) {
         tree={tree}
         setViewTree={setViewTree}
       />
-    </Box>
+    </Fragment>
   );
 }
 
