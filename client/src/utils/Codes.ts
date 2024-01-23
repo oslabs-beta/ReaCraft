@@ -44,12 +44,10 @@ export default class Codes {
               throw new Error(
                 'Converting jsx: component has an undefined child'
               );
-            console.log('childComponent', childComponent);
             return childComponent.name;
           })
         );
         childrenNames.forEach((name) => {
-          console.log('childrenName,', name);
           importChildren += `import ${name} from './${name}.jsx'\n`;
         });
 
