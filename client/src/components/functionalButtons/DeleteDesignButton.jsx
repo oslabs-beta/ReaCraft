@@ -50,7 +50,7 @@ export default function DeleteDesignButton() {
                 dispatch(
                   setMessage({
                     severity: 'success',
-                    text: 'Delete a design successfully.',
+                    text: 'Design deleted.',
                   })
                 );
                 dispatch(resetDesign());

@@ -29,7 +29,7 @@ export default function UserImageUploadButton() {
     const file = e.target.files[0];
     if (file) {
       dispatch(
-        setMessage({ severity: 'success', text: 'Upload successfully' })
+        setMessage({ severity: 'success', text: 'Upload successful.' })
       );
 
       const reader = new FileReader();
