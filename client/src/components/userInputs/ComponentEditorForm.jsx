@@ -40,7 +40,6 @@ export default function ComponentEditorForm({
 
   const [props, setProps] = useState(component.props);
   const [styles, setStyles] = useState(component.styles);
-  console.log('styles', styles);
 
   const deleteMessage = isLeaf
     ? {
