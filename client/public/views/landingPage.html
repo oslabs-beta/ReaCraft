@@ -17,8 +17,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
+      crossorigin="anonymous" />
 
     <link rel="stylesheet" type="text/css" href="/views/modals.css" />
 
@@ -34,7 +33,7 @@
       $(document).ready(function () {
         let mode = window.localStorage.getItem('mode');
         if (mode) $('*').addClass('dark');
-    
+
         $('#switch-base').click((e) => {
           mode = window.localStorage.getItem('mode');
           if (mode) {
@@ -64,19 +63,61 @@
         </button>
       </span>
       <div id="modalPlaceholder"></div>
-      <span class="logo-container">
-        <img class="logo" src="../assets/logo.svg" width="600px" />
-        <img
-          class="phrase"
-          src="../assets/homescreen_phrase_.svg"
-          width="800px" />
-      </span>
+      <div
+        class="logo-container"
+        width="800px"
+        style="display: flex; flex-direction: column; text-align: center">
+        <span display="flex" style="width: 60%; height: 70%">
+          <img alt="Logo" class="logo" src="../assets/logo.svg" />
+        </span>
+        <span
+          style="
+            display: flex;
+            justify-content: center;
+            font-size: xx-large;
+            font-weight: bolder;
+            padding-top: 30px;
+            text-shadow: 4px 3px 6px rgba(0, 0, 0, 0.36);
+          ">
+          <p>Streamlining React Development from Design to Deployment</p>
+        </span>
+      </div>
     </span>
     <!-- slide 2 -->
     <span class="slide">
       <span class="container">
         <span>
-          <fieldset class="slide2_Background">I love cheetos</fieldset>
+          <!-- <fieldset class="slide2_Background">I love cheetos</fieldset> -->
+          <div class="containerMain">
+            <div class="containerLeft">
+              <div class="instruction" onclick="showSlide(1)">
+                Instruction 1
+              </div>
+              <div class="instruction" onclick="showSlide(2)">
+                Instruction 2
+              </div>
+              <div class="instruction" onclick="showSlide(3)">
+                Instruction 3
+              </div>
+              <div class="instruction" onclick="showSlide(4)">
+                Instruction 4
+              </div>
+              <div class="instruction" onclick="showSlide(5)">
+                Instruction 5
+              </div>
+              <div class="instruction" onclick="showSlide(6)">
+                Instruction 6
+              </div>
+            </div>
+            <div class="containerRight">
+              <div class="slidePage2" id="slide1">Slide 1</div>
+              <div class="slidePage2" id="slide2">Slide 2</div>
+              <div class="slidePage2" id="slide3">Slide 3</div>
+              <div class="slidePage2" id="slide4">Slide 4</div>
+              <div class="slidePage2" id="slide5">Slide 5</div>
+              <div class="slidePage2" id="slide6">Slide 6</div>
+            </div>
+          </div>
         </span>
       </span>
     </span>
@@ -165,71 +206,72 @@
       // when document is ready
       $(document).ready(function () {
         // attach click handler event to 'signup' button
-        $('#signup').click(function(e) {
-        // prevent default button action
-        e.preventDefault();
-        // load the 'signupModal.html' content into 'modalPlaceholder'
-        $('#modalPlaceholder').load('/views/signupModal.html', function() {
-          // show the 'signupModal' as a modal
-          $('#signupModal').modal('show');
-        });
-      });
-  
-       // attach click event handler to 'login' button
-      $('#login').click(function(e) {
-        // prevent default button action
-        e.preventDefault();
-        // load the 'loginModal.html' content into 'modalPlaceholder'
-        $('#modalPlaceholder').load('/views/loginModal.html', function() {
-          // show the 'loginModa' as a modal
-          $('#loginModal').modal('show');
-        });
-      });
-
-      // attach input event handler to the 'username' field within 'loginModal'
-       $(document).on('input', '#user', function() {
-        // when the user types in the 'username' field
-        let username = $(this).val().trim();
-        // check if the 'username' field is not empty
-        if (username) {
-          // set the text of the element with class 'greeting-text' to 'Hello, username (input)!'
-          $('.greeting-text').text('Hello, ' + username + '!');
-        } else {
-          // set the text of the element with the class 'greeting-text' to 'Hello, Friend!'
-          $('.greeting-text').text('Hello, Friend!');
-        }
-      });
-
-      // when the 'Need an account?' button is clicked within the login modal
-      $(document).on('click', '#needAccount', function() {
-        // prevent default button action
-        e.preventDefault();
-        // hide the login modal
-        $('#loginModal').modal('hide');
-        // unbind the previous hidden event handler to avoid stacking event calls
-        $('#loginModal').on('hidden.bs.modal', function (e) {
-          // load and show the signup modal
-          $('#modalPlaceholder').load('/views/signupModal.html', function() {
+        $('#signup').click(function (e) {
+          // prevent default button action
+          e.preventDefault();
+          // load the 'signupModal.html' content into 'modalPlaceholder'
+          $('#modalPlaceholder').load('/views/signupModal.html', function () {
+            // show the 'signupModal' as a modal
             $('#signupModal').modal('show');
           });
         });
-      });
 
-      // when the 'Have an account?' button is clicked within the signup modal
-      $(document).on('click', '.account-button', function(e) {
-        // prevent default button action
-        e.preventDefault();
-        // hide the current modal
-        $('#signupModal').modal('hide');
-        // load the login modal after the signup modal is hidden
-        $('#signupModal').on('hidden.bs.modal', function() {
-          $('#modalPlaceholder').load('/views/loginModal.html', function() {
-            // show the login modal
+        // attach click event handler to 'login' button
+        $('#login').click(function (e) {
+          // prevent default button action
+          e.preventDefault();
+          // load the 'loginModal.html' content into 'modalPlaceholder'
+          $('#modalPlaceholder').load('/views/loginModal.html', function () {
+            // show the 'loginModa' as a modal
             $('#loginModal').modal('show');
           });
         });
+
+        // attach input event handler to the 'username' field within 'loginModal'
+        $(document).on('input', '#user', function () {
+          // when the user types in the 'username' field
+          let username = $(this).val().trim();
+          // check if the 'username' field is not empty
+          if (username) {
+            // set the text of the element with class 'greeting-text' to 'Hello, username (input)!'
+            $('.greeting-text').text('Hello, ' + username + '!');
+          } else {
+            // set the text of the element with the class 'greeting-text' to 'Hello, Friend!'
+            $('.greeting-text').text('Hello, Friend!');
+          }
+        });
+
+        // when the 'Need an account?' button is clicked within the login modal
+        $(document).on('click', '#needAccount', function () {
+          // prevent default button action
+          e.preventDefault();
+          // hide the login modal
+          $('#loginModal').modal('hide');
+          // unbind the previous hidden event handler to avoid stacking event calls
+          $('#loginModal').on('hidden.bs.modal', function (e) {
+            // load and show the signup modal
+            $('#modalPlaceholder').load('/views/signupModal.html', function () {
+              $('#signupModal').modal('show');
+            });
+          });
+        });
+
+        // when the 'Have an account?' button is clicked within the signup modal
+        $(document).on('click', '.account-button', function (e) {
+          // prevent default button action
+          e.preventDefault();
+          // hide the current modal
+          $('#signupModal').modal('hide');
+          // load the login modal after the signup modal is hidden
+          $('#signupModal').on('hidden.bs.modal', function () {
+            $('#modalPlaceholder').load('/views/loginModal.html', function () {
+              // show the login modal
+              $('#loginModal').modal('show');
+            });
+          });
+        });
       });
-    });
     </script>
+    <script src="slidesScript.js"></script>
   </body>
 </html>
