@@ -11,9 +11,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
-import { Stack, useTheme } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import Divider from '@mui/material/Divider';
-import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 
 /* MUI Icon Imports */
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -98,7 +97,16 @@ export default function TopBar({
           )}
           {designId && (
             <Fragment>
-              <Tooltip title='placeholder for logo'>
+              <Box
+                sx={{
+                  cursor: 'pointer',
+                  height: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onClick={() => handlePageClick('HOME')}
+              >
                 <img
                   src={logo}
                   style={{
@@ -108,7 +116,8 @@ export default function TopBar({
                     color: '#736c6c',
                   }}
                 />
-              </Tooltip>
+              </Box>
+
               <DesignTitleInput />
             </Fragment>
           )}
