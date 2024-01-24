@@ -14,7 +14,7 @@ export default function UserDesigns() {
   const searchTerm = useSelector((state) => state.designV2.searchTerm);
   const [localSelectedDesignId, setLocalSelectedDesignId] = useState(null);
   const selectedDesignId = useSelector((state) => state.designV2._id);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
       try {
