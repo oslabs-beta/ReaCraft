@@ -1,0 +1,59 @@
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="signupForm" action="/signup" method="POST" class="login">
+            <h1 class="h3 mb-3 fw-normal text-center">Please Sign Up</h1>
+            <div class="form-floating">
+              <input
+                class="form-control"
+                id="user"
+                name="username"
+                placeholder="user"
+                type="text"
+              />
+              <label for="user">Username</label>
+            </div>
+            <div class="form-floating">
+              <input
+                id="email"
+                name="email"
+                placeholder="name@example.com"
+                type="email"
+                class="form-control"
+              />
+              <label for="user">Email Address</label>
+            </div>
+            <div class="form-floating">
+              <input
+                class="form-control"
+                id="pass"
+                name="password"
+                placeholder="password"
+                type="password"
+              />
+              <label for="pass">Password</label>
+            </div>
+            <div class="d-flex mt-3">
+              <button
+                class="btn btn-primary w-100 py-2 mx-2"
+                id="signup-button"
+                type="submit"
+              >
+                Sign Up
+              </button>
+              <!-- id="login" was in the button class -->
+              <button class="btn btn-outline-secondary w-100 py-2 mx-2 account-button"> 
+                Have an account?
+              </button>
+            </div>
+            <p class="mb-3 text-body-secondary">© 2024 ReaCraft</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
