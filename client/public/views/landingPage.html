@@ -255,18 +255,6 @@
             });
           });
         });
-        // when the 'Need an account?' button is clicked within the login modal
-        $(document).on('click', '.needAccount', function () {
-          // hide the login modal
-          $('#loginModal').modal('hide');
-          // unbind the previous hidden event handler to avoid stacking event calls
-          $('#loginModal').on('hidden.bs.modal', function (e) {
-            // load and show the signup modal
-            $('#modalPlaceholder').load('/views/signupModal.html', function () {
-              $('#signupModal').modal('show');
-            });
-          });
-        });
 
         // when the 'Have an account?' button is clicked within the signup modal
         $(document).on('click', '.account-button', function (e) {
