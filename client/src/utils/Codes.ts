@@ -12,243 +12,6 @@ export default class Codes {
     this.title = title;
   }
 
-  convertToJsx(): { [key: string]: string } {
-    const components = this.components;
-    const tree = this.tree;
-    const jsx: { [key: string]: string } = {};
-    let stack = [tree];
-    while (stack.length > 0) {
-      const cur = stack.pop();
-      if (!cur) throw new Error('Converting to jsx: component is undefined');
-
-      const component: Component | undefined = components.find(
-        (item: Component) => item._id === cur.id
-      );
-      if (!component)
-        throw new Error('Converting to jsx: cannot find component');
-
-      const { html_tag, inner_html, name } = component;
-      const children = cur.children;
-      let html: string = '';
-      if (component.index === 0) {
-        html += `\n  useEffect(() => {
-    document.title = "${this.title}"
-  }, [])\n\n`;
-      }
-      let importChildren = '';
-      const classAndId = ` className='${component.name}' id=${
-        component.index > 0 ? '{id}' : "'RootContainer-0'"
-      }>`;
-      if (children.length === 0) {
-        html += `  return (\n    ${html_tag.replace(
-          '>',
-          classAndId
-        )}${inner_html}${html_tag.replace('<', '</')}
-  );`;
-      } else {
-        const childrenComps = children.map((child) =>
-          components.find((item) => item._id === child.id)
-        );
-        const childrenNames = new Set(
-          childrenComps.map((childComponent) => {
-            if (!childComponent)
-              throw new Error(
-                'Converting jsx: component has an undefined child'
-              );
-            return childComponent.name;
-          })
-        );
-        childrenNames.forEach((name) => {
-          importChildren += `import ${name} from './${name}.jsx'\n`;
-        });
-
-        html +=
-          `  return (\n    <div${classAndId}\n` +
-          childrenComps
-            .map((childComponent) => {
-              if (!childComponent)
-                throw new Error(
-                  'Converting jsx: component has an undefined child'
-                );
-              return `      <${childComponent.name} id='${
-                childComponent.name
-              }-${childComponent.index}' ${childComponent.props
-                .map(({ key, value }) => `${key}={'${value}'}`)
-                .join(' ')}/>`;
-            })
-            .join('\n') +
-          '\n    </div>\n);';
-      }
-
-      let propKeys = new Set(component.props.map(({ key }) => key));
-      if (jsx[name]) {
-        const jsxStr = jsx[name];
-        const functionRegex = new RegExp(
-          `function\\s+${name}\\(\\{\\s*([^)]*?)\\s*\\}\\)`
-        );
-        const matches = jsxStr.match(functionRegex);
-        if (matches) {
-          const oldPropKeys: Set<string> = new Set(matches[1].split(', '));
-          propKeys = new Set([...propKeys, ...oldPropKeys]);
-          propKeys.delete('id');
-        }
-      }
-      let propsCode: string;
-      if (component.index === 0) {
-        propsCode =
-          propKeys.size > 0 ? '{ ' + [...propKeys].join(', ') + ' }' : '';
-      } else {
-        propsCode = '{ ' + ['id', ...propKeys].join(', ') + ' }';
-      }
-
-      jsx[name] = `import './styles.css';
-
-import React${component.index === 0 ? ', { useEffect }' : ''} from 'react';
-${importChildren}
-export default function ${name}(${propsCode}) {
-${html}
-}`;
-      stack = stack.concat(children);
-    }
-    return jsx;
-  }
-
-  convertToCssStr(): string {
-    let css: string = '';
-    const components = this.components;
-    const tree = this.tree;
-
-    if (!components || this.components.length === 0)
-      throw new Error('Converting css: design has no components');
-    if (!components[0].rectangle)
-      throw new Error('Converting css: RootContainer has no rectangle');
-
-    const rootWidth = components[0].rectangle.width;
-    const rootHeight = components[0].rectangle.height;
-
-    css += `:root{
-  --root-width: ${rootWidth}px;
-  --root-height: ${rootHeight}px;
-}
-`;
-    const stack = [tree];
-
-    components.forEach((component, i) => {
-      const { name, rectangle, styles } = component;
-      if (!rectangle)
-        throw new Error(`Converting css: component ${name} has no rectangle`);
-      const {
-        x_position,
-        y_position,
-        z_index,
-        width,
-        height,
-        borderwidth,
-        borderradius,
-        backgroundcolor,
-        stroke,
-      } = rectangle;
-      css += `\n\n#${name}-${i} {
-  position: ${i === 0 ? 'relative' : 'absolute'};
-  width: calc(var(--root-width) * ${
-    Math.round((width / rootWidth) * 100) / 100
-  });
-  height: calc(var(--root-height) * ${
-    Math.round((height / rootHeight) * 100) / 100
-  });
-  border-color: ${stroke};`;
-      if (i > 0) {
-        css += `
-  left: calc(var(--root-width) * ${
-    Math.round((x_position / rootWidth) * 100) / 100
-  });
-  top: calc(var(--root-height) * ${
-    Math.round((y_position / rootHeight) * 100) / 100
-  });`;
-      }
-      if (borderwidth > 0) css += `\n  border-width: ${borderwidth}px;`;
-      if (borderradius) css += `\n  border-radius: ${borderradius}%;`;
-      if (
-        styles.filter(({ key, value }) => key === 'border-style').length === 0
-      )
-        css += `\n  border-style: solid;`;
-      if (backgroundcolor) css += `\n  background-color: ${backgroundcolor};`;
-      if (z_index) css += `\n  z-index: ${z_index};`;
-      styles.forEach(({ key, value }) => {
-        if (value.length > 0) {
-          css += `\n  ${key}: ${value};`;
-        }
-      });
-      css += '\n}';
-    });
-    return css;
-  }
-
-  convertToCss(): { [key: string]: string } {
-    const css: { [key: string]: string } = {};
-    const components = this.components;
-    if (!components || this.components.length === 0) {
-      throw new Error('Converting css: design has no components');
-    }
-    if (!components[0].rectangle) {
-      throw new Error('Converting css: RootContainer has no rectangle');
-    }
-    const rootWidth = components[0].rectangle.width;
-    const rootHeight = components[0].rectangle.height;
-    components.forEach((component, i) => {
-      const { name, rectangle, styles } = component;
-      if (!rectangle) {
-        throw new Error(`Converting css: component ${name} has no rectangle`);
-      }
-      const {
-        x_position,
-        y_position,
-        z_index,
-        width,
-        height,
-        borderwidth,
-        borderradius,
-        backgroundcolor,
-        stroke,
-      } = rectangle;
-      let cssCode = `#${name}-${i} {
-  position: ${i === 0 ? 'relative' : 'absolute'};
-  width: ${
-    i === 0 ? `${rootWidth}px` : `${Math.round((width / rootWidth) * 100)}%`
-  };
-  height: ${
-    i === 0 ? `${rootHeight}px` : `${Math.round((height / rootHeight) * 100)}%`
-  };
-  border-color: ${stroke};`;
-      if (i > 0) {
-        cssCode += `
-  left: ${Math.round((x_position / rootWidth) * 100)}%;
-  top: ${Math.round((y_position / rootHeight) * 100)}%;`;
-      }
-      if (borderwidth > 0) cssCode += `\n  border-width: ${borderwidth}px;`;
-      if (borderradius) cssCode += `\n  border-radius: ${borderradius}%;`;
-      if (
-        styles.filter(({ key, value }) => key === 'border-style').length === 0
-      )
-        cssCode += `\n  border-style: solid;`;
-      if (backgroundcolor)
-        cssCode += `\n  background-color: ${backgroundcolor};`;
-      if (z_index) cssCode += `\n  z-index: ${z_index};`;
-      styles.forEach(({ key, value }) => {
-        if (value.length > 0) {
-          cssCode += `\n  ${key}: ${value};`;
-        }
-      });
-      cssCode += '\n}';
-      if (!css[name]) {
-        css[name] = cssCode;
-      } else {
-        css[name] += '\n\n' + cssCode;
-      }
-    });
-    return css;
-  }
-
   convertToCode(): { jsx: { [key: string]: string }; css: string } {
     const components = this.components;
     const tree = this.tree;
@@ -265,7 +28,7 @@ ${html}
     const rootHeight = components[0].rectangle.height;
     position[components[0]._id] = { top: 0, left: 0 };
 
-    css += `:root{
+    css += `:root {
   --root-width: ${rootWidth}px;
   --root-height: ${rootHeight}px;
 }
@@ -338,21 +101,19 @@ ${html}
   top: calc(var(--root-height) * ${
     Math.round(((y_position - parentPos.top) / rootHeight) * 100) / 100
   });`;
-      if (borderwidth > 0) css += `\n  border-width: ${borderwidth}px;`;
-      if (borderradius) css += `\n  border-radius: ${borderradius}%;`;
-      if (
-        styles.filter(({ key, value }) => key === 'border-style').length === 0
-      )
-        css += `\n  border-style: solid;`;
-      if (backgroundcolor) css += `\n  background-color: ${backgroundcolor};`;
-      if (z_index) css += `\n  z-index: ${z_index};`;
-      styles.forEach(({ key, value }) => {
-        if (value.length > 0) {
-          css += `\n  ${key}: ${value};`;
-        }
-      });
-      css += '\n}';
     }
+    if (borderwidth > 0) css += `\n  border-width: ${borderwidth}px;`;
+    if (borderradius) css += `\n  border-radius: ${borderradius}%;`;
+    if (styles.filter(({ key, value }) => key === 'border-style').length === 0)
+      css += `\n  border-style: solid;`;
+    if (backgroundcolor) css += `\n  background-color: ${backgroundcolor};`;
+    if (z_index) css += `\n  z-index: ${z_index};`;
+    styles.forEach(({ key, value }) => {
+      if (value.length > 0) {
+        css += `\n  ${key}: ${value};`;
+      }
+    });
+    css += '\n}';
 
     return css;
   }
@@ -366,8 +127,8 @@ ${html}
     let html: string = '';
     if (component.index === 0) {
       html += `\n  useEffect(() => {
-  document.title = "${this.title}"
-}, [])\n\n`;
+    document.title = "${this.title}"
+  }, [])\n\n`;
     }
     let importChildren = '';
     const classAndId = ` className='${component.name}' id=${
@@ -378,7 +139,7 @@ ${html}
         '>',
         classAndId
       )}${inner_html}${html_tag.replace('<', '</')}
-);`;
+  );`;
     } else {
       const childrenComps = children.map((child) =>
         this.components.find((item) => item._id === child.id)
@@ -409,7 +170,7 @@ ${html}
               .join(' ')}/>`;
           })
           .join('\n') +
-        '\n    </div>\n);';
+        '\n    </div>\n  );';
     }
 
     let propKeys = new Set(component.props.map(({ key }) => key));
