@@ -16,8 +16,6 @@ const downloadFiles = async (
     filesData: { filename: string; content: string }[];
     title: string;
   } = req.body;
-
-  console.log(filesData, title);
   const projectPath = path.join(__dirname, '../boilerplate');
   const componentPath = path.join(projectPath, './src/components');
 
@@ -25,17 +23,13 @@ const downloadFiles = async (
     if (!fs.existsSync(componentPath)) {
       fs.mkdirSync(componentPath);
     }
-
     filesData.forEach((file) => {
       fs.writeFileSync(path.join(componentPath, file.filename), file.content);
     });
-
     res.attachment(`${title}.zip`);
     const archive = archiver('zip', { zlib: { level: 9 } });
     archive.pipe(res);
-
     archive.directory(projectPath, false);
-
     await archive.finalize();
     rimraf.sync(componentPath);
   } catch (err) {
