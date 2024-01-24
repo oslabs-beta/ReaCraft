@@ -1,34 +1,28 @@
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { FileUploader } from 'react-drag-drop-files';
-
-import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
-
 import { setMessage } from '../../utils/reducers/appSlice';
 import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
 import Tooltip from '@mui/material/Tooltip';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import {
   newDesign,
   updateDesign,
   updateRootHeight,
 } from '../../utils/reducers/designSliceV2';
+import { Box } from '@mui/material';
+import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 
 export default function UserImageUploadButton() {
   const dispatch = useDispatch();
   const designId = useSelector((state) => state.designV2._id);
   const { image_url, components } = useSelector((state) => state.designV2);
-  const tooltip = !designId
-    ? 'Upload Your Design Image'
-    : 'Replace Current Image';
+  const theme = useTheme();
 
   function handleFileChange(file) {
     if (file) {
-      dispatch(
-        setMessage({ severity: 'success', text: 'Upload successful.' })
-      );
+      dispatch(setMessage({ severity: 'success', text: 'Upload successful.' }));
 
       const reader = new FileReader();
       reader.onloadend = async () => {
@@ -81,28 +75,27 @@ export default function UserImageUploadButton() {
   }
 
   return (
-    <Fragment>
-      <Tooltip title={tooltip}>
-        {!designId ? (
-          <FileUploader
-            handleChange={handleFileChange}
-            name='userImage'
-            types={['JPG', 'PNG']}
-          />
-        ) : (
-          // <Button
-          //   component='label'
-          //   variant='contained'
-          //   startIcon={<CloudUploadRoundedIcon />}
-          // >
-          //   Upload Image
-          //   <VisuallyHiddenInput
-          //     type='file'
-          //     name='userImage'
-          //     accept='image/*'
-          //     onChange={handleFileChange}
-          //   />
-          // </Button>
+    <Box
+      sx={{
+        ' label': {
+          borderColor: theme.palette.mode === 'light' ? '#736c6c' : 'beige',
+          padding: '80px',
+          marginTop: '150px',
+        },
+        ' svg *': {
+          fill: theme.palette.mode === 'light' ? '#736c6c' : 'beige',
+        },
+      }}
+    >
+      {!designId ? (
+        <FileUploader
+          label='Upload or Drop Your Design Image'
+          handleChange={handleFileChange}
+          name='userImage'
+          types={['JPG', 'PNG']}
+        />
+      ) : (
+        <Tooltip title='Replace Current Image'>
           <Fab component='label' variant='contained' size='small' color='info'>
             <CloudUploadRoundedIcon />
             <VisuallyHiddenInput
@@ -112,9 +105,9 @@ export default function UserImageUploadButton() {
               onChange={(e) => handleFileChange(e.target.files[0])}
             />
           </Fab>
-        )}
-      </Tooltip>
-    </Fragment>
+        </Tooltip>
+      )}
+    </Box>
   );
 }
 
