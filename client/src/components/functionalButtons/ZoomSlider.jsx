@@ -14,7 +14,7 @@ export default function ZoomSlider() {
   const dispatch = useDispatch();
   return (
     <Stack direction='row' alignItems='center'>
-      <IconButton onClick={() => dispatch(setZoom(zoom - 10))}>
+      <IconButton onClick={() => dispatch(setZoom(Math.max(zoom - 10, 10)))}>
         <RemoveCircleRoundedIcon />
       </IconButton>
       <Typography>{zoom}%</Typography>

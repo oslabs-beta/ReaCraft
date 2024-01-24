@@ -10,6 +10,7 @@ type AppState = {
   page: 'HOME' | 'NEW_DESIGN';
   selectedIdx: number | null;
   windowHeight: number;
+  windowWidth: number;
   zoom: number;
 };
 
@@ -18,6 +19,7 @@ const initialState: AppState = {
   page: 'HOME',
   selectedIdx: null,
   windowHeight: window.innerHeight,
+  windowWidth: window.innerWidth,
   zoom: 100,
 };
 
@@ -34,8 +36,12 @@ const appSlice = createSlice({
     resetMessage: (state: AppState) => {
       state.message = null;
     },
-    setWindowHeight: (state: AppState, action: PayloadAction<number>) => {
-      state.windowHeight = action.payload;
+    setWindowSize: (
+      state: AppState,
+      action: PayloadAction<{ height: number; width: number }>
+    ) => {
+      state.windowHeight = action.payload.height;
+      state.windowWidth = action.payload.width;
     },
     goToPage: (
       state: AppState,
@@ -56,7 +62,7 @@ export const {
   goToPage,
   resetApp,
   setSelectedIdx,
-  setWindowHeight,
+  setWindowSize,
   setZoom,
 } = appSlice.actions;
 

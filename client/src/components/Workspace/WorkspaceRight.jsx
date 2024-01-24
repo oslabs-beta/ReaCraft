@@ -10,14 +10,18 @@ import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import UserImageUploadButton from '../functionalButtons/UserImageUploadButton';
 import DownloadFilesButton from '../functionalButtons/DownloadFilesButton';
 
-export default function WorkspaceRight() {
+export default function WorkspaceRight({ canvasWidth }) {
   const { components, title } = useSelector((state) => state.designV2);
-  const { selectedIdx } = useSelector((state) => state.app);
+  const { selectedIdx, windowWidth } = useSelector((state) => state.app);
   const tree = convertToTree(components);
   const codes = new Codes(components, tree, title);
   const { jsx, css } = codes.convertToCode();
+
   return (
-    <Stack direction='column' gap={2}>
+    <Stack
+      direction={windowWidth - 320 > canvasWidth ? 'column' : 'row'}
+      gap={2}
+    >
       <UserImageUploadButton />
       <ViewDomTreeButton tree={tree} />
       <ViewCodeButton
