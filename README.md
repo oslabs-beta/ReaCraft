@@ -221,6 +221,8 @@ Project Link: [https://github.com/oslabs-beta/Reactraft](https://github.com/osla
 - [react-code-blocks](https://github.com/rajinwonderland/react-code-blocks)
 - [Bootstrap](https://getbootstrap.com/)
 - [mui-color-input](https://www.npmjs.com/package/mui-color-input)
+- [react-drag-drop-files](https://www.npmjs.com/package/react-drag-drop-files)
+- [create-react-app](https://create-react-app.dev/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

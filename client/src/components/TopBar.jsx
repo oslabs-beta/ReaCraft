@@ -57,6 +57,11 @@ export default function TopBar({
       ? AppBarButtonsStyleDark
       : AppBarButtonsStyleLight;
 
+  const logo =
+    theme.palette.mode === 'light'
+      ? './assets/logo_thickoutline_3.svg'
+      : './assets/logo_tiny_mode_DarkMode.svg';
+
   function handlePageClick(page) {
     dispatch(goToPage(page));
     dispatch(resetDesign());
@@ -93,7 +98,7 @@ export default function TopBar({
             <Fragment>
               <Tooltip title='placeholder for logo'>
                 <img
-                  src='./assets/logo_thickoutline_3.svg'
+                  src={logo}
                   style={{
                     marginLeft: '20px',
                     width: 40,

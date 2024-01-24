@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import DesignCard from './DesignCard';
 import Workspace from '../Workspace/Workspace';
 import { getDesigns } from '../../utils/fetchRequests';
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { setMessage } from '../../utils/reducers/appSlice';
 
@@ -14,7 +14,9 @@ export default function UserDesigns() {
   const searchTerm = useSelector((state) => state.designV2.searchTerm);
   const [localSelectedDesignId, setLocalSelectedDesignId] = useState(null);
   const selectedDesignId = useSelector((state) => state.designV2._id);
+  const dispatch = useDispatch();
 
+  const theme = useTheme();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,7 +27,7 @@ export default function UserDesigns() {
         dispatch(
           setMessage({
             severity: 'error',
-            text: 'App: fetch past designs ' + error,
+            text: 'App: fetch past designs ' + err,
           })
         );
       }
@@ -34,25 +36,6 @@ export default function UserDesigns() {
     fetchData();
   }, [selectedDesign._id]);
 
-  // useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const designs = await getDesigns();
-  //         setPastDesigns(designs.sort((a, b) => a._id - b._id));
-  //       } catch (err) {
-  //         console.log(err);
-  //       }
-  //     };
-  //     if (!selectedDesignId) {
-  //       fetchData();
-  //     }
-  // }, [selectedDesign._id]);
-
-  // useEffect(() => {
-  //   setLocalSelectedDesignId(selectedDesignId);
-  // }, [selectedDesignId]);
-
-  // ensures if there's no search term, all past designs are displayed OR when the user types in the search bar, only the designs whose titles match the search term are displayed
   const getFilteredDesigns = () => {
     if (!searchTerm) {
       return pastDesigns;
@@ -64,21 +47,13 @@ export default function UserDesigns() {
 
   const visibleDesigns = getFilteredDesigns();
 
-  // if (localSelectedDesignId) {
-  //   return <Workspace />
-  // }
-
-  // if (selectedDesign._id) {
-  //   return <Workspace />
-  // };
-
   if (!selectedDesign._id) {
     return (
       <Box>
         <Typography
           sx={{
             fontSize: '16',
-            color: 'black',
+            color: theme.palette.mode === 'light' ? '2B2B2B' : '#F5EBE0',
             fontWeight: 'bold',
             marginBottom: 2,
           }}
