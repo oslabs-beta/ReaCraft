@@ -7,7 +7,7 @@ import { themeLight, themeDark } from './styles/ThemeGlobal';
 import TopBar from './components/TopBar';
 import MainContainer from './components/MainContainer';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMessage, setWindowHeight } from './utils/reducers/appSlice';
+import { setMessage, setWindowSize } from './utils/reducers/appSlice';
 
 const drawerWidth = 100;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -66,7 +66,9 @@ export default function App() {
 
   useEffect(() => {
     function handleResize() {
-      dispatch(setWindowHeight(window.innerHeight));
+      dispatch(
+        setWindowSize({ height: window.innerHeight, width: window.innerWidth })
+      );
     }
     window.addEventListener('resize', handleResize);
     handleResize();
