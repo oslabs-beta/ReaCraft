@@ -201,9 +201,7 @@
       });
 
       // when the 'Need an account?' button is clicked within the login modal
-      $(document).on('click', '#needAccount', function() {
-        // prevent default button action
-        e.preventDefault();
+      $(document).on('click', '.needAccount', function() {
         // hide the login modal
         $('#loginModal').modal('hide');
         // unbind the previous hidden event handler to avoid stacking event calls
