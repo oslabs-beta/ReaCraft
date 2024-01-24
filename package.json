@@ -63,6 +63,7 @@
     "react-code-blocks": "^0.1.5",
     "react-d3-tree": "^3.6.2",
     "react-dom": "^18.2.0",
+    "react-drag-drop-files": "^2.3.10",
     "react-icons": "^5.0.1",
     "react-konva": "^18.2.10",
     "react-redux": "^9.0.4",

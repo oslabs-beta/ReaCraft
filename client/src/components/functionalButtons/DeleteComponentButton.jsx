@@ -26,10 +26,9 @@ export default function DeleteComponentButton({
       };
 
   return (
-    <Box sx={{ left: '100px' }}>
+    <Box>
       <Tooltip title='Delete component'>
         <IconButton
-          sx={{ left: '100px' }}
           onClick={() => {
             try {
               if (canDelete) {
@@ -45,7 +44,8 @@ export default function DeleteComponentButton({
                 })
               );
             }
-          }}>
+          }}
+        >
           <DeleteIcon />
         </IconButton>
       </Tooltip>
