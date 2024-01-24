@@ -27,7 +27,7 @@ export default function UserImageUploadButton() {
   function handleFileChange(file) {
     if (file) {
       dispatch(
-        setMessage({ severity: 'success', text: 'Upload successfully' })
+        setMessage({ severity: 'success', text: 'Upload successful.' })
       );
 
       const reader = new FileReader();
