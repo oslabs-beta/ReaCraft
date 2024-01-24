@@ -18,6 +18,7 @@
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous" />
+    crossorigin="anonymous" />
 
     <link rel="stylesheet" type="text/css" href="/views/modals.css" />
 
@@ -242,9 +243,7 @@
         });
 
         // when the 'Need an account?' button is clicked within the login modal
-        $(document).on('click', '#needAccount', function () {
-          // prevent default button action
-          e.preventDefault();
+        $(document).on('click', '.needAccount', function () {
           // hide the login modal
           $('#loginModal').modal('hide');
           // unbind the previous hidden event handler to avoid stacking event calls
