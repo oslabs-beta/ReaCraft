@@ -14,7 +14,7 @@ export default function DownloadFilesButton({ jsx, css }) {
     );
     filesData.push({
       filename: 'styles.css',
-      content: Object.values(css).join('\n\n'),
+      content: css,
     });
     try {
       const blob = await downloadProject({ filesData, title });
