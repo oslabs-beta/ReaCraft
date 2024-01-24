@@ -21,6 +21,8 @@ export default function KonvaStage({
   // redux state
   const components = useSelector((state) => state.designV2.components);
   const rectangles = components.map((item) => item.rectangle);
+  const isDraggable = useSelector((state) => state.designV2.isDraggable);
+  const cursorMode = useSelector((state) => state.designV2.cursorMode);
 
   const dispatch = useDispatch();
 
@@ -43,6 +45,12 @@ export default function KonvaStage({
       }
     }
   }, [selectedIdx, components]);
+
+  // used to set cursor on the Konva change
+  const stageStyle = {
+    // using ternary operator to check if cursorMode from Redux state is 'pan' 
+    cursor: cursorMode === 'pan' ? 'grab' : 'default',
+  };
 
   // event handlers
   function handleRectClick(e, componentId) {
@@ -75,7 +83,7 @@ export default function KonvaStage({
 
   if (image) {
     return (
-      <Stage width={canvasWidth} height={canvasHeight}>
+      <Stage style={stageStyle} width={canvasWidth} height={canvasHeight} draggable={isDraggable}>
         <Layer>
           <Image
             image={image}
