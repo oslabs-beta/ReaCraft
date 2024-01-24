@@ -75,25 +75,27 @@ export default function UserImageUploadButton() {
   }
 
   return (
-    <Box
-      sx={{
-        ' label': {
-          borderColor: theme.palette.mode === 'light' ? '#736c6c' : 'beige',
-          padding: '80px',
-          marginTop: '150px',
-        },
-        ' svg *': {
-          fill: theme.palette.mode === 'light' ? '#736c6c' : 'beige',
-        },
-      }}
-    >
+    <Fragment>
       {!designId ? (
-        <FileUploader
-          label='Upload or Drop Your Design Image'
-          handleChange={handleFileChange}
-          name='userImage'
-          types={['JPG', 'PNG']}
-        />
+        <Box
+          sx={{
+            ' label': {
+              borderColor: theme.palette.mode === 'light' ? '#736c6c' : 'beige',
+              padding: '80px',
+              marginTop: '150px',
+            },
+            ' svg *': {
+              fill: theme.palette.mode === 'light' ? '#736c6c' : 'beige',
+            },
+          }}
+        >
+          <FileUploader
+            label='Upload or Drop Your Design Image'
+            handleChange={handleFileChange}
+            name='userImage'
+            types={['JPG', 'PNG']}
+          />
+        </Box>
       ) : (
         <Tooltip title='Replace Current Image'>
           <Fab component='label' variant='contained' size='small' color='info'>
@@ -107,7 +109,7 @@ export default function UserImageUploadButton() {
           </Fab>
         </Tooltip>
       )}
-    </Box>
+    </Fragment>
   );
 }
 
