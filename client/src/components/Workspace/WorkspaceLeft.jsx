@@ -69,7 +69,6 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
       <ListItemButton
         value='NewComponentInputBox'
         selected={selected}
-
         onClick={handleListItemClick}
       >
         <ListItemText primary={component.name} />
@@ -79,17 +78,11 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
             onClick={(e) => {
               e.stopPropagation();
               setOpenEditor(true);
-
-            }}>
+            }}
+          >
             <EditIcon />
           </IconButton>
         )}
-        <ComponentEditor
-          idx={idx}
-          open={openEditor}
-          closeEditor={() => setOpenEditor(false)}
-          isLeaf={isLeaf}
-        />
         {idx > 0 && selected && (
           <DeleteComponentButton
             name={component.name}
@@ -97,6 +90,12 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
             canDelete={isLeaf}
           />
         )}
+        <ComponentEditor
+          idx={idx}
+          open={openEditor}
+          closeEditor={() => setOpenEditor(false)}
+          isLeaf={isLeaf}
+        />
       </ListItemButton>
     </Box>
   );
