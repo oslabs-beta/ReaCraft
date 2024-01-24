@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
+import { FileUploader } from 'react-drag-drop-files';
 
 import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
@@ -25,12 +24,9 @@ export default function UserImageUploadButton() {
     ? 'Upload Your Design Image'
     : 'Replace Current Image';
 
-  function handleFileChange(e) {
-    const file = e.target.files[0];
+  function handleFileChange(file) {
     if (file) {
-      dispatch(
-        setMessage({ severity: 'success', text: 'Upload successful.' })
-      );
+      dispatch(setMessage({ severity: 'success', text: 'Upload successful.' }));
 
       const reader = new FileReader();
       reader.onloadend = async () => {
@@ -86,26 +82,32 @@ export default function UserImageUploadButton() {
     <Fragment>
       <Tooltip title={tooltip}>
         {!designId ? (
-          <Button
-            component='label'
-            variant='contained'
-            startIcon={<CloudUploadRoundedIcon />}>
-            Upload Image
-            <VisuallyHiddenInput
-              type='file'
-              name='userImage'
-              accept='image/*'
-              onChange={handleFileChange}
-            />
-          </Button>
+          <FileUploader
+            handleChange={handleFileChange}
+            name='userImage'
+            types={['JPG', 'PNG']}
+          />
         ) : (
+          // <Button
+          //   component='label'
+          //   variant='contained'
+          //   startIcon={<CloudUploadRoundedIcon />}
+          // >
+          //   Upload Image
+          //   <VisuallyHiddenInput
+          //     type='file'
+          //     name='userImage'
+          //     accept='image/*'
+          //     onChange={handleFileChange}
+          //   />
+          // </Button>
           <Fab component='label' variant='contained' size='small' color='info'>
             <CloudUploadRoundedIcon />
             <VisuallyHiddenInput
               type='file'
               name='userImage'
               accept='image/*'
-              onChange={handleFileChange}
+              onChange={(e) => handleFileChange(e.target.files[0])}
             />
           </Fab>
         )}

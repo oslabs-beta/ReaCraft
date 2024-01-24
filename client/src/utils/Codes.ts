@@ -87,19 +87,19 @@ export default class Codes {
     css += `\n\n#${name}-${i} {
   position: ${i === 0 ? 'relative' : 'absolute'};
   width: calc(var(--root-width) * ${
-    Math.round((width / rootWidth) * 100) / 100
+    Math.round((width / rootWidth) * 1000) / 1000
   });
   height: calc(var(--root-height) * ${
-    Math.round((height / rootHeight) * 100) / 100
+    Math.round((height / rootHeight) * 1000) / 1000
   });
   border-color: ${stroke};`;
     if (i > 0) {
       css += `
   left: calc(var(--root-width) * ${
-    Math.round(((x_position - parentPos.left) / rootWidth) * 100) / 100
+    Math.round(((x_position - parentPos.left) / rootWidth) * 1000) / 1000
   });
   top: calc(var(--root-height) * ${
-    Math.round(((y_position - parentPos.top) / rootHeight) * 100) / 100
+    Math.round(((y_position - parentPos.top) / rootHeight) * 1000) / 1000
   });`;
     }
     if (borderwidth > 0) css += `\n  border-width: ${borderwidth}px;`;
@@ -126,9 +126,7 @@ export default class Codes {
     const { html_tag, inner_html, name } = component;
     let html: string = '';
     if (component.index === 0) {
-      html += `\n  useEffect(() => {
-    document.title = "${this.title}"
-  }, [])\n\n`;
+      html += `\n  useEffect(() => setTitle('${this.title}'), [setTitle]);\n\n`;
     }
     let importChildren = '';
     const classAndId = ` className='${component.name}' id=${
@@ -185,8 +183,7 @@ export default class Codes {
     }
     let propsCode: string;
     if (component.index === 0) {
-      propsCode =
-        propKeys.size > 0 ? '{ ' + [...propKeys].join(', ') + ' }' : '';
+      propsCode = '{ ' + ['setTitle', ...propKeys].join(', ') + ' }';
     } else {
       propsCode = '{ ' + ['id', ...propKeys].join(', ') + ' }';
     }

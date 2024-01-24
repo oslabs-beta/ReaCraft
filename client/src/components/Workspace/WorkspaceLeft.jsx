@@ -17,45 +17,41 @@ import { setSelectedIdx } from '../../utils/reducers/appSlice';
 
 export default function WorkspaceLeft() {
   const components = useSelector((state) => state.designV2.components);
-  const theme = useTheme();
-  const WorkspaceLeftTheme =
-    theme.palette.mode === 'dark' ? theme : WorkspaceLeftLightTheme;
-
   const dispatch = useDispatch();
 
   return (
-    <ThemeProvider theme={WorkspaceLeftTheme}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'end',
-          zIndex: 1,
-        }}
-      >
-        <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
-          <AddNewComponent />
-        </Box>
-
-        <List sx={{ zIndex: 1 }}>
-          {components.map((item, idx) => (
-            <ComponentDisplay
-              component={item}
-              key={idx}
-              idx={idx}
-              handleListItemClick={(e) => {
-                e.stopPropagation();
-                dispatch(setSelectedIdx(idx));
-              }}
-              isLeaf={
-                idx > 0 &&
-                components.filter((e) => e.parent_id === item._id).length === 0
-              }
-            />
-          ))}
-        </List>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1,
+        paddingTop: '10px',
+      }}
+    >
+      <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
+        <AddNewComponent />
       </Box>
-    </ThemeProvider>
+
+      <List sx={{ width: '100%' }}>
+        {components.map((item, idx) => (
+          <ComponentDisplay
+            component={item}
+            key={idx}
+            idx={idx}
+            handleListItemClick={(e) => {
+              e.stopPropagation();
+              dispatch(setSelectedIdx(idx));
+            }}
+            isLeaf={
+              idx > 0 &&
+              components.filter((e) => e.parent_id === item._id).length === 0
+            }
+          />
+        ))}
+      </List>
+    </Box>
   );
 }
 
@@ -65,39 +61,36 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
   const selected = selectedIdx === idx;
 
   return (
-    <Box sx={{ marginRight: '20px', width: '200px' }}>
-      <ListItemButton
-        value='NewComponentInputBox'
-        selected={selected}
-
-        onClick={handleListItemClick}
-      >
-        <ListItemText primary={component.name} />
-        {selected && (
-          <IconButton
-            sx={{ marginLeft: '20px' }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpenEditor(true);
-
-            }}>
-            <EditIcon />
-          </IconButton>
-        )}
-        <ComponentEditor
-          idx={idx}
-          open={openEditor}
-          closeEditor={() => setOpenEditor(false)}
-          isLeaf={isLeaf}
+    <ListItemButton
+      value='NewComponentInputBox'
+      selected={selected}
+      onClick={handleListItemClick}
+      sx={{ width: '100%', paddingLeft: '40px' }}
+    >
+      <ListItemText primary={component.name} />
+      {selected && (
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenEditor(true);
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+      )}
+      {idx > 0 && selected && (
+        <DeleteComponentButton
+          name={component.name}
+          componentId={component._id}
+          canDelete={isLeaf}
         />
-        {idx > 0 && selected && (
-          <DeleteComponentButton
-            name={component.name}
-            componentId={component._id}
-            canDelete={isLeaf}
-          />
-        )}
-      </ListItemButton>
-    </Box>
+      )}
+      <ComponentEditor
+        idx={idx}
+        open={openEditor}
+        closeEditor={() => setOpenEditor(false)}
+        isLeaf={isLeaf}
+      />
+    </ListItemButton>
   );
 }
