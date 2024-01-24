@@ -4,15 +4,39 @@ import { useDispatch, useSelector } from 'react-redux';
 import WorkspaceLeft from './WorkspaceLeft';
 import WorkspaceRight from './WorkspaceRight';
 import KonvaStage from '../KonvaStageV2';
+import Drawer from '@mui/material/Drawer';
 
 import WorkspaceToolbar from './WorkspaceToolbar';
 import { setSelectedIdx } from '../../utils/reducers/appSlice';
 import Grid from '@mui/material/Grid';
+import { useTheme } from '@mui/material';
 
 export default function Workspace() {
   const { image_url, components } = useSelector((state) => state.designV2);
-  const selectedIdx = useSelector((state) => state.app.selectedIdx);
+  const { selectedIdx, windowWidth, zoom, windowHeight } = useSelector(
+    (state) => state.app
+  );
+  const rootWidth = components[0].rectangle.width;
+  const rootHeight = components[0].rectangle.height;
+  const canvasMaxHeight = windowHeight - 180;
+  const canvasMaxWidth = windowWidth - 320;
+
+  let canvasHeight;
+  let canvasWidth;
+  let canvasRootRatio;
+
+  canvasWidth = (canvasMaxWidth * zoom) / 100;
+  canvasRootRatio = canvasWidth / rootWidth;
+  canvasHeight = rootHeight * canvasRootRatio;
+
+  if (canvasHeight > canvasMaxHeight) {
+    canvasHeight = (canvasMaxHeight * zoom) / 100;
+    canvasRootRatio = canvasHeight / rootHeight;
+    canvasWidth = rootWidth * canvasRootRatio;
+  }
+
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   if (selectedIdx === components.length) dispatch(setSelectedIdx(null));
 
@@ -41,19 +65,47 @@ export default function Workspace() {
   }, [selectedIdx]);
 
   return (
-    <Box sx={{ flexGrow: 1 }} maxWidth='1500px' minWidth='1000px'>
-      <Grid container spacing={1}>
-        <Grid item xs={3} sx={{ paddingTop: 0 }}></Grid>
+    <Box>
+      <Drawer
+        variant='permanent'
+        sx={{
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: '250px',
+            marginTop: '100px',
+            backgroundColor: theme.palette.background.default,
+            color: theme.palette.mode === 'light' ? '#736c6c' : 'FCFFF1',
+          },
+          '& .Mui-selected': {
+            backgroundColor: 'rgba(165, 155, 135, 0.18) !important',
+          },
+        }}
+        open
+      >
+        <WorkspaceLeft />
+      </Drawer>
+      <Grid
+        container
+        // wrap='nowrap'
+        spacing={2}
+        sx={{
+          position: 'absolute',
+          left: '250px',
+          width: windowWidth - 270,
+          paddingRight: '20px',
+          minWidth: 800,
+        }}
+      >
         <Grid
           item
-          xs={8}
+          xs={4}
           sx={{
             display: 'flex',
             justifyContent: 'center',
             height: '50px',
             paddingTop: 0,
-          }}>
-
+          }}
+        >
           {selectedIdx !== null && components[selectedIdx] && (
             <WorkspaceToolbar
               rectangle={components[selectedIdx].rectangle}
@@ -61,15 +113,25 @@ export default function Workspace() {
             />
           )}
         </Grid>
-        <Grid item xs={1} sx={{ paddingTop: 0 }}></Grid>
-        <Grid item xs={3}>
-          <WorkspaceLeft />
+        <Grid item xs={8} sx={{ paddingTop: 0 }}>
+          {windowWidth - 320 <= canvasWidth && <WorkspaceRight />}
         </Grid>
-        <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'center' }}>
-          {image_url && <KonvaStage userImage={image_url} />}
+        <Grid item xs sx={{ display: 'flex', justifyContent: 'center' }}>
+          {image_url && (
+            <KonvaStage
+              userImage={image_url}
+              canvasHeight={canvasHeight}
+              canvasWidth={canvasWidth}
+              canvasRootRatio={canvasRootRatio}
+            />
+          )}
         </Grid>
-        <Grid item xs={1}>
-          <WorkspaceRight />
+        <Grid
+          item
+          xs='auto'
+          sx={{ display: windowWidth - 320 > canvasWidth ? 'block' : 'none' }}
+        >
+          <WorkspaceRight canvasWidth={canvasWidth} />
         </Grid>
       </Grid>
     </Box>
