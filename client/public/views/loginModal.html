@@ -1,0 +1,48 @@
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="../assets/logo_ReaCraft_Only.svg" width="200px" class="pb-5 pt-3 d-block mx-auto" />
+          <form id="loginForm" action="/login" method="POST">
+            <!-- <h1 class="h3 mb-3 fw-normal">Please Login</h1> -->
+            <div class="greeting-text">Hello, Friend</div>
+            <div class="form-floating">
+              <input
+                class="form-control"
+                id="user"
+                name="username"
+                placeholder="user"
+                type="text"
+              />
+              <label for="user">Username</label>
+            </div>
+            <div class="form-floating">
+              <input
+                class="form-control"
+                id="pass"
+                name="password"
+                placeholder="password"
+                type="password"
+              />
+              <label for="pass">Password</label>
+            </div>
+            <div class="d-flex mt-3">
+              <button type="button" class="btn btn-outline-secondary w-100 py-2 mx-2 needAccount">
+                <!--  id="needAccount" -->
+                Need an account?
+              </button>
+              <button class="btn btn-primary w-100 py-2 mx-2" type="submit">
+                Login
+              </button>
+            </div>
+            <p class="mb-3 text-body-secondary">© 2024 ReaCraft</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

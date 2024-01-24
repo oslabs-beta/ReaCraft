@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap');
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    /* position: relative; */
+    font-family: 'Baloo Bhaijaan 2', sans-serif;
+}
+
+.modal-header {
+    border-bottom: none;
+    position: relative;
+}
+
+.modal-body p {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btn-close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+
+.greeting-text {
+    font-size: 3em;
+    color: #D5BDAF;
+    margin-bottom: 20px;
+}
+
+.form-floating {
+    /* space between input fields */
+    margin-bottom: 10px;
+}
+
+.form-control {
+    border: none;
+    border-bottom: 2px solid #cccccc;
+    border-radius: 0;
+    margin-bottom: 20px;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    /* removes the default bootstrap shadow */
+    box-shadow: none;
+}
+
+.btn-outline-secondary, .btn-primary {
+    border-radius: 20px;
+    border-color: #0056b3;
+}
+
+.account-button {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.account-button:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
