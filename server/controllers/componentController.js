@@ -74,26 +74,42 @@ const deleteDesignComponents = (req, res, next) => {
     );
 };
 
-const addNewComponent = (req, res, next) => {
+const addNewComponent = async (req, res, next) => {
   const { designId } = req.params;
   const { name, index, rootId } = req.body;
-  return db
-    .query(
-      'INSERT INTO components (design_id, name, index, parent_id) VALUES ($1, $2, $3, $4) RETURNING *;',
-      [designId, name, index, rootId]
-    )
-    .then((data) => {
+  let data;
+  try {
+    const prevComponentRes = await db.query(
+      'SELECT * FROM components WHERE design_id = $1 AND name = $2;',
+      [designId, name]
+    );
+    if (prevComponentRes.rows.length === 0) {
+      data = await db.query(
+        'INSERT INTO components (design_id, name, index, parent_id) VALUES ($1, $2, $3, $4) RETURNING *;',
+        [designId, name, index, rootId]
+      );
       res.locals.component = data.rows[0];
       return next();
-    })
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught componentController.addNewComponent middleware error' +
-          err,
-        message: { err: 'addNewComponent: ' + err },
-      })
-    );
+    } else {
+      const { html_tag, inner_html } = prevComponentRes.rows[0];
+      console.log(prevComponentRes.rows[0]);
+      data = await db.query(
+        'INSERT INTO components (design_id, name, index, parent_id, html_tag, inner_html) ' +
+          'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;',
+        [designId, name, index, rootId, html_tag, inner_html]
+      );
+      console.log(data.rows);
+      res.locals.component = data.rows[0];
+      return next();
+    }
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught componentController.addNewComponent middleware error' +
+        err,
+      message: { err: 'addNewComponent: ' + err },
+    });
+  }
 };
 
 const deleteComponentById = (req, res, next) => {
