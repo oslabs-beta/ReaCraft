@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux';
 import MenuItem from '@mui/material/MenuItem';
 import { setMessage } from '../../utils/reducers/appSlice';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import { validTree } from '../../utils/treeNode';
 import { updateComponentParent } from '../../utils/reducers/designSliceV2';
 
@@ -16,11 +16,20 @@ export default function ParentSelector({ childIdx }) {
     const parentId = child.parent_id;
     const parent = components.filter((item) => item._id === parentId)[0];
 
+    const theme = useTheme();
+
     const [parentValue, setParentValue] = useState(
       JSON.stringify({ name: parent.name, index: parent.index })
     );
     return (
       <TextField
+        sx={{
+          '& .MuiInputBase-root': {
+            color:
+              (theme.palette.mode === 'light' ? '#736c6c' : 'white') +
+              ' !important',
+          },
+        }}
         select
         display='flex'
         fullWidth={true}
