@@ -129,6 +129,8 @@ interface DesignState {
   loading: boolean;
   error: string | undefined;
   searchTerm: string;
+  isDraggable: boolean;
+  cursorMode: string;
 }
 
 const initialState: DesignState = {
@@ -141,6 +143,8 @@ const initialState: DesignState = {
   loading: false,
   error: undefined,
   searchTerm: '',
+  isDraggable: false,
+  cursorMode: 'default',
 };
 
 const designSliceV2 = createSlice({
@@ -161,6 +165,12 @@ const designSliceV2 = createSlice({
     },
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
+    },
+    toggleIsDraggable: (state, action: PayloadAction<boolean>) => {
+      state.isDraggable = action.payload;
+    },
+    setCursorMode: (state, action: PayloadAction<string>) => {
+      state.cursorMode = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -268,6 +278,6 @@ const designSliceV2 = createSlice({
   },
 });
 
-export const { resetDesign, setSearchTerm, updateRootHeight } =
+export const { resetDesign, setSearchTerm, updateRootHeight, toggleIsDraggable, setCursorMode } =
   designSliceV2.actions;
 export default designSliceV2.reducer;

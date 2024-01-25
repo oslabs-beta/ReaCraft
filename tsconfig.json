@@ -8,6 +8,10 @@
     "allowJs": true,
     "moduleResolution": "node"
   },
-  "files": ["docs/types.ts", "server/server.ts"],
+  "files": [
+    "docs/types.ts",
+    "server/server.ts",
+    "server/controllers/fileController.ts"
+  ],
   "include": ["client/utils/**/*"]
 }
