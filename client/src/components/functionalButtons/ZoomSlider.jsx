@@ -12,13 +12,16 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 export default function ZoomSlider() {
   const zoom = useSelector((state) => state.app.zoom);
   const dispatch = useDispatch();
+  const zoomIn = () => dispatch(setZoom(zoom + 10));
+  const zoomOut = () => dispatch(setZoom(Math.max(zoom - 10, 10)));
+
   return (
     <Stack direction='row' alignItems='center'>
-      <IconButton onClick={() => dispatch(setZoom(zoom - 10))}>
+      <IconButton onClick={zoomOut}>
         <RemoveCircleRoundedIcon />
       </IconButton>
       <Typography>{zoom}%</Typography>
-      <IconButton onClick={() => dispatch(setZoom(zoom + 10))}>
+      <IconButton onClick={zoomIn}>
         <AddCircleRoundedIcon />
       </IconButton>
       <Tooltip title='reset to fit window'>

@@ -6,20 +6,22 @@ import ViewCodeButton from '../functionalButtons/ViewCodeButton';
 import { useSelector } from 'react-redux';
 import { convertToTree } from '../../utils/treeNode';
 import Codes from '../../utils/Codes';
-import ViewKeyboardShortcut from '../functionalButtons/ViewKeyboardShortcut';
 import DeleteDesignButton from '../functionalButtons/DeleteDesignButton';
 import UserImageUploadButton from '../functionalButtons/UserImageUploadButton';
 import DownloadFilesButton from '../functionalButtons/DownloadFilesButton';
 
-export default function WorkspaceRight() {
-  const components = useSelector((state) => state.designV2.components);
-  const { selectedIdx } = useSelector((state) => state.app);
+export default function WorkspaceRight({ canvasWidth }) {
+  const { components, title } = useSelector((state) => state.designV2);
+  const { selectedIdx, windowWidth } = useSelector((state) => state.app);
   const tree = convertToTree(components);
-  const codes = new Codes(components, tree);
-  const jsx = codes.convertToJsx();
-  const css = codes.convertToCss();
+  const codes = new Codes(components, tree, title);
+  const { jsx, css } = codes.convertToCode();
+
   return (
-    <Stack direction='column' gap={2}>
+    <Stack
+      direction={windowWidth - 320 > canvasWidth ? 'column' : 'row'}
+      gap={2}
+    >
       <UserImageUploadButton />
       <ViewDomTreeButton tree={tree} />
       <ViewCodeButton
@@ -27,6 +29,7 @@ export default function WorkspaceRight() {
         jsx={jsx}
         name={selectedIdx !== null ? components[selectedIdx].name : null}
       />
+
       <DownloadFilesButton jsx={jsx} css={css} />
       <DeleteDesignButton />
     </Stack>
