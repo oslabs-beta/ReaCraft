@@ -3,23 +3,26 @@ import { Stage, Layer, Rect, Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateComponentRectanglePosition } from '../utils/reducers/designSliceV2';
-import { setSelectedIdx } from '../utils/reducers/appSlice';
+import { setSelectedIdx, setZoom } from '../utils/reducers/appSlice';
 
-export default function KonvaStage({ userImage }) {
+export default function KonvaStage({
+  userImage,
+  canvasRootRatio,
+  canvasHeight,
+  canvasWidth,
+}) {
   const [image] = useImage(userImage);
 
-  const { windowHeight, zoom, selectedIdx } = useSelector((state) => state.app);
-  const canvasHeight = ((windowHeight - 180) * zoom) / 100;
+  const { zoom, selectedIdx } = useSelector((state) => state.app);
+  // const canvasHeight = ((windowHeight - 180) * zoom) / 100;
 
   // redux state
   const components = useSelector((state) => state.designV2.components);
   const rectangles = components.map((item) => item.rectangle);
-  const rootWidth = rectangles[0].width;
-  const rootHeight = rectangles[0].height;
+  const isDraggable = useSelector((state) => state.designV2.isDraggable);
+  const cursorMode = useSelector((state) => state.designV2.cursorMode);
 
-  const canvasRootRatio = canvasHeight / rootHeight;
-  const canvasWidth = rootWidth * canvasRootRatio;
-
+  console.log('canvasHeight, canvasWidth', canvasHeight, canvasWidth);
   const dispatch = useDispatch();
 
   // refs and other state
@@ -41,6 +44,12 @@ export default function KonvaStage({ userImage }) {
       }
     }
   }, [selectedIdx, components]);
+
+  // used to set cursor on the Konva change
+  const stageStyle = {
+    // using ternary operator to check if cursorMode from Redux state is 'pan' 
+    cursor: cursorMode === 'pan' ? 'grab' : 'default',
+  };
 
   // event handlers
   function handleRectClick(e, componentId) {
@@ -73,7 +82,7 @@ export default function KonvaStage({ userImage }) {
 
   if (image) {
     return (
-      <Stage width={canvasWidth} height={canvasHeight}>
+      <Stage style={stageStyle} width={canvasWidth} height={canvasHeight} draggable={isDraggable}>
         <Layer>
           <Image
             image={image}
@@ -98,7 +107,7 @@ export default function KonvaStage({ userImage }) {
                   draggable={
                     components.findIndex((c) => c._id === component_id) > 0
                   }
-                  strokeWidth={rect.borderwidth}
+                  strokeWidth={rect.borderwidth * canvasRootRatio}
                   onClick={(e) => handleRectClick(e, component_id)}
                   fill={rect.backgroundcolor}
                   cornerRadius={cornerRadius}

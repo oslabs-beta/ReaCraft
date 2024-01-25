@@ -19,7 +19,7 @@ export default function DownloadFilesButton({ jsx, css }) {
       const url = window.URL.createObjectURL(content);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'components.zip';
+      a.download = 'example.zip';
       a.click();
       window.URL.revokeObjectURL(url);
     }
