@@ -86,7 +86,6 @@ export default function Workspace() {
       </Drawer>
       <Grid
         container
-        // wrap='nowrap'
         spacing={2}
         sx={{
           position: 'absolute',
@@ -98,7 +97,7 @@ export default function Workspace() {
       >
         <Grid
           item
-          xs={4}
+          xs={12}
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -106,14 +105,6 @@ export default function Workspace() {
             paddingTop: 0,
           }}
         >
-          {selectedIdx !== null && components[selectedIdx] && (
-            <WorkspaceToolbar
-              rectangle={components[selectedIdx].rectangle}
-              key={selectedIdx}
-            />
-          )}
-        </Grid>
-        <Grid item xs={8} sx={{ paddingTop: 0 }}>
           {windowWidth - 320 <= canvasWidth && <WorkspaceRight />}
         </Grid>
         <Grid item xs sx={{ display: 'flex', justifyContent: 'center' }}>

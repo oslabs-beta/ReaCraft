@@ -14,6 +14,8 @@ import { ThemeProvider, useTheme } from '@mui/material';
 import { WorkspaceLeftLightTheme } from '../../styles/WorkspaceLeftTheme';
 
 import { setSelectedIdx } from '../../utils/reducers/appSlice';
+import ParentSelector from '../userInputs/ParentSelector';
+import WorkspaceToolbar from './WorkspaceToolbar';
 
 export default function WorkspaceLeft() {
   const components = useSelector((state) => state.designV2.components);
@@ -61,36 +63,59 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
   const selected = selectedIdx === idx;
 
   return (
-    <ListItemButton
-      value='NewComponentInputBox'
-      selected={selected}
-      onClick={handleListItemClick}
-      sx={{ width: '100%', paddingLeft: '40px' }}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}
     >
-      <ListItemText primary={component.name} />
-      {selected && (
-        <IconButton
-          onClick={(e) => {
-            e.stopPropagation();
-            setOpenEditor(true);
+      <ListItemButton
+        value='NewComponentInputBox'
+        selected={selected}
+        onClick={handleListItemClick}
+        sx={{ width: '100%', paddingLeft: '40px' }}
+      >
+        <ListItemText primary={component.name} />
+        {selected && (
+          <Fragment>
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenEditor(true);
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+            {idx > 0 && (
+              <DeleteComponentButton
+                name={component.name}
+                componentId={component._id}
+                canDelete={isLeaf}
+              />
+            )}
+          </Fragment>
+        )}
+        <ComponentEditor
+          idx={idx}
+          open={openEditor}
+          closeEditor={() => setOpenEditor(false)}
+          isLeaf={isLeaf}
+        />
+      </ListItemButton>
+      {selected && idx > 0 && (
+        <Box
+          sx={{
+            padding: '0 20px',
+            display: 'flex',
+            gap: '20px',
+            alignItems: 'center',
           }}
         >
-          <EditIcon />
-        </IconButton>
+          <ParentSelector childIdx={idx} />
+          <WorkspaceToolbar rectangle={component.rectangle} />
+        </Box>
       )}
-      {idx > 0 && selected && (
-        <DeleteComponentButton
-          name={component.name}
-          componentId={component._id}
-          canDelete={isLeaf}
-        />
-      )}
-      <ComponentEditor
-        idx={idx}
-        open={openEditor}
-        closeEditor={() => setOpenEditor(false)}
-        isLeaf={isLeaf}
-      />
-    </ListItemButton>
+    </Box>
   );
 }
