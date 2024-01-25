@@ -19,6 +19,10 @@ body {
   scroll-snap-type: y mandatory;
 }
 
+body p {
+  font-family: 'Baloo Bhaijaan 2', sans-serif;
+}
+
 .boxContainer {
   animation: slideUp 2.5s ease-out forwards;
   animation-delay: 1.5s;
@@ -29,6 +33,31 @@ body {
   /* border-radius: 12px; */
   box-shadow: 5px 5px 15px 0.5rem rgb(53, 53, 53);
   z-index: 1;
+}
+
+.containerMain {
+  display: flex;
+  height: 80vh;
+  width: 90vw;
+  margin: auto;
+}
+
+.containerLeft,
+.containerRight {
+  display: flex;
+  flex-direction: column;
+}
+.containerLeft {
+  width: 40%;
+  align-items: flex-start;
+}
+.containerRight {
+  width: 60%;
+  display: flex; /* Changed to flex to correctly initialize layout */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
 }
 
 .floater {
@@ -44,6 +73,17 @@ html {
   height: 100%;
   scroll-snap-align: start;
   scroll-snap-type: y mandatory;
+}
+
+.instruction {
+  flex: 1;
+  display: flex;
+  /* align-items: center;
+  justify-content: center; */
+  width: 100%;
+  padding: 20px;
+  cursor: pointer;
+  border: 1px solid #ccc;
 }
 
 .logo {
@@ -149,6 +189,14 @@ html {
   background-color: #778da9;
   flex-direction: column;
   z-index: 1;
+}
+
+.slidePage2 {
+  display: none;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin: 5px;
 }
 
 .slide2_Background {
