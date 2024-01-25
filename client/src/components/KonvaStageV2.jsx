@@ -22,6 +22,7 @@ export default function KonvaStage({
   const isDraggable = useSelector((state) => state.designV2.isDraggable);
   const cursorMode = useSelector((state) => state.designV2.cursorMode);
 
+  console.log('canvasHeight, canvasWidth', canvasHeight, canvasWidth);
   const dispatch = useDispatch();
 
   // refs and other state
