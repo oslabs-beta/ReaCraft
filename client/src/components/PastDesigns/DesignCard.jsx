@@ -46,7 +46,11 @@ export default function DesignCard({ design }) {
         title={design.title}
       />
       <CardContent name='CardContent_DesignCard'>
-        <EditableText initialText={design.title} align='center' />
+        <EditableText
+          designId={design._id}
+          initialText={design.title}
+          align='center'
+        />
         <Typography gutterBottom variant='h5' component='div'></Typography>
         <Typography
           variant='body2'
