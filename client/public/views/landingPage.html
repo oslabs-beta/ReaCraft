@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ReaCraft</title>
     <link rel="stylesheet" type="text/css" href="/views/homepage.css" />
+    <!-- <link rel="stylesheet" href="/views/global.css" /> -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -38,9 +39,11 @@
           mode = window.localStorage.getItem('mode');
           if (mode) {
             $('*').removeClass('dark');
+            $('#modalPlaceholder').removeClass('dark');
             window.localStorage.removeItem('mode');
           } else {
             $('*').addClass('dark');
+            $('#modalPlaceholder').addClass('dark');
             window.localStorage.setItem('mode', 'dark');
           }
         });
@@ -61,6 +64,15 @@
           id="signup">
           Sign Up
         </button>
+        <!-- dark mode switch -->
+        <span id="dark-mode-switch-root">
+          <span id="switch-base">
+            <input type="checkbox" id="dark-mode-switch" />
+            <span id="switch-thumb"></span>
+            <span class="MuiTouchRipple-root"></span>
+          </span>
+          <span id="switch-track"></span>
+        </span>
       </span>
       <div id="modalPlaceholder"></div>
       <div
@@ -340,6 +352,7 @@
         </span>
       </span>
     </span>
+
     <!-- scripts are at the bottom of the body to ensure HTML elements above are loaded before the scripts run -->
     <script>
       // when document is ready
@@ -352,6 +365,7 @@
           $('#modalPlaceholder').load('/views/signupModal.html', function () {
             // show the 'signupModal' as a modal
             $('#signupModal').modal('show');
+            updateModalDarkMode();
           });
         });
 
@@ -363,6 +377,7 @@
           $('#modalPlaceholder').load('/views/loginModal.html', function () {
             // show the 'loginModa' as a modal
             $('#loginModal').modal('show');
+            updateModalDarkMode();
           });
         });
 
