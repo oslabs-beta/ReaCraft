@@ -66,3 +66,11 @@
     background-color: #5a6268;
     border-color: #545b62;
 }
+
+/* .modal-content.dark {
+    background: #1B263B;
+} */
+
+.dark .modal-content {
+    background: #1B263B;
+}
