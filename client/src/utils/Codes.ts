@@ -132,6 +132,9 @@ export default class Codes {
     const classAndId = ` className='${component.name}' id=${
       component.index > 0 ? '{id}' : "'RootContainer-0'"
     }>`;
+    const childrenComps = children.map((child) =>
+      this.components.find((item) => item._id === child.id)
+    );
     if (children.length === 0) {
       html += `  return (\n    ${html_tag.replace(
         '>',
@@ -139,9 +142,6 @@ export default class Codes {
       )}${inner_html}${html_tag.replace('<', '</')}
   );`;
     } else {
-      const childrenComps = children.map((child) =>
-        this.components.find((item) => item._id === child.id)
-      );
       const childrenNames = new Set(
         childrenComps.map((childComponent) => {
           if (!childComponent)
@@ -156,14 +156,14 @@ export default class Codes {
       html +=
         `  return (\n    <div${classAndId}\n` +
         childrenComps
-          .map((childComponent) => {
+          .map((childComponent, i) => {
             if (!childComponent)
               throw new Error(
                 'Converting jsx: component has an undefined child'
               );
-            return `      <${childComponent.name} id='${childComponent.name}-${
-              childComponent.index
-            }' ${childComponent.props
+            return `      <${childComponent.name} id={childId${
+              i + 1
+            }} ${childComponent.props
               .map(({ key, value }) =>
                 value[0] === '{' && value[value.length - 1] === '}'
                   ? `${key}=${value}`
@@ -186,13 +186,28 @@ export default class Codes {
         const oldPropKeys: Set<string> = new Set(matches[1].split(', '));
         propKeys = new Set([...propKeys, ...oldPropKeys]);
         propKeys.delete('id');
+        childrenComps.forEach((child, i) => propKeys.delete(`childId${i + 1}`));
       }
     }
     let propsCode: string;
     if (component.index === 0) {
-      propsCode = '{ ' + ['setTitle', ...propKeys].join(', ') + ' }';
+      propsCode =
+        '{ ' +
+        [
+          'setTitle',
+          ...propKeys,
+          ...childrenComps.map((child, i) => `childId${i + 1}`),
+        ].join(', ') +
+        ' }';
     } else {
-      propsCode = '{ ' + ['id', ...propKeys].join(', ') + ' }';
+      propsCode =
+        '{ ' +
+        [
+          'id',
+          ...propKeys,
+          ...childrenComps.map((child, i) => `childId${i + 1}`),
+        ].join(', ') +
+        ' }';
     }
     return `import './styles.css';
 
@@ -201,5 +216,31 @@ ${importChildren}
 export default function ${name}(${propsCode}) {
 ${html}
 }`;
+  }
+
+  jsx2(
+    component: Component,
+    children: TreeNode[],
+    jsx: { [key: string]: string }
+  ): string {
+    const { html_tag, inner_html, name } = component;
+    const childrenComps = children.map((child) =>
+      this.components.find((item) => item._id === child.id)
+    );
+
+    let html: string = '';
+    let id: string = '';
+    if (component.index === 0) {
+      html += `\n  useEffect(() => setTitle("${this.title}"), [setTitle]);\n\n`;
+    }
+
+    if (children.length === 0) {
+      html += `return (\n    ${html_tag.replace(
+        '>',
+        ` className='${component.name}'`
+      )}`;
+    }
+
+    return '';
   }
 }

@@ -31,17 +31,17 @@ export default function UserImageUploadButton() {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center',
     paddingTop: '70vh',
   };
-  
+
   const uploadAreaStyles = {
     backgroundColor: 'transparent',
-    border: '2px dashed black', 
+    border: '2px dashed black',
     padding: '100px',
     borderRadius: '12px',
-    color: 'black', 
+    color: 'black',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -50,13 +50,12 @@ export default function UserImageUploadButton() {
     maxWidth: '600px',
     cursor: 'pointer', // to indicate the area is clickable
   };
-  
 
   function handleFileChange(file) {
     // set file details
     setFileName(file.name);
     setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB'); // Convert bytes to MB
-    
+
     // simulate upload progress - this isn't showing
     const interval = setInterval(() => {
       setUploadProgress((oldProgress) => {
@@ -124,55 +123,61 @@ export default function UserImageUploadButton() {
 
   return (
     <Fragment>
-    {!designId ? (
-      // render a Box as a flex container styled with containerStyles
-      <Box sx={containerStyles}>
-        {/* render another Box as a flex container with uploadAreaStyles */}
-        <Box sx={uploadAreaStyles}>
-          <FileUploader
-            handleChange={handleFileChange} 
-            name="file" 
-            types={['JPG', 'PNG']} 
-            children={(
-              <>
-                <CloudUploadRoundedIcon style={{ fontSize: '64px', color: 'black' }} />
-                <div style={{ margin: '20px 0', color: 'black' }}>Drag & Drop your files here</div>
-                <Button
-                  variant="contained"
-                  component="label"
-                  sx={{
-                    backgroundColor: '#FFFFFF',
-                    color: '#8D99AE',
-                    '&:hover': {
-                      backgroundColor: '#E0E0E0',
-                    },
-                    '&:focus': {
-                      outline: 'none',
-                    },
-                    '&:active': {
-                      outline: 'none',
-                      border: 'none',
-                      boxShadow: 'none',
-                    }
-                  }}
-                >
-                  BROWSE
-                  <VisuallyHiddenInput
-                    type='file'
-                    name='userImage'
-                    accept='image/*'
-                    onChange={(e) => handleFileChange(e.target.files[0])}
+      {!designId ? (
+        // render a Box as a flex container styled with containerStyles
+        <Box sx={containerStyles}>
+          {/* render another Box as a flex container with uploadAreaStyles */}
+          <Box sx={uploadAreaStyles}>
+            <FileUploader
+              handleChange={handleFileChange}
+              name='file'
+              types={['JPG', 'PNG']}
+              children={
+                <>
+                  <CloudUploadRoundedIcon
+                    style={{ fontSize: '64px', color: 'black' }}
                   />
-                </Button>
-              </>
-            )}
-          />
+                  <div style={{ margin: '20px 0', color: 'black' }}>
+                    Drag & Drop your files here
+                  </div>
+                  <Button
+                    variant='contained'
+                    component='label'
+                    sx={{
+                      backgroundColor: '#FFFFFF',
+                      color: '#8D99AE',
+                      '&:hover': {
+                        backgroundColor: '#E0E0E0',
+                      },
+                      '&:focus': {
+                        outline: 'none',
+                      },
+                      '&:active': {
+                        outline: 'none',
+                        border: 'none',
+                        boxShadow: 'none',
+                      },
+                    }}
+                  >
+                    BROWSE
+                    <VisuallyHiddenInput
+                      type='file'
+                      name='userImage'
+                      accept='image/*'
+                      onChange={(e) => handleFileChange(e.target.files[0])}
+                    />
+                  </Button>
+                </>
+              }
+            />
             {/* if fileName is set, render a Box with fileName, fileSize, and a LinearProgress component for uploadProgress */}
             {fileName && (
-              <Box sx={{ textAlign: 'center', color: 'black', marginTop: '10px' }}>
+              <Box
+                sx={{ textAlign: 'center', color: 'black', marginTop: '10px' }}
+              >
                 <span>{fileName}</span> - <span>{fileSize}</span>
                 <LinearProgress
-                  variant="determinate"
+                  variant='determinate'
                   value={uploadProgress}
                   sx={{
                     width: '100%',
@@ -186,7 +191,9 @@ export default function UserImageUploadButton() {
                     color: 'black',
                     borderColor: '#8D99AE',
                   }}
-                  onClick={() => {/* logic to handle file removal */}}
+                  onClick={() => {
+                    /* logic to handle file removal */
+                  }}
                 >
                   X
                 </Button>
@@ -222,7 +229,6 @@ export const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
-
 
 // import React, { Fragment } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
