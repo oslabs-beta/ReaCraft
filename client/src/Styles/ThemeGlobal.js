@@ -15,7 +15,8 @@ const globalFont = [
 
 export const themeLight = createTheme({
   typography: {
-    fontFamily: 'Avenir',
+    // fontFamily: 'Avenir',
+    fontFamily: 'Baloo Bhaijaan 2',
   },
   palette: {
     mode: 'light',
@@ -61,6 +62,7 @@ export const themeLight = createTheme({
         root: {
           '&.designTitle': {
             backgroundColor: '#BBBBBB',
+            // backgroundColor: 'transparent',
             borderRadius: '5px',
           },
         },
@@ -82,7 +84,7 @@ export const themeLight = createTheme({
 
 export const themeDark = createTheme({
   typography: {
-    fontFamily: 'Avenir',
+    fontFamily: 'Baloo Bhaijaan 2',
   },
   palette: {
     mode: 'dark',
