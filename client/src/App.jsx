@@ -8,6 +8,9 @@ import TopBar from './components/TopBar';
 import MainContainer from './components/MainContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMessage, setWindowSize } from './utils/reducers/appSlice';
+import Fab from '@mui/material/Fab';
+import FreeBreakfastRoundedIcon from '@mui/icons-material/FreeBreakfastRounded';
+import BuyMeCoffee from './components/functionalButtons/BuyMeCoffee';
 
 const drawerWidth = 100;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -98,6 +101,7 @@ export default function App() {
             top: '10%',
           }}
         />
+        <BuyMeCoffee />
       </Main>
     </ThemeProvider>
   );

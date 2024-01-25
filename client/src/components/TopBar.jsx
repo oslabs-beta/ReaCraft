@@ -11,9 +11,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
-import { Stack, useTheme } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import Divider from '@mui/material/Divider';
-import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 
 /* MUI Icon Imports */
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -57,6 +56,11 @@ export default function TopBar({
       ? AppBarButtonsStyleDark
       : AppBarButtonsStyleLight;
 
+  const logo =
+    theme.palette.mode === 'light'
+      ? './assets/logo_thickoutline_3.svg'
+      : './assets/logo_tiny_mode_DarkMode.svg';
+
   function handlePageClick(page) {
     dispatch(goToPage(page));
     dispatch(resetDesign());
@@ -71,10 +75,7 @@ export default function TopBar({
           height: '56px',
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
-
         }}>
-
-
         <Stack direction='row' alignItems='center'>
           {!designId && (
             <Fragment>
@@ -82,8 +83,7 @@ export default function TopBar({
                 variant='contained'
                 size='large'
                 onClick={() => setDrawerOpen(!drawerOpen)}
-                sx={AppBarButtonsStyle}
-              >
+                sx={AppBarButtonsStyle}>
                 <MenuIcon />
               </Button>
               <SideDrawer
@@ -95,9 +95,18 @@ export default function TopBar({
           )}
           {designId && (
             <Fragment>
-              <Tooltip title='placeholder for logo'>
+              <Box
+                sx={{
+                  cursor: 'pointer',
+                  height: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onClick={() => handlePageClick('HOME')}
+              >
                 <img
-                  src='./assets/logo_thickoutline_3.svg'
+                  src={logo}
                   style={{
                     marginLeft: '20px',
                     width: 40,
@@ -105,7 +114,8 @@ export default function TopBar({
                     color: '#736c6c',
                   }}
                 />
-              </Tooltip>
+              </Box>
+
               <DesignTitleInput />
             </Fragment>
           )}
@@ -131,8 +141,7 @@ export default function TopBar({
               boxShadow: '1px 1px 5px white',
               margin: '0 5px',
             }}
-            startIcon={<AddPhotoAlternateIcon />}
-          >
+            startIcon={<AddPhotoAlternateIcon />}>
             New Design
           </Button>
           <Divider orientation='vertical' flexItem />
@@ -144,8 +153,7 @@ export default function TopBar({
               variant='contained'
               onClick={() => handlePageClick('HOME')}
               width='30px'
-              size='sm'
-            >
+              size='sm'>
               <HomeIcon />
             </IconButton>
           </Tooltip>
