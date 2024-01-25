@@ -16,15 +16,13 @@ export default function MainContainer() {
       value='WorkSpaceContainer'
       disableGutters={true}
       maxWidth='1500px'
+      minWidth='1000px'
       style={{
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
         marginTop: '60px',
-        minWidth: '500px',
-      }}
-    >
-
+      }}>
       {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && (
         <Box display='flex' justifyContent='center'>
