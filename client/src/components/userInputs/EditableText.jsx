@@ -4,11 +4,14 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { updateDesignRequest } from '../../utils/fetchRequests';
+import { useDispatch } from 'react-redux';
+import { setMessage } from '../../utils/reducers/appSlice';
 
 const EditableText = ({ initialText, designId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(initialText);
 
+  const dispatch = useDispatch();
   const handleDoubleClick = () => {
     setIsEditing(true);
   };
@@ -32,7 +35,7 @@ const EditableText = ({ initialText, designId }) => {
                     try {
                       await updateDesignRequest(designId, { title: text });
                       setIsEditing(false);
-                    } catch (error) {
+                    } catch (err) {
                       dispatch(
                         setMessage({
                           severity: 'error',
