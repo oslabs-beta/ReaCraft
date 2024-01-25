@@ -10,7 +10,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import LineStyleRoundedIcon from '@mui/icons-material/LineStyleRounded';
 import Slider from '@mui/material/Slider';
-import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
 import Typography from '@mui/material/Typography';
 
 import '../../styles/workspaceToolbar.scss';
