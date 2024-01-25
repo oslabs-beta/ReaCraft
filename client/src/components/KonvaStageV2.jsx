@@ -3,7 +3,7 @@ import { Stage, Layer, Rect, Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateComponentRectanglePosition } from '../utils/reducers/designSliceV2';
-import { setSelectedIdx } from '../utils/reducers/appSlice';
+import { setSelectedIdx, setZoom } from '../utils/reducers/appSlice';
 
 export default function KonvaStage({
   userImage,
@@ -13,9 +13,7 @@ export default function KonvaStage({
 }) {
   const [image] = useImage(userImage);
 
-  const { windowHeight, zoom, selectedIdx, windowWidth } = useSelector(
-    (state) => state.app
-  );
+  const { zoom, selectedIdx } = useSelector((state) => state.app);
   // const canvasHeight = ((windowHeight - 180) * zoom) / 100;
 
   // redux state
@@ -24,6 +22,7 @@ export default function KonvaStage({
   const isDraggable = useSelector((state) => state.designV2.isDraggable);
   const cursorMode = useSelector((state) => state.designV2.cursorMode);
 
+  console.log('canvasHeight, canvasWidth', canvasHeight, canvasWidth);
   const dispatch = useDispatch();
 
   // refs and other state
