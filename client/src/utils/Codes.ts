@@ -126,7 +126,7 @@ export default class Codes {
     const { html_tag, inner_html, name } = component;
     let html: string = '';
     if (component.index === 0) {
-      html += `\n  useEffect(() => setTitle('${this.title}'), [setTitle]);\n\n`;
+      html += `\n  useEffect(() => setTitle("${this.title}"), [setTitle]);\n\n`;
     }
     let importChildren = '';
     const classAndId = ` className='${component.name}' id=${
@@ -164,7 +164,11 @@ export default class Codes {
             return `      <${childComponent.name} id='${childComponent.name}-${
               childComponent.index
             }' ${childComponent.props
-              .map(({ key, value }) => `${key}={'${value}'}`)
+              .map(({ key, value }) =>
+                value[0] === '{' && value[value.length - 1] === '}'
+                  ? `${key}=${value}`
+                  : `${key}={'${value}'}`
+              )
               .join(' ')}/>`;
           })
           .join('\n') +
