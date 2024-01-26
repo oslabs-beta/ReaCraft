@@ -22,7 +22,6 @@ export default function WorkspaceLeft() {
   const { selectedPageIdx } = useSelector((state) => state.app);
   const page = pages[selectedPageIdx];
   const components = page.components;
-  console.log('in workspace left', components);
   const dispatch = useDispatch();
 
   return (

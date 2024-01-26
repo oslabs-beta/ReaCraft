@@ -206,8 +206,13 @@ export function deleteComponentRequest(componentId: number): Promise<{
 
 export function updateComponentParentRequest(
   componentId: number,
-  body: { parentId: number }
-): Promise<{ componentId: number; parentId: number }> {
+  body: { parentId: number; pageIdx: number }
+): Promise<{
+  componentId: number;
+  parentId: number;
+  parentName: string;
+  pageIdx: number;
+}> {
   return fetch(`/components/update-parent/${componentId}`, {
     method: 'POST',
     headers: {

@@ -1,28 +1,28 @@
-.rd3t-g{
-    display: flex;
-    align-self: center;
-    align-items: center;
-    align-content: center;
+.rd3t-g {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  align-content: center;
 }
 
-.rd3t-node, .node__root > circle {
-    display: flex;
-    justify-content: center;
-    fill: rgb(0, 165, 231);
-    border-color: black;
+.rd3t-node,
+.node__root > circle {
+  display: flex;
+  justify-content: center;
+  fill: rgb(0, 165, 231);
+  border-color: black;
 }
 
 .__rd3t {
-    fill: aqua;
+  fill: aqua;
 }
 
-  
-  .node__branch > circle {
-    fill: rgb(134, 71, 74);
-  }
-  
-  .node__leaf > circle {
-    fill: rgb(77, 141, 87);
-    /* Let's also make the radius of leaf nodes larger */
-    border-radius: 40;
-  }
+.node__branch > circle {
+  fill: rgb(134, 71, 74);
+}
+
+.node__leaf > circle {
+  fill: rgb(77, 141, 87);
+  /* Let's also make the radius of leaf nodes larger */
+  border-radius: 40;
+}
