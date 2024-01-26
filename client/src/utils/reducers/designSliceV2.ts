@@ -4,7 +4,7 @@ import {
   addNewComponentRequest,
   deleteComponentRequest,
   getDesignDetailsRequest,
-  updateDesignRequest,
+  // updateDesignRequest,
   updateComponentParentRequest,
   updateComponentHtmlTagRequest,
   submitComponentFormRequest,
@@ -18,19 +18,19 @@ export const newDesign = createAsyncThunk(
   async (body: { userImage: string; imageHeight: number }) =>
     await addDesignRequest(body)
 );
-export const updateDesign = createAsyncThunk(
-  'designs/update/:designId',
-  async (arg: {
-    designId: number;
-    body: {
-      userImage: string;
-      imageToDelete?: string;
-      imageHeight?: number;
-      title?: string;
-      rootId?: number;
-    };
-  }) => await updateDesignRequest(arg.designId, arg.body)
-);
+// export const updateDesign = createAsyncThunk(
+//   'designs/update/:designId',
+//   async (arg: {
+//     designId: number;
+//     body: {
+//       userImage: string;
+//       imageToDelete?: string;
+//       imageHeight?: number;
+//       title?: string;
+//       rootId?: number;
+//     };
+//   }) => await updateDesignRequest(arg.designId, arg.body)
+// );
 export const getDesignDetails = createAsyncThunk(
   'designs/detail/:designId',
   async (designId: number) => await getDesignDetailsRequest(designId)
@@ -48,8 +48,10 @@ export const deleteComponent = createAsyncThunk(
 );
 export const updateComponentParent = createAsyncThunk(
   'components/update-parent/:componentId',
-  async (arg: { componentId: number; body: { parentId: number } }) =>
-    await updateComponentParentRequest(arg.componentId, arg.body)
+  async (arg: {
+    componentId: number;
+    body: { parentId: number; pageIdx: number };
+  }) => await updateComponentParentRequest(arg.componentId, arg.body)
 );
 
 export const updateComponentHtmlTag = createAsyncThunk(
@@ -67,6 +69,8 @@ export const submitComponentForm = createAsyncThunk(
       innerHtml: string;
       styles: { [key: string]: any };
       props: { [key: string]: any };
+      pageIdx: number;
+      htmlTag: HtmlTag;
     };
   }) => await submitComponentFormRequest(arg.componentId, arg.body)
 );
@@ -80,6 +84,7 @@ export const updateComponentRectanglePosition = createAsyncThunk(
       y: number;
       width: number;
       height: number;
+      pageIdx: number;
     };
   }) => await updateComponentRectanglePositionRequest(arg.componentId, arg.body)
 );
@@ -94,6 +99,7 @@ export const updateComponentRectangleStyle = createAsyncThunk(
         | 'backgroundColor'
         | 'borderWidth'
         | 'borderRadius';
+      pageIdx: number;
       value: string | number;
     };
   }) => await updateComponentRectangleStyleRequest(arg.componentId, arg.body)
@@ -101,7 +107,7 @@ export const updateComponentRectangleStyle = createAsyncThunk(
 
 const asyncThunks = [
   newDesign,
-  updateDesign,
+  // updateDesign,
   getDesignDetails,
   addNewComponent,
   deleteComponent,
@@ -112,7 +118,7 @@ const asyncThunks = [
   updateComponentRectangleStyle,
 ];
 
-const designThunks = [newDesign, updateDesign, getDesignDetails];
+const designThunks = [newDesign, getDesignDetails];
 
 const rectangleThunks = [
   updateComponentRectanglePosition,
@@ -193,20 +199,20 @@ const designSliceV2 = createSlice({
         }
       );
     });
-    rectangleThunks.forEach((thunk) => {
-      builder.addCase(
-        thunk.fulfilled,
-        (state, action: PayloadAction<Rectangle>) => {
-          state.loading = false;
-          const updatedRectangle = action.payload;
-          console.log('updatedRectangle is', updatedRectangle);
-          const index = state.components.findIndex(
-            (item) => item._id === updatedRectangle.component_id
-          );
-          state.components[index].rectangle = updatedRectangle;
-        }
-      );
-    });
+    // rectangleThunks.forEach((thunk) => {
+    //   builder.addCase(
+    //     thunk.fulfilled,
+    //     (state, action: PayloadAction<Rectangle>) => {
+    //       state.loading = false;
+    //       const updatedRectangle = action.payload;
+    //       console.log('updatedRectangle is', updatedRectangle);
+    //       const index = state.components.findIndex(
+    //         (item) => item._id === updatedRectangle.component_id
+    //       );
+    //       state.components[index].rectangle = updatedRectangle;
+    //     }
+    //   );
+    // });
     builder.addCase(
       addNewComponent.fulfilled,
       (state, action: PayloadAction<Component>) => {
@@ -261,23 +267,28 @@ const designSliceV2 = createSlice({
         state.components.forEach((item) => {
           if (item.name == componentName) item.html_tag = htmlTag;
         });
-      })
-      .addCase(submitComponentForm.fulfilled, (state, action) => {
-        state.loading = false;
-        const updatedComponent = action.payload;
-        console.log('updatedComponent', updatedComponent);
-        state.components.forEach((item) => {
-          if (item._id == updatedComponent._id) {
-            Object.assign(item, updatedComponent);
-          }
-          if (item.name === updatedComponent.name) {
-            item.inner_html = updatedComponent.inner_html;
-          }
-        });
       });
+    // .addCase(submitComponentForm.fulfilled, (state, action) => {
+    //   state.loading = false;
+    //   const updatedComponent = action.payload;
+    //   console.log('updatedComponent', updatedComponent);
+    //   state.components.forEach((item) => {
+    //     if (item._id == updatedComponent._id) {
+    //       Object.assign(item, updatedComponent);
+    //     }
+    //     if (item.name === updatedComponent.name) {
+    //       item.inner_html = updatedComponent.inner_html;
+    //     }
+    //   });
+    // });
   },
 });
 
-export const { resetDesign, setSearchTerm, updateRootHeight, toggleIsDraggable, setCursorMode } =
-  designSliceV2.actions;
+export const {
+  resetDesign,
+  setSearchTerm,
+  updateRootHeight,
+  toggleIsDraggable,
+  setCursorMode,
+} = designSliceV2.actions;
 export default designSliceV2.reducer;
