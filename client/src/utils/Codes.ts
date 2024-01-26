@@ -71,9 +71,9 @@ export default class Codes {
       z_index,
       width,
       height,
-      borderwidth,
-      borderradius,
-      backgroundcolor,
+      border_width,
+      border_radius,
+      background_color,
       stroke,
     } = rectangle;
 
@@ -102,11 +102,11 @@ export default class Codes {
     Math.round(((y_position - parentPos.top) / rootHeight) * 1000) / 1000
   });`;
     }
-    if (borderwidth > 0) css += `\n  border-width: ${borderwidth}px;`;
-    if (borderradius) css += `\n  border-radius: ${borderradius}%;`;
+    if (border_width > 0) css += `\n  border-width: ${border_width}px;`;
+    if (border_radius) css += `\n  border-radius: ${border_radius}%;`;
     if (styles.filter(({ key, value }) => key === 'border-style').length === 0)
       css += `\n  border-style: solid;`;
-    if (backgroundcolor) css += `\n  background-color: ${backgroundcolor};`;
+    if (background_color) css += `\n  background-color: ${background_color};`;
     if (z_index) css += `\n  z-index: ${z_index};`;
     styles.forEach(({ key, value }) => {
       if (value.length > 0) {

@@ -251,7 +251,7 @@ export function submitComponentFormRequest(
     .then(({ updatedComponent, pageIdx }) => {
       return {
         updatedComponent: handleComponentRes(updatedComponent),
-        pageIdx,
+        pageIdx: Number(pageIdx),
       };
     })
     .catch((err) => {
@@ -288,8 +288,9 @@ export function updateComponentRectanglePositionRequest(
     y: number;
     width: number;
     height: number;
+    pageIdx: number;
   }
-): Promise<Rectangle> {
+): Promise<{ updatedRectangle: Rectangle; pageIdx: number }> {
   return fetch(`/components/update-position/${componentId}`, {
     method: 'POST',
     headers: {
@@ -303,7 +304,10 @@ export function updateComponentRectanglePositionRequest(
       }
       return res.json();
     })
-    .then(handleRectangleRes)
+    .then(({ updatedRectangle, pageIdx }) => ({
+      updatedRectangle: handleRectangleRes(updatedRectangle),
+      pageIdx: Number(pageIdx),
+    }))
     .catch((err) => {
       throw err;
     });
@@ -317,9 +321,10 @@ export function updateComponentRectangleStyleRequest(
       | 'backgroundColor'
       | 'borderWidth'
       | 'borderRadius';
+    pageIdx: number;
     value: string | number;
   }
-): Promise<Rectangle> {
+): Promise<{ updatedRectangle: Rectangle; pageIdx: number }> {
   return fetch(`/components/update-rectangle-style/${componentId}`, {
     method: 'POST',
     headers: {
@@ -333,7 +338,10 @@ export function updateComponentRectangleStyleRequest(
       }
       return res.json();
     })
-    .then(handleRectangleRes)
+    .then(({ updatedRectangle, pageIdx }) => ({
+      updatedRectangle: handleRectangleRes(updatedRectangle),
+      pageIdx: Number(pageIdx),
+    }))
     .catch((err) => {
       throw err;
     });

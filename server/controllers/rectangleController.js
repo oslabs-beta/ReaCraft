@@ -150,27 +150,11 @@ const getRectangles = async (req, res, next) => {
   }
 };
 
-const deleteComponentRectangle = (req, res, next) => {
-  const { componentId } = req.params;
-  return db
-    .query('DELETE FROM rectangles WHERE component_id = $1;', [componentId])
-    .then(() => next())
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught rectangleController.deleteComponentRectangle middleware error: ' +
-          err,
-        message: { err: 'deleteComponentRectangle: ' + err },
-      })
-    );
-};
-
 module.exports = {
   createRootRectangle,
   deleteDesignRectangles,
   getRectangles,
   createComponentRectangle,
-  deleteComponentRectangle,
   updateComponentRectanglePosition,
   updateComponentRectangleStyle,
   updateRootRectangle,

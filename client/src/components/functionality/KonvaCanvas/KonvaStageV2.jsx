@@ -2,8 +2,8 @@ import React, { Fragment, createRef, useRef, useEffect, useState } from 'react';
 import { Stage, Layer, Rect, Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateComponentRectanglePosition } from '../../../utils/reducers/designSliceV2';
-import { setSelectedIdx, setZoom } from '../../../utils/reducers/appSlice';
+import { updateComponentRectanglePosition } from '../../../utils/reducers/designSliceV3';
+import { setSelectedIdx } from '../../../utils/reducers/appSlice';
 
 export default function KonvaStage({
   userImage,
@@ -13,15 +13,17 @@ export default function KonvaStage({
 }) {
   const [image] = useImage(userImage);
 
-  const { zoom, selectedIdx } = useSelector((state) => state.app);
+  const { selectedIdx, selectedPageIdx } = useSelector((state) => state.app);
   // const canvasHeight = ((windowHeight - 180) * zoom) / 100;
 
   // redux state
   const { isDraggable, cursorMode, pages } = useSelector(
     (state) => state.designV3
   );
-  const components = pages[0].components;
+  const components = pages[selectedPageIdx].components;
   const rectangles = components.map((item) => item.rectangle);
+
+  console.log('rectangles are', rectangles);
 
   console.log('canvasHeight, canvasWidth', canvasHeight, canvasWidth);
   const dispatch = useDispatch();
@@ -57,6 +59,7 @@ export default function KonvaStage({
     // prevent stage from deselecting the shape
     e.cancelBubble = true;
     const clickedIdx = components.findIndex((item) => item._id === componentId);
+    console.log('clicked', clickedIdx);
     dispatch(setSelectedIdx(clickedIdx));
   }
 
@@ -68,6 +71,7 @@ export default function KonvaStage({
       y: y / canvasRootRatio,
       width: width / canvasRootRatio,
       height: height / canvasRootRatio,
+      pageIdx: selectedPageIdx,
     };
     try {
       dispatch(updateComponentRectanglePosition({ componentId, body }));
@@ -98,7 +102,7 @@ export default function KonvaStage({
           {rectangles.map((rect, i) => {
             if (!rectRefs.current[i]) rectRefs.current[i] = createRef();
             const maxSide = Math.max(rect.width, rect.height) * canvasRootRatio;
-            const cornerRadius = (rect.borderradius / 100) * maxSide;
+            const cornerRadius = (rect.border_radius / 100) * maxSide;
             const { component_id } = rect;
             return (
               <Fragment key={component_id}>
@@ -113,9 +117,9 @@ export default function KonvaStage({
                   draggable={
                     components.findIndex((c) => c._id === component_id) > 0
                   }
-                  strokeWidth={rect.borderwidth * canvasRootRatio}
+                  strokeWidth={rect.border_width * canvasRootRatio}
                   onClick={(e) => handleRectClick(e, component_id)}
-                  fill={rect.backgroundcolor}
+                  fill={rect.background_color}
                   cornerRadius={cornerRadius}
                   onDragEnd={(e) =>
                     handleChangeEnd(component_id, e.target.attrs)

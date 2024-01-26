@@ -136,7 +136,7 @@ export default function TopBar({
 
           <Button
             variant='contained'
-            onClick={() => handlePageClick('NEW_DESIGN')}
+            onClick={() => handlePageClick('DESIGN')}
             sx={{
               ...AppBarButtonsStyle,
               backgroundColor: darkMode ? '#2a3f5a' : '#736c6c',

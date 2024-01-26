@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 
 import Tooltip from '@mui/material/Tooltip';
 import { MuiColorInput } from 'mui-color-input';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateComponentRectangleStyle } from '../../../utils/reducers/designSliceV2';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -16,9 +16,10 @@ import '../../../styles/workspaceToolbar.scss';
 import { useTheme, createTheme, ThemeProvider } from '@mui/material';
 
 export default function ButtonGroupRectangleStyle({ rectangle }) {
-  const [color, setColor] = useState(rectangle.backgroundcolor || '#00000000');
+  const [color, setColor] = useState(rectangle.background_color || '#00000000');
   const [anchorEl, setAnchorEl] = useState(null);
   const openBorderMenu = Boolean(anchorEl);
+  const { selectedPageIdx } = useSelector((state) => state.app);
 
   const dispatch = useDispatch();
   function handleSubmit(styleToChange, value) {
@@ -27,7 +28,7 @@ export default function ButtonGroupRectangleStyle({ rectangle }) {
       dispatch(
         updateComponentRectangleStyle({
           componentId,
-          body: { styleToChange, value },
+          body: { styleToChange, value, pageIdx: selectedPageIdx },
         })
       );
     } catch (error) {
@@ -95,7 +96,7 @@ export default function ButtonGroupRectangleStyle({ rectangle }) {
               value={color}
               onChange={(val) => {
                 setColor(val);
-                handleSubmit('backgroundColor', val);
+                handleSubmit('background_color', val);
               }}
             />
           </Tooltip>
@@ -127,10 +128,10 @@ function BorderMenu({
   rectangle,
   handleSubmit,
 }) {
-  const { stroke, borderwidth, borderradius } = rectangle;
+  const { stroke, border_width, border_radius } = rectangle;
   const [color, setColor] = useState(stroke);
-  const [borderWidth, setBorderWidth] = useState(Number(borderwidth));
-  const [borderRadius, setBorderRadius] = useState(Number(borderradius));
+  const [borderWidth, setBorderWidth] = useState(Number(border_width));
+  const [borderRadius, setBorderRadius] = useState(Number(border_radius));
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -161,7 +162,7 @@ function BorderMenu({
           value={borderWidth}
           valueLabelDisplay='auto'
           onChange={(e) => setBorderWidth(e.target.value)}
-          onChangeCommitted={() => handleSubmit('borderWidth', borderWidth)}
+          onChangeCommitted={() => handleSubmit('border_width', borderWidth)}
         />
       </MenuItem>
       <MenuItem maxWidth='false'>
@@ -170,7 +171,7 @@ function BorderMenu({
           value={borderRadius}
           valueLabelDisplay='auto'
           onChange={(e) => setBorderRadius(e.target.value)}
-          onChangeCommitted={() => handleSubmit('borderRadius', borderRadius)}
+          onChangeCommitted={() => handleSubmit('border_radius', borderRadius)}
           min={0}
           max={50}
         />

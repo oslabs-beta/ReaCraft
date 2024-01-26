@@ -84,6 +84,7 @@ export const updateComponentRectanglePosition = createAsyncThunk(
       y: number;
       width: number;
       height: number;
+      pageIdx: number;
     };
   }) => await updateComponentRectanglePositionRequest(arg.componentId, arg.body)
 );
@@ -98,6 +99,7 @@ export const updateComponentRectangleStyle = createAsyncThunk(
         | 'backgroundColor'
         | 'borderWidth'
         | 'borderRadius';
+      pageIdx: number;
       value: string | number;
     };
   }) => await updateComponentRectangleStyleRequest(arg.componentId, arg.body)
@@ -197,20 +199,20 @@ const designSliceV2 = createSlice({
         }
       );
     });
-    rectangleThunks.forEach((thunk) => {
-      builder.addCase(
-        thunk.fulfilled,
-        (state, action: PayloadAction<Rectangle>) => {
-          state.loading = false;
-          const updatedRectangle = action.payload;
-          console.log('updatedRectangle is', updatedRectangle);
-          const index = state.components.findIndex(
-            (item) => item._id === updatedRectangle.component_id
-          );
-          state.components[index].rectangle = updatedRectangle;
-        }
-      );
-    });
+    // rectangleThunks.forEach((thunk) => {
+    //   builder.addCase(
+    //     thunk.fulfilled,
+    //     (state, action: PayloadAction<Rectangle>) => {
+    //       state.loading = false;
+    //       const updatedRectangle = action.payload;
+    //       console.log('updatedRectangle is', updatedRectangle);
+    //       const index = state.components.findIndex(
+    //         (item) => item._id === updatedRectangle.component_id
+    //       );
+    //       state.components[index].rectangle = updatedRectangle;
+    //     }
+    //   );
+    // });
     builder.addCase(
       addNewComponent.fulfilled,
       (state, action: PayloadAction<Component>) => {
