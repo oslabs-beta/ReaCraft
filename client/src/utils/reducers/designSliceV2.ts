@@ -4,7 +4,7 @@ import {
   addNewComponentRequest,
   deleteComponentRequest,
   getDesignDetailsRequest,
-  updateDesignRequest,
+  // updateDesignRequest,
   updateComponentParentRequest,
   updateComponentHtmlTagRequest,
   submitComponentFormRequest,
@@ -18,19 +18,19 @@ export const newDesign = createAsyncThunk(
   async (body: { userImage: string; imageHeight: number }) =>
     await addDesignRequest(body)
 );
-export const updateDesign = createAsyncThunk(
-  'designs/update/:designId',
-  async (arg: {
-    designId: number;
-    body: {
-      userImage: string;
-      imageToDelete?: string;
-      imageHeight?: number;
-      title?: string;
-      rootId?: number;
-    };
-  }) => await updateDesignRequest(arg.designId, arg.body)
-);
+// export const updateDesign = createAsyncThunk(
+//   'designs/update/:designId',
+//   async (arg: {
+//     designId: number;
+//     body: {
+//       userImage: string;
+//       imageToDelete?: string;
+//       imageHeight?: number;
+//       title?: string;
+//       rootId?: number;
+//     };
+//   }) => await updateDesignRequest(arg.designId, arg.body)
+// );
 export const getDesignDetails = createAsyncThunk(
   'designs/detail/:designId',
   async (designId: number) => await getDesignDetailsRequest(designId)
@@ -69,6 +69,8 @@ export const submitComponentForm = createAsyncThunk(
       innerHtml: string;
       styles: { [key: string]: any };
       props: { [key: string]: any };
+      pageIdx: number;
+      htmlTag: HtmlTag;
     };
   }) => await submitComponentFormRequest(arg.componentId, arg.body)
 );
@@ -103,7 +105,7 @@ export const updateComponentRectangleStyle = createAsyncThunk(
 
 const asyncThunks = [
   newDesign,
-  updateDesign,
+  // updateDesign,
   getDesignDetails,
   addNewComponent,
   deleteComponent,
@@ -114,7 +116,7 @@ const asyncThunks = [
   updateComponentRectangleStyle,
 ];
 
-const designThunks = [newDesign, updateDesign, getDesignDetails];
+const designThunks = [newDesign, getDesignDetails];
 
 const rectangleThunks = [
   updateComponentRectanglePosition,
@@ -263,20 +265,20 @@ const designSliceV2 = createSlice({
         state.components.forEach((item) => {
           if (item.name == componentName) item.html_tag = htmlTag;
         });
-      })
-      .addCase(submitComponentForm.fulfilled, (state, action) => {
-        state.loading = false;
-        const updatedComponent = action.payload;
-        console.log('updatedComponent', updatedComponent);
-        state.components.forEach((item) => {
-          if (item._id == updatedComponent._id) {
-            Object.assign(item, updatedComponent);
-          }
-          if (item.name === updatedComponent.name) {
-            item.inner_html = updatedComponent.inner_html;
-          }
-        });
       });
+    // .addCase(submitComponentForm.fulfilled, (state, action) => {
+    //   state.loading = false;
+    //   const updatedComponent = action.payload;
+    //   console.log('updatedComponent', updatedComponent);
+    //   state.components.forEach((item) => {
+    //     if (item._id == updatedComponent._id) {
+    //       Object.assign(item, updatedComponent);
+    //     }
+    //     if (item.name === updatedComponent.name) {
+    //       item.inner_html = updatedComponent.inner_html;
+    //     }
+    //   });
+    // });
   },
 });
 

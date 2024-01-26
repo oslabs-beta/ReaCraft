@@ -6,8 +6,9 @@ import {
   addNewComponentRequest,
   deleteComponentRequest,
   updateComponentParentRequest,
+  submitComponentFormRequest,
 } from '../fetchRequests';
-import { Component, Design, Page } from '../../../../docs/types';
+import { Component, Design, HtmlTag, Page } from '../../../../docs/types';
 
 export const newDesign = createAsyncThunk(
   'designs/new',
@@ -47,12 +48,28 @@ export const updateComponentParent = createAsyncThunk(
   }) => await updateComponentParentRequest(arg.componentId, arg.body)
 );
 
+export const submitComponentForm = createAsyncThunk(
+  'components/submit/:componentId',
+  async (arg: {
+    componentId: number;
+    body: {
+      name: string;
+      innerHtml: string;
+      styles: { [key: string]: any };
+      props: { [key: string]: any };
+      pageIdx: number;
+      htmlTag: HtmlTag;
+    };
+  }) => await submitComponentFormRequest(arg.componentId, arg.body)
+);
+
 const asyncThunks = [
   newDesign,
   updateDesignTitle,
   getDesignDetails,
   addNewComponent,
   deleteComponent,
+  submitComponentForm,
 ];
 
 const designThunks = [newDesign, updateDesignTitle, getDesignDetails];
@@ -211,6 +228,36 @@ const designSliceV3 = createSlice({
               if (item.name === parentName) {
                 item.html_tag = '<div>';
                 item.inner_html = '';
+              }
+            });
+          });
+        }
+      )
+      .addCase(
+        submitComponentForm.fulfilled,
+        (
+          state: DesignState,
+          action: PayloadAction<{
+            updatedComponent: Component;
+            pageIdx: number;
+          }>
+        ) => {
+          state.loading = false;
+          const { updatedComponent, pageIdx } = action.payload;
+          const compIdx = state.pages[pageIdx].components.findIndex(
+            (item: Component) => item._id === updatedComponent._id
+          );
+          const component = state.pages[pageIdx].components[compIdx];
+          state.pages[pageIdx].components[compIdx] = Object.assign(
+            component,
+            updatedComponent
+          );
+          state.pages.forEach((page: Page) => {
+            const components = page.components;
+            components.forEach((item: Component) => {
+              if (item.name === updatedComponent.name) {
+                item.html_tag = updatedComponent.html_tag;
+                item.inner_html = updatedComponent.inner_html;
               }
             });
           });
