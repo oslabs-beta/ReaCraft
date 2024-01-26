@@ -4,13 +4,11 @@ import Cookies from 'js-cookie';
 import { ThemeProvider, styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { themeLight, themeDark } from './styles/ThemeGlobal';
-import TopBar from './components/TopBar';
-import MainContainer from './components/MainContainer';
+import TopBar from './components/TopBar/TopBar';
+import MainContainer from './components/MainContainer/MainContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMessage, setWindowSize } from './utils/reducers/appSlice';
-import Fab from '@mui/material/Fab';
-import FreeBreakfastRoundedIcon from '@mui/icons-material/FreeBreakfastRounded';
-import BuyMeCoffee from './components/functionalButtons/BuyMeCoffee';
+import ButtonBuyCoffee from './components/ButtonBuyCoffee';
 
 const drawerWidth = 100;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -85,6 +83,9 @@ export default function App() {
   else window.localStorage.setItem('mode', 'dark');
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
+
+  const design = useSelector((state) => state.designV3);
+  console.log('in App.jsx, ', design);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -101,7 +102,7 @@ export default function App() {
             top: '10%',
           }}
         />
-        <BuyMeCoffee />
+        <ButtonBuyCoffee />
       </Main>
     </ThemeProvider>
   );

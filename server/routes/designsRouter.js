@@ -5,11 +5,16 @@ const imageController = require('../controllers/imageController');
 const designController = require('../controllers/designController');
 const componentController = require('../controllers/componentController');
 const rectangleController = require('../controllers/rectangleController');
+const pageController = require('../controllers/pageController');
 
 const sendDesign = (req, res) => res.status(200).send(res.locals.design);
 
 const sortComponents = (req, res, next) => {
-  res.locals.design.components.sort((a, b) => a.index - b.index);
+  res.locals.design.pages.sort((a, b) => a.index - b.index);
+  res.locals.design.pages.forEach((page) => {
+    page.components.sort((a, b) => a.index - b.index);
+  });
+
   return next();
 };
 
@@ -21,8 +26,15 @@ router.post(
   '/new',
   imageController.uploadImage,
   designController.addNewDesign,
+  pageController.addNewPage,
   componentController.createRootComponent,
   rectangleController.createRootRectangle,
+  sendDesign
+);
+
+router.post(
+  '/update-title/:designId',
+  designController.updateDesignTitle,
   sendDesign
 );
 
@@ -38,6 +50,7 @@ router.post(
 router.get(
   '/details/:designId',
   designController.getDesignById,
+  pageController.getPages,
   componentController.getComponents,
   rectangleController.getRectangles,
   sortComponents,
@@ -46,9 +59,6 @@ router.get(
 
 router.delete(
   '/delete/:designId',
-  componentController.selectDesignComponentsToDelete,
-  rectangleController.deleteDesignRectangles,
-  componentController.deleteDesignComponents,
   designController.deleteDesign,
   imageController.deleteImage,
   (req, res) => res.status(200).send({ message: 'deleted design successfully' })
