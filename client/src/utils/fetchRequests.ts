@@ -23,9 +23,38 @@ export function addDesignRequest(body: {
       }
       return res.json();
     })
+    .then((data) => {
+      console.log('new design', data);
+      return data;
+    })
     .then(handleDesignRes)
     .catch((err) => {
       console.log('App: add design: ERROR: ', err);
+      throw err;
+    });
+}
+
+export function updateDesignTitleRequest(
+  designId: number,
+  body: {
+    title: string;
+  }
+): Promise<Design> {
+  return fetch(`designs/update-title/${designId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    })
+    .then(handleDesignRes)
+    .catch((err) => {
       throw err;
     });
 }
@@ -60,10 +89,10 @@ export function updateDesignRequest(
 }
 
 export function addNewComponentRequest(
-  designId: number,
+  pageId: number,
   body: { index: number; rootId: number; name: string }
 ): Promise<Component> {
-  return fetch(`/designs/new-component/${designId}`, {
+  return fetch(`/pages/new-component/${pageId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'Application/JSON',

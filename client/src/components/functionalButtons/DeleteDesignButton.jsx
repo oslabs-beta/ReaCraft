@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteDesign } from '../../utils/fetchRequests';
-import { setMessage } from '../../utils/reducers/appSlice';
+import { goToPage, setMessage } from '../../utils/reducers/appSlice';
 import Delete from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -11,10 +11,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { resetDesign } from '../../utils/reducers/designSliceV2';
+import { resetDesign } from '../../utils/reducers/designSliceV3';
 
 export default function DeleteDesignButton() {
-  const designId = useSelector((state) => state.designV2._id);
+  const designId = useSelector((state) => state.designV3._id);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -53,6 +53,7 @@ export default function DeleteDesignButton() {
                     text: 'Design deleted.',
                   })
                 );
+                dispatch(goToPage('HOME'));
                 dispatch(resetDesign());
               } catch (err) {
                 console.log(err);
@@ -63,7 +64,8 @@ export default function DeleteDesignButton() {
                   })
                 );
               }
-            }}>
+            }}
+          >
             Yes
           </Button>
           <Button onClick={handleClose} autoFocus>

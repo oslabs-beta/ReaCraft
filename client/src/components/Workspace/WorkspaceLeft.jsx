@@ -18,7 +18,11 @@ import ParentSelector from '../userInputs/ParentSelector';
 import WorkspaceToolbar from './WorkspaceToolbar';
 
 export default function WorkspaceLeft() {
-  const components = useSelector((state) => state.designV2.components);
+  const { pages } = useSelector((state) => state.designV3);
+  const { selectedPageIdx } = useSelector((state) => state.app);
+  const page = pages[selectedPageIdx];
+  const components = page.components;
+  console.log('in workspace left', components);
   const dispatch = useDispatch();
 
   return (

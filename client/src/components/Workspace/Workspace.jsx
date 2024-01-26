@@ -7,15 +7,20 @@ import KonvaStage from '../KonvaStageV2';
 import Drawer from '@mui/material/Drawer';
 
 import WorkspaceToolbar from './WorkspaceToolbar';
-import { setSelectedIdx } from '../../utils/reducers/appSlice';
+import { goToPage, setSelectedIdx } from '../../utils/reducers/appSlice';
 import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material';
 
 export default function Workspace() {
-  const { image_url, components } = useSelector((state) => state.designV2);
-  const { selectedIdx, windowWidth, zoom, windowHeight } = useSelector(
-    (state) => state.app
-  );
+  const { image_url, pages, _id } = useSelector((state) => state.designV3);
+  const { selectedIdx, windowWidth, zoom, windowHeight, selectedPageIdx } =
+    useSelector((state) => state.app);
+  const dispatch = useDispatch();
+  const theme = useTheme();
+
+  console.log('pages', pages);
+  const components = pages[selectedPageIdx].components;
+  console.log('component', components);
   const rootWidth = components[0].rectangle.width;
   const rootHeight = components[0].rectangle.height;
   const canvasMaxHeight = windowHeight - 180;
@@ -34,9 +39,6 @@ export default function Workspace() {
     canvasRootRatio = canvasHeight / rootHeight;
     canvasWidth = rootWidth * canvasRootRatio;
   }
-
-  const dispatch = useDispatch();
-  const theme = useTheme();
 
   if (selectedIdx === components.length) dispatch(setSelectedIdx(null));
 

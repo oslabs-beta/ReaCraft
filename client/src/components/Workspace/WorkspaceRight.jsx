@@ -11,7 +11,8 @@ import UserImageUploadButton from '../functionalButtons/UserImageUploadButton';
 import DownloadFilesButton from '../functionalButtons/DownloadFilesButton';
 
 export default function WorkspaceRight({ canvasWidth }) {
-  const { components, title } = useSelector((state) => state.designV2);
+  const { title, pages } = useSelector((state) => state.designV3);
+  const components = pages[0].components;
   const { selectedIdx, windowWidth } = useSelector((state) => state.app);
   const tree = convertToTree(components);
   const codes = new Codes(components, tree, title);

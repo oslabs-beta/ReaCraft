@@ -11,6 +11,7 @@ const loginRouter = require('./loginRouter');
 const signupRouter = require('./signupRouter');
 const designsRouter = require('./designsRouter');
 const componentsRouter = require('./componentsRouter');
+const pageRouter = require('./pageRouter');
 
 router.get('/logout', cookieController.removeCookie, (req, res) => {
   res.status(200).end();
@@ -20,6 +21,7 @@ router.use('/login', loginRouter);
 router.use('/signup', signupRouter);
 router.use('/designs', cookieController.decryptCookie, designsRouter);
 router.use('/components', componentsRouter);
+router.use('/pages', pageRouter);
 
 router.get(
   '/user',

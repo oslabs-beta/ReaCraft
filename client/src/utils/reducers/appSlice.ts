@@ -7,8 +7,9 @@ type Message = {
 
 type AppState = {
   message: Message | null;
-  page: 'HOME' | 'NEW_DESIGN';
+  page: 'HOME' | 'NEW_DESIGN' | 'WORKSPACE';
   selectedIdx: number | null;
+  selectedPageIdx: number | null;
   windowHeight: number;
   windowWidth: number;
   zoom: number;
@@ -17,6 +18,7 @@ type AppState = {
 const initialState: AppState = {
   message: null,
   page: 'HOME',
+  selectedPageIdx: null,
   selectedIdx: null,
   windowHeight: window.innerHeight,
   windowWidth: window.innerWidth,
@@ -53,6 +55,12 @@ const appSlice = createSlice({
     setSelectedIdx: (state: AppState, action: PayloadAction<number | null>) => {
       state.selectedIdx = action.payload;
     },
+    setSelectedPageIdx: (
+      state: AppState,
+      action: PayloadAction<number | null>
+    ) => {
+      state.selectedPageIdx = action.payload;
+    },
   },
 });
 
@@ -64,6 +72,7 @@ export const {
   setSelectedIdx,
   setWindowSize,
   setZoom,
+  setSelectedPageIdx,
 } = appSlice.actions;
 
 export default appSlice.reducer;

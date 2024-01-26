@@ -13,7 +13,7 @@ import { useAuth } from '../hooks/useAuth';
 import {
   getDesignDetails,
   setSearchTerm,
-} from '../utils/reducers/designSliceV2';
+} from '../utils/reducers/designSliceV3';
 
 export default function HomePageSearch() {
   const { user } = useAuth();

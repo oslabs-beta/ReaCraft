@@ -7,12 +7,16 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useDispatch } from 'react-redux';
 import {
-  getDesignDetails,
   setSearchTerm,
-} from '../../utils/reducers/designSliceV2';
+  getDesignDetails,
+} from '../../utils/reducers/designSliceV3';
 import EditableText from '../userInputs/EditableText';
 import Paper from '@mui/material/Paper';
-import { setMessage } from '../../utils/reducers/appSlice';
+import {
+  goToPage,
+  setMessage,
+  setSelectedPageIdx,
+} from '../../utils/reducers/appSlice';
 
 export default function DesignCard({ design }) {
   const dispatch = useDispatch();
@@ -21,6 +25,8 @@ export default function DesignCard({ design }) {
   const handleViewDesign = async () => {
     try {
       dispatch(getDesignDetails(design._id));
+      dispatch(setSelectedPageIdx(0));
+      dispatch(goToPage('WORKSPACE'));
       // resets the search term in redux state
       dispatch(setSearchTerm(''));
     } catch (err) {
