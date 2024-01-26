@@ -15,6 +15,7 @@ import { Box } from '@mui/material';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
+import '../../styles/UserImageUploadButton.css';
 
 // to handle actual upload process and update the progress bar accordingly, we'll have to implement the logic for file uploading to the server
 
@@ -26,30 +27,6 @@ export default function UserImageUploadButton() {
   const [fileName, setFileName] = useState('');
   const [fileSize, setFileSize] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
-
-  const containerStyles = {
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: '70vh',
-  };
-
-  const uploadAreaStyles = {
-    backgroundColor: 'transparent',
-    border: '2px dashed black',
-    padding: '100px',
-    borderRadius: '12px',
-    color: 'black',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    maxWidth: '600px',
-    cursor: 'pointer', // to indicate the area is clickable
-  };
 
   function handleFileChange(file) {
     // set file details
@@ -123,29 +100,28 @@ export default function UserImageUploadButton() {
 
   return (
     <Fragment>
-      {!designId ? (
-        // render a Box as a flex container styled with containerStyles
-        <Box sx={containerStyles}>
-          {/* render another Box as a flex container with uploadAreaStyles */}
-          <Box sx={uploadAreaStyles}>
+    {!designId ? (
+      <Box className='container'>
+        <Box className='svgBackground'>
+          <img src='/assets/Dotted_Box.svg' alt='Dotted box' /> 
+        </Box>
+        <Box className='content'>
             <FileUploader
-              handleChange={handleFileChange}
-              name='file'
-              types={['JPG', 'PNG']}
-              children={
-                <>
-                  <CloudUploadRoundedIcon
-                    style={{ fontSize: '64px', color: 'black' }}
-                  />
-                  <div style={{ margin: '20px 0', color: 'black' }}>
-                    Drag & Drop your files here
-                  </div>
+              handleChange={handleFileChange} 
+              name="file" 
+              types={['JPG', 'PNG']} 
+              children={(
+                <Box>
+                  <CloudUploadRoundedIcon style={{ fontSize: '70px', color: '#736C6C', marginLeft: '60px' }} />
+                  <div style={{ margin: '20px 0', color: 'black' }}>Drag & Drop your files here</div>
+                  <Box>
                   <Button
-                    variant='contained'
-                    component='label'
+                    variant="contained"
+                    component="label"
                     sx={{
                       backgroundColor: '#FFFFFF',
                       color: '#8D99AE',
+                      marginLeft: '50px',
                       '&:hover': {
                         backgroundColor: '#E0E0E0',
                       },
@@ -156,7 +132,7 @@ export default function UserImageUploadButton() {
                         outline: 'none',
                         border: 'none',
                         boxShadow: 'none',
-                      },
+                      }
                     }}
                   >
                     BROWSE
@@ -167,40 +143,37 @@ export default function UserImageUploadButton() {
                       onChange={(e) => handleFileChange(e.target.files[0])}
                     />
                   </Button>
-                </>
-              }
+                    </Box>
+                </Box>
+              )}
             />
-            {/* if fileName is set, render a Box with fileName, fileSize, and a LinearProgress component for uploadProgress */}
-            {fileName && (
-              <Box
-                sx={{ textAlign: 'center', color: 'black', marginTop: '10px' }}
-              >
-                <span>{fileName}</span> - <span>{fileSize}</span>
-                <LinearProgress
-                  variant='determinate'
-                  value={uploadProgress}
-                  sx={{
-                    width: '100%',
-                    marginTop: '10px',
-                    color: 'black',
-                  }}
-                />
-                <Button
-                  sx={{
-                    marginTop: '10px',
-                    color: 'black',
-                    borderColor: '#8D99AE',
-                  }}
-                  onClick={() => {
-                    /* logic to handle file removal */
-                  }}
-                >
-                  X
-                </Button>
-              </Box>
-            )}
+              {/* if fileName is set, render a Box with fileName, fileSize, and a LinearProgress component for uploadProgress */}
+              {fileName && (
+                <Box sx={{ textAlign: 'center', color: 'black', marginTop: '10px' }}>
+                  <span>{fileName}</span> - <span>{fileSize}</span>
+                  <LinearProgress
+                    variant="determinate"
+                    value={uploadProgress}
+                    sx={{
+                      width: '100%',
+                      marginTop: '10px',
+                      color: 'black',
+                    }}
+                  />
+                  <Button
+                    sx={{
+                      marginTop: '10px',
+                      color: 'black',
+                      borderColor: '#8D99AE',
+                    }}
+                    onClick={() => {/* logic to handle file removal */}}
+                  >
+                    X
+                  </Button>
+                </Box>
+              )}
+            </Box>
           </Box>
-        </Box>
       ) : (
         <Tooltip title='Replace Current Image'>
           <Fab component='label' variant='contained' size='small' color='info'>
