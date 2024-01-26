@@ -42,7 +42,8 @@ export default function HomePageSearch() {
       elevation={2}
       sx={{
         padding: 4,
-        margin: 4,
+        margin: .3,
+        marginBottom: '3%',
         backgroundImage: searchBarTheme,
         width: 'auto',
       }}
