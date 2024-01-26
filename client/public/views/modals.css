@@ -45,7 +45,7 @@
 .form-control:focus {
     color: #495057;
     background-color: #fff;
-    border-color: #80bdff;
+    border-color: #D5BDAF;
     outline: 0;
     /* removes the default bootstrap shadow */
     box-shadow: none;
@@ -58,11 +58,83 @@
 
 .account-button {
     color: #fff;
-    background-color: #6c757d;
-    border-color: #6c757d;
+    background-color: #a9978c;
+    border-color: #a9978c;
 }
 
 .account-button:hover {
-    background-color: #5a6268;
-    border-color: #545b62;
+    background-color: #7f7169;
+    border-color: #7f7169;
+}
+
+/* button for login */
+.btn-primary {
+    background-color: #D5BDAF;
+    border-color: #D5BDAF;
+}
+
+.needAccount {
+    border-color: #D5BDAF;
+}
+
+.btn-primary:hover {
+    background-color: #e0d0c7;
+    border-color: #e0d0c7;
+}
+
+.needAccount:hover {
+    background-color: #beaa9d;
+    border-color: #beaa9d;
+}
+
+.dark .modal-content {
+    background: #8D99AE;
+}
+
+.dark .greeting-text {
+    color: white;
+}
+/* username and password form control */
+.dark .form-control {
+    border-bottom: 2px solid #cccccc;
+    background-color: transparent; 
+    color: #ffffff;
+}
+
+.dark .form-control:focus {
+    color: #495057;
+    background-color: transparent;
+    border-color: #a8a9b0; 
+    box-shadow: none; 
+}
+
+.dark .btn-primary {
+    background-color: #555667;
+    border-color: #555667;
+}
+
+.dark .btn-primary:hover {
+    background-color: #6a6c7a;
+    border-color: #6a6c7a;
+}
+
+.dark .needAccount {
+    border-color: #26283b;
+    color: white;
+}
+
+.dark .needAccount:hover {
+    background-color: #92939d;
+    border-color: #92939d;
+}
+
+.dark .account-button {
+    background-color: #26283b;
+    border-color: #26283b;
+}
+
+.dark .account-button:hover {
+    background-color: #92939d;
+    border-color: #92939d;
+
 }
