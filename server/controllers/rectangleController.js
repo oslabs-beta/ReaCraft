@@ -2,7 +2,8 @@ const db = require('../models/dbModel');
 
 // create rectangle for RootContainer component
 const createRootRectangle = (req, res, next) => {
-  const rootId = res.locals.design.components[0]._id;
+  const pages = res.locals.design.pages;
+  const rootId = pages[pages.length - 1].components[0]._id;
   const { imageHeight } = req.body;
   console.log(rootId, imageHeight);
   return db
@@ -13,7 +14,7 @@ const createRootRectangle = (req, res, next) => {
       [rootId, 800, imageHeight]
     )
     .then((data) => {
-      res.locals.design.components[0].rectangle = data.rows[0];
+      pages[pages.length - 1].components[0].rectangle = data.rows[0];
       return next();
     })
     .catch((err) =>
@@ -125,14 +126,19 @@ const deleteDesignRectangles = (req, res, next) => {
 
 const getRectangles = async (req, res, next) => {
   try {
-    const components = res.locals.design.components;
-    const rectanglePromises = components.map((item) =>
-      db.query('SELECT * FROM rectangles WHERE component_id = $1;', [item._id])
-    );
-    const results = await Promise.all(rectanglePromises);
-    results.forEach((data, i) => {
-      components[i].rectangle = data.rows.length > 0 ? data.rows[0] : null;
-    });
+    const pages = res.locals.design.pages;
+    for (const page of pages) {
+      const components = page.components;
+      const rectanglePromises = components.map((item) =>
+        db.query('SELECT * FROM rectangles WHERE component_id = $1;', [
+          item._id,
+        ])
+      );
+      const results = await Promise.all(rectanglePromises);
+      results.forEach((data, i) => {
+        components[i].rectangle = data.rows.length > 0 ? data.rows[0] : null;
+      });
+    }
     return next();
   } catch (err) {
     return next({
@@ -144,27 +150,11 @@ const getRectangles = async (req, res, next) => {
   }
 };
 
-const deleteComponentRectangle = (req, res, next) => {
-  const { componentId } = req.params;
-  return db
-    .query('DELETE FROM rectangles WHERE component_id = $1;', [componentId])
-    .then(() => next())
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught rectangleController.deleteComponentRectangle middleware error: ' +
-          err,
-        message: { err: 'deleteComponentRectangle: ' + err },
-      })
-    );
-};
-
 module.exports = {
   createRootRectangle,
   deleteDesignRectangles,
   getRectangles,
   createComponentRectangle,
-  deleteComponentRectangle,
   updateComponentRectanglePosition,
   updateComponentRectangleStyle,
   updateRootRectangle,

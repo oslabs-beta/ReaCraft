@@ -71,9 +71,9 @@ export default class Codes {
       z_index,
       width,
       height,
-      borderwidth,
-      borderradius,
-      backgroundcolor,
+      border_width,
+      border_radius,
+      background_color,
       stroke,
     } = rectangle;
 
@@ -102,11 +102,11 @@ export default class Codes {
     Math.round(((y_position - parentPos.top) / rootHeight) * 1000) / 1000
   });`;
     }
-    if (borderwidth > 0) css += `\n  border-width: ${borderwidth}px;`;
-    if (borderradius) css += `\n  border-radius: ${borderradius}%;`;
+    if (border_width > 0) css += `\n  border-width: ${border_width}px;`;
+    if (border_radius) css += `\n  border-radius: ${border_radius}%;`;
     if (styles.filter(({ key, value }) => key === 'border-style').length === 0)
       css += `\n  border-style: solid;`;
-    if (backgroundcolor) css += `\n  background-color: ${backgroundcolor};`;
+    if (background_color) css += `\n  background-color: ${background_color};`;
     if (z_index) css += `\n  z-index: ${z_index};`;
     styles.forEach(({ key, value }) => {
       if (value.length > 0) {
@@ -124,24 +124,20 @@ export default class Codes {
     jsx: { [key: string]: string }
   ): string {
     const { html_tag, inner_html, name } = component;
-    let html: string = '';
-    if (component.index === 0) {
-      html += `\n  useEffect(() => setTitle('${this.title}'), [setTitle]);\n\n`;
-    }
-    let importChildren = '';
-    const classAndId = ` className='${component.name}' id=${
-      component.index > 0 ? '{id}' : "'RootContainer-0'"
-    }>`;
-    if (children.length === 0) {
-      html += `  return (\n    ${html_tag.replace(
-        '>',
-        classAndId
-      )}${inner_html}${html_tag.replace('<', '</')}
-  );`;
-    } else {
-      const childrenComps = children.map((child) =>
-        this.components.find((item) => item._id === child.id)
-      );
+    const childrenComps = children.map((child) =>
+      this.components.find((item) => item._id === child.id)
+    );
+
+    // import React and styles
+    // import { useEffect } if component is root
+    let code: string =
+      "import './styles.css';\n" +
+      `import React${
+        component.index === 0 ? ', { useEffect }' : ''
+      } from 'react';\n`;
+
+    // import children
+    if (children.length > 0) {
       const childrenNames = new Set(
         childrenComps.map((childComponent) => {
           if (!childComponent)
@@ -149,22 +145,8 @@ export default class Codes {
           return childComponent.name;
         })
       );
-      childrenNames.forEach((name) => {
-        importChildren += `import ${name} from './${name}.jsx'\n`;
-      });
-
-      html +=
-        `  return (\n    <div${classAndId}\n` +
-        childrenComps.map((childComponent) => {
-          if (!childComponent)
-            throw new Error('Converting jsx: component has an undefined child');
-          console.log('childComponent', childComponent);
-          return childComponent.name;
-        });
-
-      childrenNames.forEach((name) => {
-        console.log('childrenName,', name);
-        importChildren += `import ${name} from './${name}.jsx'\n`;
+      childrenNames.forEach((childName) => {
+        code += `import ${childName} from './${childName}.jsx'\n`;
       });
     }
 
@@ -179,20 +161,100 @@ export default class Codes {
         const oldPropKeys: Set<string> = new Set(matches[1].split(', '));
         propKeys = new Set([...propKeys, ...oldPropKeys]);
         propKeys.delete('id');
+        childrenComps.forEach((child, i) => propKeys.delete(`childId${i + 1}`));
       }
     }
-    let propsCode: string;
-    if (component.index === 0) {
-      propsCode = '{ ' + ['setTitle', ...propKeys].join(', ') + ' }';
-    } else {
-      propsCode = '{ ' + ['id', ...propKeys].join(', ') + ' }';
-    }
-    return `import './styles.css';
 
-import React${component.index === 0 ? ', { useEffect }' : ''} from 'react';
-${importChildren}
-export default function ${name}(${propsCode}) {
-${html}
+    let propsCode: string = '';
+    if (component.index === 0) {
+      propsCode +=
+        '{ ' +
+        [
+          'setTitle',
+          ...propKeys,
+          ...childrenComps.map((child, i) => `childId${i + 1}`),
+        ].join(', ') +
+        ' }';
+    } else
+      propsCode =
+        '{ ' +
+        [
+          'id',
+          ...propKeys,
+          ...childrenComps.map((child, i) => `childId${i + 1}`),
+        ].join(', ') +
+        ' }';
+
+    code += `\n export default function ${name}(${propsCode}) {\n`;
+    if (component.index === 0) {
+      code += `\n  useEffect(() => setTitle("${this.title}"), [setTitle]);\n\n`;
+    }
+
+    const classAndId = ` className='${component.name}' id=${
+      component.index > 0 ? '{id}' : "'RootContainer-0'"
+    }>`;
+    code += `  return (
+    ${html_tag.replace('>', classAndId)}`;
+
+    if (children.length === 0) {
+      code += `
+      ${inner_html}
+    ${html_tag.replace('<', '</')}
+  );
 }`;
+    } else {
+      childrenComps.forEach((child, i) => {
+        if (!child)
+          throw new Error('Converting jsx: component has an undefined child');
+
+        const childNode = this.tree.searchNode(child._id);
+        if (!childNode)
+          throw new Error('Converting jsx: child is not in the tree');
+
+        const grandchildrenComps = childNode.children.map((grandchild) =>
+          this.components.find((item) => item._id === grandchild.id)
+        );
+        let grandChildrenCode: string = '';
+        if (grandchildrenComps.length > 0) {
+          grandChildrenCode += grandchildrenComps
+            .map((grandchild, i) => {
+              if (!grandchild)
+                throw new Error(
+                  `Converting jsx: component ${component.name}'s child ${child.name} has an undefined child`
+                );
+              return `childId${i + 1}='${grandchild.name}'`;
+            })
+            .join(' ');
+        }
+
+        let childPropsCode: string = '';
+        if (child.props.length > 0) {
+          childPropsCode += child.props
+            .map(({ key, value }) =>
+              value[0] === '{' && value[value.length - 1] === '}'
+                ? `${key}=${value}`
+                : `${key}={'${value}'}`
+            )
+            .join(' ');
+        }
+        code += `
+      <${child.name} id=${
+          component.index > 0
+            ? `{childId${i + 1}}`
+            : `'${child.name}-${child.index}'`
+        } ${[grandChildrenCode, childPropsCode].join(' ')}/>`;
+      });
+      code += `
+    </div>
+  );
+}`;
+    }
+    return code;
   }
+
+  // childPropsCode(child: Component) {
+  //   const childNode = this.tree.searchNode(child._id);
+  //   if (!childNode)
+  //     throw new Error('parsing childPropsCode: cannot find child in tree');
+  // }
 }
