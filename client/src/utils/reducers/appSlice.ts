@@ -7,7 +7,7 @@ type Message = {
 
 type AppState = {
   message: Message | null;
-  page: 'HOME' | 'NEW_DESIGN' | 'WORKSPACE';
+  page: 'HOME' | 'DESIGN';
   selectedIdx: number | null;
   selectedPageIdx: number | null;
   windowHeight: number;
@@ -45,10 +45,7 @@ const appSlice = createSlice({
       state.windowHeight = action.payload.height;
       state.windowWidth = action.payload.width;
     },
-    goToPage: (
-      state: AppState,
-      action: PayloadAction<'HOME' | 'NEW_DESIGN'>
-    ) => {
+    goToPage: (state: AppState, action: PayloadAction<'HOME' | 'DESIGN'>) => {
       state.page = action.payload;
     },
     resetApp: () => initialState,

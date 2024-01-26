@@ -21,20 +21,11 @@ router.post(
   componentController.updateParent,
   componentController.updateHtmlForAllSameComponents,
   (req, res) =>
-    res
-      .status(200)
-      .send({
-        ...req.body,
-        componentId: req.params.componentId,
-        parentName: res.locals.componentName,
-      })
-);
-
-router.post(
-  '/update-tag/:componentId',
-  componentController.updateParentOrTag,
-  componentController.updateHtmlForAllSameComponents,
-  (req, res) => res.status(200).send(res.locals)
+    res.status(200).send({
+      ...req.body,
+      componentId: req.params.componentId,
+      parentName: res.locals.componentName,
+    })
 );
 
 router.post(
@@ -53,7 +44,11 @@ router.post(
   '/submit/:componentId',
   componentController.updateComponentForm,
   componentController.updateHtmlForAllSameComponents,
-  (req, res) => res.status(200).send(res.locals.updatedComponent)
+  (req, res) =>
+    res.status(200).send({
+      updatedComponent: res.locals.updatedComponent,
+      pageIdx: res.body.pageIdx,
+    })
 );
 
 module.exports = router;
