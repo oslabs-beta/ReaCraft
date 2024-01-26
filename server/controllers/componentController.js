@@ -50,39 +50,6 @@ const getComponents = async (req, res, next) => {
   }
 };
 
-const selectDesignComponentsToDelete = (req, res, next) => {
-  const designId = req.params.designId;
-  return db
-    .query('SELECT * FROM components WHERE design_id = $1;', [designId])
-    .then((data) => {
-      res.locals.deletedComponentIds = data.rows;
-      return next();
-    })
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught componentController.selectDesignComponentsToDelete middleware error' +
-          err,
-        message: { err: 'selectDesignComponentsToDelete: ' + err },
-      })
-    );
-};
-
-const deleteDesignComponents = (req, res, next) => {
-  const designId = req.params.designId;
-  return db
-    .query('DELETE FROM components WHERE design_id = $1;', [designId])
-    .then(() => next())
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught componentController.deleteDesignComponents middleware error' +
-          err,
-        message: { err: 'deleteDesignComponents: ' + err },
-      })
-    );
-};
-
 const addNewComponent = async (req, res, next) => {
   const { pageId } = req.params;
   const { name, index, rootId } = req.body;
@@ -124,15 +91,14 @@ const addNewComponent = async (req, res, next) => {
 const deleteComponentById = (req, res, next) => {
   const { componentId } = req.params;
   return db
-    .query(
-      'DELETE FROM components WHERE _id = $1 RETURNING index, design_id;',
-      [componentId]
-    )
+    .query('DELETE FROM components WHERE _id = $1 RETURNING index, page_id;', [
+      componentId,
+    ])
     .then((data) => {
-      const { index, design_id } = data.rows[0];
+      const { index, page_id } = data.rows[0];
       res.locals.indexDeleted = index;
       console.log('indexDeleted:', index);
-      res.locals.designId = design_id;
+      res.locals.pageId = page_id;
       return next();
     })
     .catch((err) =>
@@ -146,14 +112,14 @@ const deleteComponentById = (req, res, next) => {
 };
 
 const shiftComponentsAfterDelete = (req, res, next) => {
-  const { indexDeleted, designId } = res.locals;
+  const { indexDeleted, pageId } = res.locals;
   return db
     .query(
       'UPDATE components ' +
         'SET index = index - 1 ' +
-        'WHERE design_id = $1 AND index > $2 ' +
+        'WHERE page_id = $1 AND index > $2 ' +
         'RETURNING _id, index;',
-      [designId, indexDeleted]
+      [pageId, indexDeleted]
     )
     .then((data) => {
       res.locals.shiftedIndices = data.rows;
@@ -276,12 +242,10 @@ const updateComponentForm = (req, res, next) => {
 
 module.exports = {
   getComponents,
-  selectDesignComponentsToDelete,
   createRootComponent,
   addNewComponent,
   deleteComponentById,
   shiftComponentsAfterDelete,
-  deleteDesignComponents,
   updateParentOrTag,
   resetParentHtml,
   updateComponentForm,

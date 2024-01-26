@@ -7,7 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 
 import { setMessage, setSelectedIdx } from '../../utils/reducers/appSlice';
-import { deleteComponent } from '../../utils/reducers/designSliceV2';
+import { deleteComponent } from '../../utils/reducers/designSliceV3';
 
 export default function DeleteComponentButton({
   name,
