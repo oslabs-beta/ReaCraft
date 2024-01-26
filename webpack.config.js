@@ -28,6 +28,15 @@ module.exports = {
         exclude: /node_modules/,
         use: ['ts-loader'],
       },
+      {
+        test: /\.svg$/,
+        type: 'asset/resource',
+        // use: [
+        //   {
+        //     loader: 'svg-react-loader',
+        //   }
+        // ] 
+      }
     ],
   },
   plugins: [
