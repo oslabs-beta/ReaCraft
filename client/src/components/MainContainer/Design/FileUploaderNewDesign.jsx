@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FileUploader } from 'react-drag-drop-files';
 import {
-  goToPage,
   setMessage,
   setSelectedPageIdx,
 } from '../../../utils/reducers/appSlice';
@@ -13,7 +12,7 @@ import { Box } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 
-export default function StartNewDesign() {
+export default function FileUploaderNewDesign() {
   const dispatch = useDispatch();
   const [fileName, setFileName] = useState('');
   const [fileSize, setFileSize] = useState('');

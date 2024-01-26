@@ -5,9 +5,9 @@ export type Rectangle = {
   z_index: number;
   width: number;
   height: number;
-  borderwidth: number;
-  borderradius?: number;
-  backgroundcolor?: string;
+  border_width: number;
+  border_radius?: number;
+  background_color?: string;
   stroke: string;
 };
 

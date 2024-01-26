@@ -31,13 +31,21 @@ router.post(
 router.post(
   '/update-position/:componentId',
   rectangleController.updateComponentRectanglePosition,
-  (req, res) => res.status(200).send(res.locals.updatedRectangle)
+  (req, res) =>
+    res.status(200).send({
+      updatedRectangle: res.locals.updatedRectangle,
+      pageIdx: req.body.pageIdx,
+    })
 );
 
 router.post(
   '/update-rectangle-style/:componentId',
   rectangleController.updateComponentRectangleStyle,
-  (req, res) => res.status(200).send(res.locals.updatedRectangle)
+  (req, res) =>
+    res.status(200).send({
+      updatedRectangle: res.locals.updatedRectangle,
+      pageIdx: req.body.pageIdx,
+    })
 );
 
 router.post(
@@ -47,7 +55,7 @@ router.post(
   (req, res) =>
     res.status(200).send({
       updatedComponent: res.locals.updatedComponent,
-      pageIdx: res.body.pageIdx,
+      pageIdx: req.body.pageIdx,
     })
 );
 

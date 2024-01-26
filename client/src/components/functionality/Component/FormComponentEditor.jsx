@@ -39,9 +39,9 @@ export default function FormComponentEditor({
   isLeaf,
 }) {
   const dispatch = useDispatch();
-  const component = useSelector((state) => state.designV3.pages[0].components)[
-    idx
-  ];
+  const { pages } = useSelector((state) => state.designV3);
+  const { selectedPageIdx } = useSelector((state) => state.app);
+  const component = pages[selectedPageIdx].components[idx];
 
   const [props, setProps] = useState(component.props);
   const [styles, setStyles] = useState(component.styles);
@@ -64,6 +64,7 @@ export default function FormComponentEditor({
       innerHtml: isLeaf ? e.target.innerHtml.value : '',
       styles: convertArrToObj(styles),
       props: convertArrToObj(props),
+      pageIdx: selectedPageIdx,
     };
     if (isValidVariableName(body.name)) {
       try {

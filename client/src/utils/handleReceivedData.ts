@@ -14,16 +14,16 @@ export type RectangleRes = {
   z_index: number;
   width: string;
   height: string;
-  borderwidth: number;
-  borderradius?: string;
-  backgroundcolor?: string;
+  border_width: number;
+  border_radius?: string;
+  background_color?: string;
   stroke: string;
 };
 
 export function handleRectangleRes(data: RectangleRes): Rectangle {
   return {
     ...data,
-    borderradius: Number(data.borderradius),
+    border_radius: Number(data.border_radius),
     width: parseFloat(data.width),
     height: parseFloat(data.height),
     x_position: parseFloat(data.x_position),

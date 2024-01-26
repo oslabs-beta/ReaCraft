@@ -203,7 +203,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 - [![github](https://img.shields.io/badge/claire-@clairehuang1008-ee6d8a?logo=github)](https://github.com/clairehuang1008)
 - [![github](https://img.shields.io/badge/eunice-@eunykim92-f1e346?logo=github)](https://github.com/eunykim92)
 - [![github](https://img.shields.io/badge/amir-@Amunoz--1-89c6df?logo=github)](https://github.com/Amunoz-1)
-- [![github](https://img.shields.io/badge/tanya-@tanyahang-58b768?logo=github)](https://github.com/tanyahang)
 
 Project Link: [https://github.com/oslabs-beta/Reactraft](https://github.com/oslabs-beta/Reactraft)
 
