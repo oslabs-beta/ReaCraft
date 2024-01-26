@@ -251,4 +251,10 @@ export default class Codes {
     }
     return code;
   }
+
+  // childPropsCode(child: Component) {
+  //   const childNode = this.tree.searchNode(child._id);
+  //   if (!childNode)
+  //     throw new Error('parsing childPropsCode: cannot find child in tree');
+  // }
 }
