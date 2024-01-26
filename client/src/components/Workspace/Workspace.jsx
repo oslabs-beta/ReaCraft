@@ -17,10 +17,7 @@ export default function Workspace() {
     useSelector((state) => state.app);
   const dispatch = useDispatch();
   const theme = useTheme();
-
-  console.log('pages', pages);
   const components = pages[selectedPageIdx].components;
-  console.log('component', components);
   const rootWidth = components[0].rectangle.width;
   const rootHeight = components[0].rectangle.height;
   const canvasMaxHeight = windowHeight - 180;

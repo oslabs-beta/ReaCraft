@@ -135,6 +135,34 @@ const shiftComponentsAfterDelete = (req, res, next) => {
     );
 };
 
+const updateParent = async (req, res, next) => {
+  const { componentId } = req.params;
+  const { parentId } = req.body;
+
+  try {
+    await db.query('UPDATE components SET parent_id = $1 WHERE _id = $2;', [
+      parentId,
+      componentId,
+    ]);
+    const parentRes = await db.query(
+      'SELECT name, page_id FROM components WHERE _id = $1;',
+      [parentId]
+    );
+    res.locals.componentName = parentRes.rows[0].name;
+    res.locals.pageId = parentRes.rows[0].page_id;
+    res.locals.htmlTag = '<div>';
+    res.locals.innerHtml = '';
+    return next();
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught componentController.updateParent middleware error' +
+        err,
+      message: { err: 'updateParent: ' + err },
+    });
+  }
+};
+
 const updateParentOrTag = (req, res, next) => {
   const { componentId } = req.params;
   const { parentId, htmlTag } = req.body;
@@ -150,7 +178,7 @@ const updateParentOrTag = (req, res, next) => {
       res.locals.parentId = parentId;
       res.locals.htmlTag = htmlTag;
       res.locals.componentName = data.rows[0].name;
-      res.locals.designId = data.rows[0].design_id;
+      res.locals.pageId = data.rows[0].page_id;
       res.locals.innerHtml = data.rows[0].inner_html;
       return next();
     })
@@ -164,24 +192,36 @@ const updateParentOrTag = (req, res, next) => {
     );
 };
 
-const updateHtmlForAllSameComponents = (req, res, next) => {
-  const { componentName, htmlTag, designId, innerHtml } = res.locals;
+const updateHtmlForAllSameComponents = async (req, res, next) => {
+  const { componentName, htmlTag, pageId, innerHtml } = res.locals;
   console.log('updating html for all same components');
   if (!htmlTag) return next();
-  return db
-    .query(
-      'UPDATE components SET html_tag = $1, inner_html = $4 WHERE name = $2 AND design_id = $3 RETURNING *;',
-      [htmlTag, componentName, designId, innerHtml]
-    )
-    .then(() => next())
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught componentController.updateHtmlForAllSameComponents middleware error' +
-          err,
-        message: { err: 'updateHtmlForAllSameComponents: ' + err },
-      })
+  try {
+    const pageRes = await db.query(
+      'SELECT design_id FROM pages WHERE _id = $1;',
+      [pageId]
     );
+    if (pageRes.rows.length !== 1)
+      throw new Error('updateHtmlForAllSameComponents: design not found');
+    const designId = pageRes.rows[0].design_id;
+    const pagesRes = await db.query(
+      'SELECT _id FROM pages WHERE design_id = $1;',
+      [designId]
+    );
+    const pageIds = pagesRes.rows.map(({ _id }) => _id);
+    await db.query(
+      'UPDATE components SET html_tag = $1, inner_html = $2 WHERE name = $3 AND page_id = ANY($4::int[]);',
+      [htmlTag, innerHtml, componentName, pageIds]
+    );
+    return next();
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught componentController.updateHtmlForAllSameComponents middleware error' +
+        err,
+      message: { err: 'updateHtmlForAllSameComponents: ' + err },
+    });
+  }
 };
 
 const resetParentHtml = (req, res, next) => {
@@ -246,6 +286,7 @@ module.exports = {
   addNewComponent,
   deleteComponentById,
   shiftComponentsAfterDelete,
+  updateParent,
   updateParentOrTag,
   resetParentHtml,
   updateComponentForm,

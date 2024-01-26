@@ -18,9 +18,16 @@ router.delete(
 
 router.post(
   '/update-parent/:componentId',
-  componentController.updateParentOrTag,
-  componentController.resetParentHtml,
-  (req, res) => res.status(200).send(res.locals)
+  componentController.updateParent,
+  componentController.updateHtmlForAllSameComponents,
+  (req, res) =>
+    res
+      .status(200)
+      .send({
+        ...req.body,
+        componentId: req.params.componentId,
+        parentName: res.locals.componentName,
+      })
 );
 
 router.post(

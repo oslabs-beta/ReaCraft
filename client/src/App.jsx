@@ -85,6 +85,9 @@ export default function App() {
   else window.localStorage.setItem('mode', 'dark');
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
+
+  const design = useSelector((state) => state.designV3);
+  console.log('in App.jsx, ', design);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
