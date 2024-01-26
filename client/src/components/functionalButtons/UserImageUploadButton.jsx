@@ -31,9 +31,8 @@ export default function UserImageUploadButton() {
   function handleFileChange(file) {
     // set file details
     setFileName(file.name);
-    // convert bytes to MB
-    setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB');
-    
+    setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB'); // Convert bytes to MB
+
     // simulate upload progress - this isn't showing
     const interval = setInterval(() => {
       setUploadProgress((oldProgress) => {
@@ -203,7 +202,6 @@ export const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
-
 
 // import React, { Fragment } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
