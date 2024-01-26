@@ -18,7 +18,7 @@ import { Box } from '@mui/material';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
-import '../../styles/UserImageUploadButton.css';
+import '../../../styles/UserImageUploadButton.css';
 
 // to handle actual upload process and update the progress bar accordingly, we'll have to implement the logic for file uploading to the server
 
@@ -107,80 +107,92 @@ export default function UserImageUploadButton() {
 
   return (
     <Fragment>
-    {!designId ? (
-      <Box className='container'>
-        <Box className='svgBackground'>
-          <img src='/assets/Dotted_Box.svg' alt='Dotted box' /> 
-        </Box>
-        <Box className='content'>
+      {!designId ? (
+        <Box className='container'>
+          <Box className='svgBackground'>
+            <img src='/assets/Dotted_Box.svg' alt='Dotted box' />
+          </Box>
+          <Box className='content'>
             <FileUploader
-              handleChange={handleFileChange} 
-              name="file" 
-              types={['JPG', 'PNG']} 
-              children={(
+              handleChange={handleFileChange}
+              name='file'
+              types={['JPG', 'PNG']}
+              children={
                 <Box>
-                  <CloudUploadRoundedIcon style={{ fontSize: '70px', color: '#736C6C', marginLeft: '60px' }} />
-                  <div style={{ margin: '20px 0', color: 'black' }}>Drag & Drop your files here</div>
-                  <Box>
-                  <Button
-                    variant="contained"
-                    component="label"
-                    sx={{
-                      backgroundColor: '#FFFFFF',
-                      color: '#8D99AE',
-                      marginLeft: '50px',
-                      '&:hover': {
-                        backgroundColor: '#E0E0E0',
-                      },
-                      '&:focus': {
-                        outline: 'none',
-                      },
-                      '&:active': {
-                        outline: 'none',
-                        border: 'none',
-                        boxShadow: 'none',
-                      }
-                    }}
-                  >
-                    BROWSE
-                    <VisuallyHiddenInput
-                      type='file'
-                      name='userImage'
-                      accept='image/*'
-                      onChange={(e) => handleFileChange(e.target.files[0])}
-                    />
-                  </Button>
-                    </Box>
-                </Box>
-              )}
-            />
-              {/* if fileName is set, render a Box with fileName, fileSize, and a LinearProgress component for uploadProgress */}
-              {fileName && (
-                <Box sx={{ textAlign: 'center', color: 'black', marginTop: '10px' }}>
-                  <span>{fileName}</span> - <span>{fileSize}</span>
-                  <LinearProgress
-                    variant="determinate"
-                    value={uploadProgress}
-                    sx={{
-                      width: '100%',
-                      marginTop: '10px',
-                      color: 'black',
+                  <CloudUploadRoundedIcon
+                    style={{
+                      fontSize: '70px',
+                      color: '#736C6C',
+                      marginLeft: '60px',
                     }}
                   />
-                  <Button
-                    sx={{
-                      marginTop: '10px',
-                      color: 'black',
-                      borderColor: '#8D99AE',
-                    }}
-                    onClick={() => {/* logic to handle file removal */}}
-                  >
-                    X
-                  </Button>
+                  <div style={{ margin: '20px 0', color: 'black' }}>
+                    Drag & Drop your files here
+                  </div>
+                  <Box>
+                    <Button
+                      variant='contained'
+                      component='label'
+                      sx={{
+                        backgroundColor: '#FFFFFF',
+                        color: '#8D99AE',
+                        marginLeft: '50px',
+                        '&:hover': {
+                          backgroundColor: '#E0E0E0',
+                        },
+                        '&:focus': {
+                          outline: 'none',
+                        },
+                        '&:active': {
+                          outline: 'none',
+                          border: 'none',
+                          boxShadow: 'none',
+                        },
+                      }}
+                    >
+                      BROWSE
+                      <VisuallyHiddenInput
+                        type='file'
+                        name='userImage'
+                        accept='image/*'
+                        onChange={(e) => handleFileChange(e.target.files[0])}
+                      />
+                    </Button>
+                  </Box>
                 </Box>
-              )}
-            </Box>
+              }
+            />
+            {/* if fileName is set, render a Box with fileName, fileSize, and a LinearProgress component for uploadProgress */}
+            {fileName && (
+              <Box
+                sx={{ textAlign: 'center', color: 'black', marginTop: '10px' }}
+              >
+                <span>{fileName}</span> - <span>{fileSize}</span>
+                <LinearProgress
+                  variant='determinate'
+                  value={uploadProgress}
+                  sx={{
+                    width: '100%',
+                    marginTop: '10px',
+                    color: 'black',
+                  }}
+                />
+                <Button
+                  sx={{
+                    marginTop: '10px',
+                    color: 'black',
+                    borderColor: '#8D99AE',
+                  }}
+                  onClick={() => {
+                    /* logic to handle file removal */
+                  }}
+                >
+                  X
+                </Button>
+              </Box>
+            )}
           </Box>
+        </Box>
       ) : (
         <Tooltip title='Replace Current Image'>
           <Fab component='label' variant='contained' size='small' color='info'>

@@ -11,6 +11,7 @@ import { newDesign } from '../../../utils/reducers/designSliceV3';
 import { Box } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
+import '../../../styles/UserImageUploadButton.css';
 
 export default function FileUploaderNewDesign() {
   const dispatch = useDispatch();
