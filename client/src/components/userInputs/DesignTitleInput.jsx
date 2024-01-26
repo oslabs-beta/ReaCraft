@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateDesign } from '../../utils/reducers/designSliceV2';
 import Box from '@mui/material/Box';
+import { Typography } from '@mui/material';
 
 export default function DesignTitleInput() {
   const dispatch = useDispatch();

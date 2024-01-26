@@ -53,8 +53,9 @@ export default function UserDesigns() {
         <Typography
           sx={{
             fontSize: '16',
-            color: theme.palette.mode === 'light' ? '2B2B2B' : '#F5EBE0',
+            color: theme.palette.mode === 'light' ? 'black' : '#F5EBE0',
             fontWeight: 'bold',
+            textShadow: '4px 3px 10px rgba(47, 47, 47, 0.124)',
             marginBottom: 2,
           }}
         >
