@@ -4,6 +4,7 @@ import {
   updateDesignTitleRequest,
   getDesignDetailsRequest,
   addNewComponentRequest,
+  deleteComponentRequest,
 } from '../fetchRequests';
 import { Component, Design, Page } from '../../../../docs/types';
 
@@ -32,11 +33,17 @@ export const addNewComponent = createAsyncThunk(
   }) => await addNewComponentRequest(arg.pageId, arg.body)
 );
 
+export const deleteComponent = createAsyncThunk(
+  'components/delete/:componentId',
+  async (componentId: number) => await deleteComponentRequest(componentId)
+);
+
 const asyncThunks = [
   newDesign,
   updateDesignTitle,
   getDesignDetails,
   addNewComponent,
+  deleteComponent,
 ];
 
 const designThunks = [newDesign, updateDesignTitle, getDesignDetails];
@@ -128,16 +135,44 @@ const designSliceV3 = createSlice({
         }
       );
     });
-    builder.addCase(
-      addNewComponent.fulfilled,
-      (state, action: PayloadAction<Component>) => {
-        state.loading = false;
-        const pageIndex = state.pages.findIndex(
-          (page) => page._id === action.payload.page_id
-        );
-        state.pages[pageIndex].components.push(action.payload);
-      }
-    );
+    builder
+      .addCase(
+        addNewComponent.fulfilled,
+        (state, action: PayloadAction<Component>) => {
+          state.loading = false;
+          const pageIndex = state.pages.findIndex(
+            (page) => page._id === action.payload.page_id
+          );
+          state.pages[pageIndex].components.push(action.payload);
+        }
+      )
+      .addCase(
+        deleteComponent.fulfilled,
+        (
+          state,
+          action: PayloadAction<{
+            shifted: Array<{ _id: number; index: number }>;
+            indexDeleted: number;
+            pageId: number;
+          }>
+        ) => {
+          state.loading = false;
+          const { shifted, indexDeleted, pageId } = action.payload;
+          const page = state.pages.find((item) => item._id === pageId);
+          if (!page) {
+            state.error = 'Delete component: page not found';
+            return;
+          }
+          const components = page.components;
+          components.splice(indexDeleted, 1);
+          shifted.forEach(({ _id, index }) => {
+            const component = components.find((item) => item._id === _id);
+            if (component) {
+              component.index = index;
+            }
+          });
+        }
+      );
   },
 });
 

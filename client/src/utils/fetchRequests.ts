@@ -185,6 +185,7 @@ export function deleteDesign(
 export function deleteComponentRequest(componentId: number): Promise<{
   shifted: Array<{ _id: number; index: number }>;
   indexDeleted: number;
+  pageId: number;
 }> {
   return fetch(`/components/delete/${componentId}`, {
     method: 'DELETE',
