@@ -9,7 +9,9 @@ import { updateComponentParent } from '../../utils/reducers/designSliceV2';
 
 export default function ParentSelector({ childIdx }) {
   if (childIdx > 0) {
-    const components = useSelector((state) => state.designV2.components);
+    const pages = useSelector((state) => state.designV3.pages);
+    const { selectedPageIdx } = useSelector((state) => state.app);
+    const components = pages[selectedPageIdx].components;
     const dispatch = useDispatch();
 
     const child = components[childIdx];

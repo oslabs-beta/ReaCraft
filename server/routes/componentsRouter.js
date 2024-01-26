@@ -6,13 +6,13 @@ const rectangleController = require('../controllers/rectangleController');
 
 router.delete(
   '/delete/:componentId',
-  rectangleController.deleteComponentRectangle,
   componentController.deleteComponentById,
   componentController.shiftComponentsAfterDelete,
   (req, res) =>
     res.status(200).send({
       shifted: res.locals.shiftedIndices,
       indexDeleted: res.locals.indexDeleted,
+      pageId: res.locals.pageId,
     })
 );
 
