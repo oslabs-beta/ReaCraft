@@ -59,35 +59,6 @@ export function updateDesignTitleRequest(
     });
 }
 
-export function updateDesignRequest(
-  designId: number,
-  body: {
-    userImage: string;
-    imageToDelete?: string;
-    imageHeight?: number;
-    title?: string;
-    rootId?: number;
-  }
-): Promise<Design> {
-  return fetch(`/designs/update/${designId}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'Application/JSON',
-    },
-    body: JSON.stringify(body),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-      return res.json();
-    })
-    .then(handleDesignRes)
-    .catch((err) => {
-      throw err;
-    });
-}
-
 export function addNewComponentRequest(
   pageId: number,
   body: { index: number; rootId: number; name: string }
@@ -260,8 +231,10 @@ export function submitComponentFormRequest(
     innerHtml: string;
     styles: { [key: string]: any };
     props: { [key: string]: any };
+    pageIdx: number;
+    htmlTag: HtmlTag;
   }
-): Promise<Component> {
+): Promise<{ updatedComponent: Component; pageIdx: number }> {
   return fetch(`/components/submit/${componentId}`, {
     method: 'POST',
     headers: {
@@ -275,7 +248,12 @@ export function submitComponentFormRequest(
       }
       return res.json();
     })
-    .then(handleComponentRes)
+    .then(({ updatedComponent, pageIdx }) => {
+      return {
+        updatedComponent: handleComponentRes(updatedComponent),
+        pageIdx,
+      };
+    })
     .catch((err) => {
       throw err;
     });
