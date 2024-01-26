@@ -6,47 +6,57 @@ const rectangleController = require('../controllers/rectangleController');
 
 router.delete(
   '/delete/:componentId',
-  rectangleController.deleteComponentRectangle,
   componentController.deleteComponentById,
   componentController.shiftComponentsAfterDelete,
   (req, res) =>
     res.status(200).send({
       shifted: res.locals.shiftedIndices,
       indexDeleted: res.locals.indexDeleted,
+      pageId: res.locals.pageId,
     })
 );
 
 router.post(
   '/update-parent/:componentId',
-  componentController.updateParentOrTag,
-  componentController.resetParentHtml,
-  (req, res) => res.status(200).send(res.locals)
-);
-
-router.post(
-  '/update-tag/:componentId',
-  componentController.updateParentOrTag,
+  componentController.updateParent,
   componentController.updateHtmlForAllSameComponents,
-  (req, res) => res.status(200).send(res.locals)
+  (req, res) =>
+    res.status(200).send({
+      ...req.body,
+      componentId: req.params.componentId,
+      parentName: res.locals.componentName,
+    })
 );
 
 router.post(
   '/update-position/:componentId',
   rectangleController.updateComponentRectanglePosition,
-  (req, res) => res.status(200).send(res.locals.updatedRectangle)
+  (req, res) =>
+    res.status(200).send({
+      updatedRectangle: res.locals.updatedRectangle,
+      pageIdx: req.body.pageIdx,
+    })
 );
 
 router.post(
   '/update-rectangle-style/:componentId',
   rectangleController.updateComponentRectangleStyle,
-  (req, res) => res.status(200).send(res.locals.updatedRectangle)
+  (req, res) =>
+    res.status(200).send({
+      updatedRectangle: res.locals.updatedRectangle,
+      pageIdx: req.body.pageIdx,
+    })
 );
 
 router.post(
   '/submit/:componentId',
   componentController.updateComponentForm,
   componentController.updateHtmlForAllSameComponents,
-  (req, res) => res.status(200).send(res.locals.updatedComponent)
+  (req, res) =>
+    res.status(200).send({
+      updatedComponent: res.locals.updatedComponent,
+      pageIdx: req.body.pageIdx,
+    })
 );
 
 module.exports = router;

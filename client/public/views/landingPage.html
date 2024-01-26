@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ReaCraft</title>
     <link rel="stylesheet" type="text/css" href="/views/homepage.css" />
+    <!-- <link rel="stylesheet" href="/views/global.css" /> -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,7 +28,8 @@
       crossorigin="anonymous"></script>
 
     <!-- bootstrap bundle JS (includes popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+    </script>
 
     <script>
       $(document).ready(function () {
@@ -38,9 +40,11 @@
           mode = window.localStorage.getItem('mode');
           if (mode) {
             $('*').removeClass('dark');
+            $('#modalPlaceholder').removeClass('dark');
             window.localStorage.removeItem('mode');
           } else {
             $('*').addClass('dark');
+            $('#modalPlaceholder').addClass('dark');
             window.localStorage.setItem('mode', 'dark');
           }
         });
@@ -61,14 +65,28 @@
           id="signup">
           Sign Up
         </button>
+        <!-- dark mode switch -->
+        <span id="dark-mode-switch-root">
+          <span id="switch-base">
+            <input type="checkbox" id="dark-mode-switch" />
+            <span id="switch-thumb"></span>
+            <span class="MuiTouchRipple-root"></span>
+          </span>
+          <span id="switch-track"></span>
+        </span>
       </span>
       <div id="modalPlaceholder"></div>
       <div
         class="logo-container"
         width="800px"
+        height="100%"
         style="display: flex; flex-direction: column; text-align: center">
         <span display="flex" style="width: 60%; height: 70%">
-          <img alt="Logo" class="logo" src="../assets/logo.svg" />
+          <img
+            alt="Logo"
+            style="width: 70%; height: 70%"
+            class="logo"
+            src="../assets/logo.svg" />
         </span>
         <span
           style="
@@ -77,10 +95,25 @@
             font-size: xx-large;
             font-weight: bolder;
             padding-top: 30px;
-            text-shadow: 4px 3px 6px rgba(0, 0, 0, 0.36);
+            text-shadow: 4px 3px 10px rgba(47, 47, 47, 0.124);
           ">
           <p>Streamlining React Development from Design to Deployment</p>
         </span>
+        <p
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            width: 90vw;
+          ">
+          Tutorial
+          <img
+            style="width: 20px; height: 20px"
+            alt="arrow"
+            class="arrow"
+            src="../assets/arrow.svg" />
+        </p>
+
       </div>
     </span>
     <!-- slide 2 -->
@@ -91,31 +124,151 @@
           <div class="containerMain">
             <div class="containerLeft">
               <div class="instruction" onclick="showSlide(1)">
-                Instruction 1
+                Upload Design
               </div>
               <div class="instruction" onclick="showSlide(2)">
-                Instruction 2
+                Adding a New Component
               </div>
               <div class="instruction" onclick="showSlide(3)">
-                Instruction 3
+                Navigation Buttons
               </div>
               <div class="instruction" onclick="showSlide(4)">
-                Instruction 4
+                Border Color / Fill Options
               </div>
               <div class="instruction" onclick="showSlide(5)">
-                Instruction 5
+                Exporting Project
               </div>
               <div class="instruction" onclick="showSlide(6)">
-                Instruction 6
+                Keyboard Shortcuts
               </div>
             </div>
             <div class="containerRight">
-              <div class="slidePage2" id="slide1">Slide 1</div>
-              <div class="slidePage2" id="slide2">Slide 2</div>
-              <div class="slidePage2" id="slide3">Slide 3</div>
-              <div class="slidePage2" id="slide4">Slide 4</div>
-              <div class="slidePage2" id="slide5">Slide 5</div>
-              <div class="slidePage2" id="slide6">Slide 6</div>
+              <div class="slidePage2" id="slide1">
+                <p
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                  ">
+                  <img
+                    src="../assets/homepage/contruction.svg"
+                    class="construction"
+                    alt="temp image"
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      width: 300px;
+                    " />
+                </p>
+              </div>
+              <div class="slidePage2" id="slide2">
+                <p
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                  ">
+                  <img
+                    src="../assets/homepage/contruction.svg"
+                    class="construction"
+                    alt="temp image"
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      width: 300px;
+                    " />
+                </p>
+              </div>
+              <div class="slidePage2" id="slide3">
+                <p
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                  ">
+                  <img
+                    src="../assets/homepage/contruction.svg"
+                    class="construction"
+                    alt="temp image"
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      width: 300px;
+                    " />
+                </p>
+              </div>
+              <div class="slidePage2" id="slide4">
+                <p
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                  ">
+                  <img
+                    src="../assets/homepage/contruction.svg"
+                    class="construction"
+                    alt="temp image"
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      width: 300px;
+                    " />
+                </p>
+              </div>
+              <div class="slidePage2" id="slide5">
+                <p
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                  ">
+                  <img
+                    src="../assets/homepage/contruction.svg"
+                    class="construction"
+                    alt="temp image"
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      width: 300px;
+                    " />
+                </p>
+              </div>
+              <div class="slidePage2" id="slide6">
+                <p
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                  ">
+                  <img
+                    src="../assets/homepage/constructions2.svg"
+                    class="construction"
+                    alt="temp image"
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      width: 300px;
+                    " />
+                </p>
+              </div>
             </div>
           </div>
         </span>
@@ -201,6 +354,7 @@
         </span>
       </span>
     </span>
+
     <!-- scripts are at the bottom of the body to ensure HTML elements above are loaded before the scripts run -->
     <script>
       // when document is ready
@@ -213,6 +367,7 @@
           $('#modalPlaceholder').load('/views/signupModal.html', function () {
             // show the 'signupModal' as a modal
             $('#signupModal').modal('show');
+            updateModalDarkMode();
           });
         });
 
@@ -224,6 +379,7 @@
           $('#modalPlaceholder').load('/views/loginModal.html', function () {
             // show the 'loginModa' as a modal
             $('#loginModal').modal('show');
+            updateModalDarkMode();
           });
         });
 
@@ -241,20 +397,6 @@
           }
         });
 
-        // when the 'Need an account?' button is clicked within the login modal
-        $(document).on('click', '#needAccount', function () {
-          // prevent default button action
-          e.preventDefault();
-          // hide the login modal
-          $('#loginModal').modal('hide');
-          // unbind the previous hidden event handler to avoid stacking event calls
-          $('#loginModal').on('hidden.bs.modal', function (e) {
-            // load and show the signup modal
-            $('#modalPlaceholder').load('/views/signupModal.html', function () {
-              $('#signupModal').modal('show');
-            });
-          });
-        });
         // when the 'Need an account?' button is clicked within the login modal
         $(document).on('click', '.needAccount', function () {
           // hide the login modal
@@ -284,6 +426,6 @@
         });
       });
     </script>
-    <script src="slidesScript.js"></script>
+    <script src="/views/slidesScript.js"></script>
   </body>
 </html>

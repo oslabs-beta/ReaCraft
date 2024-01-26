@@ -5,9 +5,9 @@ export type Rectangle = {
   z_index: number;
   width: number;
   height: number;
-  borderwidth: number;
-  borderradius?: number;
-  backgroundcolor?: string;
+  border_width: number;
+  border_radius?: number;
+  background_color?: string;
   stroke: string;
 };
 
@@ -15,7 +15,7 @@ export type HtmlTag = '<div>' | '<p>' | '<button>';
 
 export type Component = {
   _id: number;
-  design_id: number;
+  page_id: number;
   parent_id: number;
   index: number;
   name: string;
@@ -23,18 +23,25 @@ export type Component = {
   inner_html: string;
   props: { key: string; value: string }[];
   styles: { key: string; value: string }[];
-  created_at: string;
   rectangle?: Rectangle;
+};
+
+export type Page = {
+  _id: number;
+  design_id: number;
+  index: number;
+  image_url: string;
+  components: Component[];
 };
 
 export type Design = {
   _id: number;
   user_id: number;
   title: string;
+  image_url: string;
   created_at: Date;
   last_updated: Date;
-  image_url: string;
-  components?: Component[];
+  pages?: Page[];
 };
 
 export type DefaultError = {

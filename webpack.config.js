@@ -4,6 +4,7 @@ require('dotenv').config();
 
 module.exports = {
   entry: './client/src/index.js',
+  mode: 'production',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
@@ -27,6 +28,15 @@ module.exports = {
         exclude: /node_modules/,
         use: ['ts-loader'],
       },
+      {
+        test: /\.svg$/,
+        type: 'asset/resource',
+        // use: [
+        //   {
+        //     loader: 'svg-react-loader',
+        //   }
+        // ] 
+      }
     ],
   },
   plugins: [
