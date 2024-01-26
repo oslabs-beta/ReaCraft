@@ -7,8 +7,16 @@ import {
   deleteComponentRequest,
   updateComponentParentRequest,
   submitComponentFormRequest,
+  updateComponentRectanglePositionRequest,
+  updateComponentRectangleStyleRequest,
 } from '../fetchRequests';
-import { Component, Design, HtmlTag, Page } from '../../../../docs/types';
+import {
+  Component,
+  Design,
+  HtmlTag,
+  Page,
+  Rectangle,
+} from '../../../../docs/types';
 
 export const newDesign = createAsyncThunk(
   'designs/new',
@@ -63,6 +71,36 @@ export const submitComponentForm = createAsyncThunk(
   }) => await submitComponentFormRequest(arg.componentId, arg.body)
 );
 
+export const updateComponentRectanglePosition = createAsyncThunk(
+  'components/update-position/:componentId',
+  async (arg: {
+    componentId: number;
+    body: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      pageIdx: number;
+    };
+  }) => await updateComponentRectanglePositionRequest(arg.componentId, arg.body)
+);
+
+export const updateComponentRectangleStyle = createAsyncThunk(
+  'components/update-rectangle-style/:componentId',
+  async (arg: {
+    componentId: number;
+    body: {
+      styleToChange:
+        | 'stroke'
+        | 'backgroundColor'
+        | 'borderWidth'
+        | 'borderRadius';
+      value: string | number;
+      pageIdx: number;
+    };
+  }) => await updateComponentRectangleStyleRequest(arg.componentId, arg.body)
+);
+
 const asyncThunks = [
   newDesign,
   updateDesignTitle,
@@ -70,10 +108,17 @@ const asyncThunks = [
   addNewComponent,
   deleteComponent,
   submitComponentForm,
+  updateComponentParent,
+  updateComponentRectanglePosition,
+  updateComponentRectangleStyle,
 ];
 
 const designThunks = [newDesign, updateDesignTitle, getDesignDetails];
 
+const rectangleThunks = [
+  updateComponentRectanglePosition,
+  updateComponentRectangleStyle,
+];
 interface DesignState {
   _id: null | number;
   pages: Page[];
@@ -161,6 +206,30 @@ const designSliceV3 = createSlice({
         }
       );
     });
+    rectangleThunks.forEach((thunk) => {
+      builder.addCase(
+        thunk.fulfilled,
+        (
+          state,
+          action: PayloadAction<{
+            updatedRectangle: Rectangle;
+            pageIdx: number;
+          }>
+        ) => {
+          state.loading = false;
+          const { updatedRectangle, pageIdx } = action.payload;
+          const components = state.pages[pageIdx].components;
+          const component = components.find(
+            (item) => item._id == updatedRectangle.component_id
+          );
+          if (!component) {
+            state.error = 'Updating rectangle: cannot find component.';
+            return;
+          }
+          component.rectangle = updatedRectangle;
+        }
+      );
+    });
     builder
       .addCase(
         addNewComponent.fulfilled,
@@ -215,7 +284,6 @@ const designSliceV3 = createSlice({
           const child = state.pages[pageIdx].components.find(
             (item) => item._id == componentId
           );
-          console.log('child', child);
           if (!child) {
             state.error = 'updateComponentParent: component not found';
             return;
@@ -244,8 +312,9 @@ const designSliceV3 = createSlice({
         ) => {
           state.loading = false;
           const { updatedComponent, pageIdx } = action.payload;
+          console.log('updatedComponent', updatedComponent, pageIdx);
           const compIdx = state.pages[pageIdx].components.findIndex(
-            (item: Component) => item._id === updatedComponent._id
+            (item: Component) => item._id == updatedComponent._id
           );
           const component = state.pages[pageIdx].components[compIdx];
           state.pages[pageIdx].components[compIdx] = Object.assign(

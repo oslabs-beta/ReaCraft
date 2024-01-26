@@ -15,7 +15,7 @@ import SelectorParent from '../../../functionality/Component/SelectorParent';
 import FormComponentEditor from '../../../functionality/Component/FormComponentEditor';
 import ButtonComponentDelete from '../../../functionality/Component/ButtonComponentDelete';
 import ButtonAddNewComponent from '../../../functionality/Component/ButtonAddNewComponent';
-import ButtonGroupRectangleStyle from '../../../functionality/Rectangle/ButtonGroupRectangleStyle';
+import ButtonGroupRectangleStyle from '../../../functionality/KonvaCanvas/ButtonGroupRectangleStyle';
 
 export default function WorkspaceLeft() {
   const { pages } = useSelector((state) => state.designV3);

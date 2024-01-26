@@ -6,8 +6,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Home from './Home/HomePage';
-import NewDesign from './Design/NewDesign';
-import Workspace from './Design/Workspace/Workspace';
+import Design from './Design/DesignPage';
 
 export default function MainContainer() {
   const { message, page } = useSelector((state) => state.app);
@@ -26,13 +25,12 @@ export default function MainContainer() {
         marginTop: '60px',
       }}
     >
-      {page === 'NEW_DESIGN' && <NewDesign />}
+      {page === 'DESIGN' && <Design />}
       {page === 'HOME' && (
         <Box display='flex' justifyContent='center'>
           <Home maxWidth='false' />
         </Box>
       )}
-      {page === 'WORKSPACE' && !loading && <Workspace />}
       <Snackbar
         value='SnackbarUnderWorkSpaceCont'
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

@@ -39,7 +39,7 @@ export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
       <Divider />
       <Stack gap={2} sx={{ alignItems: 'center', marginTop: '15px' }}>
         <Tooltip title='New Design'>
-          <Fab color='primary' onClick={() => handleClick('NEW_DESIGN')}>
+          <Fab color='primary' onClick={() => handleClick('DESIGN')}>
             <AddPhotoAlternateIcon />
           </Fab>
         </Tooltip>
