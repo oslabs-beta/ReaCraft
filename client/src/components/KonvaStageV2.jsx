@@ -17,10 +17,11 @@ export default function KonvaStage({
   // const canvasHeight = ((windowHeight - 180) * zoom) / 100;
 
   // redux state
-  const components = useSelector((state) => state.designV2.components);
+  const { isDraggable, cursorMode, pages } = useSelector(
+    (state) => state.designV3
+  );
+  const components = pages[0].components;
   const rectangles = components.map((item) => item.rectangle);
-  const isDraggable = useSelector((state) => state.designV2.isDraggable);
-  const cursorMode = useSelector((state) => state.designV2.cursorMode);
 
   console.log('canvasHeight, canvasWidth', canvasHeight, canvasWidth);
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ export default function KonvaStage({
 
   // used to set cursor on the Konva change
   const stageStyle = {
-    // using ternary operator to check if cursorMode from Redux state is 'pan' 
+    // using ternary operator to check if cursorMode from Redux state is 'pan'
     cursor: cursorMode === 'pan' ? 'grab' : 'default',
   };
 
@@ -82,7 +83,12 @@ export default function KonvaStage({
 
   if (image) {
     return (
-      <Stage style={stageStyle} width={canvasWidth} height={canvasHeight} draggable={isDraggable}>
+      <Stage
+        style={stageStyle}
+        width={canvasWidth}
+        height={canvasHeight}
+        draggable={isDraggable}
+      >
         <Layer>
           <Image
             image={image}

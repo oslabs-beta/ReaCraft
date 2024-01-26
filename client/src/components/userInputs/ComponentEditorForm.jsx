@@ -36,7 +36,9 @@ export default function ComponentEditorForm({
   isLeaf,
 }) {
   const dispatch = useDispatch();
-  const component = useSelector((state) => state.designV2.components)[idx];
+  const component = useSelector((state) => state.designV3.pages[0].components)[
+    idx
+  ];
 
   const [props, setProps] = useState(component.props);
   const [styles, setStyles] = useState(component.styles);

@@ -7,9 +7,11 @@ import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Home from './HomePage';
 import NewDesign from './NewDesign';
+import Workspace from './Workspace/Workspace';
 
 export default function MainContainer() {
   const { message, page } = useSelector((state) => state.app);
+  const { loading } = useSelector((state) => state.designV3);
   const dispatch = useDispatch();
   return (
     <Container
@@ -22,19 +24,22 @@ export default function MainContainer() {
         alignItems: 'center',
         position: 'relative',
         marginTop: '60px',
-      }}>
+      }}
+    >
       {page === 'NEW_DESIGN' && <NewDesign />}
       {page === 'HOME' && (
         <Box display='flex' justifyContent='center'>
           <Home maxWidth='false' />
         </Box>
       )}
+      {page === 'WORKSPACE' && !loading && <Workspace />}
       <Snackbar
         value='SnackbarUnderWorkSpaceCont'
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={Boolean(message)}
         onClose={() => dispatch(resetMessage())}
-        autoHideDuration={6000}>
+        autoHideDuration={6000}
+      >
         {message && <Alert severity={message.severity}>{message.text}</Alert>}
       </Snackbar>
     </Container>

@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FileUploader } from 'react-drag-drop-files';
 import Fab from '@mui/material/Fab';
-import { setMessage } from '../../utils/reducers/appSlice';
+import { setMessage, setSelectedPageIdx } from '../../utils/reducers/appSlice';
 import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
 import Tooltip from '@mui/material/Tooltip';
 import { styled, useTheme } from '@mui/material/styles';
@@ -10,7 +10,7 @@ import {
   newDesign,
   updateDesign,
   updateRootHeight,
-} from '../../utils/reducers/designSliceV2';
+} from '../../utils/reducers/designSliceV3';
 import { Box } from '@mui/material';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -20,8 +20,11 @@ import Button from '@mui/material/Button';
 
 export default function UserImageUploadButton() {
   const dispatch = useDispatch();
-  const designId = useSelector((state) => state.designV2._id);
-  const { image_url, components } = useSelector((state) => state.designV2);
+  const designId = useSelector((state) => state.designV3._id);
+  const { image_url, pages } = useSelector((state) => state.designV3);
+  const { selectedPageIdx } = useSelector((state) => state.app);
+  const page = pages[selectedPageIdx];
+  const components = page.components;
   const theme = useTheme();
   const [fileName, setFileName] = useState('');
   const [fileSize, setFileSize] = useState('');
@@ -82,6 +85,7 @@ export default function UserImageUploadButton() {
           if (!designId) {
             try {
               dispatch(newDesign({ userImage, imageHeight }));
+              dispatch(setSelectedPageIdx(0));
             } catch (err) {
               dispatch(
                 setMessage({

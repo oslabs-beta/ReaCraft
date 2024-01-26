@@ -7,7 +7,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import isValidReactComponentName from '../../utils/isValidReactComponentName';
-import { addNewComponent } from '../../utils/reducers/designSliceV2';
+import { addNewComponent } from '../../utils/reducers/designSliceV3';
 
 const emptyNameErr = {
   severity: 'error',
@@ -27,7 +27,9 @@ const successMess = {
 export default function AddNewComponentButton() {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
-  const design = useSelector((state) => state.designV2);
+  const design = useSelector((state) => state.designV3);
+  const { selectedPageIdx } = useSelector((state) => state.app);
+  const page = design.pages[selectedPageIdx];
   return (
     <form
       style={{ display: 'flex', width: '200px' }}
@@ -37,10 +39,10 @@ export default function AddNewComponentButton() {
           try {
             dispatch(
               addNewComponent({
-                designId: design._id,
+                pageId: page._id,
                 body: {
-                  index: design.components.length,
-                  rootId: design.components[0]._id,
+                  index: page.components.length,
+                  rootId: page.components[0]._id,
                   name,
                 },
               })

@@ -7,7 +7,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Divider from '@mui/material/Divider';
 import { useDispatch } from 'react-redux';
 import { goToPage } from '../utils/reducers/appSlice';
-import { resetDesign } from '../utils/reducers/designSliceV2';
+import { resetDesign } from '../utils/reducers/designSliceV3';
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack';
 import Fab from '@mui/material/Fab';
