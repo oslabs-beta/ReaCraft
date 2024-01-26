@@ -29,25 +29,31 @@ const uploadImage = (req, res, next) => {
 };
 
 const deleteImage = (req, res, next) => {
-  const imageToDelete = res.locals.imageToDelete
+  let imageToDelete = res.locals.imageToDelete
     ? res.locals.imageToDelete
     : req.body.imageToDelete;
   if (!imageToDelete) return next();
+  imageToDelete = Array.isArray(imageToDelete)
+    ? imageToDelete
+    : [imageToDelete];
   const params = {
     Bucket: 'reactraft',
-    Key: imageToDelete,
+    Delete: {
+      Objects: imageToDelete.map((Key) => ({ Key })),
+      Quiet: false,
+    },
   };
   return s3
-    .deleteObject(params)
+    .deleteObjects(params)
     .promise()
-    .then(() => {
-      console.log(`File deleted successfully from S3: ${imageToDelete}`);
+    .then((response) => {
+      console.log('Files deleted successfully from S3:', response.Deleted);
       return next();
     })
     .catch((err) =>
       next({
         log:
-          'Express error handler caught imageController.deleteImage middleware error' +
+          'Express error handler caught imageController.deleteImage middleware error: ' +
           err,
         message: 'deleteImage: ' + err,
       })

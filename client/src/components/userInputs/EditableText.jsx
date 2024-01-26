@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { updateDesignRequest } from '../../utils/fetchRequests';
+import { updateDesignTitleRequest } from '../../utils/fetchRequests';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../../utils/reducers/appSlice';
 
@@ -33,7 +33,7 @@ const EditableText = ({ initialText, designId }) => {
                 <IconButton
                   onClick={async () => {
                     try {
-                      await updateDesignRequest(designId, { title: text });
+                      await updateDesignTitleRequest(designId, { title: text });
                       setIsEditing(false);
                     } catch (err) {
                       dispatch(

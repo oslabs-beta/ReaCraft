@@ -1,18 +1,19 @@
+const { Request, Response, NextFunction } = require('express');
 const db = require('../models/dbModel');
 
 // Create a default RootContainer component for a new design
 const createRootComponent = (req, res, next) => {
-  // designId from designController.addNewDesign
-  const designId = res.locals.design._id;
+  const pages = res.locals.design.pages;
+  const pageId = pages[pages.length - 1]._id;
   return db
     .query(
-      'INSERT INTO components (design_id, index, name) ' +
+      'INSERT INTO components (page_id, index, name) ' +
         'VALUES ($1, $2, $3) ' +
         'RETURNING *;',
-      [designId, 0, 'RootContainer']
+      [pageId, 0, 'RootContainer']
     )
     .then((data) => {
-      res.locals.design.components = [data.rows[0]];
+      res.locals.design.pages[pages.length - 1].components = [data.rows[0]];
       return next(); // next middleware is rectangleController.createRootRectangle
     })
     .catch((err) =>
@@ -25,20 +26,28 @@ const createRootComponent = (req, res, next) => {
     );
 };
 
-const getComponents = (req, res, next) => {
-  const designId = req.params.designId;
-  return db
-    .query('SELECT * FROM components WHERE design_id = $1;', [designId])
-    .then((data) => (res.locals.design.components = data.rows))
-    .then(() => next())
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught componentController.getComponents middleware error' +
-          err,
-        message: { err: 'getComponents: ' + err },
-      })
+const getComponents = async (req, res, next) => {
+  try {
+    const pages = res.locals.design.pages;
+    const compPromises = pages.map((page) =>
+      db.query('SELECT * FROM components WHERE page_id = $1;', [page._id])
     );
+    const results = await Promise.all(compPromises);
+    results.forEach((data, i) => {
+      if (data.rows.length === 0) {
+        throw new Error('A page has no components.');
+      }
+      pages[i].components = data.rows;
+    });
+    return next();
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught rectangleController.getRectangles middleware error: ' +
+        err,
+      message: { err: 'getRectangles: ' + err },
+    });
+  }
 };
 
 const selectDesignComponentsToDelete = (req, res, next) => {
@@ -75,30 +84,30 @@ const deleteDesignComponents = (req, res, next) => {
 };
 
 const addNewComponent = async (req, res, next) => {
-  const { designId } = req.params;
+  const { pageId } = req.params;
   const { name, index, rootId } = req.body;
   let data;
   try {
     const prevComponentRes = await db.query(
-      'SELECT * FROM components WHERE design_id = $1 AND name = $2;',
-      [designId, name]
+      'SELECT * FROM components WHERE page_id = $1 AND name = $2;',
+      [pageId, name]
     );
     if (prevComponentRes.rows.length === 0) {
       data = await db.query(
-        'INSERT INTO components (design_id, name, index, parent_id) VALUES ($1, $2, $3, $4) RETURNING *;',
-        [designId, name, index, rootId]
+        'INSERT INTO components (page_id, name, index, parent_id) VALUES ($1, $2, $3, $4) RETURNING *;',
+        [pageId, name, index, rootId]
       );
       res.locals.component = data.rows[0];
       return next();
     } else {
       const { html_tag, inner_html } = prevComponentRes.rows[0];
-      console.log(prevComponentRes.rows[0]);
+      console.log('in addNewComponent', prevComponentRes.rows[0]);
       data = await db.query(
-        'INSERT INTO components (design_id, name, index, parent_id, html_tag, inner_html) ' +
+        'INSERT INTO components (page_id, name, index, parent_id, html_tag, inner_html) ' +
           'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;',
-        [designId, name, index, rootId, html_tag, inner_html]
+        [pageId, name, index, rootId, html_tag, inner_html]
       );
-      console.log(data.rows);
+      console.log('in addNewComponent', data.rows);
       res.locals.component = data.rows[0];
       return next();
     }
