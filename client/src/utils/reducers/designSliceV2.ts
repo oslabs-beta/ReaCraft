@@ -48,8 +48,10 @@ export const deleteComponent = createAsyncThunk(
 );
 export const updateComponentParent = createAsyncThunk(
   'components/update-parent/:componentId',
-  async (arg: { componentId: number; body: { parentId: number } }) =>
-    await updateComponentParentRequest(arg.componentId, arg.body)
+  async (arg: {
+    componentId: number;
+    body: { parentId: number; pageIdx: number };
+  }) => await updateComponentParentRequest(arg.componentId, arg.body)
 );
 
 export const updateComponentHtmlTag = createAsyncThunk(
@@ -278,6 +280,11 @@ const designSliceV2 = createSlice({
   },
 });
 
-export const { resetDesign, setSearchTerm, updateRootHeight, toggleIsDraggable, setCursorMode } =
-  designSliceV2.actions;
+export const {
+  resetDesign,
+  setSearchTerm,
+  updateRootHeight,
+  toggleIsDraggable,
+  setCursorMode,
+} = designSliceV2.actions;
 export default designSliceV2.reducer;

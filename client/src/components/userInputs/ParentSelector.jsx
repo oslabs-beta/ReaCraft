@@ -17,6 +17,7 @@ export default function ParentSelector({ childIdx }) {
     const child = components[childIdx];
     const parentId = child.parent_id;
     const parent = components.filter((item) => item._id === parentId)[0];
+    console.log('parent', parent);
 
     const theme = useTheme();
 
@@ -66,7 +67,10 @@ export default function ParentSelector({ childIdx }) {
               dispatch(
                 updateComponentParent({
                   componentId: child._id,
-                  body: { parentId: components[parentIdx]._id },
+                  body: {
+                    parentId: components[parentIdx]._id,
+                    pageIdx: selectedPageIdx,
+                  },
                 })
               );
               setParentValue(e.target.value);

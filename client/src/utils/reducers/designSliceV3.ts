@@ -5,6 +5,7 @@ import {
   getDesignDetailsRequest,
   addNewComponentRequest,
   deleteComponentRequest,
+  updateComponentParentRequest,
 } from '../fetchRequests';
 import { Component, Design, Page } from '../../../../docs/types';
 
@@ -36,6 +37,14 @@ export const addNewComponent = createAsyncThunk(
 export const deleteComponent = createAsyncThunk(
   'components/delete/:componentId',
   async (componentId: number) => await deleteComponentRequest(componentId)
+);
+
+export const updateComponentParent = createAsyncThunk(
+  'components/update-parent/:componentId',
+  async (arg: {
+    componentId: number;
+    body: { parentId: number; pageIdx: number };
+  }) => await updateComponentParentRequest(arg.componentId, arg.body)
 );
 
 const asyncThunks = [
@@ -170,6 +179,40 @@ const designSliceV3 = createSlice({
             if (component) {
               component.index = index;
             }
+          });
+        }
+      )
+      .addCase(
+        updateComponentParent.fulfilled,
+        (
+          state: DesignState,
+          action: PayloadAction<{
+            componentId: number;
+            parentId: number;
+            pageIdx: number;
+            parentName: string;
+          }>
+        ) => {
+          state.loading = false;
+          const { componentId, parentId, parentName, pageIdx } = action.payload;
+          const child = state.pages[pageIdx].components.find(
+            (item) => item._id == componentId
+          );
+          console.log('child', child);
+          if (!child) {
+            state.error = 'updateComponentParent: component not found';
+            return;
+          }
+          child.parent_id = parentId;
+
+          state.pages.forEach((page) => {
+            const components = page.components;
+            components.forEach((item) => {
+              if (item.name === parentName) {
+                item.html_tag = '<div>';
+                item.inner_html = '';
+              }
+            });
           });
         }
       );
