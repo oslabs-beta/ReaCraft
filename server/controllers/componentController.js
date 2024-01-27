@@ -3,18 +3,32 @@ const db = require('../models/dbModel');
 
 // Create a default RootContainer component for a new design
 const createRootComponent = (req, res, next) => {
-  const pages = res.locals.design.pages;
-  const pageId = pages[pages.length - 1]._id;
+  let pageId;
+  let pageLen;
+  if (res.locals.design) {
+    const pages = res.locals.design.pages;
+    pageId = pages[pages.length - 1]._id;
+    pageLen = 0;
+  } else if (res.locals.newPage) {
+    pageId = res.locals.newPage._id;
+    pageLen = req.body.pageLen;
+  } else {
+    throw new Error('No page to create new root component');
+  }
   return db
     .query(
       'INSERT INTO components (page_id, index, name) ' +
         'VALUES ($1, $2, $3) ' +
         'RETURNING *;',
-      [pageId, 0, 'RootContainer']
+      [pageId, 0, `Page${pageLen}`]
     )
     .then((data) => {
-      res.locals.design.pages[pages.length - 1].components = [data.rows[0]];
-      return next(); // next middleware is rectangleController.createRootRectangle
+      if (res.locals.design) {
+        res.locals.design.pages[0].components = [data.rows[0]];
+      } else {
+        res.locals.newPage.components = [data.rows[0]];
+      }
+      return next();
     })
     .catch((err) =>
       next({
