@@ -1,11 +1,12 @@
 .container {
-    min-height: 70vh;
+    min-height: 60vh;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 70%;
     position: relative;
-    margin-top: 40%;
+    margin-top: 15%;
+    margin-left: 15%
 }
 
 .svgBackground {
