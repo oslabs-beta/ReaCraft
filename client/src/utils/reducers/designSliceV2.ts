@@ -15,7 +15,7 @@ import { Component, Design, HtmlTag, Rectangle } from '../../../../docs/types';
 
 export const newDesign = createAsyncThunk(
   'designs/new',
-  async (body: { userImage: string; imageHeight: number }) =>
+  async (body: { userImage: string; imageHeight: number; clientId: string; }) =>
     await addDesignRequest(body)
 );
 export const updateDesign = createAsyncThunk(
