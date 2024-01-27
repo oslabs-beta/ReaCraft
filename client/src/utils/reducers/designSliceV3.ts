@@ -12,6 +12,7 @@ import {
   deletePageRequest,
   addNewPageRequest,
 } from '../fetchRequests';
+import { setSelectedPageIdx } from './appSlice';
 import {
   Component,
   Design,
@@ -112,9 +113,38 @@ export const addNewPage = createAsyncThunk(
   'designs/add-page/:designId',
   async (arg: {
     designId: number;
-    body: { pageIdx: number; userImage: string; imageHeight: number };
+    body: {
+      pageIdx: number;
+      userImage: string;
+      imageHeight: number;
+      pageLen: number;
+    };
   }) => await addNewPageRequest(arg.designId, arg.body)
 );
+
+export const addNewPageAndUpdateSelectedPageIdx =
+  (params: { designId: number; userImage: string; imageHeight: number }) =>
+  async (dispatch: any, getState: any) => {
+    const state = getState();
+    const pageIdx = state.app.selectedPageIdx;
+    const pages = state.designV3.pages;
+    // Destructure params to get necessary values
+    const { designId, userImage, imageHeight } = params;
+    // Dispatch the first action and wait for it to complete
+    await dispatch(
+      addNewPage({
+        designId,
+        body: {
+          pageIdx: pageIdx + 1,
+          userImage,
+          imageHeight,
+          pageLen: pages.length,
+        },
+      })
+    );
+    // Dispatch the second action
+    dispatch(setSelectedPageIdx(pageIdx + 1));
+  };
 
 const asyncThunks = [
   newDesign,
