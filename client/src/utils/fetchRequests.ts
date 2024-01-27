@@ -41,31 +41,6 @@ export function addDesignRequest(body: {
     });
 }
 
-export function updateDesignTitleRequest(
-  designId: number,
-  body: {
-    title: string;
-  }
-): Promise<Design> {
-  return fetch(`designs/update-title/${designId}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'Application/JSON',
-    },
-    body: JSON.stringify(body),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-      return res.json();
-    })
-    .then(handleDesignRes)
-    .catch((err) => {
-      throw err;
-    });
-}
-
 export function addNewComponentRequest(
   pageId: number,
   body: { index: number; rootId: number; name: string }
@@ -428,6 +403,31 @@ export function addNewPageRequest(
       newPage: handlePageRes(newPage),
       shifted,
     }))
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function updateDesignCoverOrTitleRequest(
+  designId: number,
+  body: {
+    imageUrl?: string;
+    title?: string;
+  }
+): Promise<{ message: 'updated design successfully' }> {
+  return fetch(`designs/update/${designId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    })
     .catch((err) => {
       throw err;
     });

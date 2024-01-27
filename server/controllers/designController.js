@@ -22,14 +22,16 @@ const addNewDesign = (req, res, next) => {
     );
 };
 
-const updateDesignTitle = (req, res, next) => {
-  const { title } = req.body;
+const updateDesignTitleOrCover = (req, res, next) => {
+  const { title, imageUrl } = req.body;
   const { designId } = req.params;
+  const column = title ? 'title' : 'image_url';
+  const value = title || imageUrl;
   return db
-    .query(
-      'UPDATE designs SET title = $1, last_updated = CURRENT_TIMESTAMP WHERE _id = $2 RETURNING *;',
-      [title, designId]
-    )
+    .query(`UPDATE designs SET ${column} = $1 WHERE _id = $2 RETURNING *;`, [
+      value,
+      designId,
+    ])
     .then((data) => (res.locals.design = data.rows[0]))
     .then(() => next())
     .catch((err) =>
@@ -130,7 +132,7 @@ module.exports = {
   getDesigns,
   deleteDesign,
   addNewDesign,
-  updateDesignTitle,
+  updateDesignTitleOrCover,
   updateDesign,
   getDesignById,
 };

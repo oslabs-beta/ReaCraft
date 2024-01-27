@@ -8,7 +8,6 @@ import { deletePageAndUpdateSelectedPageIdx } from '../../../utils/reducers/desi
 
 export default function ButtonDeletePage({ pageId, canDelete }) {
   const dispatch = useDispatch();
-  console.log('canDelete', canDelete);
   return (
     <Tooltip title='Delete Page'>
       <Fab

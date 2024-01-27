@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   addDesignRequest,
-  updateDesignTitleRequest,
   getDesignDetailsRequest,
   addNewComponentRequest,
   deleteComponentRequest,
@@ -11,6 +10,7 @@ import {
   updateComponentRectangleStyleRequest,
   deletePageRequest,
   addNewPageRequest,
+  updateDesignCoverOrTitleRequest,
 } from '../fetchRequests';
 import { setMessage, setSelectedPageIdx } from './appSlice';
 import {
@@ -27,10 +27,12 @@ export const newDesign = createAsyncThunk(
     await addDesignRequest(body)
 );
 
-export const updateDesignTitle = createAsyncThunk(
+export const updateDesignTitleOrCover = createAsyncThunk(
   'designs/update-title/:designId',
-  async (arg: { designId: number; body: { title: string } }) =>
-    await updateDesignTitleRequest(arg.designId, arg.body)
+  async (arg: {
+    designId: number;
+    body: { title?: string; imageUrl?: string };
+  }) => await updateDesignCoverOrTitleRequest(arg.designId, arg.body)
 );
 
 export const getDesignDetails = createAsyncThunk(
@@ -123,7 +125,7 @@ export const addNewPage = createAsyncThunk(
 
 const asyncThunks = [
   newDesign,
-  updateDesignTitle,
+  updateDesignTitleOrCover,
   getDesignDetails,
   addNewComponent,
   deleteComponent,
@@ -135,7 +137,7 @@ const asyncThunks = [
   addNewPage,
 ];
 
-const designThunks = [newDesign, updateDesignTitle, getDesignDetails];
+const designThunks = [newDesign, getDesignDetails];
 
 const rectangleThunks = [
   updateComponentRectanglePosition,
@@ -206,6 +208,9 @@ const designSliceV3 = createSlice({
     },
     setCursorMode: (state, action: PayloadAction<string>) => {
       state.cursorMode = action.payload;
+    },
+    updateDesignTitle: (state, action: PayloadAction<string>) => {
+      state.title = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -443,5 +448,23 @@ export const {
   updateRootHeight,
   toggleIsDraggable,
   setCursorMode,
+  updateDesignTitle,
 } = designSliceV3.actions;
+
+export const updateDesignCoverOrTitleRequestAndUpdateState =
+  (params: { designId: number; title?: string; imageUrl?: string }) =>
+  async (dispatch: any) => {
+    const { designId, title, imageUrl } = params;
+    await dispatch(
+      updateDesignTitleOrCover({ designId, body: { title, imageUrl } })
+    );
+    if (title) dispatch(updateDesignTitle(title));
+    dispatch(
+      setMessage({
+        severity: 'success',
+        text: `updated design ${title ? 'title' : 'cover'} successfully`,
+      })
+    );
+  };
+
 export default designSliceV3.reducer;
