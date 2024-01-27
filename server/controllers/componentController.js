@@ -82,13 +82,11 @@ const addNewComponent = async (req, res, next) => {
       return next();
     } else {
       const { html_tag, inner_html } = prevComponentRes.rows[0];
-      console.log('in addNewComponent', prevComponentRes.rows[0]);
       data = await db.query(
         'INSERT INTO components (page_id, name, index, parent_id, html_tag, inner_html) ' +
           'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;',
         [pageId, name, index, rootId, html_tag, inner_html]
       );
-      console.log('in addNewComponent', data.rows);
       res.locals.component = data.rows[0];
       return next();
     }
@@ -111,7 +109,6 @@ const deleteComponentById = (req, res, next) => {
     .then((data) => {
       const { index, page_id } = data.rows[0];
       res.locals.indexDeleted = index;
-      console.log('indexDeleted:', index);
       res.locals.pageId = page_id;
       return next();
     })
@@ -179,7 +176,6 @@ const updateParent = async (req, res, next) => {
 
 const updateHtmlForAllSameComponents = async (req, res, next) => {
   const { componentName, htmlTag, pageId, innerHtml } = res.locals;
-  console.log('updating html for all same components');
   if (!htmlTag) return next();
   try {
     const pageRes = await db.query(
@@ -270,10 +266,6 @@ const updateComponentForm = (req, res, next) => {
 
 const updateRootComponentNameForShiftedPages = async (req, res, next) => {
   const shifted = res.locals.shiftedIndices;
-  console.log(
-    'in updateRootComponentNameForShiftedPages shifted are,',
-    res.locals.shiftedIndices
-  );
   try {
     for (const { _id, index } of shifted) {
       await db.query(
