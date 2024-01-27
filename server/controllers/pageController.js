@@ -5,7 +5,6 @@ const createPageForNewDesign = (req, res, next) => {
   if (!design.pages) {
     design.pages = [];
   }
-  console.log('pages are', design.pages);
   const index = design.pages.length;
   return db
     .query(
@@ -52,6 +51,7 @@ const deletePageById = (req, res, next) => {
       const { index, design_id } = data.rows[0];
       res.locals.indexDeleted = index;
       res.locals.designId = design_id;
+      res.locals.pageId = pageId;
       return next();
     })
     .catch((err) =>
@@ -65,16 +65,16 @@ const deletePageById = (req, res, next) => {
 };
 
 const shiftPages = (req, res, next) => {
-  const { indexDeleted, indexInserted, designId } = res.locals;
-  const plusOrMinus = indexDeleted ? '-' : '+';
-  const value = indexDeleted || indexInserted;
+  const { indexDeleted, indexInserted, designId, pageId } = res.locals;
+  const plusOrMinus = indexDeleted !== undefined ? '-' : '+';
+  const value = indexDeleted !== undefined ? indexDeleted : indexInserted;
   return db
     .query(
       'UPDATE pages ' +
         `SET index = index ${plusOrMinus} 1 ` +
-        'WHERE design_id = $1 AND index > $2 ' +
+        'WHERE design_id = $1 AND index >= $2 AND _id <> $3 ' +
         'RETURNING _id, index;',
-      [designId, value]
+      [designId, value, pageId]
     )
     .then((data) => {
       res.locals.shiftedIndices = data.rows;
@@ -101,8 +101,9 @@ const addNewPage = (req, res, next) => {
     )
     .then((data) => {
       res.locals.newPage = data.rows[0];
-      console.log('new page', res.locals.newPage);
+      res.locals.designId = data.rows[0].design_id;
       res.locals.indexInserted = pageIdx;
+      res.locals.pageId = data.rows[0]._id;
       return next();
     })
     .catch((err) =>
