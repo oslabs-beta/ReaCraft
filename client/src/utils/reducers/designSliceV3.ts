@@ -451,7 +451,7 @@ export const {
   updateDesignTitle,
 } = designSliceV3.actions;
 
-export const updateDesignCoverOrTitleRequestAndUpdateState =
+export const updateDesignCoverOrTitleAndUpdateState =
   (params: { designId: number; title?: string; imageUrl?: string }) =>
   async (dispatch: any) => {
     const { designId, title, imageUrl } = params;
