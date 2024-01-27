@@ -7,12 +7,16 @@ import Codes from '../../../../utils/Codes';
 import UserImageUploadButton from '../../../functionality/Page/UserImageUploadButton';
 import ButtonDeleteDesign from '../../../functionality/Design/ButtonDeleteDesign';
 import ButtonViewCode from '../../../functionality/Design/ButtonViewCode';
-import ButtoViewTree from '../../../functionality/Design/ButtoViewTree';
+import ButtonViewTree from '../../../functionality/Design/ButtonViewTree';
 import ButtonDownloadFiles from '../../../functionality/Component/ButtonDownloadFiles';
+import ButtonDeletePage from '../../../functionality/Page/ButtonDeletePage';
+import ButtonAddPage from '../../../functionality/Page/ButtonAddPage';
 
 export default function WorkspaceRight({ canvasWidth }) {
   const { title, pages } = useSelector((state) => state.designV3);
-  const components = pages[0].components;
+  const { selectedPageIdx } = useSelector((state) => state.app);
+  console.log('selectedPageIdx', selectedPageIdx);
+  const components = pages[selectedPageIdx].components;
   const { selectedIdx, windowWidth } = useSelector((state) => state.app);
   const tree = convertToTree(components);
   const codes = new Codes(components, tree, title);
@@ -24,7 +28,7 @@ export default function WorkspaceRight({ canvasWidth }) {
       gap={2}
     >
       <UserImageUploadButton />
-      <ButtoViewTree tree={tree} />
+      <ButtonViewTree tree={tree} />
       <ButtonViewCode
         css={css}
         jsx={jsx}
@@ -32,7 +36,8 @@ export default function WorkspaceRight({ canvasWidth }) {
       />
 
       <ButtonDownloadFiles jsx={jsx} css={css} />
-      <ButtonDeleteDesign />
+      <ButtonAddPage pageIdx={selectedPageIdx} />
+      <ButtonDeletePage />
     </Stack>
   );
 }

@@ -9,6 +9,8 @@ import {
   submitComponentFormRequest,
   updateComponentRectanglePositionRequest,
   updateComponentRectangleStyleRequest,
+  deletePageRequest,
+  addNewPageRequest,
 } from '../fetchRequests';
 import {
   Component,
@@ -101,6 +103,19 @@ export const updateComponentRectangleStyle = createAsyncThunk(
   }) => await updateComponentRectangleStyleRequest(arg.componentId, arg.body)
 );
 
+export const deletePage = createAsyncThunk(
+  'pages/delete/:pageId',
+  async (pageId: number) => await deletePageRequest(pageId)
+);
+
+export const addNewPage = createAsyncThunk(
+  'designs/add-page/:designId',
+  async (arg: {
+    designId: number;
+    body: { pageIdx: number; imageUrl: string; imageHeight: number };
+  }) => await addNewPageRequest(arg.designId, arg.body)
+);
+
 const asyncThunks = [
   newDesign,
   updateDesignTitle,
@@ -111,6 +126,8 @@ const asyncThunks = [
   updateComponentParent,
   updateComponentRectanglePosition,
   updateComponentRectangleStyle,
+  deletePage,
+  addNewPage,
 ];
 
 const designThunks = [newDesign, updateDesignTitle, getDesignDetails];
@@ -329,6 +346,40 @@ const designSliceV3 = createSlice({
                 item.inner_html = updatedComponent.inner_html;
               }
             });
+          });
+        }
+      )
+      .addCase(
+        deletePage.fulfilled,
+        (
+          state: DesignState,
+          action: PayloadAction<{
+            shifted: { _id: number; index: number }[];
+            indexDeleted: number;
+          }>
+        ) => {
+          const { shifted, indexDeleted } = action.payload;
+          state.pages.splice(indexDeleted, 1);
+          shifted.forEach(({ _id, index }) => {
+            const page = state.pages.find((item) => item._id === _id);
+            if (page) page.index = index;
+          });
+        }
+      )
+      .addCase(
+        addNewPage.fulfilled,
+        (
+          state: DesignState,
+          action: PayloadAction<{
+            shifted: { _id: number; index: number }[];
+            newPage: Page;
+          }>
+        ) => {
+          const { shifted, newPage } = action.payload;
+          state.pages.splice(newPage.index, 0, newPage);
+          shifted.forEach(({ _id, index }) => {
+            const page = state.pages.find((item) => item._id === _id);
+            if (page) page.index = index;
           });
         }
       );
