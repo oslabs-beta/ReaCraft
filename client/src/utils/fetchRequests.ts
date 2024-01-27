@@ -318,9 +318,9 @@ export function updateComponentRectangleStyleRequest(
   body: {
     styleToChange:
       | 'stroke'
-      | 'backgroundColor'
-      | 'borderWidth'
-      | 'borderRadius';
+      | 'background_color'
+      | 'border_width'
+      | 'border_radius';
     pageIdx: number;
     value: string | number;
   }

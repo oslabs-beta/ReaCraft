@@ -92,9 +92,9 @@ export const updateComponentRectangleStyle = createAsyncThunk(
     body: {
       styleToChange:
         | 'stroke'
-        | 'backgroundColor'
-        | 'borderWidth'
-        | 'borderRadius';
+        | 'background_color'
+        | 'border_width'
+        | 'border_radius';
       value: string | number;
       pageIdx: number;
     };
