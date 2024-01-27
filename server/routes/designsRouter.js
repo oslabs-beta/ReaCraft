@@ -33,9 +33,11 @@ router.post(
 );
 
 router.post(
-  '/update-title/:designId',
-  designController.updateDesignTitle,
-  sendDesign
+  '/update/:designId',
+  designController.updateDesignTitleOrCover,
+  (req, res) => {
+    res.status(200).send({ message: 'updated design successfully' });
+  }
 );
 
 router.get(
