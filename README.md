@@ -238,4 +238,4 @@ Project Link: [https://github.com/oslabs-beta/Reactraft](https://github.com/osla
 [issues-url]: https://github.com/oslabs-beta/Reactraft/issues
 [license-shield]: https://img.shields.io/github/license/oslabs-beta/Reactraft.svg?style=for-the-badge
 [license-url]: https://github.com/oslabs-beta/Reactraft/blob/master/LICENSE.txt
-[database-tables]: /docs/database_tables.png
+[database-tables]: /docs/database_tables_new.png
