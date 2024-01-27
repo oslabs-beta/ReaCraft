@@ -22,10 +22,6 @@ export default function KonvaStage({
   );
   const components = pages[selectedPageIdx].components;
   const rectangles = components.map((item) => item.rectangle);
-
-  console.log('rectangles are', rectangles);
-
-  console.log('canvasHeight, canvasWidth', canvasHeight, canvasWidth);
   const dispatch = useDispatch();
 
   // refs and other state

@@ -5,7 +5,6 @@ const createPageForNewDesign = (req, res, next) => {
   if (!design.pages) {
     design.pages = [];
   }
-  console.log('pages are', design.pages);
   const index = design.pages.length;
   return db
     .query(
@@ -101,7 +100,7 @@ const addNewPage = (req, res, next) => {
     )
     .then((data) => {
       res.locals.newPage = data.rows[0];
-      console.log('new page', res.locals.newPage);
+      res.locals.designId = data.rows[0].design_id;
       res.locals.indexInserted = pageIdx;
       return next();
     })
