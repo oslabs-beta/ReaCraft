@@ -1,8 +1,15 @@
-import { Component, Design, HtmlTag, Rectangle } from '../../../docs/types';
+import {
+  Component,
+  Design,
+  HtmlTag,
+  Page,
+  Rectangle,
+} from '../../../docs/types';
 import {
   DesignRes,
   handleComponentRes,
   handleDesignRes,
+  handlePageRes,
   handleRectangleRes,
 } from './handleReceivedData';
 
@@ -364,6 +371,53 @@ export function downloadProject(body: {
       }
       return res.blob();
     })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function deletePageRequest(pageId: number): Promise<{
+  shifted: { _id: number; index: number }[];
+  indexDeleted: number;
+}> {
+  return fetch(`/pages/delete/${pageId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function addNewPageRequest(
+  designId: number,
+  body: { pageIdx: number; imageUrl: string; imageHeight: number }
+): Promise<{ newPage: Page; shifted: { _id: number; index: number }[] }> {
+  return fetch(`/designs/new-page/${designId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    })
+    .then(({ newPage, shifted }) => ({
+      newPage: handlePageRes(newPage),
+      shifted,
+    }))
     .catch((err) => {
       throw err;
     });

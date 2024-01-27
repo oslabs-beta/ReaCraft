@@ -2,8 +2,13 @@ const db = require('../models/dbModel');
 
 // create rectangle for RootContainer component
 const createRootRectangle = (req, res, next) => {
-  const pages = res.locals.design.pages;
-  const rootId = pages[pages.length - 1].components[0]._id;
+  let rootId;
+  if (res.locals.design) {
+    const pages = res.locals.design.pages;
+    rootId = pages[pages.length - 1].components[0]._id;
+  } else {
+    rootId = res.locals.newPage.components[0]._id;
+  }
   const { imageHeight } = req.body;
   console.log(rootId, imageHeight);
   return db
@@ -14,7 +19,11 @@ const createRootRectangle = (req, res, next) => {
       [rootId, 800, imageHeight]
     )
     .then((data) => {
-      pages[pages.length - 1].components[0].rectangle = data.rows[0];
+      if (res.locals.design) {
+        res.locals.design.pages[0].components[0].rectangle = data.rows[0];
+      } else {
+        res.locals.newPage.components[0].rectangle = data.rows[0];
+      }
       return next();
     })
     .catch((err) =>
