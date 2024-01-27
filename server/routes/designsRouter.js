@@ -57,6 +57,7 @@ router.delete(
 
 router.post(
   '/new-page/:designId',
+  imageController.uploadImage,
   pageController.addNewPage,
   pageController.shiftPages,
   componentController.createRootComponent,

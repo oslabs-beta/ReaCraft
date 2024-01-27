@@ -112,7 +112,7 @@ export const addNewPage = createAsyncThunk(
   'designs/add-page/:designId',
   async (arg: {
     designId: number;
-    body: { pageIdx: number; imageUrl: string; imageHeight: number };
+    body: { pageIdx: number; userImage: string; imageHeight: number };
   }) => await addNewPageRequest(arg.designId, arg.body)
 );
 
@@ -171,24 +171,24 @@ const designSliceV3 = createSlice({
     resetDesign: () => initialState,
     updateRootHeight: (
       state: DesignState,
-      action: PayloadAction<{ pageIndex: number; height: number }>
+      action: PayloadAction<{ pageIdx: number; height: number }>
     ) => {
-      const { pageIndex, height } = action.payload;
+      const { pageIdx, height } = action.payload;
       if (state.pages.length === 0) {
         state.error = 'Design has no pages.';
         return;
       }
-      if (!state.pages[pageIndex]) {
-        state.error = 'Design has no page ' + pageIndex;
+      if (!state.pages[pageIdx]) {
+        state.error = 'Design has no page ' + pageIdx;
         return;
       }
-      if (state.pages[pageIndex].components.length === 0) {
-        state.error = `Design's page ${pageIndex} has no components.`;
+      if (state.pages[pageIdx].components.length === 0) {
+        state.error = `Design's page ${pageIdx} has no components.`;
         return;
       }
-      const root = state.pages[pageIndex].components[0];
+      const root = state.pages[pageIdx].components[0];
       if (!root.rectangle) {
-        state.error = `Design's page ${pageIndex} has no root rectangle.`;
+        state.error = `Design's page ${pageIdx} has no root rectangle.`;
         return;
       }
       root.rectangle.height = height;
