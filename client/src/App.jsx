@@ -84,8 +84,6 @@ export default function App() {
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
-  const design = useSelector((state) => state.designV3);
-  console.log('in App.jsx, ', design);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

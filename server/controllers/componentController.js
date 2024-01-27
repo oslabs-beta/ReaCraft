@@ -4,14 +4,14 @@ const db = require('../models/dbModel');
 // Create a default RootContainer component for a new design
 const createRootComponent = (req, res, next) => {
   let pageId;
-  let pageLen;
+  let pageIdx;
   if (res.locals.design) {
     const pages = res.locals.design.pages;
     pageId = pages[pages.length - 1]._id;
-    pageLen = 0;
+    pageIdx = 0;
   } else if (res.locals.newPage) {
     pageId = res.locals.newPage._id;
-    pageLen = req.body.pageLen;
+    pageIdx = res.locals.newPage.index;
   } else {
     throw new Error('No page to create new root component');
   }
@@ -20,7 +20,7 @@ const createRootComponent = (req, res, next) => {
       'INSERT INTO components (page_id, index, name) ' +
         'VALUES ($1, $2, $3) ' +
         'RETURNING *;',
-      [pageId, 0, `Page${pageLen}`]
+      [pageId, 0, `Page${pageIdx}`]
     )
     .then((data) => {
       if (res.locals.design) {
@@ -268,6 +268,30 @@ const updateComponentForm = (req, res, next) => {
     );
 };
 
+const updateRootComponentNameForShiftedPages = async (req, res, next) => {
+  const shifted = res.locals.shiftedIndices;
+  console.log(
+    'in updateRootComponentNameForShiftedPages shifted are,',
+    res.locals.shiftedIndices
+  );
+  try {
+    for (const { _id, index } of shifted) {
+      await db.query(
+        'UPDATE components SET name = $1 WHERE page_id = $2 AND index = 0;',
+        [`Page${index}`, _id]
+      );
+    }
+    return next();
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught componentController.updateRootComponentNameForShiftedPages middleware error' +
+        err,
+      message: { err: 'updateRootComponentNameForShiftedPages: ' + err },
+    });
+  }
+};
+
 module.exports = {
   getComponents,
   createRootComponent,
@@ -278,4 +302,5 @@ module.exports = {
   resetParentHtml,
   updateComponentForm,
   updateHtmlForAllSameComponents,
+  updateRootComponentNameForShiftedPages,
 };
