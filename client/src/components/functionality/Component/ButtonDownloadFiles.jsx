@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { downloadProject } from '../../../utils/fetchRequests';
 
 export default function ButtonDownloadFiles({ jsx, css }) {
-  const title = useSelector((state) => state.designV2.title);
+  const title = useSelector((state) => state.designV3.title);
   async function handleClick() {
     const filesData = [];
     Object.keys(jsx).forEach((name) =>
