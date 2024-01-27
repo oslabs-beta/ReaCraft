@@ -1,18 +1,15 @@
 import React, { useRef, useState, Fragment, useEffect } from 'react';
 import Tree from 'react-d3-tree';
 import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
 import { Button, Backdrop, Fab, List, FormLabel, Box } from '@mui/material';
-import { ImTree } from 'react-icons/im';
 import { themeDOMTreeLight } from '../../../styles/ThemeDOMTree';
 import { ThemeProvider } from '@mui/material/styles';
-import SchemaRoundedIcon from '@mui/icons-material/SchemaRounded';
 
 import BackdropSnackbar from '../../TopBar/BackdropSnackbar';
 
 import '../../../utils/treeNode.css';
 
-export default function ButtonViewTree({ tree }) {
+export default function ButtonViewTree({ tree, entireApp }) {
   const [viewTree, setViewTree] = useState(false);
 
   const handleKeyPress = (e) => {
@@ -27,7 +24,9 @@ export default function ButtonViewTree({ tree }) {
   }, [viewTree]);
   return (
     <Fragment>
-      <Tooltip title='View Dom tree'>
+      <Tooltip
+        title={`View Dom tree for ${entireApp ? 'your whole app' : 'page'}`}
+      >
         <Fab onClick={() => setViewTree(true)} size='small'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
