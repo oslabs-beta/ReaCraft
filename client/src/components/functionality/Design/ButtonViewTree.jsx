@@ -12,7 +12,7 @@ import BackdropSnackbar from '../../TopBar/BackdropSnackbar';
 
 import '../../../utils/treeNode.css';
 
-export default function ButtoViewTree({ tree }) {
+export default function ButtonViewTree({ tree }) {
   const [viewTree, setViewTree] = useState(false);
 
   const handleKeyPress = (e) => {
