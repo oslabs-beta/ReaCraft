@@ -21,6 +21,7 @@ router.delete(
   '/delete/:pageId',
   pageController.deletePageById,
   pageController.shiftPages,
+  componentController.updateRootComponentNameForShiftedPages,
   (req, res) =>
     res.status(200).send({
       shifted: res.locals.shiftedIndices,
