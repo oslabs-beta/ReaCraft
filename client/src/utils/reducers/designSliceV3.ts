@@ -367,7 +367,10 @@ const designSliceV3 = createSlice({
           state.pages.splice(indexDeleted, 1);
           shifted.forEach(({ _id, index }) => {
             const page = state.pages.find((item) => item._id === _id);
-            if (page) page.index = index;
+            if (page) {
+              page.index = index;
+              page.components[0].name = `Page${index}`;
+            }
           });
         }
       )
