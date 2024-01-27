@@ -3,7 +3,7 @@ import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
 import { useDispatch } from 'react-redux';
-import { updateDesignCoverOrTitleRequestAndUpdateState } from '../../../utils/reducers/designSliceV3';
+import { updateDesignCoverOrTitleAndUpdateState } from '../../../utils/reducers/designSliceV3';
 import { setMessage } from '../../../utils/reducers/appSlice';
 
 export default function ButtonSetPageAsDesignCover({ designId, imageUrl }) {
@@ -15,7 +15,7 @@ export default function ButtonSetPageAsDesignCover({ designId, imageUrl }) {
       onClick={() => {
         try {
           dispatch(
-            updateDesignCoverOrTitleRequestAndUpdateState({
+            updateDesignCoverOrTitleAndUpdateState({
               designId,
               imageUrl,
             })
