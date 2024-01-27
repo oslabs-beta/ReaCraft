@@ -33,6 +33,9 @@ import {
   AppBarButtonsStyleLight,
   AppBarButtonsStyleDark,
 } from '../../styles/ThemeGlobal';
+import ButtonDeleteDesign from '../functionality/Design/ButtonDeleteDesign';
+import ButtonViewTree from '../functionality/Design/ButtonViewTree';
+import { convertToTree } from '../../utils/treeNode';
 
 export default function TopBar({
   toggleDarkMode,
@@ -46,7 +49,8 @@ export default function TopBar({
     dispatch(resetDesign());
   }
 
-  const designId = useSelector((state) => state.designV3._id);
+  const { _id, pages } = useSelector((state) => state.designV3);
+  const designId = _id;
 
   const { user } = useAuth();
   const theme = useTheme();
@@ -65,6 +69,13 @@ export default function TopBar({
   function handlePageClick(page) {
     dispatch(goToPage(page));
     dispatch(resetDesign());
+  }
+
+  let tree = {};
+  if (designId) {
+    tree.name = 'App';
+    tree.attributes = { tag: '<div>' };
+    tree.children = pages.map((page) => convertToTree(page.components));
   }
 
   return (
@@ -120,6 +131,8 @@ export default function TopBar({
               </Box>
 
               <InputDesignTitle />
+              <ButtonDeleteDesign />
+              <ButtonViewTree entireApp={true} tree={tree} />
             </Fragment>
           )}
         </Stack>
