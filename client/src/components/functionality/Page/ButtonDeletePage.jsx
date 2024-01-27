@@ -1,27 +1,32 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  setMessage,
-  setSelectedPageIdx,
-} from '../../../utils/reducers/appSlice';
+import { setMessage } from '../../../utils/reducers/appSlice';
 import Delete from '@mui/icons-material/Delete';
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
-import { deletePage } from '../../../utils/reducers/designSliceV3';
+import { deletePageAndUpdateSelectedPageIdx } from '../../../utils/reducers/designSliceV3';
 
-export default function ButtonDeletePage({ pageId, pageIdx }) {
+export default function ButtonDeletePage({ pageId, canDelete }) {
   const dispatch = useDispatch();
   return (
     <Tooltip title='Delete Page'>
       <Fab
         size='small'
         onClick={() => {
-          try {
-            dispatch(deletePage(pageId));
-            dispatch(setSelectedPageIdx(pageIdx - 1));
-          } catch (error) {
+          if (canDelete) {
+            try {
+              dispatch(deletePageAndUpdateSelectedPageIdx(pageId));
+            } catch (error) {
+              dispatch(
+                setMessage({ severity: 'error', text: 'Delete page ' + error })
+              );
+            }
+          } else {
             dispatch(
-              setMessage({ severity: 'error', text: 'Delete page ' + error })
+              setMessage({
+                severity: 'error',
+                text: 'Cannot delete the only page',
+              })
             );
           }
         }}

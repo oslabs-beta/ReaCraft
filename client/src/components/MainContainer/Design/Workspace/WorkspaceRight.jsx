@@ -16,8 +16,8 @@ import ButtonsPrevNextPage from '../../../functionality/Page/ButtonsPrevNextPage
 export default function WorkspaceRight({ canvasWidth }) {
   const { title, pages } = useSelector((state) => state.designV3);
   const { selectedPageIdx } = useSelector((state) => state.app);
-  console.log('selectedPageIdx', selectedPageIdx);
-  const components = pages[selectedPageIdx].components;
+  const page = pages[selectedPageIdx];
+  const components = page.components;
   const { selectedIdx, windowWidth } = useSelector((state) => state.app);
   const tree = convertToTree(components);
   const codes = new Codes(components, tree, title);
@@ -39,7 +39,7 @@ export default function WorkspaceRight({ canvasWidth }) {
       <ButtonDownloadFiles jsx={jsx} css={css} />
       <ButtonAddPage pageIdx={selectedPageIdx} />
       <ButtonsPrevNextPage pageIdx={selectedPageIdx} />
-      <ButtonDeletePage />
+      <ButtonDeletePage pageId={page._id} canDelete={selectedPageIdx > 0} />
     </Stack>
   );
 }
