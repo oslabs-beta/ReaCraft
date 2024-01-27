@@ -4,14 +4,14 @@ const db = require('../models/dbModel');
 // Create a default RootContainer component for a new design
 const createRootComponent = (req, res, next) => {
   let pageId;
-  let pageIdx;
+  let pageLen;
   if (res.locals.design) {
     const pages = res.locals.design.pages;
     pageId = pages[pages.length - 1]._id;
-    pageIdx = 0;
+    pageLen = 0;
   } else if (res.locals.newPage) {
     pageId = res.locals.newPage._id;
-    pageIdx = res.locals.newPage.index;
+    pageLen = req.body.pageLen;
   } else {
     throw new Error('No page to create new root component');
   }
@@ -20,7 +20,7 @@ const createRootComponent = (req, res, next) => {
       'INSERT INTO components (page_id, index, name) ' +
         'VALUES ($1, $2, $3) ' +
         'RETURNING *;',
-      [pageId, 0, `Page${pageIdx}`]
+      [pageId, 0, `Page${pageLen}`]
     )
     .then((data) => {
       if (res.locals.design) {

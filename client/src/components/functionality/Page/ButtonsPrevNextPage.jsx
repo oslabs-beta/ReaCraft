@@ -8,6 +8,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 
 export default function ButtonsPrevNextPage({ pageIdx }) {
   const pageLen = useSelector((state) => state.designV3.pages).length;
+  console.log('current page', pageIdx, 'pageLen', pageLen);
   const dispatch = useDispatch();
   return (
     <Fragment>

@@ -38,7 +38,7 @@ export default function WorkspaceRight({ canvasWidth }) {
 
       <ButtonDownloadFiles jsx={jsx} css={css} />
       <ButtonAddPage pageIdx={selectedPageIdx} />
-      <ButtonsPrevNextPage pageIdx={selectedIdx} />
+      <ButtonsPrevNextPage pageIdx={selectedPageIdx} />
       <ButtonDeletePage />
     </Stack>
   );
