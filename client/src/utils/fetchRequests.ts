@@ -403,7 +403,6 @@ export function addNewPageRequest(
     pageIdx: number;
     userImage: string;
     imageHeight: number;
-    pageLen: number;
   }
 ): Promise<{
   newPage: Page;

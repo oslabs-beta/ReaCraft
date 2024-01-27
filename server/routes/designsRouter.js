@@ -61,6 +61,7 @@ router.post(
   pageController.addNewPage,
   pageController.shiftPages,
   componentController.createRootComponent,
+  componentController.updateRootComponentNameForShiftedPages,
   rectangleController.createRootRectangle,
   (req, res) =>
     res
