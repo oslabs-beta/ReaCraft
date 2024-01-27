@@ -82,5 +82,12 @@
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "*.js",
+      "*.ts"
+    ],
+    "ext": "js,ts"
   }
 }

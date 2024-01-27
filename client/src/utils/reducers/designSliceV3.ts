@@ -117,7 +117,6 @@ export const addNewPage = createAsyncThunk(
       pageIdx: number;
       userImage: string;
       imageHeight: number;
-      pageLen: number;
     };
   }) => await addNewPageRequest(arg.designId, arg.body)
 );
@@ -385,7 +384,10 @@ const designSliceV3 = createSlice({
           state.pages.splice(newPage.index, 0, newPage);
           shifted.forEach(({ _id, index }) => {
             const page = state.pages.find((item) => item._id === _id);
-            if (page) page.index = index;
+            if (page) {
+              page.index = index;
+              page.components[0].name = `Page${index}`;
+            }
           });
         }
       );
@@ -397,7 +399,6 @@ export const addNewPageAndUpdateSelectedPageIdx =
   async (dispatch: any, getState: any) => {
     const state = getState();
     const pageIdx = state.app.selectedPageIdx;
-    const pages = state.designV3.pages;
     // Destructure params to get necessary values
     const { designId, userImage, imageHeight } = params;
     // Dispatch the first action and wait for it to complete
@@ -408,7 +409,6 @@ export const addNewPageAndUpdateSelectedPageIdx =
           pageIdx: pageIdx + 1,
           userImage,
           imageHeight,
-          pageLen: pages.length,
         },
       })
     );
@@ -421,10 +421,11 @@ export const addNewPageAndUpdateSelectedPageIdx =
 
 export const deletePageAndUpdateSelectedPageIdx =
   (pageId: number) => async (dispatch: any, getState: any) => {
-    await dispatch(deletePage(pageId));
     const state = getState();
     const pageIdx = state.app.selectedPageIdx;
-    dispatch(setSelectedPageIdx(pageIdx - 1));
+    dispatch(setSelectedPageIdx(Math.max(pageIdx - 1, 0)));
+
+    await dispatch(deletePage(pageId));
     dispatch(
       setMessage({
         severity: 'success',
