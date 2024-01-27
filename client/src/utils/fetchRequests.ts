@@ -24,6 +24,10 @@ export function addDesignRequest(body: {
       }
       return res.json();
     })
+    .then((data) => {
+      console.log('new design', data);
+      return data;
+    })
     .then(handleDesignRes)
     .catch((err) => {
       console.log('App: add design: ERROR: ', err);
@@ -31,17 +35,13 @@ export function addDesignRequest(body: {
     });
 }
 
-export function updateDesignRequest(
+export function updateDesignTitleRequest(
   designId: number,
   body: {
-    userImage: string;
-    imageToDelete?: string;
-    imageHeight?: number;
-    title?: string;
-    rootId?: number;
+    title: string;
   }
 ): Promise<Design> {
-  return fetch(`/designs/update/${designId}`, {
+  return fetch(`designs/update-title/${designId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'Application/JSON',
@@ -61,10 +61,10 @@ export function updateDesignRequest(
 }
 
 export function addNewComponentRequest(
-  designId: number,
+  pageId: number,
   body: { index: number; rootId: number; name: string }
 ): Promise<Component> {
-  return fetch(`/designs/new-component/${designId}`, {
+  return fetch(`/pages/new-component/${pageId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'Application/JSON',
@@ -157,6 +157,7 @@ export function deleteDesign(
 export function deleteComponentRequest(componentId: number): Promise<{
   shifted: Array<{ _id: number; index: number }>;
   indexDeleted: number;
+  pageId: number;
 }> {
   return fetch(`/components/delete/${componentId}`, {
     method: 'DELETE',
@@ -177,8 +178,13 @@ export function deleteComponentRequest(componentId: number): Promise<{
 
 export function updateComponentParentRequest(
   componentId: number,
-  body: { parentId: number }
-): Promise<{ componentId: number; parentId: number }> {
+  body: { parentId: number; pageIdx: number }
+): Promise<{
+  componentId: number;
+  parentId: number;
+  parentName: string;
+  pageIdx: number;
+}> {
   return fetch(`/components/update-parent/${componentId}`, {
     method: 'POST',
     headers: {
@@ -226,8 +232,10 @@ export function submitComponentFormRequest(
     innerHtml: string;
     styles: { [key: string]: any };
     props: { [key: string]: any };
+    pageIdx: number;
+    htmlTag: HtmlTag;
   }
-): Promise<Component> {
+): Promise<{ updatedComponent: Component; pageIdx: number }> {
   return fetch(`/components/submit/${componentId}`, {
     method: 'POST',
     headers: {
@@ -241,7 +249,12 @@ export function submitComponentFormRequest(
       }
       return res.json();
     })
-    .then(handleComponentRes)
+    .then(({ updatedComponent, pageIdx }) => {
+      return {
+        updatedComponent: handleComponentRes(updatedComponent),
+        pageIdx: Number(pageIdx),
+      };
+    })
     .catch((err) => {
       throw err;
     });
@@ -276,8 +289,9 @@ export function updateComponentRectanglePositionRequest(
     y: number;
     width: number;
     height: number;
+    pageIdx: number;
   }
-): Promise<Rectangle> {
+): Promise<{ updatedRectangle: Rectangle; pageIdx: number }> {
   return fetch(`/components/update-position/${componentId}`, {
     method: 'POST',
     headers: {
@@ -291,7 +305,10 @@ export function updateComponentRectanglePositionRequest(
       }
       return res.json();
     })
-    .then(handleRectangleRes)
+    .then(({ updatedRectangle, pageIdx }) => ({
+      updatedRectangle: handleRectangleRes(updatedRectangle),
+      pageIdx: Number(pageIdx),
+    }))
     .catch((err) => {
       throw err;
     });
@@ -305,9 +322,10 @@ export function updateComponentRectangleStyleRequest(
       | 'backgroundColor'
       | 'borderWidth'
       | 'borderRadius';
+    pageIdx: number;
     value: string | number;
   }
-): Promise<Rectangle> {
+): Promise<{ updatedRectangle: Rectangle; pageIdx: number }> {
   return fetch(`/components/update-rectangle-style/${componentId}`, {
     method: 'POST',
     headers: {
@@ -321,7 +339,10 @@ export function updateComponentRectangleStyleRequest(
       }
       return res.json();
     })
-    .then(handleRectangleRes)
+    .then(({ updatedRectangle, pageIdx }) => ({
+      updatedRectangle: handleRectangleRes(updatedRectangle),
+      pageIdx: Number(pageIdx),
+    }))
     .catch((err) => {
       throw err;
     });
