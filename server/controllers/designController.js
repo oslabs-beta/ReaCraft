@@ -121,9 +121,25 @@ const getDesignById = (req, res, next) => {
     .catch((err) =>
       next({
         log:
-          'Express error handler caught componentController.getDesignById middleware error' +
+          'Express error handler caught designController.getDesignById middleware error' +
           err,
         message: { err: 'getDesignById: ' + err },
+      })
+    );
+};
+
+const updateDesignTimestamp = (req, res, next) => {
+  let designId = res.locals.designId;
+  if (!designId) designId = req.params.designId;
+  return db
+    .query('UPDATE designs SET last_updated = CURRENT_TIMESTAMP;')
+    .then(() => next())
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught designController.updateDesignTimestamp middleware error' +
+          err,
+        message: { err: 'updateDesignTimestamp: ' + err },
       })
     );
 };
@@ -135,4 +151,5 @@ module.exports = {
   updateDesignTitleOrCover,
   updateDesign,
   getDesignById,
+  updateDesignTimestamp,
 };
