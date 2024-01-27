@@ -64,19 +64,28 @@ const deletePageById = (req, res, next) => {
 };
 
 const shiftPages = (req, res, next) => {
-  const { indexDeleted, indexInserted, designId } = res.locals;
+  const { indexDeleted, indexInserted, designId, pageId } = res.locals;
+  console.log(
+    'indexDeleted, indexInserted, designId',
+    indexDeleted,
+    indexInserted,
+    designId,
+    pageId
+  );
   const plusOrMinus = indexDeleted ? '-' : '+';
   const value = indexDeleted || indexInserted;
+  console.log('value', value);
   return db
     .query(
       'UPDATE pages ' +
         `SET index = index ${plusOrMinus} 1 ` +
-        'WHERE design_id = $1 AND index > $2 ' +
+        'WHERE design_id = $1 AND index >= $2 AND _id != $3 ' +
         'RETURNING _id, index;',
-      [designId, value]
+      [designId, value, pageId]
     )
     .then((data) => {
       res.locals.shiftedIndices = data.rows;
+      console.log('in shiftPages shifted are', res.locals.shiftedIndices);
       return next();
     })
     .catch((err) =>
@@ -102,6 +111,7 @@ const addNewPage = (req, res, next) => {
       res.locals.newPage = data.rows[0];
       res.locals.designId = data.rows[0].design_id;
       res.locals.indexInserted = pageIdx;
+      res.locals.pageId = data.rows[0]._id;
       return next();
     })
     .catch((err) =>
