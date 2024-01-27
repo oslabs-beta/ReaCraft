@@ -9,6 +9,7 @@ import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
 import {
   addNewPage,
+  addNewPageAndUpdateSelectedPageIdx,
   updateRootHeight,
 } from '../../../utils/reducers/designSliceV3';
 import { styled } from '@mui/material/styles';
@@ -46,13 +47,10 @@ export default function ButtonAddPage({ pageIdx }) {
           console.log('userImage');
           try {
             dispatch(
-              addNewPage({
+              addNewPageAndUpdateSelectedPageIdx({
                 designId: _id,
-                body: {
-                  pageIdx,
-                  userImage,
-                  imageHeight,
-                },
+                userImage,
+                imageHeight,
               })
             );
           } catch (err) {
