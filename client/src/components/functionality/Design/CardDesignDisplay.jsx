@@ -1,21 +1,15 @@
 import React from 'react';
-import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useDispatch } from 'react-redux';
-import {
-  setSearchTerm,
-  getDesignDetails,
-} from '../../../utils/reducers/designSliceV3';
 import InputDesignTitle from './InputDesignTitle_DesignCard';
 import Paper from '@mui/material/Paper';
 import {
-  goToPage,
+  getDesignDetailsAndSetApp,
   setMessage,
-  setSelectedPageIdx,
 } from '../../../utils/reducers/appSlice';
 
 export default function CardDesignDisplay({ design }) {
@@ -24,11 +18,7 @@ export default function CardDesignDisplay({ design }) {
 
   const handleViewDesign = async () => {
     try {
-      dispatch(getDesignDetails(design._id));
-      dispatch(setSelectedPageIdx(0));
-      dispatch(goToPage('DESIGN'));
-      // resets the search term in redux state
-      dispatch(setSearchTerm(''));
+      dispatch(getDesignDetailsAndSetApp(design._id));
     } catch (err) {
       dispatch(
         setMessage({
