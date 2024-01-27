@@ -284,6 +284,25 @@ const updateRootComponentNameForShiftedPages = async (req, res, next) => {
   }
 };
 
+const getPageId = (req, res, next) => {
+  let componentId = res.locals.componentId;
+  if (!componentId) componentId = req.params.componentId;
+  return db
+    .query('SELECT page_id FROM components WHERE _id = $1;', [componentId])
+    .then((data) => {
+      res.locals.pageId = data.rows[0].page_id;
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught pageController.getDesignId middleware error' +
+          err,
+        message: { err: 'getDesignId: ' + err },
+      })
+    );
+};
+
 module.exports = {
   getComponents,
   createRootComponent,
@@ -295,4 +314,5 @@ module.exports = {
   updateComponentForm,
   updateHtmlForAllSameComponents,
   updateRootComponentNameForShiftedPages,
+  getPageId,
 };

@@ -35,6 +35,7 @@ router.post(
 router.post(
   '/update/:designId',
   designController.updateDesignTitleOrCover,
+  designController.updateDesignTimestamp,
   (req, res) => {
     res.status(200).send({ message: 'updated design successfully' });
   }
@@ -65,6 +66,7 @@ router.post(
   componentController.createRootComponent,
   componentController.updateRootComponentNameForShiftedPages,
   rectangleController.createRootRectangle,
+  designController.updateDesignTimestamp,
   (req, res) =>
     res
       .status(200)
