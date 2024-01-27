@@ -11,6 +11,7 @@ import ButtonViewTree from '../../../functionality/Design/ButtonViewTree';
 import ButtonDownloadFiles from '../../../functionality/Component/ButtonDownloadFiles';
 import ButtonDeletePage from '../../../functionality/Page/ButtonDeletePage';
 import ButtonAddPage from '../../../functionality/Page/ButtonAddPage';
+import ButtonsPrevNextPage from '../../../functionality/Page/ButtonsPrevNextPage';
 
 export default function WorkspaceRight({ canvasWidth }) {
   const { title, pages } = useSelector((state) => state.designV3);
@@ -37,6 +38,7 @@ export default function WorkspaceRight({ canvasWidth }) {
 
       <ButtonDownloadFiles jsx={jsx} css={css} />
       <ButtonAddPage pageIdx={selectedPageIdx} />
+      <ButtonsPrevNextPage pageIdx={selectedIdx} />
       <ButtonDeletePage />
     </Stack>
   );

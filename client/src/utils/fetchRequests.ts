@@ -399,8 +399,18 @@ export function deletePageRequest(pageId: number): Promise<{
 
 export function addNewPageRequest(
   designId: number,
-  body: { pageIdx: number; imageUrl: string; imageHeight: number }
-): Promise<{ newPage: Page; shifted: { _id: number; index: number }[] }> {
+  body: {
+    pageIdx: number;
+    userImage: string;
+    imageHeight: number;
+  }
+): Promise<{
+  newPage: Page;
+  shifted: {
+    _id: number;
+    index: number;
+  }[];
+}> {
   return fetch(`/designs/new-page/${designId}`, {
     method: 'POST',
     headers: {

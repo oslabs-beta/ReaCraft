@@ -92,14 +92,16 @@ const shiftPages = (req, res, next) => {
 
 const addNewPage = (req, res, next) => {
   const { designId } = req.params;
-  const { imageUrl, pageIdx } = req.body;
+  const { pageIdx } = req.body;
+  const { onlineImageUrl } = res.locals;
   return db
     .query(
       'INSERT INTO pages (design_id, index, image_url) VALUES ($1, $2, $3) RETURNING *;',
-      [designId, pageIdx, imageUrl]
+      [designId, pageIdx, onlineImageUrl]
     )
     .then((data) => {
       res.locals.newPage = data.rows[0];
+      console.log('new page', res.locals.newPage);
       res.locals.indexInserted = pageIdx;
       return next();
     })
