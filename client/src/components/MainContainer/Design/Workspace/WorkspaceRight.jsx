@@ -12,12 +12,13 @@ import ButtonDownloadFiles from '../../../functionality/Component/ButtonDownload
 import ButtonDeletePage from '../../../functionality/Page/ButtonDeletePage';
 import ButtonAddPage from '../../../functionality/Page/ButtonAddPage';
 import ButtonsPrevNextPage from '../../../functionality/Page/ButtonsPrevNextPage';
+import ButtonSetPageAsDesignCover from '../../../functionality/Design/ButtonSetPageAsDesignCover';
 
 export default function WorkspaceRight({ canvasWidth }) {
-  const { title, pages } = useSelector((state) => state.designV3);
+  const { title, pages, _id } = useSelector((state) => state.designV3);
   const { selectedPageIdx } = useSelector((state) => state.app);
-  console.log('selectedPageIdx', selectedPageIdx);
-  const components = pages[selectedPageIdx].components;
+  const page = pages[selectedPageIdx];
+  const components = page.components;
   const { selectedIdx, windowWidth } = useSelector((state) => state.app);
   const tree = convertToTree(components);
   const codes = new Codes(components, tree, title);
@@ -28,18 +29,17 @@ export default function WorkspaceRight({ canvasWidth }) {
       direction={windowWidth - 320 > canvasWidth ? 'column' : 'row'}
       gap={2}
     >
-      <UserImageUploadButton />
       <ButtonViewTree tree={tree} />
       <ButtonViewCode
         css={css}
         jsx={jsx}
         name={selectedIdx !== null ? components[selectedIdx].name : null}
       />
-
+      <ButtonSetPageAsDesignCover designId={_id} imageUrl={page.image_url} />
       <ButtonDownloadFiles jsx={jsx} css={css} />
       <ButtonAddPage pageIdx={selectedPageIdx} />
       <ButtonsPrevNextPage pageIdx={selectedPageIdx} />
-      <ButtonDeletePage />
+      <ButtonDeletePage pageId={page._id} canDelete={pages.length > 1} />
     </Stack>
   );
 }

@@ -1,17 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setMessage,
-  setSelectedPageIdx,
-} from '../../../utils/reducers/appSlice';
+import { setMessage } from '../../../utils/reducers/appSlice';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
-import {
-  addNewPage,
-  addNewPageAndUpdateSelectedPageIdx,
-  updateRootHeight,
-} from '../../../utils/reducers/designSliceV3';
+import { addNewPageAndUpdateSelectedPageIdx } from '../../../utils/reducers/designSliceV3';
 import { styled } from '@mui/material/styles';
 
 export const VisuallyHiddenInput = styled('input')({
