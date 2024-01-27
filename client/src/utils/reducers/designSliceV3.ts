@@ -12,7 +12,7 @@ import {
   deletePageRequest,
   addNewPageRequest,
 } from '../fetchRequests';
-import { setSelectedPageIdx } from './appSlice';
+import { setMessage, setSelectedPageIdx } from './appSlice';
 import {
   Component,
   Design,
@@ -121,30 +121,6 @@ export const addNewPage = createAsyncThunk(
     };
   }) => await addNewPageRequest(arg.designId, arg.body)
 );
-
-export const addNewPageAndUpdateSelectedPageIdx =
-  (params: { designId: number; userImage: string; imageHeight: number }) =>
-  async (dispatch: any, getState: any) => {
-    const state = getState();
-    const pageIdx = state.app.selectedPageIdx;
-    const pages = state.designV3.pages;
-    // Destructure params to get necessary values
-    const { designId, userImage, imageHeight } = params;
-    // Dispatch the first action and wait for it to complete
-    await dispatch(
-      addNewPage({
-        designId,
-        body: {
-          pageIdx: pageIdx + 1,
-          userImage,
-          imageHeight,
-          pageLen: pages.length,
-        },
-      })
-    );
-    // Dispatch the second action
-    dispatch(setSelectedPageIdx(pageIdx + 1));
-  };
 
 const asyncThunks = [
   newDesign,
@@ -415,6 +391,47 @@ const designSliceV3 = createSlice({
       );
   },
 });
+
+export const addNewPageAndUpdateSelectedPageIdx =
+  (params: { designId: number; userImage: string; imageHeight: number }) =>
+  async (dispatch: any, getState: any) => {
+    const state = getState();
+    const pageIdx = state.app.selectedPageIdx;
+    const pages = state.designV3.pages;
+    // Destructure params to get necessary values
+    const { designId, userImage, imageHeight } = params;
+    // Dispatch the first action and wait for it to complete
+    await dispatch(
+      addNewPage({
+        designId,
+        body: {
+          pageIdx: pageIdx + 1,
+          userImage,
+          imageHeight,
+          pageLen: pages.length,
+        },
+      })
+    );
+    // Dispatch the second action
+    dispatch(setSelectedPageIdx(pageIdx + 1));
+    dispatch(
+      setMessage({ severity: 'success', text: 'added new page successfully' })
+    );
+  };
+
+export const deletePageAndUpdateSelectedPageIdx =
+  (pageId: number) => async (dispatch: any, getState: any) => {
+    await dispatch(deletePage(pageId));
+    const state = getState();
+    const pageIdx = state.app.selectedPageIdx;
+    dispatch(setSelectedPageIdx(pageIdx - 1));
+    dispatch(
+      setMessage({
+        severity: 'success',
+        text: 'deleted page successfully',
+      })
+    );
+  };
 
 export const {
   resetDesign,
