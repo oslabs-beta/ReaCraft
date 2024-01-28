@@ -1,0 +1,14 @@
+:root {
+  --root-width: 800px;
+  --root-height: 841.12px;
+}
+
+
+#Page1 {
+  position: relative;
+  width: calc(var(--root-width) * 1);
+  height: calc(var(--root-height) * 1);
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+}

@@ -1,0 +1,58 @@
+:root {
+  --root-width: 800px;
+  --root-height: 457.14px;
+}
+
+
+#Page0 {
+  position: relative;
+  width: calc(var(--root-width) * 1);
+  height: calc(var(--root-height) * 1);
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+}
+
+#New-3 {
+  position: absolute;
+  width: calc(var(--root-width) * 0.125);
+  height: calc(var(--root-height) * 0.219);
+  border-color: black;
+  left: calc(var(--root-width) * 0);
+  top: calc(var(--root-height) * 0);
+  border-width: 3px;
+  border-style: solid;
+}
+
+#Face-3 {
+  position: absolute;
+  width: calc(var(--root-width) * 0.125);
+  height: calc(var(--root-height) * 0.219);
+  border-color: black;
+  left: calc(var(--root-width) * 0);
+  top: calc(var(--root-height) * 0);
+  border-width: 3px;
+  border-style: solid;
+}
+
+#Claire-2 {
+  position: absolute;
+  width: calc(var(--root-width) * 0.187);
+  height: calc(var(--root-height) * 0.326);
+  border-color: black;
+  left: calc(var(--root-width) * 0.609);
+  top: calc(var(--root-height) * 0.223);
+  border-width: 3px;
+  border-style: solid;
+}
+
+#Amir-1 {
+  position: absolute;
+  width: calc(var(--root-width) * 0.185);
+  height: calc(var(--root-height) * 0.324);
+  border-color: black;
+  left: calc(var(--root-width) * 0.063);
+  top: calc(var(--root-height) * 0.523);
+  border-width: 3px;
+  border-style: solid;
+}
