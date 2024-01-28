@@ -21,9 +21,6 @@ export const VisuallyHiddenInput = styled('input')({
 
 export default function ButtonAddPage({ pageIdx }) {
   const { _id, pages } = useSelector((state) => state.designV3);
-  console.log('pages are', pages);
-  const page = pages[pageIdx];
-  console.log(page);
   const dispatch = useDispatch();
 
   function handleFileChange(e) {
