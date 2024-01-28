@@ -36,7 +36,7 @@ export default function App() {
     return;
   }
 
-  const error = useSelector((state) => state.designV2.error);
+  const error = useSelector((state) => state.designV3.error);
   if (error) {
     setMessage({
       severity: 'error',
@@ -84,8 +84,6 @@ export default function App() {
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
-  const design = useSelector((state) => state.designV3);
-  console.log('in App.jsx, ', design);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

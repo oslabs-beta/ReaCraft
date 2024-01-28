@@ -22,14 +22,16 @@ const addNewDesign = (req, res, next) => {
     );
 };
 
-const updateDesignTitle = (req, res, next) => {
-  const { title } = req.body;
+const updateDesignTitleOrCover = (req, res, next) => {
+  const { title, imageUrl } = req.body;
   const { designId } = req.params;
+  const column = title ? 'title' : 'image_url';
+  const value = title || imageUrl;
   return db
-    .query(
-      'UPDATE designs SET title = $1, last_updated = CURRENT_TIMESTAMP WHERE _id = $2 RETURNING *;',
-      [title, designId]
-    )
+    .query(`UPDATE designs SET ${column} = $1 WHERE _id = $2 RETURNING *;`, [
+      value,
+      designId,
+    ])
     .then((data) => (res.locals.design = data.rows[0]))
     .then(() => next())
     .catch((err) =>
@@ -119,9 +121,25 @@ const getDesignById = (req, res, next) => {
     .catch((err) =>
       next({
         log:
-          'Express error handler caught componentController.getDesignById middleware error' +
+          'Express error handler caught designController.getDesignById middleware error' +
           err,
         message: { err: 'getDesignById: ' + err },
+      })
+    );
+};
+
+const updateDesignTimestamp = (req, res, next) => {
+  let designId = res.locals.designId;
+  if (!designId) designId = req.params.designId;
+  return db
+    .query('UPDATE designs SET last_updated = CURRENT_TIMESTAMP;')
+    .then(() => next())
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught designController.updateDesignTimestamp middleware error' +
+          err,
+        message: { err: 'updateDesignTimestamp: ' + err },
       })
     );
 };
@@ -130,7 +148,8 @@ module.exports = {
   getDesigns,
   deleteDesign,
   addNewDesign,
-  updateDesignTitle,
+  updateDesignTitleOrCover,
   updateDesign,
   getDesignById,
+  updateDesignTimestamp,
 };

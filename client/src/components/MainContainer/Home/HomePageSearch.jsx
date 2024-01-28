@@ -10,17 +10,14 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useAuth } from '../../../hooks/useAuth';
-import {
-  getDesignDetails,
-  setSearchTerm,
-} from '../../../utils/reducers/designSliceV3';
+import { setSearchTerm } from '../../../utils/reducers/designSliceV3';
 
 export default function HomePageSearch() {
   const { user } = useAuth();
   const dispatch = useDispatch();
   const theme = useTheme();
   // state to set the search bar text
-  const searchTerm = useSelector((state) => state.designV2.searchTerm);
+  const searchTerm = useSelector((state) => state.designV3.searchTerm);
   const [searchText, setSearchText] = useState('');
   const searchBarTheme =
     theme.palette.mode === 'dark'
@@ -42,7 +39,7 @@ export default function HomePageSearch() {
       elevation={2}
       sx={{
         padding: 4,
-        margin: .3,
+        margin: 0.3,
         marginBottom: '3%',
         backgroundImage: searchBarTheme,
         width: 'auto',

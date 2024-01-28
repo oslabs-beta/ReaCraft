@@ -1,8 +1,15 @@
-import { Component, Design, HtmlTag, Rectangle } from '../../../docs/types';
+import {
+  Component,
+  Design,
+  HtmlTag,
+  Page,
+  Rectangle,
+} from '../../../docs/types';
 import {
   DesignRes,
   handleComponentRes,
   handleDesignRes,
+  handlePageRes,
   handleRectangleRes,
 } from './handleReceivedData';
 
@@ -30,31 +37,6 @@ export function addDesignRequest(body: {
     .then(handleDesignRes)
     .catch((err) => {
       console.log('App: add design: ERROR: ', err);
-      throw err;
-    });
-}
-
-export function updateDesignTitleRequest(
-  designId: number,
-  body: {
-    title: string;
-  }
-): Promise<Design> {
-  return fetch(`designs/update-title/${designId}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'Application/JSON',
-    },
-    body: JSON.stringify(body),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-      return res.json();
-    })
-    .then(handleDesignRes)
-    .catch((err) => {
       throw err;
     });
 }
@@ -318,9 +300,9 @@ export function updateComponentRectangleStyleRequest(
   body: {
     styleToChange:
       | 'stroke'
-      | 'backgroundColor'
-      | 'borderWidth'
-      | 'borderRadius';
+      | 'background_color'
+      | 'border_width'
+      | 'border_radius';
     pageIdx: number;
     value: string | number;
   }
@@ -348,7 +330,8 @@ export function updateComponentRectangleStyleRequest(
 }
 
 export function downloadProject(body: {
-  filesData: { filename: string; content: string }[];
+  pagesData: { [key: string]: { filename: string; content: string }[] };
+  appData: { filename: string; content: string };
   title: string;
 }) {
   return fetch('/download', {
@@ -363,6 +346,88 @@ export function downloadProject(body: {
         throw new Error(res.statusText);
       }
       return res.blob();
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function deletePageRequest(pageId: number): Promise<{
+  shifted: { _id: number; index: number }[];
+  indexDeleted: number;
+}> {
+  return fetch(`/pages/delete/${pageId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function addNewPageRequest(
+  designId: number,
+  body: {
+    pageIdx: number;
+    userImage: string;
+    imageHeight: number;
+  }
+): Promise<{
+  newPage: Page;
+  shifted: {
+    _id: number;
+    index: number;
+  }[];
+}> {
+  return fetch(`/designs/new-page/${designId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    })
+    .then(({ newPage, shifted }) => ({
+      newPage: handlePageRes(newPage),
+      shifted,
+    }))
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function updateDesignCoverOrTitleRequest(
+  designId: number,
+  body: {
+    imageUrl?: string;
+    title?: string;
+  }
+): Promise<{ message: 'updated design successfully' }> {
+  return fetch(`designs/update/${designId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
     })
     .catch((err) => {
       throw err;

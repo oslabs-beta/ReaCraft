@@ -11,6 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import { resetDesign } from '../../../utils/reducers/designSliceV3';
+import { Tooltip } from '@mui/material';
 
 export default function ButtonDeleteDesign() {
   const designId = useSelector((state) => state.designV3._id);
@@ -32,9 +33,12 @@ export default function ButtonDeleteDesign() {
 
   return (
     <Fragment>
-      <Fab size='small' onClick={() => setOpen(true)} color='error'>
-        <Delete />
-      </Fab>
+      <Tooltip title='delete design'>
+        <Fab size='small' onClick={() => setOpen(true)} color='error'>
+          <Delete />
+        </Fab>
+      </Tooltip>
+
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>

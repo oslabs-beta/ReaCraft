@@ -12,9 +12,12 @@ import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material';
 
 export default function Workspace() {
-  const { image_url, pages, _id } = useSelector((state) => state.designV3);
+  const { pages } = useSelector((state) => state.designV3);
   const { selectedIdx, windowWidth, zoom, windowHeight, selectedPageIdx } =
     useSelector((state) => state.app);
+
+  console.log('selectedPageIdx', selectedPageIdx);
+  const { image_url } = pages[selectedPageIdx];
   const dispatch = useDispatch();
   const theme = useTheme();
   const components = pages[selectedPageIdx].components;

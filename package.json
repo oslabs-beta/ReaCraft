@@ -46,6 +46,7 @@
     "@mui/lab": "^5.0.0-alpha.161",
     "@mui/material": "^5.15.3",
     "@reduxjs/toolkit": "^2.0.1",
+    "@types/rimraf": "^4.0.5",
     "archiver": "^6.0.1",
     "aws-sdk": "^2.1534.0",
     "cookie": "^0.6.0",
@@ -82,5 +83,12 @@
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "*.js",
+      "*.ts"
+    ],
+    "ext": "js,ts"
   }
 }

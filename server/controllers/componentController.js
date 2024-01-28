@@ -3,18 +3,32 @@ const db = require('../models/dbModel');
 
 // Create a default RootContainer component for a new design
 const createRootComponent = (req, res, next) => {
-  const pages = res.locals.design.pages;
-  const pageId = pages[pages.length - 1]._id;
+  let pageId;
+  let pageIdx;
+  if (res.locals.design) {
+    const pages = res.locals.design.pages;
+    pageId = pages[pages.length - 1]._id;
+    pageIdx = 0;
+  } else if (res.locals.newPage) {
+    pageId = res.locals.newPage._id;
+    pageIdx = res.locals.newPage.index;
+  } else {
+    throw new Error('No page to create new root component');
+  }
   return db
     .query(
       'INSERT INTO components (page_id, index, name) ' +
         'VALUES ($1, $2, $3) ' +
         'RETURNING *;',
-      [pageId, 0, 'RootContainer']
+      [pageId, 0, `Page${pageIdx}`]
     )
     .then((data) => {
-      res.locals.design.pages[pages.length - 1].components = [data.rows[0]];
-      return next(); // next middleware is rectangleController.createRootRectangle
+      if (res.locals.design) {
+        res.locals.design.pages[0].components = [data.rows[0]];
+      } else {
+        res.locals.newPage.components = [data.rows[0]];
+      }
+      return next();
     })
     .catch((err) =>
       next({
@@ -68,13 +82,11 @@ const addNewComponent = async (req, res, next) => {
       return next();
     } else {
       const { html_tag, inner_html } = prevComponentRes.rows[0];
-      console.log('in addNewComponent', prevComponentRes.rows[0]);
       data = await db.query(
         'INSERT INTO components (page_id, name, index, parent_id, html_tag, inner_html) ' +
           'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;',
         [pageId, name, index, rootId, html_tag, inner_html]
       );
-      console.log('in addNewComponent', data.rows);
       res.locals.component = data.rows[0];
       return next();
     }
@@ -97,7 +109,6 @@ const deleteComponentById = (req, res, next) => {
     .then((data) => {
       const { index, page_id } = data.rows[0];
       res.locals.indexDeleted = index;
-      console.log('indexDeleted:', index);
       res.locals.pageId = page_id;
       return next();
     })
@@ -165,7 +176,6 @@ const updateParent = async (req, res, next) => {
 
 const updateHtmlForAllSameComponents = async (req, res, next) => {
   const { componentName, htmlTag, pageId, innerHtml } = res.locals;
-  console.log('updating html for all same components');
   if (!htmlTag) return next();
   try {
     const pageRes = await db.query(
@@ -254,6 +264,45 @@ const updateComponentForm = (req, res, next) => {
     );
 };
 
+const updateRootComponentNameForShiftedPages = async (req, res, next) => {
+  const shifted = res.locals.shiftedIndices;
+  try {
+    for (const { _id, index } of shifted) {
+      await db.query(
+        'UPDATE components SET name = $1 WHERE page_id = $2 AND index = 0;',
+        [`Page${index}`, _id]
+      );
+    }
+    return next();
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught componentController.updateRootComponentNameForShiftedPages middleware error' +
+        err,
+      message: { err: 'updateRootComponentNameForShiftedPages: ' + err },
+    });
+  }
+};
+
+const getPageId = (req, res, next) => {
+  let componentId = res.locals.componentId;
+  if (!componentId) componentId = req.params.componentId;
+  return db
+    .query('SELECT page_id FROM components WHERE _id = $1;', [componentId])
+    .then((data) => {
+      res.locals.pageId = data.rows[0].page_id;
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught pageController.getDesignId middleware error' +
+          err,
+        message: { err: 'getDesignId: ' + err },
+      })
+    );
+};
+
 module.exports = {
   getComponents,
   createRootComponent,
@@ -264,4 +313,6 @@ module.exports = {
   resetParentHtml,
   updateComponentForm,
   updateHtmlForAllSameComponents,
+  updateRootComponentNameForShiftedPages,
+  getPageId,
 };
