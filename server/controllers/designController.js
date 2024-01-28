@@ -129,10 +129,24 @@ const getDesignById = (req, res, next) => {
 };
 
 const updateDesignTimestamp = (req, res, next) => {
-  let designId = res.locals.designId;
-  if (!designId) designId = req.params.designId;
+  let designId;
+  if (res.locals.designId) designId = res.locals.designId;
+  else if (req.params.designId) designId = req.params.designId;
+  else if (req.body.designId) designId = req.body.designId;
+  else {
+    return next({
+      log:
+        'Express error handler caught designController.updateDesignTimestamp middleware error' +
+        'designId not found',
+      message: { err: 'updateDesignTimestamp: designId not found' },
+    });
+  }
+  console.log('in updated timestamp, designID', designId);
   return db
-    .query('UPDATE designs SET last_updated = CURRENT_TIMESTAMP;')
+    .query(
+      'UPDATE designs SET last_updated = CURRENT_TIMESTAMP WHERE _id = $1;',
+      [designId]
+    )
     .then(() => next())
     .catch((err) =>
       next({
