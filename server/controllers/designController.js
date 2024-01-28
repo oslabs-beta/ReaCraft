@@ -141,8 +141,12 @@ const updateDesignTimestamp = (req, res, next) => {
       message: { err: 'updateDesignTimestamp: designId not found' },
     });
   }
+  console.log('in updated timestamp, designID', designId);
   return db
-    .query('UPDATE designs SET last_updated = CURRENT_TIMESTAMP;')
+    .query(
+      'UPDATE designs SET last_updated = CURRENT_TIMESTAMP WHERE _id = $1;',
+      [designId]
+    )
     .then(() => next())
     .catch((err) =>
       next({
