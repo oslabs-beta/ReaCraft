@@ -8,7 +8,6 @@ import { setMessage } from '../../../utils/reducers/appSlice';
 
 export default function ButtonSetPageAsDesignCover({ designId, imageUrl }) {
   const dispatch = useDispatch();
-  console.log('imageUrl', imageUrl);
   return (
     <Tooltip
       title='Set Page as Design Cover'

@@ -92,6 +92,5 @@ export function handleDesignRes(data: DesignRes): Design {
       handlePageRes(PageRes)
     );
   }
-  console.log('handling, ', newData);
   return newData;
 }
