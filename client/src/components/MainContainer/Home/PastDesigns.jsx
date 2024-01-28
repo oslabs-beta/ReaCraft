@@ -6,12 +6,14 @@ import { getDesigns } from '../../../utils/fetchRequests';
 import { Typography, useTheme } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { setMessage } from '../../../utils/reducers/appSlice';
+import ButtonSortPastDesigns from '../../functionality/Design/ButtonSortPastDesigns';
 
 export default function UserDesigns() {
   const [pastDesigns, setPastDesigns] = useState([]);
   const selectedDesign = useSelector((state) => state.designV3);
   const searchTerm = useSelector((state) => state.designV3.searchTerm);
   const [localSelectedDesignId, setLocalSelectedDesignId] = useState(null);
+  console.log('pastDesigns', pastDesigns);
   const dispatch = useDispatch();
 
   const theme = useTheme();
@@ -47,16 +49,22 @@ export default function UserDesigns() {
 
   return (
     <Box>
-      <Typography
-        sx={{
-          fontSize: '16',
-          color: theme.palette.mode === 'light' ? '2B2B2B' : '#F5EBE0',
-          fontWeight: 'bold',
-          marginBottom: 2,
-        }}
-      >
-        Recent designs
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+        <Typography
+          sx={{
+            fontSize: '16',
+            color: theme.palette.mode === 'light' ? '#2B2B2B' : '#F5EBE0',
+            fontWeight: 'bold',
+          }}
+        >
+          Recent designs
+        </Typography>
+        <ButtonSortPastDesigns
+          pastDesigns={pastDesigns}
+          setPastDesigns={setPastDesigns}
+        />
+      </Box>
+
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
