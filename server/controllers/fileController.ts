@@ -10,32 +10,68 @@ const downloadFiles = async (
   next: NextFunction
 ) => {
   const {
-    filesData,
+    pagesData,
+    appData,
     title,
   }: {
-    filesData: { filename: string; content: string }[];
+    pagesData: { [key: string]: { filename: string; content: string }[] };
+    appData: { filename: string; content: string };
     title: string;
   } = req.body;
   const projectPath = path.join(__dirname, '../boilerplate');
-  const componentPath = path.join(projectPath, './src/components');
+  const projectSrcPath = path.join(projectPath, './src');
 
   try {
-    if (!fs.existsSync(componentPath)) {
-      fs.mkdirSync(componentPath);
-    }
-    filesData.forEach((file) => {
-      fs.writeFileSync(path.join(componentPath, file.filename), file.content);
+    fs.writeFileSync(
+      path.join(projectSrcPath, appData.filename),
+      appData.content
+    );
+
+    Object.keys(pagesData).forEach((pageName) => {
+      const pagePath = path.join(projectSrcPath, `./${pageName}`);
+      if (!fs.existsSync(pagePath)) fs.mkdirSync(pagePath);
+      pagesData[pageName].forEach((file) =>
+        fs.writeFileSync(path.join(pagePath, file.filename), file.content)
+      );
     });
+
     res.attachment(`${title}.zip`);
     const archive = archiver('zip', { zlib: { level: 9 } });
     archive.pipe(res);
     archive.directory(projectPath, false);
-    await archive.finalize();
-    rimraf.sync(componentPath);
+
+    await new Promise((resolve, reject) => {
+      archive.on('end', resolve);
+      archive.on('error', reject);
+      archive.finalize();
+    });
+
+    const deletePath = (path: string) => {
+      return new Promise<void>((resolve, reject) => {
+        rimraf(path, (err: any) => {
+          if (err) {
+            console.error(`Error deleting ${path}:`, err);
+            reject(err);
+          } else {
+            console.log(`Successfully deleted ${path}`);
+            resolve();
+          }
+        });
+      });
+    };
+
+    // Delete appData file
+    await deletePath(path.join(projectSrcPath, appData.filename));
+
+    // Delete pagesData files and directories
+    for (const pageName of Object.keys(pagesData)) {
+      const pagePath = path.join(projectSrcPath, `./${pageName}`);
+      await deletePath(pagePath);
+    }
   } catch (err) {
-    next({
+    return next({
       log:
-        'Express error handler caught fileController.downloadFiles middleware error' +
+        'Express error handler caught fileController.downloadFiles middleware error: ' +
         err,
       message: { err: 'downloadFiles: ' + err },
     });
