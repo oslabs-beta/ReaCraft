@@ -1,19 +1,17 @@
 import { Component } from '../../../docs/types';
-import { convertObjToArr } from './convertBetweenObjArr';
 import TreeNode from './treeNode';
 
 export default class Codes {
   components: Component[];
   tree: TreeNode;
-  title: string;
-  constructor(components: Component[], tree: TreeNode, title: string) {
+  constructor(components: Component[], tree: TreeNode) {
     this.components = components;
     this.tree = tree;
-    this.title = title;
   }
 
   convertToCode(): { jsx: { [key: string]: string }; css: string } {
     const components = this.components;
+    const pageName = components[0].name;
     const tree = this.tree;
     const jsx: { [key: string]: string } = {};
     const position: { [key: number]: { top: number; left: number } } = {};
@@ -29,8 +27,8 @@ export default class Codes {
     position[components[0]._id] = { top: 0, left: 0 };
 
     css += `:root {
-  --root-width: ${rootWidth}px;
-  --root-height: ${rootHeight}px;
+  --${pageName}-width: ${rootWidth}px;
+  --${pageName}-height: ${rootHeight}px;
 }
 `;
 
@@ -45,8 +43,8 @@ export default class Codes {
       if (!component)
         throw new Error('Converting to code: cannot find component');
 
-      jsx[component.name] = this.jsx(component, cur.children, jsx);
-      css += this.css(component, position, rootWidth, rootHeight);
+      jsx[component.name] = this.jsx(pageName, component, cur.children, jsx);
+      css += this.css(component, position, rootWidth, rootHeight, pageName);
       stack = stack.concat(cur.children);
     }
 
@@ -57,7 +55,8 @@ export default class Codes {
     component: Component,
     position: { [key: number]: { top: number; left: number } },
     rootWidth: number,
-    rootHeight: number
+    rootHeight: number,
+    pageName: string
   ): string {
     let css = '';
 
@@ -84,23 +83,23 @@ export default class Codes {
       position[_id] = { top: y_position, left: x_position };
     }
 
-    css += `\n\n#${name}-${i} {
+    css += `\n\n#${name}${i > 0 ? `-${i}` : ''} {
   position: ${i === 0 ? 'relative' : 'absolute'};
-  width: calc(var(--root-width) * ${
-    Math.round((width / rootWidth) * 1000) / 1000
-  });
-  height: calc(var(--root-height) * ${
-    Math.round((height / rootHeight) * 1000) / 1000
-  });
+  width: calc(var(--${pageName}-width) * ${
+      Math.round((width / rootWidth) * 1000) / 1000
+    });
+  height: calc(var(--${pageName}-height) * ${
+      Math.round((height / rootHeight) * 1000) / 1000
+    });
   border-color: ${stroke};`;
     if (i > 0) {
       css += `
-  left: calc(var(--root-width) * ${
-    Math.round(((x_position - parentPos.left) / rootWidth) * 1000) / 1000
-  });
-  top: calc(var(--root-height) * ${
-    Math.round(((y_position - parentPos.top) / rootHeight) * 1000) / 1000
-  });`;
+  left: calc(var(--${pageName}-width) * ${
+        Math.round(((x_position - parentPos.left) / rootWidth) * 1000) / 1000
+      });
+  top: calc(var(--${pageName}-height) * ${
+        Math.round(((y_position - parentPos.top) / rootHeight) * 1000) / 1000
+      });`;
     }
     if (border_width > 0) css += `\n  border-width: ${border_width}px;`;
     if (border_radius) css += `\n  border-radius: ${border_radius}%;`;
@@ -119,6 +118,7 @@ export default class Codes {
   }
 
   jsx(
+    pageName: string,
     component: Component,
     children: TreeNode[],
     jsx: { [key: string]: string }
@@ -131,10 +131,7 @@ export default class Codes {
     // import React and styles
     // import { useEffect } if component is root
     let code: string =
-      "import './styles.css';\n" +
-      `import React${
-        component.index === 0 ? ', { useEffect }' : ''
-      } from 'react';\n`;
+      `import './${pageName}.css';\n` + `import React from 'react';\n`;
 
     // import children
     if (children.length > 0) {
@@ -170,7 +167,6 @@ export default class Codes {
       propsCode +=
         '{ ' +
         [
-          'setTitle',
           ...propKeys,
           ...childrenComps.map((child, i) => `childId${i + 1}`),
         ].join(', ') +
@@ -185,21 +181,16 @@ export default class Codes {
         ].join(', ') +
         ' }';
 
-    code += `\n export default function ${name}(${propsCode}) {\n`;
-    if (component.index === 0) {
-      code += `\n  useEffect(() => setTitle("${this.title}"), [setTitle]);\n\n`;
-    }
+    code += `\nexport default function ${name}(${propsCode}) {\n`;
 
-    const classAndId = ` className='${component.name}' id=${
-      component.index > 0 ? '{id}' : "'RootContainer-0'"
-    }>`;
+    const classAndId = ` className='${
+      component.index > 0 ? component.name : 'Page'
+    }' id=${component.index > 0 ? '{id}' : `'${pageName}'`}>`;
     code += `  return (
     ${html_tag.replace('>', classAndId)}`;
 
     if (children.length === 0) {
-      code += `
-      ${inner_html}
-    ${html_tag.replace('<', '</')}
+      code += `${inner_html}${html_tag.replace('<', '</')}
   );
 }`;
     } else {

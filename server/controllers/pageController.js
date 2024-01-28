@@ -1,11 +1,10 @@
 const db = require('../models/dbModel');
 
-const addNewPage = (req, res, next) => {
+const createPageForNewDesign = (req, res, next) => {
   const { onlineImageUrl, design } = res.locals;
   if (!design.pages) {
     design.pages = [];
   }
-  console.log('pages are', design.pages);
   const index = design.pages.length;
   return db
     .query(
@@ -19,9 +18,9 @@ const addNewPage = (req, res, next) => {
     .catch((err) =>
       next({
         log:
-          'Express error handler caught pageController.addNewPage middleware error' +
+          'Express error handler caught pageController.createPageForNewDesign middleware error' +
           err,
-        message: { err: 'addDesign: ' + err },
+        message: { err: 'createPageForNewDesign: ' + err },
       })
     );
 };
@@ -42,4 +41,106 @@ const getPages = (req, res, next) => {
     );
 };
 
-module.exports = { addNewPage, getPages };
+const deletePageById = (req, res, next) => {
+  const { pageId } = req.params;
+  return db
+    .query('DELETE FROM pages WHERE _id = $1 RETURNING index, design_id;', [
+      pageId,
+    ])
+    .then((data) => {
+      const { index, design_id } = data.rows[0];
+      res.locals.indexDeleted = index;
+      res.locals.designId = design_id;
+      res.locals.pageId = pageId;
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught pageController.deletePageById middleware error' +
+          err,
+        message: { err: 'deletePageById: ' + err },
+      })
+    );
+};
+
+const shiftPages = (req, res, next) => {
+  const { indexDeleted, indexInserted, designId, pageId } = res.locals;
+  const plusOrMinus = indexDeleted !== undefined ? '-' : '+';
+  const value = indexDeleted !== undefined ? indexDeleted : indexInserted;
+  return db
+    .query(
+      'UPDATE pages ' +
+        `SET index = index ${plusOrMinus} 1 ` +
+        'WHERE design_id = $1 AND index >= $2 AND _id <> $3 ' +
+        'RETURNING _id, index;',
+      [designId, value, pageId]
+    )
+    .then((data) => {
+      res.locals.shiftedIndices = data.rows;
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught pageController.shiftPagesAfterDelete middleware error' +
+          err,
+        message: { err: 'shiftPagesAfterDelete: ' + err },
+      })
+    );
+};
+
+const addNewPage = (req, res, next) => {
+  const { designId } = req.params;
+  const { pageIdx } = req.body;
+  const { onlineImageUrl } = res.locals;
+  return db
+    .query(
+      'INSERT INTO pages (design_id, index, image_url) VALUES ($1, $2, $3) RETURNING *;',
+      [designId, pageIdx, onlineImageUrl]
+    )
+    .then((data) => {
+      res.locals.newPage = data.rows[0];
+      res.locals.designId = data.rows[0].design_id;
+      res.locals.indexInserted = pageIdx;
+      res.locals.pageId = data.rows[0]._id;
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught pageController.addNewPage middleware error' +
+          err,
+        message: { err: 'addNewPage: ' + err },
+      })
+    );
+};
+
+const getDesignId = (req, res, next) => {
+  let pageId = res.locals.pageId;
+  if (!pageId) pageId = req.params.pageId;
+  console.log('in get Design id', pageId);
+  return db
+    .query('SELECT design_id FROM pages WHERE _id = $1;', [pageId])
+    .then((data) => {
+      res.locals.designId = data.rows[0].design_id;
+      return next();
+    })
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught pageController.getDesignId middleware error' +
+          err,
+        message: { err: 'getDesignId: ' + err },
+      })
+    );
+};
+
+module.exports = {
+  createPageForNewDesign,
+  getPages,
+  deletePageById,
+  shiftPages,
+  addNewPage,
+  getDesignId,
+};

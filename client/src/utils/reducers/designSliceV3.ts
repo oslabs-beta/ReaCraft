@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   addDesignRequest,
-  updateDesignTitleRequest,
   getDesignDetailsRequest,
   addNewComponentRequest,
   deleteComponentRequest,
@@ -9,7 +8,11 @@ import {
   submitComponentFormRequest,
   updateComponentRectanglePositionRequest,
   updateComponentRectangleStyleRequest,
+  deletePageRequest,
+  addNewPageRequest,
+  updateDesignCoverOrTitleRequest,
 } from '../fetchRequests';
+import { setMessage, setSelectedPageIdx } from './appSlice';
 import {
   Component,
   Design,
@@ -24,10 +27,12 @@ export const newDesign = createAsyncThunk(
     await addDesignRequest(body)
 );
 
-export const updateDesignTitle = createAsyncThunk(
+export const updateDesignTitleOrCover = createAsyncThunk(
   'designs/update-title/:designId',
-  async (arg: { designId: number; body: { title: string } }) =>
-    await updateDesignTitleRequest(arg.designId, arg.body)
+  async (arg: {
+    designId: number;
+    body: { title?: string; imageUrl?: string };
+  }) => await updateDesignCoverOrTitleRequest(arg.designId, arg.body)
 );
 
 export const getDesignDetails = createAsyncThunk(
@@ -92,18 +97,35 @@ export const updateComponentRectangleStyle = createAsyncThunk(
     body: {
       styleToChange:
         | 'stroke'
-        | 'backgroundColor'
-        | 'borderWidth'
-        | 'borderRadius';
+        | 'background_color'
+        | 'border_width'
+        | 'border_radius';
       value: string | number;
       pageIdx: number;
     };
   }) => await updateComponentRectangleStyleRequest(arg.componentId, arg.body)
 );
 
+export const deletePage = createAsyncThunk(
+  'pages/delete/:pageId',
+  async (pageId: number) => await deletePageRequest(pageId)
+);
+
+export const addNewPage = createAsyncThunk(
+  'designs/add-page/:designId',
+  async (arg: {
+    designId: number;
+    body: {
+      pageIdx: number;
+      userImage: string;
+      imageHeight: number;
+    };
+  }) => await addNewPageRequest(arg.designId, arg.body)
+);
+
 const asyncThunks = [
   newDesign,
-  updateDesignTitle,
+  updateDesignTitleOrCover,
   getDesignDetails,
   addNewComponent,
   deleteComponent,
@@ -111,9 +133,11 @@ const asyncThunks = [
   updateComponentParent,
   updateComponentRectanglePosition,
   updateComponentRectangleStyle,
+  deletePage,
+  addNewPage,
 ];
 
-const designThunks = [newDesign, updateDesignTitle, getDesignDetails];
+const designThunks = [newDesign, getDesignDetails];
 
 const rectangleThunks = [
   updateComponentRectanglePosition,
@@ -154,24 +178,24 @@ const designSliceV3 = createSlice({
     resetDesign: () => initialState,
     updateRootHeight: (
       state: DesignState,
-      action: PayloadAction<{ pageIndex: number; height: number }>
+      action: PayloadAction<{ pageIdx: number; height: number }>
     ) => {
-      const { pageIndex, height } = action.payload;
+      const { pageIdx, height } = action.payload;
       if (state.pages.length === 0) {
         state.error = 'Design has no pages.';
         return;
       }
-      if (!state.pages[pageIndex]) {
-        state.error = 'Design has no page ' + pageIndex;
+      if (!state.pages[pageIdx]) {
+        state.error = 'Design has no page ' + pageIdx;
         return;
       }
-      if (state.pages[pageIndex].components.length === 0) {
-        state.error = `Design's page ${pageIndex} has no components.`;
+      if (state.pages[pageIdx].components.length === 0) {
+        state.error = `Design's page ${pageIdx} has no components.`;
         return;
       }
-      const root = state.pages[pageIndex].components[0];
+      const root = state.pages[pageIdx].components[0];
       if (!root.rectangle) {
-        state.error = `Design's page ${pageIndex} has no root rectangle.`;
+        state.error = `Design's page ${pageIdx} has no root rectangle.`;
         return;
       }
       root.rectangle.height = height;
@@ -184,6 +208,9 @@ const designSliceV3 = createSlice({
     },
     setCursorMode: (state, action: PayloadAction<string>) => {
       state.cursorMode = action.payload;
+    },
+    updateDesignTitle: (state, action: PayloadAction<string>) => {
+      state.title = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -331,9 +358,89 @@ const designSliceV3 = createSlice({
             });
           });
         }
+      )
+      .addCase(
+        deletePage.fulfilled,
+        (
+          state: DesignState,
+          action: PayloadAction<{
+            shifted: { _id: number; index: number }[];
+            indexDeleted: number;
+          }>
+        ) => {
+          const { shifted, indexDeleted } = action.payload;
+          state.pages.splice(indexDeleted, 1);
+          shifted.forEach(({ _id, index }) => {
+            const page = state.pages.find((item) => item._id === _id);
+            if (page) {
+              page.index = index;
+              page.components[0].name = `Page${index}`;
+            }
+          });
+        }
+      )
+      .addCase(
+        addNewPage.fulfilled,
+        (
+          state: DesignState,
+          action: PayloadAction<{
+            shifted: { _id: number; index: number }[];
+            newPage: Page;
+          }>
+        ) => {
+          const { shifted, newPage } = action.payload;
+          state.pages.splice(newPage.index, 0, newPage);
+          shifted.forEach(({ _id, index }) => {
+            const page = state.pages.find((item) => item._id === _id);
+            if (page) {
+              page.index = index;
+              page.components[0].name = `Page${index}`;
+            }
+          });
+        }
       );
   },
 });
+
+export const addNewPageAndUpdateSelectedPageIdx =
+  (params: { designId: number; userImage: string; imageHeight: number }) =>
+  async (dispatch: any, getState: any) => {
+    const state = getState();
+    const pageIdx = state.app.selectedPageIdx;
+    // Destructure params to get necessary values
+    const { designId, userImage, imageHeight } = params;
+    // Dispatch the first action and wait for it to complete
+    await dispatch(
+      addNewPage({
+        designId,
+        body: {
+          pageIdx: pageIdx + 1,
+          userImage,
+          imageHeight,
+        },
+      })
+    );
+    // Dispatch the second action
+    dispatch(setSelectedPageIdx(pageIdx + 1));
+    dispatch(
+      setMessage({ severity: 'success', text: 'added new page successfully' })
+    );
+  };
+
+export const deletePageAndUpdateSelectedPageIdx =
+  (pageId: number) => async (dispatch: any, getState: any) => {
+    const state = getState();
+    const pageIdx = state.app.selectedPageIdx;
+    dispatch(setSelectedPageIdx(Math.max(pageIdx - 1, 0)));
+
+    await dispatch(deletePage(pageId));
+    dispatch(
+      setMessage({
+        severity: 'success',
+        text: 'deleted page successfully',
+      })
+    );
+  };
 
 export const {
   resetDesign,
@@ -341,5 +448,23 @@ export const {
   updateRootHeight,
   toggleIsDraggable,
   setCursorMode,
+  updateDesignTitle,
 } = designSliceV3.actions;
+
+export const updateDesignCoverOrTitleAndUpdateState =
+  (params: { designId: number; title?: string; imageUrl?: string }) =>
+  async (dispatch: any) => {
+    const { designId, title, imageUrl } = params;
+    await dispatch(
+      updateDesignTitleOrCover({ designId, body: { title, imageUrl } })
+    );
+    if (title) dispatch(updateDesignTitle(title));
+    dispatch(
+      setMessage({
+        severity: 'success',
+        text: `updated design ${title ? 'title' : 'cover'} successfully`,
+      })
+    );
+  };
+
 export default designSliceV3.reducer;

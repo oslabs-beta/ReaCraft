@@ -10,32 +10,46 @@ const downloadFiles = async (
   next: NextFunction
 ) => {
   const {
-    filesData,
+    pagesData,
+    appData,
     title,
   }: {
-    filesData: { filename: string; content: string }[];
+    pagesData: { [key: string]: { filename: string; content: string }[] };
+    appData: { filename: string; content: string };
     title: string;
   } = req.body;
   const projectPath = path.join(__dirname, '../boilerplate');
-  const componentPath = path.join(projectPath, './src/components');
+  const projectSrcPath = path.join(projectPath, './src');
 
   try {
-    if (!fs.existsSync(componentPath)) {
-      fs.mkdirSync(componentPath);
-    }
-    filesData.forEach((file) => {
-      fs.writeFileSync(path.join(componentPath, file.filename), file.content);
+    fs.writeFileSync(
+      path.join(projectSrcPath, appData.filename),
+      appData.content
+    );
+    const pagePaths: string[] = [];
+    Object.keys(pagesData).forEach((pageName) => {
+      const pagePath = path.join(projectSrcPath, `./${pageName}`);
+      pagePaths.push(pagePath);
+      if (!fs.existsSync(pagePath)) fs.mkdirSync(pagePath);
+      pagesData[pageName].forEach((file) =>
+        fs.writeFileSync(path.join(pagePath, file.filename), file.content)
+      );
     });
+
     res.attachment(`${title}.zip`);
     const archive = archiver('zip', { zlib: { level: 9 } });
     archive.pipe(res);
     archive.directory(projectPath, false);
     await archive.finalize();
-    rimraf.sync(componentPath);
+
+    fs.unlinkSync(path.join(projectSrcPath, appData.filename));
+    for (const pagePath of pagePaths) {
+      rimraf.sync(pagePath);
+    }
   } catch (err) {
-    next({
+    return next({
       log:
-        'Express error handler caught fileController.downloadFiles middleware error' +
+        'Express error handler caught fileController.downloadFiles middleware error: ' +
         err,
       message: { err: 'downloadFiles: ' + err },
     });

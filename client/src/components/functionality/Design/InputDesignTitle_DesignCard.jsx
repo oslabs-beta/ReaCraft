@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { updateDesignTitleRequest } from '../../../utils/fetchRequests';
+import { updateDesignCoverOrTitleRequest } from '../../../utils/fetchRequests';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../../../utils/reducers/appSlice';
 
@@ -33,7 +33,9 @@ export default function InputDesignTitle({ initialText, designId }) {
                 <IconButton
                   onClick={async () => {
                     try {
-                      await updateDesignTitleRequest(designId, { title: text });
+                      await updateDesignCoverOrTitleRequest(designId, {
+                        title: text,
+                      });
                       setIsEditing(false);
                     } catch (err) {
                       dispatch(
