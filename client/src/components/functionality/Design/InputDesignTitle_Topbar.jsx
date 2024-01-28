@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateDesignTitle } from '../../../utils/reducers/designSliceV3';
+import { updateDesignCoverOrTitleAndUpdateState } from '../../../utils/reducers/designSliceV3';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 
@@ -26,9 +26,9 @@ export default function InputDesignTitle() {
           onBlur={() => {
             try {
               dispatch(
-                updateDesignTitle({
+                updateDesignCoverOrTitleAndUpdateState({
                   designId: design._id,
-                  body: { title },
+                  title,
                 })
               );
             } catch (error) {

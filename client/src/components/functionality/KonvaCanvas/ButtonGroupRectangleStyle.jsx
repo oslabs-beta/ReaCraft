@@ -3,7 +3,7 @@ import React, { Fragment, useState } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import { MuiColorInput } from 'mui-color-input';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateComponentRectangleStyle } from '../../../utils/reducers/designSliceV2';
+import { updateComponentRectangleStyle } from '../../../utils/reducers/designSliceV3';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Menu from '@mui/material/Menu';
