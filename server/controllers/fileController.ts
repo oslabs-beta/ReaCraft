@@ -26,9 +26,10 @@ const downloadFiles = async (
       path.join(projectSrcPath, appData.filename),
       appData.content
     );
-
+    const pagePaths: string[] = [];
     Object.keys(pagesData).forEach((pageName) => {
       const pagePath = path.join(projectSrcPath, `./${pageName}`);
+      pagePaths.push(pagePath);
       if (!fs.existsSync(pagePath)) fs.mkdirSync(pagePath);
       pagesData[pageName].forEach((file) =>
         fs.writeFileSync(path.join(pagePath, file.filename), file.content)
@@ -39,34 +40,11 @@ const downloadFiles = async (
     const archive = archiver('zip', { zlib: { level: 9 } });
     archive.pipe(res);
     archive.directory(projectPath, false);
+    await archive.finalize();
 
-    await new Promise((resolve, reject) => {
-      archive.on('end', resolve);
-      archive.on('error', reject);
-      archive.finalize();
-    });
-
-    const deletePath = (path: string) => {
-      return new Promise<void>((resolve, reject) => {
-        rimraf(path, (err: any) => {
-          if (err) {
-            console.error(`Error deleting ${path}:`, err);
-            reject(err);
-          } else {
-            console.log(`Successfully deleted ${path}`);
-            resolve();
-          }
-        });
-      });
-    };
-
-    // Delete appData file
-    await deletePath(path.join(projectSrcPath, appData.filename));
-
-    // Delete pagesData files and directories
-    for (const pageName of Object.keys(pagesData)) {
-      const pagePath = path.join(projectSrcPath, `./${pageName}`);
-      await deletePath(pagePath);
+    fs.unlinkSync(path.join(projectSrcPath, appData.filename));
+    for (const pagePath of pagePaths) {
+      rimraf.sync(pagePath);
     }
   } catch (err) {
     return next({

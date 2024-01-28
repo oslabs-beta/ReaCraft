@@ -10,11 +10,15 @@ export function jsxCodeForApp(pageLen: number, title: string): string {
   },[]);
   return (
     <div className='App'>
-      Your design: ${title}`;
+      <span class='slide'>
+        <h1>Your design: ${title}</h1>
+      </span>`;
 
   for (let i = 0; i < pageLen; i++) {
     code += `
-      <Page${i} />`;
+      <span class='slide'>
+        <Page${i} />
+      </span>`;
   }
   code += `
     </div>
