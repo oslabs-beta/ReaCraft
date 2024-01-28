@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import isValidReactComponentName from '../../../utils/isValidReactComponentName';
 import { addNewComponent } from '../../../utils/reducers/designSliceV3';
+import { useTheme } from '@mui/material';
 
 const emptyNameErr = {
   severity: 'error',
@@ -25,6 +26,7 @@ const successMess = {
 };
 
 export default function ButtonAddNewComponent() {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const design = useSelector((state) => state.designV3);
@@ -71,6 +73,11 @@ export default function ButtonAddNewComponent() {
         variant='outlined'
         value={name}
         onChange={(e) => setName(e.target.value)}
+        sx={{
+          '& input': {
+            color: theme.palette.mode === 'dark' ? 'white' : '#736c6c',
+          },
+        }}
       />
       <Tooltip title='Add new component'>
         <IconButton size='small' type='submit'>
