@@ -330,7 +330,8 @@ export function updateComponentRectangleStyleRequest(
 }
 
 export function downloadProject(body: {
-  filesData: { filename: string; content: string }[];
+  pagesData: { [key: string]: { filename: string; content: string }[] };
+  appData: { filename: string; content: string };
   title: string;
 }) {
   return fetch('/download', {
