@@ -13,7 +13,7 @@ import '../../../styles/ViewCode.scss';
 import Grow from '@mui/material/Grow';
 import useOutsideClick from '../../../hooks/useOutsideClick';
 
-export default function ButtonViewCode({ css, jsx, name }) {
+export default function ButtonViewCode({ css, jsx, name, pageName }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -44,14 +44,15 @@ export default function ButtonViewCode({ css, jsx, name }) {
           name={name}
           onClose={closePopper}
           isTransitioning={isTransitioning}
+          pageName={pageName}
         />
       )}
     </Fragment>
   );
 }
 
-function GrowTransition({ jsx, css, name, isTransitioning }) {
-  const [value, setValue] = useState('RootContainer');
+function GrowTransition({ jsx, css, name, isTransitioning, pageName }) {
+  const [value, setValue] = useState(pageName);
   useEffect(() => {
     if (name) setValue(name);
   }, [name]);
@@ -85,7 +86,7 @@ function GrowTransition({ jsx, css, name, isTransitioning }) {
                 />
               ))}
               <Tab
-                label={'styles.css'}
+                label={`${pageName}.css`}
                 value='css'
                 className='code-block-tab'
               />
@@ -122,6 +123,7 @@ function CopyCodePopper({
   name,
   onClose,
   isTransitioning,
+  pageName,
 }) {
   const popperRef = useRef(null);
 
@@ -145,6 +147,7 @@ function CopyCodePopper({
         css={css}
         name={name}
         isTransitioning={isTransitioning}
+        pageName={pageName}
       />
     </Popper>
   );
