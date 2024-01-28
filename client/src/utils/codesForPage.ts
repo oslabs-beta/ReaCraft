@@ -27,8 +27,8 @@ export default class Codes {
     position[components[0]._id] = { top: 0, left: 0 };
 
     css += `:root {
-  --root-width: ${rootWidth}px;
-  --root-height: ${rootHeight}px;
+  --${pageName}-width: ${rootWidth}px;
+  --${pageName}-height: ${rootHeight}px;
 }
 `;
 
@@ -44,7 +44,7 @@ export default class Codes {
         throw new Error('Converting to code: cannot find component');
 
       jsx[component.name] = this.jsx(pageName, component, cur.children, jsx);
-      css += this.css(component, position, rootWidth, rootHeight);
+      css += this.css(component, position, rootWidth, rootHeight, pageName);
       stack = stack.concat(cur.children);
     }
 
@@ -55,7 +55,8 @@ export default class Codes {
     component: Component,
     position: { [key: number]: { top: number; left: number } },
     rootWidth: number,
-    rootHeight: number
+    rootHeight: number,
+    pageName: string
   ): string {
     let css = '';
 
@@ -84,21 +85,21 @@ export default class Codes {
 
     css += `\n\n#${name}${i > 0 ? `-${i}` : ''} {
   position: ${i === 0 ? 'relative' : 'absolute'};
-  width: calc(var(--root-width) * ${
-    Math.round((width / rootWidth) * 1000) / 1000
-  });
-  height: calc(var(--root-height) * ${
-    Math.round((height / rootHeight) * 1000) / 1000
-  });
+  width: calc(var(--${pageName}-width) * ${
+      Math.round((width / rootWidth) * 1000) / 1000
+    });
+  height: calc(var(--${pageName}-height) * ${
+      Math.round((height / rootHeight) * 1000) / 1000
+    });
   border-color: ${stroke};`;
     if (i > 0) {
       css += `
-  left: calc(var(--root-width) * ${
-    Math.round(((x_position - parentPos.left) / rootWidth) * 1000) / 1000
-  });
-  top: calc(var(--root-height) * ${
-    Math.round(((y_position - parentPos.top) / rootHeight) * 1000) / 1000
-  });`;
+  left: calc(var(--${pageName}-width) * ${
+        Math.round(((x_position - parentPos.left) / rootWidth) * 1000) / 1000
+      });
+  top: calc(var(--${pageName}-height) * ${
+        Math.round(((y_position - parentPos.top) / rootHeight) * 1000) / 1000
+      });`;
     }
     if (border_width > 0) css += `\n  border-width: ${border_width}px;`;
     if (border_radius) css += `\n  border-radius: ${border_radius}%;`;
