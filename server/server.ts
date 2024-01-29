@@ -1,5 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { DefaultError } from '../docs/types';
+import { createServer } from 'http';
+import { setupWebSocketServer } from './controllers/websocketController';
+
 require('dotenv').config();
 
 const path = require('path');
@@ -10,6 +13,11 @@ const app = express();
 const PORT = process.env.PORT;
 
 const router = require('./routes/router');
+
+// create HTTP server and pass express app to it
+const server = createServer(app);
+// setup websocket server on the same HTTP server
+setupWebSocketServer(server);
 
 app.use(express.static(path.resolve(__dirname, '../client/public')));
 app.use(express.json({ limit: '50mb' }));
@@ -50,6 +58,11 @@ app.use(
   }
 );
 
-app.listen(PORT, () => {
+// app.listen(PORT, () => {
+//   console.log(`Server listening on port: ${PORT}...`);
+// });
+
+// start the http server on the port
+server.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}...`);
 });

@@ -16,6 +16,7 @@ import {
 export function addDesignRequest(body: {
   userImage: string;
   imageHeight: number;
+  clientId: string;
 }): Promise<Design> {
   return fetch('/designs/new', {
     method: 'POST',
