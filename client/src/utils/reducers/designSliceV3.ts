@@ -9,7 +9,10 @@ import {
   submitComponentFormRequest,
   updateComponentRectanglePositionRequest,
   updateComponentRectangleStyleRequest,
+  deletePageRequest,
+  addNewPageRequest,
 } from '../fetchRequests';
+import { setSelectedPageIdx } from './appSlice';
 import {
   Component,
   Design,
@@ -92,14 +95,56 @@ export const updateComponentRectangleStyle = createAsyncThunk(
     body: {
       styleToChange:
         | 'stroke'
-        | 'backgroundColor'
-        | 'borderWidth'
-        | 'borderRadius';
+        | 'background_color'
+        | 'border_width'
+        | 'border_radius';
       value: string | number;
       pageIdx: number;
     };
   }) => await updateComponentRectangleStyleRequest(arg.componentId, arg.body)
 );
+
+export const deletePage = createAsyncThunk(
+  'pages/delete/:pageId',
+  async (pageId: number) => await deletePageRequest(pageId)
+);
+
+export const addNewPage = createAsyncThunk(
+  'designs/add-page/:designId',
+  async (arg: {
+    designId: number;
+    body: {
+      pageIdx: number;
+      userImage: string;
+      imageHeight: number;
+      pageLen: number;
+    };
+  }) => await addNewPageRequest(arg.designId, arg.body)
+);
+
+export const addNewPageAndUpdateSelectedPageIdx =
+  (params: { designId: number; userImage: string; imageHeight: number }) =>
+  async (dispatch: any, getState: any) => {
+    const state = getState();
+    const pageIdx = state.app.selectedPageIdx;
+    const pages = state.designV3.pages;
+    // Destructure params to get necessary values
+    const { designId, userImage, imageHeight } = params;
+    // Dispatch the first action and wait for it to complete
+    await dispatch(
+      addNewPage({
+        designId,
+        body: {
+          pageIdx: pageIdx + 1,
+          userImage,
+          imageHeight,
+          pageLen: pages.length,
+        },
+      })
+    );
+    // Dispatch the second action
+    dispatch(setSelectedPageIdx(pageIdx + 1));
+  };
 
 const asyncThunks = [
   newDesign,
@@ -111,6 +156,8 @@ const asyncThunks = [
   updateComponentParent,
   updateComponentRectanglePosition,
   updateComponentRectangleStyle,
+  deletePage,
+  addNewPage,
 ];
 
 const designThunks = [newDesign, updateDesignTitle, getDesignDetails];
@@ -154,24 +201,24 @@ const designSliceV3 = createSlice({
     resetDesign: () => initialState,
     updateRootHeight: (
       state: DesignState,
-      action: PayloadAction<{ pageIndex: number; height: number }>
+      action: PayloadAction<{ pageIdx: number; height: number }>
     ) => {
-      const { pageIndex, height } = action.payload;
+      const { pageIdx, height } = action.payload;
       if (state.pages.length === 0) {
         state.error = 'Design has no pages.';
         return;
       }
-      if (!state.pages[pageIndex]) {
-        state.error = 'Design has no page ' + pageIndex;
+      if (!state.pages[pageIdx]) {
+        state.error = 'Design has no page ' + pageIdx;
         return;
       }
-      if (state.pages[pageIndex].components.length === 0) {
-        state.error = `Design's page ${pageIndex} has no components.`;
+      if (state.pages[pageIdx].components.length === 0) {
+        state.error = `Design's page ${pageIdx} has no components.`;
         return;
       }
-      const root = state.pages[pageIndex].components[0];
+      const root = state.pages[pageIdx].components[0];
       if (!root.rectangle) {
-        state.error = `Design's page ${pageIndex} has no root rectangle.`;
+        state.error = `Design's page ${pageIdx} has no root rectangle.`;
         return;
       }
       root.rectangle.height = height;
@@ -329,6 +376,40 @@ const designSliceV3 = createSlice({
                 item.inner_html = updatedComponent.inner_html;
               }
             });
+          });
+        }
+      )
+      .addCase(
+        deletePage.fulfilled,
+        (
+          state: DesignState,
+          action: PayloadAction<{
+            shifted: { _id: number; index: number }[];
+            indexDeleted: number;
+          }>
+        ) => {
+          const { shifted, indexDeleted } = action.payload;
+          state.pages.splice(indexDeleted, 1);
+          shifted.forEach(({ _id, index }) => {
+            const page = state.pages.find((item) => item._id === _id);
+            if (page) page.index = index;
+          });
+        }
+      )
+      .addCase(
+        addNewPage.fulfilled,
+        (
+          state: DesignState,
+          action: PayloadAction<{
+            shifted: { _id: number; index: number }[];
+            newPage: Page;
+          }>
+        ) => {
+          const { shifted, newPage } = action.payload;
+          state.pages.splice(newPage.index, 0, newPage);
+          shifted.forEach(({ _id, index }) => {
+            const page = state.pages.find((item) => item._id === _id);
+            if (page) page.index = index;
           });
         }
       );

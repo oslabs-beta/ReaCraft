@@ -17,4 +17,15 @@ router.post(
   (req, res) => res.status(200).send(res.locals.component)
 );
 
+router.delete(
+  '/delete/:pageId',
+  pageController.deletePageById,
+  pageController.shiftPages,
+  (req, res) =>
+    res.status(200).send({
+      shifted: res.locals.shiftedIndices,
+      indexDeleted: res.locals.indexDeleted,
+    })
+);
+
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { FileUploader } from 'react-drag-drop-files';
 import {
@@ -13,85 +13,144 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import '../../../styles/UserImageUploadButton.css';
 
-// to handle actual upload process and update the progress bar accordingly, we'll have to implement the logic for file uploading to the server
-
 export default function UserImageUploadButton() {
   const dispatch = useDispatch();
-  const socket = new WebSocket(`ws://${window.location.host}/ws`)
+  // const socket = new WebSocket(`ws://${window.location.host}/ws`)
   const [fileName, setFileName] = useState('');
   const [fileSize, setFileSize] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [socket, setSocket] = useState(null);
+
+  console.log('CONSOLE LOG FROM FILE UPLOADER NEW DESIGN');
+
+  // Moved this function outside of handleFileChange for clarity
+  function generateUniqueIdentifier() {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2);
+  }
+  // function to initiate websocket connection with the generated clientId and retryCount (if connection gets disconnected prematurely)
+  function initiateWebSocketConnection(clientId, retryCount = 0) {
+    console.log(`Attempting to initiate WebSocket connection with clientId: ${clientId}`);
+    // create new websocket connection with clientId
+    const ws = new WebSocket(`ws://localhost:8080/ws?clientId=${clientId}`);
+
+    // once websocket connection is open, console log
+    ws.onopen = () => {
+      console.log('websocket connection opened');
+    };
+
+    // when a websocket message is received
+    ws.onmessage = (event) => {
+      try {
+        // parse the message received from server
+        const message = JSON.parse(event.data);
+        console.log('message from server:', message);
+        console.log('websocket state', ws.readyState);
+
+        // check if message has the expected strcuture with type
+        if (typeof message === 'object' && 'type' in message) {
+          // handle different types of messages received from the server
+          switch (message.type) {
+            case 'progressUpdate':
+              console.log('progressUpdate received', message.progress);
+              // update the uploadProgress state
+              setUploadProgress(message.progress);
+              break;
+            case 'test':
+              console.log('test message received:', message.content);
+              break;
+            default:
+              console.log('received an unhandled message type:', message.type);
+          }
+        } else {
+          console.log('received message without type:', message);
+        }
+      } catch(err) {
+        console.error('error parsing from server:', error);
+      }
+    };
+
+    // if there's an error with the websocket 
+    ws.onerror = (event) => {
+      console.error('websocket error:', event);
+      // check if event code is 1006 = abnormal connection
+      if (event.code === 1006) {
+        console.error('abnormal disconnection');
+      }
+      // attempt to reconnect after a backoff delay
+      const backOffDelay = calculateBackOffDelay(retryCount);
+      setTimeout(() => initiateWebSocketConnection(clientId, retryCount + 1));
+    }
+
+    // when websocket closes
+    ws.onclose = () => {
+      console.log('websocket connection closed');
+    };
+    // set websocket connection to state
+    setSocket(ws); 
+  };
+
+  // calculates the delay for reconection attempts 
+  function calculateBackOffDelay(retryCount) {
+    // exponential back-off formula 
+    return Math.min(1000 * (2 ** retryCount), 30000);
+  }
 
   function handleFileChange(file) {
-    // set file details
-    setFileName(file.name);
-    setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB'); // convert bytes to MB
+      console.log('hit handleFileChange');
+      setFileName(file.name);
+      setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB');
 
-    // simulate upload progress - this isn't showing
-    // const interval = setInterval(() => {
-    //   setUploadProgress((oldProgress) => {
-    //     if (oldProgress === 100) {
-    //       clearInterval(interval);
-    //       return 100;
-    //     }
-    //     const diff = Math.random() * 10;
-    //     return Math.min(oldProgress + diff, 100);
-    //   });
-    // }, 500);
-
-    // function to generate a unique identifier
-    function generateUniqueIdentifier() {
-      return Date.now().toString(36) + Math.random().toString(36).substring(2);
-      }
-
-    if (file) {
-      // generate a unique client identifier with the upload request for the websocket connection
       const clientId = generateUniqueIdentifier();
+      console.log('Generated clientId:', clientId);
 
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const userImage = reader.result;
-        const img = new Image();
+      if (file) {
+        dispatch(setMessage({ severity: 'success', text: 'Upload successful.' }));
 
-        img.onload = () => {
-          const setWidth = 800;
-          const imageHeight = img.height * (setWidth / img.width);
-            try {
-              dispatch(newDesign({ userImage, imageHeight, clientId }));
-              dispatch(setSelectedPageIdx(0));
-              dispatch(
-                setMessage({ severity: 'success', text: 'Upload successful.' })
-              );
-             } catch (err) {
-              dispatch(
-                setMessage({
-                  severity: 'error',
-                  text: 'App: add new design ' + err,
+        const reader = new FileReader();
+
+        reader.onloadend = () => { 
+          const userImage = reader.result;
+          const img = new Image();
+
+          img.onload = () => {
+            const setWidth = 800;
+            const imageHeight = img.height * (setWidth / img.width);
+            // ensure the socket is connected before dispatching
+            const currentSocket = initiateWebSocketConnection(clientId); 
+
+              try {
+                dispatch(newDesign({ userImage, imageHeight, clientId }));
+                console.log('dispatching to newDesign');
+                dispatch(setSelectedPageIdx(0));
+                dispatch(
+                  setMessage({ severity: 'success', text: 'Upload successful.' })
+                );
+              } catch (err) {
+                dispatch(setMessage({ 
+                  severity: 'error', 
+                  text: 'App: add new design' + err,
                 })
-              );
-            }
+                );
+              }
+            } 
+          img.onerror = (error) => {
+            console.error('Error loading image:', error);
+          };
+          img.src = userImage;
         };
-        img.src = userImage
-
-        // communicates the start of the upload process to the server by initiating the WebSocket communication 
-        socket.send(JSON.stringify({
-          action: 'startUpload',
-          clientId: clientId,
-        }));
-      };
-      // update progress bar when a message is received from the server
-      // onmessage is an event listener to be called when a message is received. the listener receives a MessageEvent named 'message'
-      socket.onmessage = function(event) {
-        const message = JSON.parse(event.data);
-        console.log('this is the message from userimageupload', message);
-        if (message.type === 'progressUpdate') {
-          console.log('this is message.progress from userimageupload', message.progress);
-          setUploadProgress(message.progress);
-        }
-      };
-      reader.readAsDataURL(file);
-    };
+        reader.readAsDataURL(file);
+      }
   }
+
+  // useEffect to close websocket connection
+  useEffect(() => {
+    return () => {
+      if (socket) {
+        socket.close();
+        console.log('connection closed');
+      }
+    }
+  }, [socket]);
 
   return (
       <Box className='container'>
