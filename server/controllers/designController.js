@@ -163,17 +163,6 @@ const addCollaborator = async (req, res, next) => {
   const { designId } = req.params;
   const { ownerId, collaboratorUsername, canEdit } = req.body;
   try {
-    const ownerResponse = await db.query(
-      'SELECT * FROM collaborators WHERE collaborator_id = $1 AND design_id = $2;',
-      [ownerId, designId]
-    );
-    if (ownerResponse.rows.length === 0) {
-      await db.query(
-        'INSERT INTO collaborators (design_id, collaborator_id, can_edit, is_owner) ' +
-          'VALUES( $1, $2, $3, $4 );',
-        [designId, ownerId, true, true]
-      );
-    }
     const collaboratorResponse = await db.query(
       'SELECT _id FROM users WHERE username = $1;',
       [collaboratorUsername]
@@ -189,12 +178,55 @@ const addCollaborator = async (req, res, next) => {
         'VALUES ($1, $2, $3, $4);',
       [designId, collaboratorId, canEdit, false]
     );
+    const ownerResponse = await db.query(
+      'SELECT * FROM collaborators WHERE collaborator_id = $1 AND design_id = $2;',
+      [ownerId, designId]
+    );
+    if (ownerResponse.rows.length === 0) {
+      await db.query(
+        'INSERT INTO collaborators (design_id, collaborator_id, can_edit, is_owner) ' +
+          'VALUES( $1, $2, $3, $4 );',
+        [designId, ownerId, true, true]
+      );
+    }
   } catch (err) {
     return next({
       log:
         'Express error handler caught designController.addCollaborator middleware error' +
         err,
       message: { err: 'addCollaborator: ' + err },
+    });
+  }
+};
+
+const getCollabDesigns = async (req, res, next) => {
+  const { userId } = res.locals;
+  try {
+    const collabResponse = await db.query(
+      'SELECT * FROM collaborators WHERE collaborator_id = $1;',
+      [userId]
+    );
+    const designIds = collabResponse.rows.map((row) => row.design_id);
+    const designRes = await db.query(
+      'SELECT * FROM designs WHERE _id = ANY($1::int[]);',
+      [designIds]
+    );
+    const designs = designRes.rows;
+    designs.forEach((design) => {
+      const collabRow = collabResponse.rows.find(
+        (row) => (row.design_id = design._id)
+      );
+      design.canEdit = collabRow.can_edit;
+      design.last_updated_by = collabRow.last_updated_by;
+    });
+    res.locals.designs = designs;
+    return next();
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught designController.getCollabDesigns middleware error' +
+        err,
+      message: { err: 'getCollabDesigns: ' + err },
     });
   }
 };
@@ -208,4 +240,5 @@ module.exports = {
   getDesignById,
   updateDesignTimestamp,
   addCollaborator,
+  getCollabDesigns,
 };
