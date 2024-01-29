@@ -15,15 +15,13 @@ import {
   updateRootHeight,
 } from '../../../utils/reducers/designSliceV3';
 import { Box } from '@mui/material';
+import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import '../../../styles/UserImageUploadButton.css';
 
-// to handle actual upload process and update the progress bar accordingly, we'll have to implement the logic for file uploading to the server
-
 export default function UserImageUploadButton() {
   const dispatch = useDispatch();
-  const socket = new WebSocket(`ws://${window.location.host}/ws`)
   const designId = useSelector((state) => state.designV3._id);
   const { image_url, pages } = useSelector((state) => state.designV3);
   const { selectedPageIdx } = useSelector((state) => state.app);
@@ -37,30 +35,22 @@ export default function UserImageUploadButton() {
   function handleFileChange(file) {
     // set file details
     setFileName(file.name);
-    setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB'); // convert bytes to MB
+    setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB'); // Convert bytes to MB
 
     // simulate upload progress - this isn't showing
-    // const interval = setInterval(() => {
-    //   setUploadProgress((oldProgress) => {
-    //     if (oldProgress === 100) {
-    //       clearInterval(interval);
-    //       return 100;
-    //     }
-    //     const diff = Math.random() * 10;
-    //     return Math.min(oldProgress + diff, 100);
-    //   });
-    // }, 500);
-
-    // function to generate a unique identifier
-    function generateUniqueIdentifier() {
-      return Date.now().toString(36) + Math.random().toString(36).substring(2);
-    };
+    const interval = setInterval(() => {
+      setUploadProgress((oldProgress) => {
+        if (oldProgress === 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        const diff = Math.random() * 10;
+        return Math.min(oldProgress + diff, 100);
+      });
+    }, 500);
 
     if (file) {
       dispatch(setMessage({ severity: 'success', text: 'Upload successful.' }));
-
-      // generate a unique client identifier with the upload request for the websocket connection
-      const clientId = generateUniqueIdentifier();
 
       const reader = new FileReader();
       reader.onloadend = async () => {
@@ -72,7 +62,7 @@ export default function UserImageUploadButton() {
           const imageHeight = img.height * (setWidth / img.width);
           if (!designId) {
             try {
-              dispatch(newDesign({ userImage, imageHeight, clientId }));
+              dispatch(newDesign({ userImage, imageHeight }));
               dispatch(setSelectedPageIdx(0));
             } catch (err) {
               dispatch(
@@ -108,21 +98,6 @@ export default function UserImageUploadButton() {
           }
         };
         img.src = userImage;
-        // communicates the start of the upload process to the server by initiating the WebSocket communication 
-        socket.send(JSON.stringify({
-          action: 'startUpload',
-          clientId: clientId,
-        }));
-      };
-      // update progress bar when a message is received from the server
-      // onmessage is an event listener to be called when a message is received. the listener receives a MessageEvent named 'message'
-      socket.onmessage = function(event) {
-        const message = JSON.parse(event.data);
-        console.log('this is the message from userimageupload', message);
-        if (message.type === 'progressUpdate') {
-          console.log('this is message.progress from userimageupload', message.progress);
-          setUploadProgress(message.progress);
-        }
       };
       reader.readAsDataURL(file);
     }

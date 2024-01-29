@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getDesignDetails, setSearchTerm } from './designSliceV3';
 
 type Message = {
   severity: 'success' | 'error' | 'info';
@@ -60,6 +61,14 @@ const appSlice = createSlice({
     },
   },
 });
+
+export const getDesignDetailsAndSetApp =
+  (designId: number) => async (dispatch: any) => {
+    await dispatch(getDesignDetails(designId));
+    dispatch(setSelectedPageIdx(0));
+    dispatch(goToPage('DESIGN'));
+    dispatch(setSearchTerm(''));
+  };
 
 export const {
   setMessage,

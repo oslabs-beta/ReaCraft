@@ -1,9 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { DefaultError } from '../docs/types';
-import * as http from 'http';
-// import { WebSocketServer, Server as WebsocketServer } from 'ws';
-import { WebSocketServer } from 'ws';
-import * as url from 'url';
+import { createServer } from 'http';
+import { setupWebSocketServer } from './controllers/websocketController';
 
 require('dotenv').config();
 
@@ -16,11 +14,10 @@ const PORT = process.env.PORT;
 
 const router = require('./routes/router');
 
-// initialize a http server instance to attach both Express and WebSocket servers
-const server = http.createServer(app);
-
-// initialize the websocket server instance. takes the HTTP server instance created as an option, indicating that WebSocket connections will be handled by the same server
-const wss = new WebSocketServer({ server });
+// create HTTP server and pass express app to it
+const server = createServer(app);
+// setup websocket server on the same HTTP server
+setupWebSocketServer(server);
 
 app.use(express.static(path.resolve(__dirname, '../client/public')));
 app.use(express.json({ limit: '50mb' }));
@@ -41,41 +38,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use('/', router);
-
-let clients = new Map();
-
-// handle websocket connection
-wss.on('connection', (ws, req) => {
-  // retrieve clientId from the request URL
-  const queryParams = url.parse(req.url, true).query;
-  const clientId = queryParams.clientId;
-  console.log('this is the clientId from wss.on', clientId);
-
-  if (clientId) {
-    clients.set(clientId, ws);
-    console.log('client connected with ID', clientId);
-  } else {
-    console.log('Client connected without an ID');
-  }
-
-  ws.on('message', (data) => {
-    let message;
-    try {
-      message = JSON.parse(data.toString());
-    } catch (e) {
-      console.error('Error parsing message', e);
-      return;
-    }
-
-    const { action, data: messageData } = message;
-    console.log(`received action: ${action}`, messageData);
-  });
-
-  ws.on('close', () => {
-    clients.delete(clientId);
-    console.log('client disconnected');
-  });
-});
 
 //404 Error Handler
 app.get('*', (req: Request, res: Response) =>
@@ -100,7 +62,7 @@ app.use(
 //   console.log(`Server listening on port: ${PORT}...`);
 // });
 
-
+// start the http server on the port
 server.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}...`);
 });

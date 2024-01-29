@@ -4,6 +4,7 @@ import useImage from 'use-image';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateComponentRectanglePosition } from '../../../utils/reducers/designSliceV3';
 import { setSelectedIdx } from '../../../utils/reducers/appSlice';
+import { useTheme } from '@mui/material';
 
 export default function KonvaStage({
   userImage,
@@ -15,6 +16,8 @@ export default function KonvaStage({
 
   const { selectedIdx, selectedPageIdx } = useSelector((state) => state.app);
   // const canvasHeight = ((windowHeight - 180) * zoom) / 100;
+  const theme = useTheme();
+  const loadingTheme = theme.palette.mode === 'dark' ? 'white' : 'black';
 
   // redux state
   const { isDraggable, cursorMode, pages } = useSelector(
@@ -155,6 +158,39 @@ export default function KonvaStage({
           })}
         </Layer>
       </Stage>
+    );
+  } else {
+    const loadingStyles = {
+      fontSize: '24px',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginTop: '20px',
+      color: loadingTheme,
+    };
+
+    const dotStyle = {
+      animation: '1s blink infinite',
+      animationTimingFunction: 'ease-in-out',
+      color: loadingTheme,
+    };
+
+    // keyframes for blink animation
+    const keyframes = `
+    @keyframes blink {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    `;
+
+    return (
+    <div style={loadingStyles}>
+      <style>{keyframes}</style>
+      Loading
+      <span style={{ ...dotStyle, animationDelay: '0s' }}> .</span>
+      <span style={{ ...dotStyle, animationDelay: '0.33s' }}>.</span>
+      <span style={{ ...dotStyle, animationDelay: '0.66s' }}>.</span>
+    </div>
     );
   }
 }

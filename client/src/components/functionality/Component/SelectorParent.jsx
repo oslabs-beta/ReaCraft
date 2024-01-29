@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { setMessage } from '../../../utils/reducers/appSlice';
 import { Button, useTheme } from '@mui/material';
 import { validTree } from '../../../utils/treeNode';
-import { updateComponentParent } from '../../../utils/reducers/designSliceV2';
+import { updateComponentParent } from '../../../utils/reducers/designSliceV3';
 
 export default function SelectorParent({ childIdx }) {
   if (childIdx > 0) {
