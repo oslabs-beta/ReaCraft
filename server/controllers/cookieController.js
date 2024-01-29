@@ -1,4 +1,5 @@
 const { encrypt, decrypt } = require('../helpers/encryptDecrypt');
+const db = require('../models/dbModel');
 
 const checkCookie = (req, res, next) => {
   res.locals.verified = !!(req.cookies && req.cookies.sessionID);
@@ -23,7 +24,21 @@ const setCookie = async (req, res, next) => {
 
 const decryptCookie = async (req, res, next) => {
   try {
-    res.locals.userId = decrypt(req.cookies.sessionID);
+    const userId = decrypt(req.cookies.sessionID);
+    const userResponse = await db.query(
+      'SELECT username FROM users WHERE _id = $1;',
+      [userId]
+    );
+    if (userResponse.rows.length === 0) {
+      return next({
+        log:
+          'Express error handler caught cookieController.decryptCookie middleware error' +
+          'Username not found',
+        message: 'Cookie err: ' + 'Username not found',
+      });
+    }
+    res.locals.userId = userId;
+    res.locals.username = userResponse.rows[0].username;
     return next();
   } catch (err) {
     return next({
