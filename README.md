@@ -30,10 +30,10 @@
 
 <!-- PROJECT LOGO -->
 <br />
-<!-- <div align="center">
-  <a href="https://github.com/oslabs-beta/Reactraft">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a> -->
+<div align="center">
+  <a href="https://github.com/oslabs-beta/ReaCraft">
+    <img src="docs/ReaCraft.svg" alt="Logo" width="200" height="200">
+  </a>
 
 <h3 align="center">ReaCraft</h3>
 
@@ -129,6 +129,47 @@ This is an example of how to list things you need to use the software and how to
   ```sh
   npm install npm@latest -g
   ``` -->
+
+## Getting Started with Reacraft
+
+Welcome to Reacraft, where your React app designs come to life. Follow these steps to begin your journey from concept to code:
+
+### Account Creation
+
+- **Sign Up or Sign In**: Visit our Logn/Sign Up page to create a new account or log in to your existing account to pick up where you left off.
+  <img src="./docs/screenshots/Login.png" alt="Login">
+
+### Navigating the Home Page
+
+- **Designs at a Glance**: Once logged in, the home page welcomes you with your recent designs. Here, you can use the search bar to find past projects with ease.
+- **Light or Dark Mode**: Personalize your design experience by choosing between dark and light mode, easily switchable from the home page.
+  <img src="./docs/screenshots/HomePage.png" alt="Home Page">
+  <img src="./docs/screenshots/HomePageDark.png" alt="Home Page in Dark Mode">
+
+### Designing Your App
+
+- **Workspace Orientation**: Jump into the workspace by starting a new design with an image upload or by editing an existing design from your dashboard.
+  <img src="./docs/screenshots/Workspace.jpg" alt="Workspace">
+- **Topbar Tools**: Manage your design's title and perform essential actions like deleting designs, viewing the app's DOM tree, exporting your project, and more from the topbar.
+  - Virtual dom tree for the entire app
+    <img src="./docs/screenshots/DomTreeForApp.png" alt="Dom tree for app">
+- **Component Crafting**: On the left, define and interact with your components list. Selecting a component is as simple as clicking on its rectangle on the canvas or its name in the list.
+- **Page Management**: To the right, perform page-specific actions. Add or remove pages, navigate through them, and set a page's image as the design cover for your project's card.
+  - View `.jsx` or `.css` codes for this page
+    <img src="./docs/screenshots/CodePanel.png">
+  - View virtual dom tree for this page
+    <img src="./docs/screenshots/DomTreeForPage.png">
+
+### Exporting Your Project
+
+- **Ready to Launch**: With your design finalized, hit the export button on the topbar to generate your project folder, complete with React components and CSS/SASS files.
+- **Instant Preview**: Download your project, install dependencies with `npm install`, and start your app with `npm start` to witness your design in action.
+  - Design in Workspace
+    <img src="./docs/screenshots/DesignInWorkspace.png">
+  - Live Preview React App
+    <img src="./docs/screenshots/LivePreview.gif">
+
+Dive into Reacraft today and elevate your React app designs from mere ideas to fully functional, living applications with ease!
 
 <!-- ### Installation -->
 
