@@ -14,7 +14,7 @@ import {
 
 export default function CardDesignDisplay({ design }) {
   const dispatch = useDispatch();
-  const { created_at, last_updated } = design;
+  const { created_at, last_updated, canEdit } = design;
 
   const handleViewDesign = async () => {
     try {
@@ -79,14 +79,11 @@ export default function CardDesignDisplay({ design }) {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-around',
+          justifyContent: 'end',
         }}
       >
-        <Button variant='outlined' size='small'>
-          Share
-        </Button>
         <Button size='small' variant='outlined' onClick={handleViewDesign}>
-          View design
+          {canEdit === false ? 'View' : 'Edit'} design
         </Button>
       </CardActions>
     </Paper>
