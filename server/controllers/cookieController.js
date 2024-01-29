@@ -2,13 +2,11 @@ const { encrypt, decrypt } = require('../helpers/encryptDecrypt');
 
 const checkCookie = (req, res, next) => {
   res.locals.verified = !!(req.cookies && req.cookies.sessionID);
-  console.log('verified: ', res.locals.verified);
   return next();
 };
 
 const setCookie = async (req, res, next) => {
   const userIdStr = String(res.locals.userId);
-  console.log(encrypt(userIdStr));
   try {
     res.cookie('sessionID', encrypt(userIdStr));
     return next();

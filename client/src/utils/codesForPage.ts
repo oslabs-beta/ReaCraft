@@ -213,7 +213,7 @@ export default class Codes {
                 throw new Error(
                   `Converting jsx: component ${component.name}'s child ${child.name} has an undefined child`
                 );
-              return `childId${i + 1}='${grandchild.name}'`;
+              return `childId${i + 1}='${grandchild.name}-${grandchild.index}'`;
             })
             .join(' ');
         }
