@@ -10,7 +10,6 @@ const createRootRectangle = (req, res, next) => {
     rootId = res.locals.newPage.components[0]._id;
   }
   const { imageHeight } = req.body;
-  console.log(rootId, imageHeight);
   return db
     .query(
       'INSERT INTO rectangles (component_id, width, height) ' +
@@ -119,7 +118,6 @@ const updateComponentRectangleStyle = (req, res, next) => {
 
 const deleteDesignRectangles = (req, res, next) => {
   const ids = res.locals.deletedComponentIds.map(({ _id }) => _id);
-  console.log(ids);
   return db
     .query('DELETE FROM rectangles WHERE component_id = ANY($1::int[]);', [ids])
     .then(() => next())
