@@ -133,7 +133,11 @@ export default function TopBar({
               </Box>
 
               <InputDesignTitle />
-              <ButtonAddCollab designId={designId} />
+              <ButtonAddCollab
+                designId={designId}
+                ownerId={user._id}
+                ownerName={user.username}
+              />
               <ButtonDeleteDesign />
               <ButtonViewTree entireApp={true} tree={tree} />
               <ButtonDownloadFiles />
