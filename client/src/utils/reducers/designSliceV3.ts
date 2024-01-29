@@ -23,7 +23,7 @@ import {
 
 export const newDesign = createAsyncThunk(
   'designs/new',
-  async (body: { userImage: string; imageHeight: number }) =>
+  async (body: { userImage: string; imageHeight: number; clientId: string; }) =>
     await addDesignRequest(body)
 );
 
