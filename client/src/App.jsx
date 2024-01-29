@@ -36,7 +36,7 @@ export default function App() {
     return;
   }
 
-  const error = useSelector((state) => state.designV2.error);
+  const error = useSelector((state) => state.designV3.error);
   if (error) {
     setMessage({
       severity: 'error',

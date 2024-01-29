@@ -26,7 +26,7 @@ router.post(
   '/new',
   imageController.uploadImage,
   designController.addNewDesign,
-  pageController.addNewPage,
+  pageController.createPageForNewDesign,
   componentController.createRootComponent,
   rectangleController.createRootRectangle,
   sendDesign
@@ -35,15 +35,6 @@ router.post(
 router.post(
   '/update-title/:designId',
   designController.updateDesignTitle,
-  sendDesign
-);
-
-router.post(
-  '/update/:designId',
-  imageController.deleteImage,
-  imageController.uploadImage,
-  designController.updateDesign,
-  rectangleController.updateRootRectangle,
   sendDesign
 );
 
@@ -65,14 +56,16 @@ router.delete(
 );
 
 router.post(
-  '/new-component/:designId',
-  componentController.addNewComponent,
-  rectangleController.createComponentRectangle,
-  (req, res, next) => {
-    console.log(res.locals.component);
-    return next();
-  },
-  (req, res) => res.status(200).send(res.locals.component)
+  '/new-page/:designId',
+  imageController.uploadImage,
+  pageController.addNewPage,
+  pageController.shiftPages,
+  componentController.createRootComponent,
+  rectangleController.createRootRectangle,
+  (req, res) =>
+    res
+      .status(200)
+      .send({ newPage: res.locals.newPage, shifted: res.locals.shiftedIndices })
 );
 
 module.exports = router;
