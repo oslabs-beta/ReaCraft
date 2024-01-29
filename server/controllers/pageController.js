@@ -119,7 +119,6 @@ const addNewPage = (req, res, next) => {
 const getDesignId = (req, res, next) => {
   let pageId = res.locals.pageId;
   if (!pageId) pageId = req.params.pageId;
-  console.log('in get Design id', pageId);
   return db
     .query('SELECT design_id FROM pages WHERE _id = $1;', [pageId])
     .then((data) => {
