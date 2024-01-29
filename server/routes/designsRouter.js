@@ -59,6 +59,14 @@ router.delete(
 );
 
 router.post(
+  '/add-collaborator/:designId',
+  designController.addCollaborator,
+  designController.updateDesignTimestamp,
+  (req, res) =>
+    res.status(200).send({ message: 'added collaborator successfully' })
+);
+
+router.post(
   '/new-page/:designId',
   imageController.uploadImage,
   pageController.addNewPage,

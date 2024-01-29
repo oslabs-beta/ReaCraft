@@ -37,6 +37,7 @@ import ButtonDeleteDesign from '../functionality/Design/ButtonDeleteDesign';
 import ButtonViewTree from '../functionality/Design/ButtonViewTree';
 import { convertToTree } from '../../utils/treeNode';
 import ButtonDownloadFiles from '../functionality/Design/ButtonDownloadFiles';
+import ButtonAddCollab from '../functionality/Design/ButtonAddCollab';
 
 export default function TopBar({
   toggleDarkMode,
@@ -132,6 +133,7 @@ export default function TopBar({
               </Box>
 
               <InputDesignTitle />
+              <ButtonAddCollab designId={designId} />
               <ButtonDeleteDesign />
               <ButtonViewTree entireApp={true} tree={tree} />
               <ButtonDownloadFiles />
