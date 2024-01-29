@@ -434,3 +434,29 @@ export function updateDesignCoverOrTitleRequest(
       throw err;
     });
 }
+
+export function addCollaboratorRequest(
+  designId: number,
+  body: {
+    ownerId: number;
+    colaboratorUsername: string;
+    canEdit: Boolean;
+  }
+): Promise<{ message: string }> {
+  return fetch(`designs/add-collaborator/${designId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
