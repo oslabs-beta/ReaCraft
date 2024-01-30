@@ -190,13 +190,3 @@ export const updateProfilePicture = (
       })
     );
 };
-
-export default {
-  checkUsername,
-  checkEmail,
-  addUser,
-  hashPassword,
-  verifyUser,
-  getUser,
-  updateProfilePicture,
-};

@@ -2,9 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import db from '../models/dbModel';
 import {
   CollaboratorQueryRes,
+  Component,
   Design,
   DesignQueryRes,
   DesignRow,
+  Page,
   PageQueryRes,
 } from '../../docs/types';
 
@@ -21,8 +23,11 @@ export const addNewDesign = (
       'INSERT INTO designs (user_id, image_url, last_updated_by) VALUES( $1, $2, $3 ) RETURNING *;',
       [userId, onlineImageUrl, username]
     )
-    .then((data: DesignQueryRes) => (res.locals.design = data.rows[0]))
-    .then(() => next()) //next middleware is componentController.createRootComponent
+    .then((data: DesignQueryRes) => {
+      res.locals.design = data.rows[0];
+      res.locals.designId = data.rows[0]._id;
+      return next();
+    })
     .catch((err) =>
       next({
         log:
@@ -234,12 +239,15 @@ export const addCollaborator = async (
   }
 };
 
-export default {
-  getDesigns,
-  deleteDesign,
-  addNewDesign,
-  updateDesignTitleOrCover,
-  getDesignById,
-  updateDesignTimestamp,
-  addCollaborator,
+export const sortComponents = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.locals.design.pages.sort((a: Page, b: Page) => a.index - b.index);
+  res.locals.design.pages.forEach((page: Page) => {
+    page.components.sort((a: Component, b: Component) => a.index - b.index);
+  });
+
+  return next();
 };

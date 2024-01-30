@@ -171,12 +171,3 @@ export const getRectangles = async (
     });
   }
 };
-
-export default {
-  createRootRectangle,
-  getRectangles,
-  createComponentRectangle,
-  updateComponentRectanglePosition,
-  updateComponentRectangleStyle,
-  updateRootRectangle,
-};

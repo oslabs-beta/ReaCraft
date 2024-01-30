@@ -150,12 +150,3 @@ export const getDesignId = (
       })
     );
 };
-
-export default {
-  createPageForNewDesign,
-  getPages,
-  deletePageById,
-  shiftPages,
-  addNewPage,
-  getDesignId,
-};
