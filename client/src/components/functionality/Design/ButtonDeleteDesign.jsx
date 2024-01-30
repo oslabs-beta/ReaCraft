@@ -36,7 +36,16 @@ export default function ButtonDeleteDesign() {
   return (
     <Fragment>
       <Tooltip title='delete design'>
-        <Fab size='small' onClick={() => setOpen(true)} color='error'>
+        <Fab
+          size='small'
+          onClick={() => setOpen(true)}
+          color='error'
+          sx={{
+            '& svg': {
+              transform: 'scale(1.2)',
+            },
+          }}
+        >
           <FontAwesomeIcon icon={faTrashCan} />
         </Fab>
       </Tooltip>

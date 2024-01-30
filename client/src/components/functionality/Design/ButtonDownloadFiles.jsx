@@ -48,7 +48,16 @@ export default function ButtonDownloadFiles() {
   }
   return (
     <Tooltip title='Download code files'>
-      <Fab size='small' color='success' onClick={handleClick}>
+      <Fab
+        size='small'
+        color='success'
+        onClick={handleClick}
+        sx={{
+          '& svg': {
+            transform: 'scale(1.2)',
+          },
+        }}
+      >
         <FontAwesomeIcon icon={faDownload} />
       </Fab>
     </Tooltip>
