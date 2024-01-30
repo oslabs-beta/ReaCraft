@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
-import HomeIcon from '@mui/icons-material/Home';
 import { Box, Stack, useTheme } from '@mui/material';
 import Divider from '@mui/material/Divider';
 
@@ -39,6 +38,9 @@ import { convertToTree } from '../../utils/treeNode';
 import ButtonDownloadFiles from '../functionality/Design/ButtonDownloadFiles';
 import ButtonAddCollab from '../functionality/Design/ButtonAddCollab';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
+
 export default function TopBar({
   toggleDarkMode,
   darkMode,
@@ -51,7 +53,7 @@ export default function TopBar({
     dispatch(resetDesign());
   }
 
-  const { _id, pages } = useSelector((state) => state.designV3);
+  const { _id, pages, canEdit } = useSelector((state) => state.designV3);
   const designId = _id;
 
   const { user } = useAuth();
@@ -133,12 +135,14 @@ export default function TopBar({
               </Box>
 
               <InputDesignTitle />
-              <ButtonAddCollab
-                designId={designId}
-                ownerId={user._id}
-                ownerName={user.username}
-              />
-              <ButtonDeleteDesign />
+              {canEdit && (
+                <ButtonAddCollab
+                  designId={designId}
+                  ownerId={user._id}
+                  ownerName={user.username}
+                />
+              )}
+              {canEdit && <ButtonDeleteDesign />}
               <ButtonViewTree entireApp={true} tree={tree} />
               <ButtonDownloadFiles />
             </Fragment>
@@ -180,7 +184,7 @@ export default function TopBar({
               width='30px'
               size='sm'
             >
-              <HomeIcon />
+              <FontAwesomeIcon icon={faHouse} />
             </IconButton>
           </Tooltip>
           <Divider orientation='vertical' flexItem />
