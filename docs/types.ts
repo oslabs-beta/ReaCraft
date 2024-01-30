@@ -11,6 +11,10 @@ export type Rectangle = {
   stroke: string;
 };
 
+export type RectangleQueryRes = {
+  rows: Rectangle[];
+};
+
 export type HtmlTag = '<div>' | '<p>' | '<button>';
 
 interface ComponentEssential {
