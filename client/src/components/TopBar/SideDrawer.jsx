@@ -13,6 +13,9 @@ import Stack from '@mui/material/Stack';
 import Fab from '@mui/material/Fab';
 import { useTheme } from '@emotion/react';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
+
 export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -44,8 +47,16 @@ export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
           </Fab>
         </Tooltip>
         <Tooltip title='Home'>
-          <Fab color='primary' onClick={() => handleClick('HOME')}>
-            <HomeIcon />
+          <Fab
+            color='primary'
+            onClick={() => handleClick('HOME')}
+            sx={{
+              '& svg': {
+                transform: 'scale(1.2)',
+              },
+            }}
+          >
+            <FontAwesomeIcon icon={faHouse} />
           </Fab>
         </Tooltip>
       </Stack>
