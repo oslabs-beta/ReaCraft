@@ -17,6 +17,9 @@ import ButtonComponentDelete from '../../../functionality/Component/ButtonCompon
 import ButtonAddNewComponent from '../../../functionality/Component/ButtonAddNewComponent';
 import ButtonGroupRectangleStyle from '../../../functionality/KonvaCanvas/ButtonGroupRectangleStyle';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+
 export default function WorkspaceLeft() {
   const { pages, canEdit } = useSelector((state) => state.designV3);
   const { selectedPageIdx } = useSelector((state) => state.app);
@@ -96,8 +99,9 @@ function ComponentDisplay({
                 e.stopPropagation();
                 setOpenEditor(true);
               }}
+              size='small'
             >
-              <EditIcon />
+              <FontAwesomeIcon icon={faPenToSquare} />
             </IconButton>
             {idx > 0 && (
               <ButtonComponentDelete
