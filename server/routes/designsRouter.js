@@ -81,8 +81,4 @@ router.post(
       .send({ newPage: res.locals.newPage, shifted: res.locals.shiftedIndices })
 );
 
-router.get('/get-collab', designController.getCollabDesigns, (req, res) =>
-  res.status(200).send(res.locals.designs)
-);
-
 module.exports = router;
