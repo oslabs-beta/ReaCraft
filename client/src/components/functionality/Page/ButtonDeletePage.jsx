@@ -1,10 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../../../utils/reducers/appSlice';
-import Delete from '@mui/icons-material/Delete';
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
 import { deletePageAndUpdateSelectedPageIdx } from '../../../utils/reducers/designSliceV3';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 export default function ButtonDeletePage({ pageId, canDelete }) {
   const dispatch = useDispatch();
@@ -31,8 +33,13 @@ export default function ButtonDeletePage({ pageId, canDelete }) {
           }
         }}
         color='error'
+        sx={{
+          '& svg': {
+            transform: 'scale(1.2)',
+          },
+        }}
       >
-        <Delete />
+        <FontAwesomeIcon icon={faTrashCan} />
       </Fab>
     </Tooltip>
   );
