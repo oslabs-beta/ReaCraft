@@ -13,6 +13,9 @@ import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../../../utils/reducers/appSlice';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+
 export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
@@ -63,7 +66,7 @@ export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
           color='info'
           onClick={(e) => setAnchorEl(e.currentTarget)}
         >
-          <PersonAddIcon />
+          <FontAwesomeIcon icon={faUserPlus} />
         </Fab>
       </Tooltip>
       <Popper

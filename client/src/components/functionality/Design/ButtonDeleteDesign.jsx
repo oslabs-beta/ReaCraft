@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteDesign } from '../../../utils/fetchRequests';
 import { goToPage, setMessage } from '../../../utils/reducers/appSlice';
-import Delete from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 
@@ -12,6 +11,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import { resetDesign } from '../../../utils/reducers/designSliceV3';
 import { Tooltip } from '@mui/material';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 export default function ButtonDeleteDesign() {
   const designId = useSelector((state) => state.designV3._id);
@@ -35,7 +37,7 @@ export default function ButtonDeleteDesign() {
     <Fragment>
       <Tooltip title='delete design'>
         <Fab size='small' onClick={() => setOpen(true)} color='error'>
-          <Delete />
+          <FontAwesomeIcon icon={faTrashCan} />
         </Fab>
       </Tooltip>
 

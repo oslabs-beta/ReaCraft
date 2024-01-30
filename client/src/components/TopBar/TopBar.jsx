@@ -39,7 +39,7 @@ import ButtonDownloadFiles from '../functionality/Design/ButtonDownloadFiles';
 import ButtonAddCollab from '../functionality/Design/ButtonAddCollab';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faBars } from '@fortawesome/free-solid-svg-icons';
 
 export default function TopBar({
   toggleDarkMode,
@@ -102,7 +102,7 @@ export default function TopBar({
                 onClick={() => setDrawerOpen(!drawerOpen)}
                 sx={AppBarButtonsStyle}
               >
-                <MenuIcon />
+                <FontAwesomeIcon icon={faBars} />
               </Button>
               <SideDrawer
                 drawerOpen={drawerOpen}
@@ -182,7 +182,7 @@ export default function TopBar({
               variant='contained'
               onClick={() => handlePageClick('HOME')}
               width='30px'
-              size='sm'
+              size='small'
             >
               <FontAwesomeIcon icon={faHouse} />
             </IconButton>
