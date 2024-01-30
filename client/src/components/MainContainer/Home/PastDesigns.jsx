@@ -11,7 +11,6 @@ import ButtonSortPastDesigns from '../../functionality/Design/ButtonSortPastDesi
 export default function UserDesigns() {
   const [pastDesigns, setPastDesigns] = useState([]);
   const searchTerm = useSelector((state) => state.designV3.searchTerm);
-  console.log('pastDesigns', pastDesigns);
   const dispatch = useDispatch();
 
   const theme = useTheme();
