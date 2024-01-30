@@ -17,8 +17,11 @@ import ButtonComponentDelete from '../../../functionality/Component/ButtonCompon
 import ButtonAddNewComponent from '../../../functionality/Component/ButtonAddNewComponent';
 import ButtonGroupRectangleStyle from '../../../functionality/KonvaCanvas/ButtonGroupRectangleStyle';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+
 export default function WorkspaceLeft() {
-  const { pages } = useSelector((state) => state.designV3);
+  const { pages, canEdit } = useSelector((state) => state.designV3);
   const { selectedPageIdx } = useSelector((state) => state.app);
   const page = pages[selectedPageIdx];
   const components = page.components;
@@ -35,9 +38,11 @@ export default function WorkspaceLeft() {
         paddingTop: '10px',
       }}
     >
-      <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
-        <ButtonAddNewComponent />
-      </Box>
+      {canEdit && (
+        <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
+          <ButtonAddNewComponent />
+        </Box>
+      )}
 
       <List sx={{ width: '100%' }}>
         {components.map((item, idx) => (
@@ -53,6 +58,7 @@ export default function WorkspaceLeft() {
               idx > 0 &&
               components.filter((e) => e.parent_id === item._id).length === 0
             }
+            canEdit={canEdit}
           />
         ))}
       </List>
@@ -60,7 +66,13 @@ export default function WorkspaceLeft() {
   );
 }
 
-function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
+function ComponentDisplay({
+  component,
+  idx,
+  handleListItemClick,
+  isLeaf,
+  canEdit,
+}) {
   const [openEditor, setOpenEditor] = useState(false);
   const selectedIdx = useSelector((state) => state.app.selectedIdx);
   const selected = selectedIdx === idx;
@@ -80,15 +92,16 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
         sx={{ width: '100%', paddingLeft: '40px' }}
       >
         <ListItemText primary={component.name} />
-        {selected && (
+        {selected && canEdit && (
           <Fragment>
             <IconButton
               onClick={(e) => {
                 e.stopPropagation();
                 setOpenEditor(true);
               }}
+              size='small'
             >
-              <EditIcon />
+              <FontAwesomeIcon icon={faPenToSquare} />
             </IconButton>
             {idx > 0 && (
               <ButtonComponentDelete
@@ -106,7 +119,7 @@ function ComponentDisplay({ component, idx, handleListItemClick, isLeaf }) {
           isLeaf={isLeaf}
         />
       </ListItemButton>
-      {selected && idx > 0 && (
+      {selected && idx > 0 && canEdit && (
         <Box
           sx={{
             padding: '0 20px',

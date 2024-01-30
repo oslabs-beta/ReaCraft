@@ -20,8 +20,8 @@ router.get('/logout', cookieController.removeCookie, (req, res) => {
 router.use('/login', loginRouter);
 router.use('/signup', signupRouter);
 router.use('/designs', cookieController.decryptCookie, designsRouter);
-router.use('/components', componentsRouter);
-router.use('/pages', pageRouter);
+router.use('/components', cookieController.decryptCookie, componentsRouter);
+router.use('/pages', cookieController.decryptCookie, pageRouter);
 
 router.get(
   '/user',

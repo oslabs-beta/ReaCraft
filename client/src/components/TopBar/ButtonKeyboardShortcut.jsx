@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from 'react';
 
-import KeyboardIcon from '@mui/icons-material/Keyboard';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Backdrop from '@mui/material/Backdrop';
@@ -22,6 +21,9 @@ import {
 import BackdropSnackbar from './BackdropSnackbar';
 import '../../styles/keyboardShortcut.scss';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faKeyboard } from '@fortawesome/free-solid-svg-icons';
+
 export default function ButtonKeyboardShortcut() {
   const [open, setOpen] = useState(false);
   return (
@@ -33,7 +35,7 @@ export default function ButtonKeyboardShortcut() {
           variant='contained'
           onClick={() => setOpen(true)}
         >
-          <KeyboardIcon />
+          <FontAwesomeIcon icon={faKeyboard} />
         </IconButton>
       </Tooltip>
       <BackdropSnackbar open={open} setOpen={setOpen} />
