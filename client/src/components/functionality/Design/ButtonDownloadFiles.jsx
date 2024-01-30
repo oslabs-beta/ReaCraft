@@ -7,7 +7,8 @@ import { downloadProject } from '../../../utils/fetchRequests';
 import { convertToTree } from '../../../utils/treeNode';
 import Codes from '../../../utils/codesForPage';
 import { jsxCodeForApp } from '../../../utils/codesForApp';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 export default function ButtonDownloadFiles() {
   const { title, pages } = useSelector((state) => state.designV3);
 
@@ -48,7 +49,7 @@ export default function ButtonDownloadFiles() {
   return (
     <Tooltip title='Download code files'>
       <Fab size='small' color='success' onClick={handleClick}>
-        <DownloadForOfflineIcon />
+        <FontAwesomeIcon icon={faDownload} />
       </Fab>
     </Tooltip>
   );
