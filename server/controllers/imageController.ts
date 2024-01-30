@@ -99,5 +99,3 @@ export const deleteImage = (
       })
     );
 };
-
-export default { uploadImage, deleteImage };
