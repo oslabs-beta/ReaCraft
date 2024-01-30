@@ -4,6 +4,7 @@ import PastDesigns from './PastDesigns';
 import { Container } from '@mui/material';
 import HomePageSearch from './HomePageSearch';
 import Box from '@mui/material/Box';
+import CollabDesigns from './CollabDesigns';
 
 export default function Home() {
   const { user } = useAuth();
@@ -14,6 +15,7 @@ export default function Home() {
           {/* conditional rendering of HomPageSearch. if a design is selected, the search bar will not appear in the workspace */}
           <HomePageSearch />
           <PastDesigns />
+          <CollabDesigns />
         </Container>
       </Box>
     );

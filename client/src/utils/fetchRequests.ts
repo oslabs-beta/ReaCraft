@@ -434,3 +434,61 @@ export function updateDesignCoverOrTitleRequest(
       throw err;
     });
 }
+
+export function addCollaboratorRequest(
+  designId: number,
+  body: {
+    ownerId: number;
+    colaboratorUsername: string;
+    canEdit: Boolean;
+  }
+): Promise<{ message: string }> {
+  return fetch(`designs/add-collaborator/${designId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error('Collaborator username not found.');
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function getCollabDesignsRequest(): Promise<Design[]> {
+  return fetch('/designs/get-collab', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    })
+    .then((data: DesignRes[]): Design[] => {
+      const newData = data.map((designRes: DesignRes) => {
+        const { created_at, last_updated } = designRes;
+        const design: any = { ...designRes };
+        design.created_at = new Date(
+          new Date(created_at).toString().split('-')[0]
+        );
+        design.last_updated = new Date(
+          new Date(last_updated).toString().split('-')[0]
+        );
+        return design;
+      });
+      return newData;
+    })
+    .catch((err) => {
+      throw err;
+    });
+}

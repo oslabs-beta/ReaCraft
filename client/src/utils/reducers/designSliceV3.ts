@@ -23,7 +23,7 @@ import {
 
 export const newDesign = createAsyncThunk(
   'designs/new',
-  async (body: { userImage: string; imageHeight: number; clientId: string; }) =>
+  async (body: { userImage: string; imageHeight: number; clientId: string }) =>
     await addDesignRequest(body)
 );
 
@@ -155,6 +155,7 @@ interface DesignState {
   isDraggable: boolean;
   cursorMode: string;
   image_url: string;
+  canEdit: Boolean;
 }
 
 const initialState: DesignState = {
@@ -169,6 +170,7 @@ const initialState: DesignState = {
   searchTerm: '',
   isDraggable: false,
   cursorMode: 'default',
+  canEdit: true,
 };
 
 const designSliceV3 = createSlice({
@@ -211,6 +213,9 @@ const designSliceV3 = createSlice({
     },
     updateDesignTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
+    },
+    setCanEdit: (state, action: PayloadAction<Boolean>) => {
+      state.canEdit = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -449,6 +454,7 @@ export const {
   toggleIsDraggable,
   setCursorMode,
   updateDesignTitle,
+  setCanEdit,
 } = designSliceV3.actions;
 
 export const updateDesignCoverOrTitleAndUpdateState =

@@ -42,6 +42,8 @@ export type Design = {
   created_at: Date;
   last_updated: Date;
   pages?: Page[];
+  last_updated_by?: string;
+  canEdit?: Boolean;
 };
 
 export type DefaultError = {

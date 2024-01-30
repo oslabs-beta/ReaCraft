@@ -10,9 +10,7 @@ import ButtonSortPastDesigns from '../../functionality/Design/ButtonSortPastDesi
 
 export default function UserDesigns() {
   const [pastDesigns, setPastDesigns] = useState([]);
-  const selectedDesign = useSelector((state) => state.designV3);
   const searchTerm = useSelector((state) => state.designV3.searchTerm);
-  const [localSelectedDesignId, setLocalSelectedDesignId] = useState(null);
   console.log('pastDesigns', pastDesigns);
   const dispatch = useDispatch();
 
@@ -34,7 +32,7 @@ export default function UserDesigns() {
     };
 
     fetchData();
-  }, [selectedDesign._id]);
+  }, []);
 
   const getFilteredDesigns = () => {
     if (!searchTerm) {
@@ -69,16 +67,14 @@ export default function UserDesigns() {
         container
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 4, sm: 12, md: 12 }}
+        sx={{ minWidth: '500px' }}
       >
         {visibleDesigns.map(
           (
             design // used pastDesigns here before
           ) => (
             <Grid item xs={2} sm={4} md={3} key={design._id}>
-              <CardDesignDisplay
-                design={design}
-                setLocalSelectedDesignId={setLocalSelectedDesignId}
-              />
+              <CardDesignDisplay design={design} />
             </Grid>
           )
         )}

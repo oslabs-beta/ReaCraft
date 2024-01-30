@@ -129,6 +129,7 @@ const getDesignById = (req, res, next) => {
 };
 
 const updateDesignTimestamp = (req, res, next) => {
+  const { username } = res.locals;
   let designId;
   if (res.locals.designId) designId = res.locals.designId;
   else if (req.params.designId) designId = req.params.designId;
@@ -141,11 +142,11 @@ const updateDesignTimestamp = (req, res, next) => {
       message: { err: 'updateDesignTimestamp: designId not found' },
     });
   }
-  console.log('in updated timestamp, designID', designId);
+  console.log('in updated timestamp, designID', designId, username);
   return db
     .query(
-      'UPDATE designs SET last_updated = CURRENT_TIMESTAMP WHERE _id = $1;',
-      [designId]
+      'UPDATE designs SET last_updated = CURRENT_TIMESTAMP, last_updated_by = $2 WHERE _id = $1;',
+      [designId, username]
     )
     .then(() => next())
     .catch((err) =>
@@ -158,6 +159,77 @@ const updateDesignTimestamp = (req, res, next) => {
     );
 };
 
+const addCollaborator = async (req, res, next) => {
+  const { designId } = req.params;
+  const { ownerId, collaboratorUsername, canEdit } = req.body;
+  try {
+    const collaboratorResponse = await db.query(
+      'SELECT _id FROM users WHERE username = $1;',
+      [collaboratorUsername]
+    );
+    if (collaboratorResponse.rows.length === 0) {
+      return res
+        .status(400)
+        .send({ message: 'Collaborator username not found' });
+    }
+    const collaboratorId = collaboratorResponse.rows[0]._id;
+    await db.query(
+      'INSERT INTO collaborators (design_id, collaborator_id, can_edit, is_owner) ' +
+        'VALUES ($1, $2, $3, $4);',
+      [designId, collaboratorId, canEdit, false]
+    );
+    const ownerResponse = await db.query(
+      'SELECT * FROM collaborators WHERE collaborator_id = $1 AND design_id = $2;',
+      [ownerId, designId]
+    );
+    if (ownerResponse.rows.length === 0) {
+      await db.query(
+        'INSERT INTO collaborators (design_id, collaborator_id, can_edit, is_owner) ' +
+          'VALUES( $1, $2, $3, $4 );',
+        [designId, ownerId, true, true]
+      );
+    }
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught designController.addCollaborator middleware error' +
+        err,
+      message: { err: 'addCollaborator: ' + err },
+    });
+  }
+};
+
+const getCollabDesigns = async (req, res, next) => {
+  const { userId } = res.locals;
+  try {
+    const collabResponse = await db.query(
+      'SELECT * FROM collaborators WHERE collaborator_id = $1;',
+      [userId]
+    );
+    const designIds = collabResponse.rows.map((row) => row.design_id);
+    const designRes = await db.query(
+      'SELECT * FROM designs WHERE _id = ANY($1::int[]);',
+      [designIds]
+    );
+    const designs = designRes.rows;
+    designs.forEach((design) => {
+      const collabRow = collabResponse.rows.find(
+        (row) => row.design_id === design._id
+      );
+      design.canEdit = collabRow.can_edit;
+    });
+    res.locals.designs = designs;
+    return next();
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught designController.getCollabDesigns middleware error' +
+        err,
+      message: { err: 'getCollabDesigns: ' + err },
+    });
+  }
+};
+
 module.exports = {
   getDesigns,
   deleteDesign,
@@ -166,4 +238,6 @@ module.exports = {
   updateDesign,
   getDesignById,
   updateDesignTimestamp,
+  addCollaborator,
+  getCollabDesigns,
 };
