@@ -38,14 +38,6 @@ export default function CardDesignDisplay({ design }) {
     }
   };
 
-  // const paperStyle = {};
-  // if (typeof canEdit === 'boolean') {
-  //   paperStyle.backgroundImage = `url(${CollabIcon})`;
-  //   paperStyle.backgroundPosition = 'bottom';
-  //   paperStyle.backgroundSize = '70%';
-  //   paperStyle.backgroundRepeat = 'no-repeat';
-  // }
-  console.log('type of canEdit', typeof canEdit);
   return (
     <Paper
       sx={{

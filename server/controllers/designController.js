@@ -189,6 +189,7 @@ const addCollaborator = async (req, res, next) => {
         [designId, ownerId, true, true]
       );
     }
+    return next();
   } catch (err) {
     return next({
       log:

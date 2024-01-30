@@ -439,7 +439,7 @@ export function addCollaboratorRequest(
   designId: number,
   body: {
     ownerId: number;
-    colaboratorUsername: string;
+    collaboratorUsername: string;
     canEdit: Boolean;
   }
 ): Promise<{ message: string }> {
