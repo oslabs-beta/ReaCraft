@@ -1,12 +1,17 @@
-const { Request, Response, NextFunction } = require('express');
-const db = require('../models/dbModel');
+import { Request, Response, NextFunction } from 'express';
+import db from '../models/dbModel';
+import { ComponentQueryRes, Page, PageQueryRes } from '../../docs/types';
 
 // Create a default RootContainer component for a new design
-const createRootComponent = (req, res, next) => {
-  let pageId;
-  let pageIdx;
+export const createRootComponent = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  let pageId: number;
+  let pageIdx: number;
   if (res.locals.design) {
-    const pages = res.locals.design.pages;
+    const pages: Page[] = res.locals.design.pages;
     pageId = pages[pages.length - 1]._id;
     pageIdx = 0;
   } else if (res.locals.newPage) {
@@ -40,13 +45,17 @@ const createRootComponent = (req, res, next) => {
     );
 };
 
-const getComponents = async (req, res, next) => {
+export const getComponents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const pages = res.locals.design.pages;
-    const compPromises = pages.map((page) =>
+    const pages: Page[] = res.locals.design.pages;
+    const compPromises: Promise<ComponentQueryRes>[] = pages.map((page) =>
       db.query('SELECT * FROM components WHERE page_id = $1;', [page._id])
     );
-    const results = await Promise.all(compPromises);
+    const results: any[] = await Promise.all(compPromises);
     results.forEach((data, i) => {
       if (data.rows.length === 0) {
         throw new Error('A page has no components.');
@@ -64,30 +73,36 @@ const getComponents = async (req, res, next) => {
   }
 };
 
-const addNewComponent = async (req, res, next) => {
-  const { pageId } = req.params;
-  const { name, index, rootId } = req.body;
-  let data;
+export const addNewComponent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const pageId: number = Number(req.params.pageId);
+  const name: string = req.body.name;
+  const index: number = req.body.index;
+  const rootId: number = req.body.rootId;
+  let componentRes: ComponentQueryRes;
   try {
-    const prevComponentRes = await db.query(
+    const prevComponentRes: ComponentQueryRes = await db.query(
       'SELECT * FROM components WHERE page_id = $1 AND name = $2;',
       [pageId, name]
     );
     if (prevComponentRes.rows.length === 0) {
-      data = await db.query(
+      componentRes = await db.query(
         'INSERT INTO components (page_id, name, index, parent_id) VALUES ($1, $2, $3, $4) RETURNING *;',
         [pageId, name, index, rootId]
       );
-      res.locals.component = data.rows[0];
+      res.locals.component = componentRes.rows[0];
       return next();
     } else {
       const { html_tag, inner_html } = prevComponentRes.rows[0];
-      data = await db.query(
+      componentRes = await db.query(
         'INSERT INTO components (page_id, name, index, parent_id, html_tag, inner_html) ' +
           'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;',
         [pageId, name, index, rootId, html_tag, inner_html]
       );
-      res.locals.component = data.rows[0];
+      res.locals.component = componentRes.rows[0];
       return next();
     }
   } catch (err) {
@@ -100,13 +115,17 @@ const addNewComponent = async (req, res, next) => {
   }
 };
 
-const deleteComponentById = (req, res, next) => {
-  const { componentId } = req.params;
+export const deleteComponentById = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const componentId: number = Number(req.params.componentId);
   return db
     .query('DELETE FROM components WHERE _id = $1 RETURNING index, page_id;', [
       componentId,
     ])
-    .then((data) => {
+    .then((data: { rows: { index: number; page_id: number }[] }) => {
       const { index, page_id } = data.rows[0];
       res.locals.indexDeleted = index;
       res.locals.pageId = page_id;
@@ -122,7 +141,11 @@ const deleteComponentById = (req, res, next) => {
     );
 };
 
-const shiftComponentsAfterDelete = (req, res, next) => {
+export const shiftComponentsAfterDelete = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { indexDeleted, pageId } = res.locals;
   return db
     .query(
@@ -132,7 +155,7 @@ const shiftComponentsAfterDelete = (req, res, next) => {
         'RETURNING _id, index;',
       [pageId, indexDeleted]
     )
-    .then((data) => {
+    .then((data: { rows: { _id: number; index: number }[] }) => {
       res.locals.shiftedIndices = data.rows;
       return next();
     })
@@ -146,19 +169,23 @@ const shiftComponentsAfterDelete = (req, res, next) => {
     );
 };
 
-const updateParent = async (req, res, next) => {
-  const { componentId } = req.params;
-  const { parentId } = req.body;
+export const updateParent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const componentId: number = Number(req.params.componentId);
+  const parentId: number = req.body.parentId;
 
   try {
     await db.query('UPDATE components SET parent_id = $1 WHERE _id = $2;', [
       parentId,
       componentId,
     ]);
-    const parentRes = await db.query(
-      'SELECT name, page_id FROM components WHERE _id = $1;',
-      [parentId]
-    );
+    const parentRes: { rows: { name: string; page_id: number }[] } =
+      await db.query('SELECT name, page_id FROM components WHERE _id = $1;', [
+        parentId,
+      ]);
     res.locals.componentName = parentRes.rows[0].name;
     res.locals.pageId = parentRes.rows[0].page_id;
     res.locals.htmlTag = '<div>';
@@ -174,22 +201,26 @@ const updateParent = async (req, res, next) => {
   }
 };
 
-const updateHtmlForAllSameComponents = async (req, res, next) => {
+export const updateHtmlForAllSameComponents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { componentName, htmlTag, pageId, innerHtml } = res.locals;
   if (!htmlTag) return next();
   try {
-    const pageRes = await db.query(
+    const pageRes: PageQueryRes = await db.query(
       'SELECT design_id FROM pages WHERE _id = $1;',
       [pageId]
     );
     if (pageRes.rows.length !== 1)
       throw new Error('updateHtmlForAllSameComponents: design not found');
     const designId = pageRes.rows[0].design_id;
-    const pagesRes = await db.query(
+    const pagesRes: PageQueryRes = await db.query(
       'SELECT _id FROM pages WHERE design_id = $1;',
       [designId]
     );
-    const pageIds = pagesRes.rows.map(({ _id }) => _id);
+    const pageIds: number[] = pagesRes.rows.map(({ _id }) => _id);
     await db.query(
       'UPDATE components SET html_tag = $1, inner_html = $2 WHERE name = $3 AND page_id = ANY($4::int[]);',
       [htmlTag, innerHtml, componentName, pageIds]
@@ -205,8 +236,12 @@ const updateHtmlForAllSameComponents = async (req, res, next) => {
   }
 };
 
-const resetParentHtml = (req, res, next) => {
-  const { parentId } = req.body;
+export const resetParentHtml = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const parentId: number = req.body.parentId;
   return db
     .query(
       'UPDATE components SET html_tag = $1, inner_html = $2 WHERE _id = $3;',
@@ -223,8 +258,12 @@ const resetParentHtml = (req, res, next) => {
     );
 };
 
-const updateComponentForm = (req, res, next) => {
-  const { componentId } = req.params;
+export const updateComponentForm = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const componentId: number = Number(req.params.componentId);
   const { name, innerHtml, props, styles, htmlTag } = req.body;
   return db
     .query(
@@ -245,11 +284,10 @@ const updateComponentForm = (req, res, next) => {
         htmlTag,
       ]
     )
-    .then((data) => {
+    .then((data: ComponentQueryRes) => {
       res.locals.updatedComponent = data.rows[0];
       res.locals.htmlTag = data.rows[0].html_tag;
       res.locals.componentName = data.rows[0].name;
-      res.locals.designId = data.rows[0].design_id;
       res.locals.innerHtml = data.rows[0].inner_html;
       res.locals.pageId = data.rows[0].page_id;
       return next();
@@ -264,8 +302,12 @@ const updateComponentForm = (req, res, next) => {
     );
 };
 
-const updateRootComponentNameForShiftedPages = async (req, res, next) => {
-  const shifted = res.locals.shiftedIndices;
+export const updateRootComponentNameForShiftedPages = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const shifted: { _id: number; index: number }[] = res.locals.shiftedIndices;
   try {
     for (const { _id, index } of shifted) {
       await db.query(
@@ -284,12 +326,12 @@ const updateRootComponentNameForShiftedPages = async (req, res, next) => {
   }
 };
 
-const getPageId = (req, res, next) => {
-  let componentId = res.locals.componentId;
-  if (!componentId) componentId = req.params.componentId;
+export const getPageId = (req: Request, res: Response, next: NextFunction) => {
+  let componentId: number | undefined = res.locals.componentId;
+  if (!componentId) componentId = Number(req.params.componentId);
   return db
     .query('SELECT page_id FROM components WHERE _id = $1;', [componentId])
-    .then((data) => {
+    .then((data: { rows: { page_id: number }[] }) => {
       res.locals.pageId = data.rows[0].page_id;
       return next();
     })
@@ -301,18 +343,4 @@ const getPageId = (req, res, next) => {
         message: { err: 'getDesignId: ' + err },
       })
     );
-};
-
-module.exports = {
-  getComponents,
-  createRootComponent,
-  addNewComponent,
-  deleteComponentById,
-  shiftComponentsAfterDelete,
-  updateParent,
-  resetParentHtml,
-  updateComponentForm,
-  updateHtmlForAllSameComponents,
-  updateRootComponentNameForShiftedPages,
-  getPageId,
 };

@@ -1,5 +1,7 @@
-const AWS = require('aws-sdk');
-require('dotenv').config();
+import AWS from 'aws-sdk';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -9,4 +11,4 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-module.exports = s3;
+export default s3;
