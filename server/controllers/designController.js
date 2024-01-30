@@ -69,20 +69,44 @@ const updateDesign = (req, res, next) => {
     );
 };
 
-const getDesigns = (req, res, next) => {
-  const userId = res.locals.userId;
-  return db
-    .query('SELECT * FROM designs WHERE user_id = $1;', [userId])
-    .then((data) => (res.locals.designs = data.rows))
-    .then(() => next())
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught designController.getDesigns middleware error' +
-          err,
-        message: { err: 'getDesigns: ' + err },
-      })
+const getDesigns = async (req, res, next) => {
+  const { userId } = res.locals;
+  try {
+    const ownedDesignsRes = await db.query(
+      'SELECT *  FROM designs WHERE user_id = $1;',
+      [userId]
     );
+    const ownedDesigns = ownedDesignsRes.rows;
+    const collabResponse = await db.query(
+      'SELECT * FROM collaborators WHERE collaborator_id = $1;',
+      [userId]
+    );
+    const designIds = collabResponse.rows.map((row) => row.design_id);
+    const collabDesignsRes = await db.query(
+      'SELECT * FROM designs WHERE _id = ANY($1::int[]);',
+      [designIds]
+    );
+    const collabDesigns = collabDesignsRes.rows;
+    collabDesigns.forEach((design) => {
+      const collabRow = collabResponse.rows.find(
+        (row) => row.design_id === design._id
+      );
+      design.canEdit = collabRow.can_edit;
+    });
+    const collabIds = collabDesigns.map((design) => design._id);
+    res.locals.designs = [
+      ...ownedDesigns.filter((design) => !collabIds.includes(design._id)),
+      ...collabDesigns,
+    ];
+    return next();
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught designController.getDesigns middleware error' +
+        err,
+      message: { err: 'getDesigns: ' + err },
+    });
+  }
 };
 
 const deleteDesign = async (req, res, next) => {
@@ -200,37 +224,6 @@ const addCollaborator = async (req, res, next) => {
   }
 };
 
-const getCollabDesigns = async (req, res, next) => {
-  const { userId } = res.locals;
-  try {
-    const collabResponse = await db.query(
-      'SELECT * FROM collaborators WHERE collaborator_id = $1;',
-      [userId]
-    );
-    const designIds = collabResponse.rows.map((row) => row.design_id);
-    const designRes = await db.query(
-      'SELECT * FROM designs WHERE _id = ANY($1::int[]);',
-      [designIds]
-    );
-    const designs = designRes.rows;
-    designs.forEach((design) => {
-      const collabRow = collabResponse.rows.find(
-        (row) => row.design_id === design._id
-      );
-      design.canEdit = collabRow.can_edit;
-    });
-    res.locals.designs = designs;
-    return next();
-  } catch (err) {
-    return next({
-      log:
-        'Express error handler caught designController.getCollabDesigns middleware error' +
-        err,
-      message: { err: 'getCollabDesigns: ' + err },
-    });
-  }
-};
-
 module.exports = {
   getDesigns,
   deleteDesign,
@@ -240,5 +233,4 @@ module.exports = {
   getDesignById,
   updateDesignTimestamp,
   addCollaborator,
-  getCollabDesigns,
 };
