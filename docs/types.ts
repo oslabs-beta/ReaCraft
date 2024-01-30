@@ -13,7 +13,7 @@ export type Rectangle = {
 
 export type HtmlTag = '<div>' | '<p>' | '<button>';
 
-export type Component = {
+interface ComponentEssential {
   _id: number;
   page_id: number;
   parent_id: number;
@@ -21,30 +21,52 @@ export type Component = {
   name: string;
   html_tag: HtmlTag;
   inner_html: string;
+}
+
+export interface Component extends ComponentEssential {
   props: { key: string; value: string }[];
   styles: { key: string; value: string }[];
   rectangle?: Rectangle;
-};
+}
 
-export type Page = {
+export interface ComponentRow extends ComponentEssential {
+  props: { [key: string]: string };
+  styles: { [key: string]: string };
+}
+
+export type ComponentQueryRes = { rows: ComponentRow[] };
+
+export interface PageRow {
   _id: number;
   design_id: number;
   index: number;
   image_url: string;
-  components: Component[];
-};
+}
 
-export type Design = {
+export type PageQueryRes = { rows: PageRow[] };
+
+export interface Page extends PageRow {
+  components: Component[];
+}
+
+export interface DesignRow {
   _id: number;
   user_id: number;
   title: string;
   image_url: string;
   created_at: Date;
   last_updated: Date;
-  pages?: Page[];
-  last_updated_by?: string;
-  canEdit?: Boolean;
+  last_updated_by: string;
+}
+
+export type DesignQueryRes = {
+  rows: DesignRow[];
 };
+
+export interface Design extends DesignRow {
+  pages?: Page[];
+  canEdit?: Boolean;
+}
 
 export type DefaultError = {
   log: string;
