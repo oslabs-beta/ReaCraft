@@ -18,7 +18,6 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 import SwitchDarkMode from './SwitchDarkMode';
 import ButtonUserMenu from './ButtonUserMenu';
-import SideDrawer from './SideDrawer';
 import ButtonKeyboardShortcut from './ButtonKeyboardShortcut';
 
 import InputDesignTitle from '../functionality/Design/InputDesignTitle_Topbar';
@@ -44,8 +43,7 @@ import { faHouse, faBars } from '@fortawesome/free-solid-svg-icons';
 export default function TopBar({
   toggleDarkMode,
   darkMode,
-  drawerOpen,
-  setDrawerOpen,
+  handleDrawerOpen,
 }) {
   const dispatch = useDispatch();
   function handlePageClick(page) {
@@ -83,7 +81,7 @@ export default function TopBar({
   }
 
   return (
-    <AppBar display='block' position='fixed' height='56px'>
+    <AppBar display='block' position='fixed' height='56px' sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar
         disableGutters={true}
         sx={{
@@ -99,15 +97,17 @@ export default function TopBar({
               <Button
                 variant='contained'
                 size='large'
-                onClick={() => setDrawerOpen(!drawerOpen)}
-                sx={AppBarButtonsStyle}
+                onClick={handleDrawerOpen}
+                sx={{
+                  ...AppBarButtonsStyle,
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                  }
+                }}
               >
                 <FontAwesomeIcon icon={faBars} />
               </Button>
-              <SideDrawer
-                drawerOpen={drawerOpen}
-                setDrawerOpen={setDrawerOpen}
-              />
               <Typography fontSize='25px'>ReaCraft</Typography>
             </Fragment>
           )}
