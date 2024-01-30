@@ -1,16 +1,17 @@
-const db = require('../models/dbModel');
+import { Request, Response, NextFunction } from 'express';
+import db from '../models/dbModel';
+import { DesignQueryRes } from '../../docs/types';
 
 //handle add new design
-const addNewDesign = (req, res, next) => {
+const addNewDesign = (req: Request, res: Response, next: NextFunction) => {
   // userId from cookieController.decryptCookie
-  const { userId, onlineImageUrl } = res.locals;
-  console.log(onlineImageUrl);
+  const { userId, onlineImageUrl, username } = res.locals;
   return db
     .query(
-      'INSERT INTO designs (user_id, image_url) VALUES( $1, $2 ) RETURNING *;',
-      [userId, onlineImageUrl]
+      'INSERT INTO designs (user_id, image_url, last_updated_by) VALUES( $1, $2, $3 ) RETURNING *;',
+      [userId, onlineImageUrl, username]
     )
-    .then((data) => (res.locals.design = data.rows[0]))
+    .then((data: DesignQueryRes) => (res.locals.design = data.rows[0]))
     .then(() => next()) //next middleware is componentController.createRootComponent
     .catch((err) =>
       next({
@@ -22,7 +23,11 @@ const addNewDesign = (req, res, next) => {
     );
 };
 
-const updateDesignTitleOrCover = (req, res, next) => {
+const updateDesignTitleOrCover = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { title, imageUrl } = req.body;
   const { designId } = req.params;
   const column = title ? 'title' : 'image_url';
@@ -44,7 +49,7 @@ const updateDesignTitleOrCover = (req, res, next) => {
     );
 };
 
-const updateDesign = (req, res, next) => {
+const updateDesign = (req: Request, res: Response, next: NextFunction) => {
   const { onlineImageUrl } = res.locals;
   const { title } = req.body;
   const { designId } = req.params;
@@ -69,7 +74,7 @@ const updateDesign = (req, res, next) => {
     );
 };
 
-const getDesigns = async (req, res, next) => {
+const getDesigns = async (req: Request, res: Response, next: NextFunction) => {
   const { userId } = res.locals;
   try {
     const ownedDesignsRes = await db.query(
@@ -109,7 +114,11 @@ const getDesigns = async (req, res, next) => {
   }
 };
 
-const deleteDesign = async (req, res, next) => {
+const deleteDesign = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const designId = req.params.designId;
   try {
     const pageResponse = await db.query(
@@ -134,7 +143,7 @@ const deleteDesign = async (req, res, next) => {
   }
 };
 
-const getDesignById = (req, res, next) => {
+const getDesignById = (req: Request, res: Response, next: NextFunction) => {
   const designId = req.params.designId;
   return db
     .query('SELECT * FROM designs WHERE _id = $1;', [designId])
@@ -152,7 +161,11 @@ const getDesignById = (req, res, next) => {
     );
 };
 
-const updateDesignTimestamp = (req, res, next) => {
+const updateDesignTimestamp = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { username } = res.locals;
   let designId;
   if (res.locals.designId) designId = res.locals.designId;
@@ -183,7 +196,11 @@ const updateDesignTimestamp = (req, res, next) => {
     );
 };
 
-const addCollaborator = async (req, res, next) => {
+const addCollaborator = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { designId } = req.params;
   const { ownerId, collaboratorUsername, canEdit } = req.body;
   try {

@@ -4,7 +4,7 @@ import path from 'path';
 const rimraf = require('rimraf');
 import { Request, Response, NextFunction } from 'express';
 
-const downloadFiles = async (
+export const downloadFiles = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -56,4 +56,4 @@ const downloadFiles = async (
   }
 };
 
-export { downloadFiles };
+export default { downloadFiles };
