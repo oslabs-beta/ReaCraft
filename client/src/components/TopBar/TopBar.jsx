@@ -46,7 +46,9 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
     dispatch(resetDesign());
   }
 
-  const { _id, pages, canEdit } = useSelector((state) => state.designV3);
+  const { _id, pages, canEdit, user_id } = useSelector(
+    (state) => state.designV3
+  );
   const designId = _id;
 
   const { user } = useAuth();
@@ -142,7 +144,7 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
                   ownerName={user.username}
                 />
               )}
-              {canEdit && <ButtonDeleteDesign />}
+              {canEdit && user_id == user._id && <ButtonDeleteDesign />}
               <ButtonViewTree entireApp={true} tree={tree} />
               <ButtonDownloadFiles />
             </Fragment>
