@@ -8,9 +8,11 @@ import {
   IconButton,
   useTheme,
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import { useAuth } from '../../../hooks/useAuth';
 import { setSearchTerm } from '../../../utils/reducers/designSliceV3';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 export default function HomePageSearch() {
   const { user } = useAuth();
@@ -80,8 +82,12 @@ export default function HomePageSearch() {
           InputProps={{
             // startAdornment is used for adding read-only elements like the SearchIcon that's being used within the Button
             startAdornment: (
-              <IconButton variant='contained' sx={{ marginRight: 1 }}>
-                <SearchIcon />
+              <IconButton
+                variant='contained'
+                sx={{ marginRight: 1 }}
+                size='small'
+              >
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
               </IconButton>
             ),
           }}
