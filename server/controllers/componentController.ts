@@ -344,17 +344,3 @@ export const getPageId = (req: Request, res: Response, next: NextFunction) => {
       })
     );
 };
-
-export default {
-  getComponents,
-  createRootComponent,
-  addNewComponent,
-  deleteComponentById,
-  shiftComponentsAfterDelete,
-  updateParent,
-  resetParentHtml,
-  updateComponentForm,
-  updateHtmlForAllSameComponents,
-  updateRootComponentNameForShiftedPages,
-  getPageId,
-};

@@ -81,10 +81,3 @@ export const removeCookie = (
     });
   }
 };
-
-export default {
-  checkCookie,
-  setCookie,
-  removeCookie,
-  decryptCookie,
-};

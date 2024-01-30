@@ -55,5 +55,3 @@ export const downloadFiles = async (
     });
   }
 };
-
-export default { downloadFiles };
