@@ -9,8 +9,6 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import MenuIcon from '@mui/icons-material/Menu';
-import HomeIcon from '@mui/icons-material/Home';
 import { Box, Stack, useTheme } from '@mui/material';
 import Divider from '@mui/material/Divider';
 
@@ -19,7 +17,6 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 import SwitchDarkMode from './SwitchDarkMode';
 import ButtonUserMenu from './ButtonUserMenu';
-import SideDrawer from './SideDrawer';
 import ButtonKeyboardShortcut from './ButtonKeyboardShortcut';
 
 import InputDesignTitle from '../functionality/Design/InputDesignTitle_Topbar';
@@ -37,20 +34,21 @@ import ButtonDeleteDesign from '../functionality/Design/ButtonDeleteDesign';
 import ButtonViewTree from '../functionality/Design/ButtonViewTree';
 import { convertToTree } from '../../utils/treeNode';
 import ButtonDownloadFiles from '../functionality/Design/ButtonDownloadFiles';
+import ButtonAddCollab from '../functionality/Design/ButtonAddCollab';
 
-export default function TopBar({
-  toggleDarkMode,
-  darkMode,
-  drawerOpen,
-  setDrawerOpen,
-}) {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse, faBars } from '@fortawesome/free-solid-svg-icons';
+
+export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
   const dispatch = useDispatch();
   function handlePageClick(page) {
     dispatch(goToPage(page));
     dispatch(resetDesign());
   }
 
-  const { _id, pages } = useSelector((state) => state.designV3);
+  const { _id, pages, canEdit, user_id } = useSelector(
+    (state) => state.designV3
+  );
   const designId = _id;
 
   const { user } = useAuth();
@@ -80,7 +78,12 @@ export default function TopBar({
   }
 
   return (
-    <AppBar display='block' position='fixed' height='56px'>
+    <AppBar
+      display='block'
+      position='fixed'
+      height='56px'
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
       <Toolbar
         disableGutters={true}
         sx={{
@@ -96,15 +99,17 @@ export default function TopBar({
               <Button
                 variant='contained'
                 size='large'
-                onClick={() => setDrawerOpen(!drawerOpen)}
-                sx={AppBarButtonsStyle}
+                onClick={handleDrawerOpen}
+                sx={{
+                  ...AppBarButtonsStyle,
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                  },
+                }}
               >
-                <MenuIcon />
+                <FontAwesomeIcon icon={faBars} />
               </Button>
-              <SideDrawer
-                drawerOpen={drawerOpen}
-                setDrawerOpen={setDrawerOpen}
-              />
               <Typography fontSize='25px'>ReaCraft</Typography>
             </Fragment>
           )}
@@ -132,7 +137,14 @@ export default function TopBar({
               </Box>
 
               <InputDesignTitle />
-              <ButtonDeleteDesign />
+              {canEdit && (
+                <ButtonAddCollab
+                  designId={designId}
+                  ownerId={user._id}
+                  ownerName={user.username}
+                />
+              )}
+              {canEdit && user_id == user._id && <ButtonDeleteDesign />}
               <ButtonViewTree entireApp={true} tree={tree} />
               <ButtonDownloadFiles />
             </Fragment>
@@ -172,9 +184,9 @@ export default function TopBar({
               variant='contained'
               onClick={() => handlePageClick('HOME')}
               width='30px'
-              size='sm'
+              size='small'
             >
-              <HomeIcon />
+              <FontAwesomeIcon icon={faHouse} />
             </IconButton>
           </Tooltip>
           <Divider orientation='vertical' flexItem />

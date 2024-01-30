@@ -81,12 +81,18 @@
         width="800px"
         height="100%"
         style="display: flex; flex-direction: column; text-align: center">
-        <span display="flex" style="width: 60%; height: 70%">
+        <span display="flex" style="width: 60%; height: 70%; justify-content: center; align-items: center; position: relative;">
           <img
             alt="Logo"
-            style="width: 70%; height: 70%"
-            class="logo"
-            src="../assets/logo.svg" />
+            style="width: 90%; height: auto; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; margin-right: 8%; padding-bottom: 2.5rem;"
+            class="logo rotate-in-ver"
+            src="../assets/ReactCraftNew.svg" />
+
+            <img
+            alt="Logo Letters"
+            style="width: 70%; height: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;"
+            class="logo-letters"
+            src="../assets/ReactCraft_RC.svg" />
         </span>
         <span
           style="
@@ -99,25 +105,28 @@
           ">
           <p>Streamlining React Development from Design to Deployment</p>
         </span>
-        <p
+        <div class="tutorial-container"
           style="
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
             width: 90vw;
+            font-family: 'Baloo Bhaijaan 2', sans-serif;
           ">
-          Tutorial
-          <img
-            style="width: 20px; height: 20px"
-            alt="arrow"
-            class="arrow"
-            src="../assets/arrow.svg" />
-        </p>
+          <span id="tutorialText" style="cursor: pointer">
+            Tutorial
+            <img
+              style="width: 20px; height: 20px"
+              alt="arrow"
+              class="arrow"
+              src="../assets/arrow.svg" />
+          </span>
+        </div>
 
       </div>
     </span>
     <!-- slide 2 -->
-    <span class="slide">
+    <span class="slide" id="tutorialSection">
       <span class="container">
         <span>
           <!-- <fieldset class="slide2_Background">I love cheetos</fieldset> -->
@@ -285,7 +294,7 @@
             src="../assets/1boy.png"
             class="profile-photos"
             alt="Amir Profile" />
-          <div class="profile-name">Amir</div>
+          <div class="profile-name">Amir Munoz</div>
           <div class="link-container">
             <a href="https://github.com/Amunoz-1">
               <img
@@ -303,7 +312,7 @@
             src="../assets/1landing-page-girl.png"
             class="profile-photos"
             alt="Claire Profile" />
-          <div class="profile-name">Claire</div>
+          <div class="profile-name">Claire Huang</div>
           <div class="link-container">
             <a href="https://github.com/clairehuang1008">
               <img
@@ -321,27 +330,9 @@
             src="../assets/1landing-page-girl.png"
             class="profile-photos"
             alt="Eunice Profile" />
-          <div class="profile-name">Eunice</div>
+          <div class="profile-name">Eunice Kim</div>
           <div class="link-container">
             <a href="https://github.com/eunykim92">
-              <img
-                src="../assets/github-mark-white.svg"
-                width="30px"
-                alt="Github" />
-            </a>
-            <a href="https://www.linkedin.com">
-              <img src="../assets/linked-in.svg" width="30px" alt="LinkedIn" />
-            </a>
-          </div>
-        </span>
-        <span class="profile">
-          <img
-            src="../assets/1landing-page-girl.png"
-            class="profile-photos"
-            alt="Tanya Profile" />
-          <div class="profile-name">Tanya</div>
-          <div class="link-container">
-            <a href="https://github.com/tanyahang">
               <img
                 src="../assets/github-mark-white.svg"
                 width="30px"
@@ -356,9 +347,13 @@
     </span>
 
     <!-- scripts are at the bottom of the body to ensure HTML elements above are loaded before the scripts run -->
+
+    <script src="/views/slidesScript.js"></script>
+
     <script>
       // when document is ready
       $(document).ready(function () {
+
         // attach click handler event to 'signup' button
         $('#signup').click(function (e) {
           // prevent default button action
@@ -424,8 +419,44 @@
             });
           });
         });
+
+        // event listener for tutorial text
+        $('#tutorialText').click(function() {
+          document.getElementById('tutorialSection').scrollIntoView({
+            behavior: 'smooth'
+          })
+        })
       });
     </script>
-    <script src="/views/slidesScript.js"></script>
+
+    <!-- profiles animation script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        // once the DOM is loaded, event listener will be attached to every '.profile' class by creating an observer through IntersectionObserver
+        // IntersectionObserver API asynchronously observes changes in the intersection of a target element
+        const observer = new IntersectionObserver((entries, observer) => {
+          // loop over each entry - represents one observed element
+          entries.forEach(entry => {
+            // check if element is in view
+            if (entry.isIntersecting) {
+              // add class to trigger the animation
+              entry.target.classList.add('animate-bounce-in-top');
+          // remove the animation class shortly after it finishes
+          setTimeout(() => {
+            entry.target.classList.remove('animate-bounce-in-top');
+            }, 1500); // timeout should match duration of the animation
+            }
+          });
+        }, {
+          threshold: 0.1 // trigger when at least 10% of the target is visible
+        });
+
+        // observe all elements that have the class 'profile'
+        document.querySelectorAll('.profile').forEach(element => {
+          // observer is called for each '.profile' element to tell the IntersectionObserver to start watching for these elements when they intersect with the viewport
+          observer.observe(element);
+        });
+      });
+    </script>
   </body>
 </html>

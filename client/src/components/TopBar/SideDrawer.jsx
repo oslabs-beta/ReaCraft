@@ -11,9 +11,14 @@ import { resetDesign } from '../../utils/reducers/designSliceV3';
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack';
 import Fab from '@mui/material/Fab';
+import { useTheme } from '@emotion/react';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
 
 export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   function handleClick(page) {
     dispatch(goToPage(page));
@@ -30,12 +35,10 @@ export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
         '& .MuiDrawer-paper': {
           width: 100,
           boxSizing: 'border-box',
+          marginTop: '64px',
         },
       }}
     >
-      <Button onClick={() => setDrawerOpen(false)} sx={{ height: '56px' }}>
-        <ChevronLeftIcon />
-      </Button>
       <Divider />
       <Stack gap={2} sx={{ alignItems: 'center', marginTop: '15px' }}>
         <Tooltip title='New Design'>
@@ -44,8 +47,16 @@ export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
           </Fab>
         </Tooltip>
         <Tooltip title='Home'>
-          <Fab color='primary' onClick={() => handleClick('HOME')}>
-            <HomeIcon />
+          <Fab
+            color='primary'
+            onClick={() => handleClick('HOME')}
+            sx={{
+              '& svg': {
+                transform: 'scale(1.2)',
+              },
+            }}
+          >
+            <FontAwesomeIcon icon={faHouse} />
           </Fab>
         </Tooltip>
       </Stack>
