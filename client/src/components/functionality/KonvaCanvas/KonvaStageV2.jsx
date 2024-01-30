@@ -20,7 +20,7 @@ export default function KonvaStage({
   const loadingTheme = theme.palette.mode === 'dark' ? 'white' : 'black';
 
   // redux state
-  const { isDraggable, cursorMode, pages } = useSelector(
+  const { isDraggable, cursorMode, pages, canEdit } = useSelector(
     (state) => state.designV3
   );
   const components = pages[selectedPageIdx].components;
@@ -114,6 +114,7 @@ export default function KonvaStage({
                   stroke={rect.stroke}
                   strokeScaleEnabled={false}
                   draggable={
+                    canEdit &&
                     components.findIndex((c) => c._id === component_id) > 0
                   }
                   strokeWidth={rect.border_width * canvasRootRatio}
@@ -147,7 +148,11 @@ export default function KonvaStage({
                 />
                 {selectedIdx > 0 &&
                   components[selectedIdx]._id === component_id && (
-                    <Transformer ref={trRef} rotateEnabled={false} />
+                    <Transformer
+                      ref={trRef}
+                      rotateEnabled={false}
+                      resizeEnabled={canEdit}
+                    />
                   )}
               </Fragment>
             );
@@ -180,13 +185,13 @@ export default function KonvaStage({
     `;
 
     return (
-    <div style={loadingStyles}>
-      <style>{keyframes}</style>
-      Loading
-      <span style={{ ...dotStyle, animationDelay: '0s' }}> .</span>
-      <span style={{ ...dotStyle, animationDelay: '0.33s' }}>.</span>
-      <span style={{ ...dotStyle, animationDelay: '0.66s' }}>.</span>
-    </div>
+      <div style={loadingStyles}>
+        <style>{keyframes}</style>
+        Loading
+        <span style={{ ...dotStyle, animationDelay: '0s' }}> .</span>
+        <span style={{ ...dotStyle, animationDelay: '0.33s' }}>.</span>
+        <span style={{ ...dotStyle, animationDelay: '0.66s' }}>.</span>
+      </div>
     );
   }
 }
