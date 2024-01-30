@@ -9,6 +9,7 @@ import MainContainer from './components/MainContainer/MainContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMessage, setWindowSize } from './utils/reducers/appSlice';
 import ButtonBuyCoffee from './components/ButtonBuyCoffee';
+import SideDrawer from './components/TopBar/SideDrawer';
 
 const drawerWidth = 100;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -76,6 +77,11 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // toggle drawer function
+  const handleDrawerOpen = () => {
+    setDrawerOpen(!drawerOpen);
+  }
+
   const mode = window.localStorage.getItem('mode');
   const [darkMode, setDarkMode] = useState(Boolean(mode));
   const theme = darkMode ? themeDark : themeLight;
@@ -87,14 +93,17 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Main open={drawerOpen}>
-        <TopBar
+      <TopBar
           toggleDarkMode={toggleDarkMode}
           darkMode={darkMode}
           drawerOpen={drawerOpen}
-          setDrawerOpen={setDrawerOpen}
+          handleDrawerOpen={handleDrawerOpen}
         />
-
+      <SideDrawer 
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+        />
+      <Main open={drawerOpen}>
         <MainContainer
           sx={{
             top: '10%',
