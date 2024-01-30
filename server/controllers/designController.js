@@ -142,7 +142,7 @@ const updateDesignTimestamp = (req, res, next) => {
       message: { err: 'updateDesignTimestamp: designId not found' },
     });
   }
-  console.log('in updated timestamp, designID', designId);
+  console.log('in updated timestamp, designID', designId, username);
   return db
     .query(
       'UPDATE designs SET last_updated = CURRENT_TIMESTAMP, last_updated_by = $2 WHERE _id = $1;',
@@ -214,10 +214,9 @@ const getCollabDesigns = async (req, res, next) => {
     const designs = designRes.rows;
     designs.forEach((design) => {
       const collabRow = collabResponse.rows.find(
-        (row) => (row.design_id = design._id)
+        (row) => row.design_id === design._id
       );
       design.canEdit = collabRow.can_edit;
-      design.last_updated_by = collabRow.last_updated_by;
     });
     res.locals.designs = designs;
     return next();

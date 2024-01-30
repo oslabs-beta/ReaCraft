@@ -214,6 +214,9 @@ const designSliceV3 = createSlice({
     updateDesignTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
+    setCanEdit: (state, action: PayloadAction<Boolean>) => {
+      state.canEdit = action.payload;
+    },
   },
   extraReducers: (builder) => {
     asyncThunks.forEach((thunk) => {
@@ -451,6 +454,7 @@ export const {
   toggleIsDraggable,
   setCursorMode,
   updateDesignTitle,
+  setCanEdit,
 } = designSliceV3.actions;
 
 export const updateDesignCoverOrTitleAndUpdateState =

@@ -55,6 +55,7 @@ export default function CollabDesigns() {
           container
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 12, md: 12 }}
+          sx={{ minWidth: '500px' }}
         >
           {collabDesigns.map(
             (
