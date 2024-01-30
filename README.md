@@ -32,7 +32,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/oslabs-beta/ReaCraft">
-    <img src="docs/ReaCraft.svg" alt="Logo" width="200" height="200">
+    <img src="docs/ReaCraft.png" alt="Logo" width="200" height="200">
   </a>
 
 <h3 align="center">ReaCraft</h3>
@@ -94,6 +94,7 @@ Streamlining React Development from Design to Deployment
 [![typescript](https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=black)](https://www.typescriptlang.org/)
 [![html5](https://img.shields.io/badge/html%205-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://html.spec.whatwg.org/)
 [![css3](https://img.shields.io/badge/css%203-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://en.wikipedia.org/wiki/CSS)
+[![docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=ffffff)](https://www.docker.com/)
 
 [![npm](https://img.shields.io/badge/npm-v10.3.0-CB3837?logo=npm)](https://docs.npmjs.com/)
 [![React](https://img.shields.io/badge/react-v18.2.0-61DAFB?logo=react)](https://react.dev/)
@@ -111,6 +112,7 @@ Streamlining React Development from Design to Deployment
 [![Babel](https://img.shields.io/badge/babel-v7.23.7-F9DC3E?logo=babel)](https://babeljs.io/)
 [![Bootstrap](https://img.shields.io/badge/bootstrap-v5.3-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 [![sass](https://img.shields.io/badge/sass-v1.69.7-CC6699?logo=sass)](https://sass-lang.com/)
+[![FontAwesome](https://img.shields.io/badge/font%20awesome-v6.5.1-528DD7?logo=font%20awesome)](https://fontawesome.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -201,7 +203,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 <!-- ROADMAP -->
 
-## Roadmap
+<!-- ## Roadmap
 
 - [ ] Feature 1
 - [ ] Feature 2
@@ -210,7 +212,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 See the [open issues](https://github.com/oslabs-beta/Reactraft/issues) for a full list of proposed features (and known issues).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
 <!-- CONTRIBUTING -->
 
@@ -263,6 +265,7 @@ Project Link: [https://github.com/oslabs-beta/Reactraft](https://github.com/osla
 - [mui-color-input](https://www.npmjs.com/package/mui-color-input)
 - [react-drag-drop-files](https://www.npmjs.com/package/react-drag-drop-files)
 - [create-react-app](https://create-react-app.dev/)
+- [Font Awesome](https://fontawesome.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
