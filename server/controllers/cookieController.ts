@@ -1,13 +1,22 @@
-const { encrypt, decrypt } = require('../helpers/encryptDecrypt');
-const db = require('../models/dbModel');
+import { encrypt, decrypt } from '../helpers/encryptDecrypt';
+import db from '../models/dbModel';
+import { Request, Response, NextFunction } from 'express';
 
-const checkCookie = (req, res, next) => {
+export const checkCookie = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   res.locals.verified = !!(req.cookies && req.cookies.sessionID);
   return next();
 };
 
-const setCookie = async (req, res, next) => {
-  const userIdStr = String(res.locals.userId);
+export const setCookie = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userIdStr: string = String(res.locals.userId);
   try {
     res.cookie('sessionID', encrypt(userIdStr));
     return next();
@@ -22,9 +31,13 @@ const setCookie = async (req, res, next) => {
   }
 };
 
-const decryptCookie = async (req, res, next) => {
+export const decryptCookie = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const userId = decrypt(req.cookies.sessionID);
+    const userId: number = Number(decrypt(req.cookies.sessionID));
     const userResponse = await db.query(
       'SELECT username FROM users WHERE _id = $1;',
       [userId]
@@ -50,7 +63,11 @@ const decryptCookie = async (req, res, next) => {
   }
 };
 
-const removeCookie = (req, res, next) => {
+export const removeCookie = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     res.clearCookie('user_id');
     res.clearCookie('sessionID');
@@ -63,11 +80,4 @@ const removeCookie = (req, res, next) => {
       message: 'Cookie err: ' + err,
     });
   }
-};
-
-module.exports = {
-  checkCookie,
-  setCookie,
-  removeCookie,
-  decryptCookie,
 };

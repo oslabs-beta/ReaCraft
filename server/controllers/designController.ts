@@ -1,17 +1,33 @@
-const db = require('../models/dbModel');
+import { Request, Response, NextFunction } from 'express';
+import db from '../models/dbModel';
+import {
+  CollaboratorQueryRes,
+  Component,
+  Design,
+  DesignQueryRes,
+  DesignRow,
+  Page,
+  PageQueryRes,
+} from '../../docs/types';
 
 //handle add new design
-const addNewDesign = (req, res, next) => {
+export const addNewDesign = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // userId from cookieController.decryptCookie
-  const { userId, onlineImageUrl } = res.locals;
-  console.log(onlineImageUrl);
+  const { userId, onlineImageUrl, username } = res.locals;
   return db
     .query(
-      'INSERT INTO designs (user_id, image_url) VALUES( $1, $2 ) RETURNING *;',
-      [userId, onlineImageUrl]
+      'INSERT INTO designs (user_id, image_url, last_updated_by) VALUES( $1, $2, $3 ) RETURNING *;',
+      [userId, onlineImageUrl, username]
     )
-    .then((data) => (res.locals.design = data.rows[0]))
-    .then(() => next()) //next middleware is componentController.createRootComponent
+    .then((data: DesignQueryRes) => {
+      res.locals.design = data.rows[0];
+      res.locals.designId = data.rows[0]._id;
+      return next();
+    })
     .catch((err) =>
       next({
         log:
@@ -22,17 +38,21 @@ const addNewDesign = (req, res, next) => {
     );
 };
 
-const updateDesignTitleOrCover = (req, res, next) => {
+export const updateDesignTitleOrCover = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { title, imageUrl } = req.body;
-  const { designId } = req.params;
-  const column = title ? 'title' : 'image_url';
-  const value = title || imageUrl;
+  const designId: number = Number(req.params.designId);
+  const column: string = title ? 'title' : 'image_url';
+  const value: string = title || imageUrl;
   return db
     .query(`UPDATE designs SET ${column} = $1 WHERE _id = $2 RETURNING *;`, [
       value,
       designId,
     ])
-    .then((data) => (res.locals.design = data.rows[0]))
+    .then((data: DesignQueryRes) => (res.locals.design = data.rows[0]))
     .then(() => next())
     .catch((err) =>
       next({
@@ -44,56 +64,38 @@ const updateDesignTitleOrCover = (req, res, next) => {
     );
 };
 
-const updateDesign = (req, res, next) => {
-  const { onlineImageUrl } = res.locals;
-  const { title } = req.body;
-  const { designId } = req.params;
-  console.log('onlineUrl, title, id', onlineImageUrl, title, designId);
-
-  const columnToUpdate = onlineImageUrl ? 'image_url' : 'title';
-  const updatedValue = onlineImageUrl ? onlineImageUrl : title;
-  return db
-    .query(
-      `UPDATE designs SET ${columnToUpdate} = $1, last_updated = CURRENT_TIMESTAMP WHERE _id = $2 RETURNING *;`,
-      [updatedValue, designId]
-    )
-    .then((data) => (res.locals.design = data.rows[0]))
-    .then(() => next())
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught designController.updateDesign middleware error' +
-          err,
-        message: { err: 'updateDesign: ' + err },
-      })
-    );
-};
-
-const getDesigns = async (req, res, next) => {
+export const getDesigns = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { userId } = res.locals;
   try {
-    const ownedDesignsRes = await db.query(
+    const ownedDesignsRes: DesignQueryRes = await db.query(
       'SELECT *  FROM designs WHERE user_id = $1;',
       [userId]
     );
-    const ownedDesigns = ownedDesignsRes.rows;
-    const collabResponse = await db.query(
+    const ownedDesigns: DesignRow[] = ownedDesignsRes.rows;
+    const collabResponse: CollaboratorQueryRes = await db.query(
       'SELECT * FROM collaborators WHERE collaborator_id = $1;',
       [userId]
     );
-    const designIds = collabResponse.rows.map((row) => row.design_id);
-    const collabDesignsRes = await db.query(
+    const designIds: number[] = collabResponse.rows.map((row) => row.design_id);
+    const collabDesignsRes: DesignQueryRes = await db.query(
       'SELECT * FROM designs WHERE _id = ANY($1::int[]);',
       [designIds]
     );
-    const collabDesigns = collabDesignsRes.rows;
+    const collabDesigns: Design[] = [...collabDesignsRes.rows];
     collabDesigns.forEach((design) => {
       const collabRow = collabResponse.rows.find(
         (row) => row.design_id === design._id
       );
+      if (!collabRow) {
+        throw new Error('Collaboration not found.');
+      }
       design.canEdit = collabRow.can_edit;
     });
-    const collabIds = collabDesigns.map((design) => design._id);
+    const collabIds: number[] = collabDesigns.map((design) => design._id);
     res.locals.designs = [
       ...ownedDesigns.filter((design) => !collabIds.includes(design._id)),
       ...collabDesigns,
@@ -109,10 +111,14 @@ const getDesigns = async (req, res, next) => {
   }
 };
 
-const deleteDesign = async (req, res, next) => {
-  const designId = req.params.designId;
+export const deleteDesign = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const designId: number = Number(req.params.designId);
   try {
-    const pageResponse = await db.query(
+    const pageResponse: PageQueryRes = await db.query(
       'SELECT * FROM pages WHERE design_id = $1;',
       [designId]
     );
@@ -120,9 +126,7 @@ const deleteDesign = async (req, res, next) => {
     pageResponse.rows.forEach((page) =>
       res.locals.imageToDelete.push(page.image_url)
     );
-    await db.query('DELETE FROM designs WHERE _id = $1 RETURNING *;', [
-      designId,
-    ]);
+    await db.query('DELETE FROM designs WHERE _id = $1;', [designId]);
     return next();
   } catch (err) {
     return next({
@@ -134,11 +138,15 @@ const deleteDesign = async (req, res, next) => {
   }
 };
 
-const getDesignById = (req, res, next) => {
-  const designId = req.params.designId;
+export const getDesignById = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const designId: number = Number(req.params.designId);
   return db
     .query('SELECT * FROM designs WHERE _id = $1;', [designId])
-    .then((data) => {
+    .then((data: DesignQueryRes) => {
       res.locals.design = data.rows[0];
       return next();
     })
@@ -152,11 +160,15 @@ const getDesignById = (req, res, next) => {
     );
 };
 
-const updateDesignTimestamp = (req, res, next) => {
+export const updateDesignTimestamp = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { username } = res.locals;
-  let designId;
+  let designId: number;
   if (res.locals.designId) designId = res.locals.designId;
-  else if (req.params.designId) designId = req.params.designId;
+  else if (req.params.designId) designId = Number(req.params.designId);
   else if (req.body.designId) designId = req.body.designId;
   else {
     return next({
@@ -166,7 +178,6 @@ const updateDesignTimestamp = (req, res, next) => {
       message: { err: 'updateDesignTimestamp: designId not found' },
     });
   }
-  console.log('in updated timestamp, designID', designId, username);
   return db
     .query(
       'UPDATE designs SET last_updated = CURRENT_TIMESTAMP, last_updated_by = $2 WHERE _id = $1;',
@@ -183,11 +194,15 @@ const updateDesignTimestamp = (req, res, next) => {
     );
 };
 
-const addCollaborator = async (req, res, next) => {
-  const { designId } = req.params;
+export const addCollaborator = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const designId: number = Number(req.params.designId);
   const { ownerId, collaboratorUsername, canEdit } = req.body;
   try {
-    const collaboratorResponse = await db.query(
+    const collaboratorResponse: { rows: { _id: number }[] } = await db.query(
       'SELECT _id FROM users WHERE username = $1;',
       [collaboratorUsername]
     );
@@ -196,13 +211,13 @@ const addCollaborator = async (req, res, next) => {
         .status(400)
         .send({ message: 'Collaborator username not found' });
     }
-    const collaboratorId = collaboratorResponse.rows[0]._id;
+    const collaboratorId: number = collaboratorResponse.rows[0]._id;
     await db.query(
       'INSERT INTO collaborators (design_id, collaborator_id, can_edit, is_owner) ' +
         'VALUES ($1, $2, $3, $4);',
       [designId, collaboratorId, canEdit, false]
     );
-    const ownerResponse = await db.query(
+    const ownerResponse: CollaboratorQueryRes = await db.query(
       'SELECT * FROM collaborators WHERE collaborator_id = $1 AND design_id = $2;',
       [ownerId, designId]
     );
@@ -224,13 +239,15 @@ const addCollaborator = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  getDesigns,
-  deleteDesign,
-  addNewDesign,
-  updateDesignTitleOrCover,
-  updateDesign,
-  getDesignById,
-  updateDesignTimestamp,
-  addCollaborator,
+export const sortComponents = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.locals.design.pages.sort((a: Page, b: Page) => a.index - b.index);
+  res.locals.design.pages.forEach((page: Page) => {
+    page.components.sort((a: Component, b: Component) => a.index - b.index);
+  });
+
+  return next();
 };
