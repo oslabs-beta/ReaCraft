@@ -19,6 +19,7 @@ CREATE TABLE designs (
   title VARCHAR(255) DEFAULT 'Untitled',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_edited_by VARCHAR(255),
   FOREIGN KEY (user_id) REFERENCES users(_id) ON DELETE CASCADE
 );
 
@@ -26,8 +27,9 @@ CREATE TABLE collaborators (
   design_id INTEGER NOT NULL,
   collaborator_id INTEGER NOT NULL,
   can_edit BOOLEAN NOT NULL,
-  FOREIGN KEY (design_id) REFERENCES designs(_id),
-  FOREIGN KEY (collaborator_id) REFERENCES users(_id)
+  is_owner BOOLEAN NOT NULL,
+  FOREIGN KEY (design_id) REFERENCES designs(_id) ON DELETE CASCADE,
+  FOREIGN KEY (collaborator_id) REFERENCES users(_id) ON DELETE CASCADE
 );
 
 CREATE TABLE pages (

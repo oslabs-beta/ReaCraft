@@ -7,13 +7,13 @@ import { updateDesignCoverOrTitleRequest } from '../../../utils/fetchRequests';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../../../utils/reducers/appSlice';
 
-export default function InputDesignTitle({ initialText, designId }) {
+export default function InputDesignTitle({ initialText, designId, canEdit }) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(initialText);
 
   const dispatch = useDispatch();
   const handleDoubleClick = () => {
-    setIsEditing(true);
+    if (canEdit !== false) setIsEditing(true);
   };
 
   const handleChange = (event) => {

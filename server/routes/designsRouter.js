@@ -59,6 +59,14 @@ router.delete(
 );
 
 router.post(
+  '/add-collaborator/:designId',
+  designController.addCollaborator,
+  designController.updateDesignTimestamp,
+  (req, res) =>
+    res.status(200).send({ message: 'added collaborator successfully' })
+);
+
+router.post(
   '/new-page/:designId',
   imageController.uploadImage,
   pageController.addNewPage,
@@ -71,6 +79,10 @@ router.post(
     res
       .status(200)
       .send({ newPage: res.locals.newPage, shifted: res.locals.shiftedIndices })
+);
+
+router.get('/get-collab', designController.getCollabDesigns, (req, res) =>
+  res.status(200).send(res.locals.designs)
 );
 
 module.exports = router;
