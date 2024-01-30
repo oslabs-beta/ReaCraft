@@ -2,8 +2,10 @@ import React, { useState, Fragment } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
-import SortIcon from '@mui/icons-material/Sort';
 import Tooltip from '@mui/material/Tooltip';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSort } from '@fortawesome/free-solid-svg-icons';
 
 export default function ButtonSortPastDesigns({ pastDesigns, setPastDesigns }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,8 +23,15 @@ export default function ButtonSortPastDesigns({ pastDesigns, setPastDesigns }) {
   return (
     <Fragment>
       <Tooltip title='sort past designs'>
-        <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-          <SortIcon />
+        <IconButton
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          sx={{
+            '& svg': {
+              transform: 'scale(0.6)',
+            },
+          }}
+        >
+          <FontAwesomeIcon icon={faSort} />
         </IconButton>
       </Tooltip>
 
