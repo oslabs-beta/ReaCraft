@@ -9,7 +9,6 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Box, Stack, useTheme } from '@mui/material';
 import Divider from '@mui/material/Divider';
 
@@ -40,11 +39,7 @@ import ButtonAddCollab from '../functionality/Design/ButtonAddCollab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faBars } from '@fortawesome/free-solid-svg-icons';
 
-export default function TopBar({
-  toggleDarkMode,
-  darkMode,
-  handleDrawerOpen,
-}) {
+export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
   const dispatch = useDispatch();
   function handlePageClick(page) {
     dispatch(goToPage(page));
@@ -81,7 +76,12 @@ export default function TopBar({
   }
 
   return (
-    <AppBar display='block' position='fixed' height='56px' sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+    <AppBar
+      display='block'
+      position='fixed'
+      height='56px'
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
       <Toolbar
         disableGutters={true}
         sx={{
@@ -103,7 +103,7 @@ export default function TopBar({
                   '&:hover': {
                     backgroundColor: 'transparent',
                     boxShadow: 'none',
-                  }
+                  },
                 }}
               >
                 <FontAwesomeIcon icon={faBars} />

@@ -33,6 +33,11 @@ export default function ButtonDeletePage({ pageId, canDelete }) {
           }
         }}
         color='error'
+        sx={{
+          '& svg': {
+            transform: 'scale(1.2)',
+          },
+        }}
       >
         <FontAwesomeIcon icon={faTrashCan} />
       </Fab>
