@@ -1,11 +1,13 @@
 import React, { Fragment, useState, useRef } from 'react';
 import Fab from '@mui/material/Fab';
-import FreeBreakfastRoundedIcon from '@mui/icons-material/FreeBreakfastRounded';
 import Grow from '@mui/material/Grow';
 import useOutsideClick from '../hooks/useOutsideClick';
 import Popper from '@mui/material/Popper';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMugHot } from '@fortawesome/free-solid-svg-icons';
 
 export default function ButtonBuyCoffee() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -24,10 +26,15 @@ export default function ButtonBuyCoffee() {
         <Fab
           color='secondary'
           size='large'
-          sx={{ position: 'fixed', right: '50px', bottom: '50px' }}
+          sx={{
+            position: 'fixed',
+            right: '50px',
+            bottom: '50px',
+            '& svg': { transform: 'scale(1.8)' },
+          }}
           onClick={(e) => setAnchorEl(e.currentTarget)}
         >
-          <FreeBreakfastRoundedIcon />
+          <FontAwesomeIcon icon={faMugHot} />
         </Fab>
       </Tooltip>
       {anchorEl && (
@@ -53,6 +60,7 @@ function QrCodePopper({ anchorEl, onClose, isTransitioning }) {
       sx={{
         color: '#fff',
         marginRight: '20px',
+        zIndex: 100000,
       }}
       open={Boolean(anchorEl)}
       placement='left-end'

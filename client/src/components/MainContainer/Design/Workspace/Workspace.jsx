@@ -16,7 +16,6 @@ export default function Workspace() {
   const { selectedIdx, windowWidth, zoom, windowHeight, selectedPageIdx } =
     useSelector((state) => state.app);
 
-  console.log('selectedPageIdx', selectedPageIdx);
   const { image_url } = pages[selectedPageIdx];
   const dispatch = useDispatch();
   const theme = useTheme();

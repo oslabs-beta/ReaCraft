@@ -16,6 +16,7 @@ import {
 export function addDesignRequest(body: {
   userImage: string;
   imageHeight: number;
+  clientId: string;
 }): Promise<Design> {
   return fetch('/designs/new', {
     method: 'POST',
@@ -426,6 +427,32 @@ export function updateDesignCoverOrTitleRequest(
     .then((res) => {
       if (!res.ok) {
         throw new Error(res.statusText);
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function addCollaboratorRequest(
+  designId: number,
+  body: {
+    ownerId: number;
+    collaboratorUsername: string;
+    canEdit: Boolean;
+  }
+): Promise<{ message: string }> {
+  return fetch(`designs/add-collaborator/${designId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error('Collaborator username not found.');
       }
       return res.json();
     })
