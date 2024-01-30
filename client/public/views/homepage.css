@@ -249,6 +249,7 @@ html {
   flex-direction: column;
   margin-bottom: 20px;
   text-align: center;
+  font-family: 'Baloo Bhaijaan 2', sans-serif;
 }
 
 .profile-name {
@@ -326,6 +327,10 @@ html {
 
 .animate-bounce-in-top {
   animation: bounce-in-top 2s both;
+}
+
+.team-header {
+  font-family: 'Baloo Bhaijaan 2', sans-serif;
 }
 
 #dark-mode-switch-root {
