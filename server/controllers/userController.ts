@@ -1,10 +1,28 @@
-const db = require('../models/dbModel');
+import { Request, Response, NextFunction } from 'express';
+import db from '../models/dbModel';
 
-const checkUsername = (req, res, next) => {
+type userRow = {
+  _id: number;
+  username: string;
+  email: string;
+  profile_image: string;
+  created_at: string;
+  last_login: string;
+};
+
+type userQueryRes = {
+  rows: userRow[];
+};
+
+export const checkUsername = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { username } = req.body;
   return db
     .query('SELECT * FROM users WHERE username = $1', [username])
-    .then((data) =>
+    .then((data: userQueryRes) =>
       data.rows.length === 0
         ? next()
         : next({
@@ -15,11 +33,11 @@ const checkUsername = (req, res, next) => {
     );
 };
 
-const checkEmail = (req, res, next) => {
+export const checkEmail = (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
   return db
     .query('SELECT * FROM users WHERE email = $1', [email])
-    .then((data) =>
+    .then((data: userQueryRes) =>
       data.rows.length === 0
         ? next()
         : next({
@@ -30,14 +48,17 @@ const checkEmail = (req, res, next) => {
     );
 };
 
-const addUser = (req, res, next) => {
+export const addUser = (req: Request, res: Response, next: NextFunction) => {
   const { username, email } = req.body;
   return db
-    .query('INSERT INTO users (username, email) VALUES ($1, $2) RETURNING *;', [
-      username,
-      email,
-    ])
-    .then((data) => (res.locals.userId = data.rows[0]._id))
+    .query(
+      'INSERT INTO users (username, email) VALUES ($1, $2) RETURNING _id;',
+      [username, email]
+    )
+    .then(
+      (data: { rows: { _id: number }[] }) =>
+        (res.locals.userId = data.rows[0]._id)
+    )
     .then(() => next())
     .catch((err) =>
       next({
@@ -49,7 +70,11 @@ const addUser = (req, res, next) => {
     );
 };
 
-const hashPassword = (req, res, next) => {
+export const hashPassword = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { password } = req.body;
   const userId = res.locals.userId;
   return db
@@ -68,10 +93,14 @@ const hashPassword = (req, res, next) => {
     );
 };
 
-const verifyUser = async (req, res, next) => {
+export const verifyUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { username, password } = req.body;
   try {
-    const userData = await db.query(
+    const userData: { rows: { _id: number }[] } = await db.query(
       'SELECT _id FROM users WHERE username = $1;',
       [username]
     );
@@ -83,8 +112,8 @@ const verifyUser = async (req, res, next) => {
         message: 'VerifyUser Err: Username not found.',
       });
 
-    const pswMatched = await db.query(
-      'SELECT * FROM passwords WHERE user_id = $1 AND hashed_psw = crypt($2, hashed_psw);',
+    const pswMatched: { rows: { user_id: number }[] } = await db.query(
+      'SELECT user_id FROM passwords WHERE user_id = $1 AND hashed_psw = crypt($2, hashed_psw);',
       [user._id, password]
     );
     if (pswMatched.rows.length === 0)
@@ -110,12 +139,17 @@ const verifyUser = async (req, res, next) => {
   }
 };
 
-const getUser = async (req, res, next) => {
+export const getUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const userId = res.locals.userId;
-    const response = await db.query('SELECT * FROM users WHERE _id = $1;', [
-      userId,
-    ]);
+    const response: userQueryRes = await db.query(
+      'SELECT * FROM users WHERE _id = $1;',
+      [userId]
+    );
     if (response.rows.length === 0)
       return next({
         log:
@@ -135,7 +169,11 @@ const getUser = async (req, res, next) => {
   }
 };
 
-const updateProfilePicture = (req, res, next) => {
+export const updateProfilePicture = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { userId, onlineImageUrl } = res.locals;
   return db
     .query('UPDATE users SET profile_image = $1 WHERE _id = $2;', [
@@ -153,7 +191,7 @@ const updateProfilePicture = (req, res, next) => {
     );
 };
 
-module.exports = {
+export default {
   checkUsername,
   checkEmail,
   addUser,
