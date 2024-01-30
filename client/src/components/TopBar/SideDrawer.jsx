@@ -11,9 +11,11 @@ import { resetDesign } from '../../utils/reducers/designSliceV3';
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack';
 import Fab from '@mui/material/Fab';
+import { useTheme } from '@emotion/react';
 
 export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   function handleClick(page) {
     dispatch(goToPage(page));
@@ -30,12 +32,10 @@ export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
         '& .MuiDrawer-paper': {
           width: 100,
           boxSizing: 'border-box',
+          marginTop: '64px',
         },
       }}
     >
-      <Button onClick={() => setDrawerOpen(false)} sx={{ height: '56px' }}>
-        <ChevronLeftIcon />
-      </Button>
       <Divider />
       <Stack gap={2} sx={{ alignItems: 'center', marginTop: '15px' }}>
         <Tooltip title='New Design'>
