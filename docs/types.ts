@@ -68,6 +68,17 @@ export interface Design extends DesignRow {
   canEdit?: Boolean;
 }
 
+export type CollaboratorRow = {
+  design_id: number;
+  collaborator_id: number;
+  can_edit: boolean;
+  is_owner: boolean;
+};
+
+export type CollaboratorQueryRes = {
+  rows: CollaboratorRow[];
+};
+
 export type DefaultError = {
   log: string;
   status?: number;
