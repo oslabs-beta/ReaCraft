@@ -1,5 +1,9 @@
 import express, { Request, Response } from 'express';
-import { uploadImage, deleteImage } from '../controllers/imageController';
+import {
+  uploadImage,
+  deleteImage,
+  uploadNewDesignImage,
+} from '../controllers/imageController';
 import {
   getDesigns,
   sortComponents,
@@ -37,7 +41,7 @@ router.get('/get', getDesigns, (req: Request, res: Response) =>
 
 router.post(
   '/new',
-  uploadImage,
+  uploadNewDesignImage,
   addNewDesign,
   createPageForNewDesign,
   createRootComponent,
