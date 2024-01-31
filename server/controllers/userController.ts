@@ -139,36 +139,6 @@ export const verifyUser = async (
   }
 };
 
-export const getUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const userId = res.locals.userId;
-    const response: userQueryRes = await db.query(
-      'SELECT * FROM users WHERE _id = $1;',
-      [userId]
-    );
-    if (response.rows.length === 0)
-      return next({
-        log:
-          'Express error handler caught userController.getUser middleware error: ' +
-          'user id not found',
-        message: 'user id not found ',
-      });
-    res.locals.user = response.rows[0];
-    return next();
-  } catch (err) {
-    return next({
-      log:
-        'Express error handler caught userController.getUser middleware error: ' +
-        err,
-      message: 'getUser ' + err,
-    });
-  }
-};
-
 export const updateProfilePicture = (
   req: Request,
   res: Response,

@@ -1,3 +1,4 @@
+import { userQueryRes, userRow } from '../../docs/types';
 import { encrypt, decrypt } from '../helpers/encryptDecrypt';
 import db from '../models/dbModel';
 import { Request, Response, NextFunction } from 'express';
@@ -38,8 +39,8 @@ export const decryptCookie = async (
 ) => {
   try {
     const userId: number = Number(decrypt(req.cookies.sessionID));
-    const userResponse = await db.query(
-      'SELECT username FROM users WHERE _id = $1;',
+    const userResponse: userQueryRes = await db.query(
+      'SELECT * FROM users WHERE _id = $1;',
       [userId]
     );
     if (userResponse.rows.length === 0) {
@@ -47,11 +48,13 @@ export const decryptCookie = async (
         log:
           'Express error handler caught cookieController.decryptCookie middleware error' +
           'Username not found',
-        message: 'Cookie err: ' + 'Username not found',
+        message: 'Cookie err: ' + 'UserId not found',
       });
     }
-    res.locals.userId = userId;
-    res.locals.username = userResponse.rows[0].username;
+    const user: userRow = userResponse.rows[0];
+    res.locals.userId = user._id;
+    res.locals.username = user.username;
+    res.locals.user = user;
     return next();
   } catch (err) {
     return next({
