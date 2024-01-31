@@ -14,4 +14,6 @@ const query = (text: string, params?: any[]) => {
   });
 };
 
-export default { query };
+const end = () => pool.end();
+
+export default { query, end };
