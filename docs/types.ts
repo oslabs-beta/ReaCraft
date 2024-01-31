@@ -90,3 +90,16 @@ export type DefaultError = {
     err: string;
   };
 };
+
+export type userRow = {
+  _id: number;
+  username: string;
+  email: string;
+  profile_iamge: string;
+  created_at: string;
+  last_login: string;
+};
+
+export type userQueryRes = {
+  rows: userRow[];
+};
