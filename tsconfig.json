@@ -7,10 +7,10 @@
     "noImplicitAny": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "outDir": "./build"
+    "outDir": "./dist",
+    "rootDir": "./"
   },
-  "files": ["docs/types.ts"],
-  "exclude": ["**/*.js"],
+  "exclude": ["**/*.js", "node_modules", "build"],
   "include": ["client/utils/**/*", "server/**/*"],
   "types": ["jest"]
 }
