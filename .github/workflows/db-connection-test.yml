@@ -18,19 +18,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Webpack and Start server
-        run: npm run dev &
+      - name: Run Jest db-connection
+        run: npm run test db-connection
         env:
           PG_URI: ${{ secrets.PG_URI }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          PORT: 8080
-
-      - name: Wait for Server to Start
-        run: sleep 10
-
-      - name: Run Jest Routes Test
-        run: npm run test routes
 
       - name: Cache Node.js modules
         uses: actions/cache@v2
