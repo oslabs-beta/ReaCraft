@@ -360,6 +360,7 @@ describe('/designs', () => {
 
   describe('POST /update/:designId', () => {
     let testDesign: DesignRow;
+    const testImageUrl2 = 'https://reactraft.s3.amazonaws.com/test2.JPG';
 
     beforeAll(async () => {
       const designQueryRes: DesignQueryRes = await db.query(
@@ -373,9 +374,8 @@ describe('/designs', () => {
       testDesign = designQueryRes.rows[0];
     });
 
-    // updateCover
+    // update cover
     it('should respond with 200 status and application/json content type', async () => {
-      const testImageUrl2 = 'https://reactraft.s3.amazonaws.com/test2.JPG';
       const res: Response = await request(server)
         .post(`/designs/update/${testDesign._id}`)
         .set('Cookie', `sessionID=${sessionId}`)
@@ -390,6 +390,29 @@ describe('/designs', () => {
       const updatedDesign: DesignRow = updatedDesignRes.rows[0];
       expect(updatedDesign._id).toBe(testDesign._id);
       expect(updatedDesign.title).toBe(testDesign.title);
+      expect(updatedDesign.user_id).toBe(testDesign.user_id);
+      expect(updatedDesign.created_at).toEqual(testDesign.created_at);
+      expect(updatedDesign.last_updated_by).toBe(testUser.username);
+      expect(updatedDesign.image_url).toBe(testImageUrl2);
+      expect(updatedDesign.last_updated).not.toEqual(testDesign.last_updated);
+    });
+
+    // update title
+    it('should respond with 200 status and application/json content type', async () => {
+      const res: Response = await request(server)
+        .post(`/designs/update/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({ title: 'New Title' });
+      expect(res.status).toBe(200);
+      expect(res.type).toMatch(/application\/json/);
+      expect(res.body.message).toBe('updated design successfully');
+      const updatedDesignRes: DesignQueryRes = await db.query(
+        'SELECT * FROM designs WHERE _id = $1;',
+        [testDesign._id]
+      );
+      const updatedDesign: DesignRow = updatedDesignRes.rows[0];
+      expect(updatedDesign._id).toBe(testDesign._id);
+      expect(updatedDesign.title).toBe('New Title');
       expect(updatedDesign.user_id).toBe(testDesign.user_id);
       expect(updatedDesign.created_at).toEqual(testDesign.created_at);
       expect(updatedDesign.last_updated_by).toBe(testUser.username);
