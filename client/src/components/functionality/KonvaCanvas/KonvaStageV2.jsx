@@ -14,15 +14,15 @@ export default function KonvaStage({
 }) {
   const [image] = useImage(userImage);
 
-  const { selectedIdx, selectedPageIdx } = useSelector((state) => state.app);
+  const { selectedIdx, selectedPageIdx, isDraggable, cursorMode } = useSelector(
+    (state) => state.app
+  );
   // const canvasHeight = ((windowHeight - 180) * zoom) / 100;
   const theme = useTheme();
   const loadingTheme = theme.palette.mode === 'dark' ? 'white' : 'black';
 
   // redux state
-  const { isDraggable, cursorMode, pages, canEdit } = useSelector(
-    (state) => state.designV3
-  );
+  const { pages, canEdit } = useSelector((state) => state.designV3);
   const components = pages[selectedPageIdx].components;
   const rectangles = components.map((item) => item.rectangle);
   const dispatch = useDispatch();
