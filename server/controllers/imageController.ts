@@ -14,13 +14,18 @@ export const uploadNewDesignImage = (
   console.log('this is the clientId from req.body', clientId);
 
   if (!userImage) return next();
-  if (!clientId)
-    return next({
-      log: 'Express error handler caught imageController.uploadImage middleware error: clientId required',
-      message: 'Upload image err: clientId required',
-    });
 
-  const ws = getClient(clientId);
+  let skipWebSocket = req.originalUrl === '/update-profile';
+  console.log('this is skipWebSocket', skipWebSocket);
+
+  let ws;
+  if (!skipWebSocket) {
+    if (!clientId) return res.status(404).send('clientId is required');
+    ws = getClient(clientId);
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+      return res.status(404).send('websocket client not found');
+    }
+  }
 
   const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64Data, 'base64');
@@ -39,18 +44,17 @@ export const uploadNewDesignImage = (
     console.log('getting upload progress');
     const progress = Math.round((evt.loaded / evt.total) * 100);
     console.log('this is the progress', progress);
-    if (ws) {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ type: 'progressUpdate', progress: progress }));
-        console.log('progress update sent to client', clientId);
-      } else {
-        console.log(
-          'websocket not open or does not exist for client',
-          clientId
-        );
+    
+    if (!skipWebSocket && ws && ws.readyState === 1) {
+      ws.send(JSON.stringify({ type: 'progressUpdate', progress: progress }));
+      console.log('progress update sent to client', clientId);
+
+      if (progress === 100) {
+        ws.send(JSON.stringify({ type: 'uploadComplete', progress: progress }));
+        console.log('uploadComplete sent', clientId);
       }
-    }
-  });
+  }
+});
 
   upload
     .promise()

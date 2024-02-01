@@ -21,15 +21,12 @@ export default function UserImageUploadButton() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [socket, setSocket] = useState(null);
 
-  console.log('CONSOLE LOG FROM FILE UPLOADER NEW DESIGN');
-
   // Moved this function outside of handleFileChange for clarity
   function generateUniqueIdentifier() {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
   }
   // function to initiate websocket connection with the generated clientId and retryCount (if connection gets disconnected prematurely)
   function initiateWebSocketConnection(clientId, retryCount = 0) {
-    console.log(`Attempting to initiate WebSocket connection with clientId: ${clientId}`);
     // create new websocket connection with clientId
     const ws = new WebSocket(`ws://localhost:8080/ws?clientId=${clientId}`);
 
@@ -54,6 +51,13 @@ export default function UserImageUploadButton() {
               console.log('progressUpdate received', message.progress);
               // update the uploadProgress state
               setUploadProgress(message.progress);
+              break;
+            case 'uploadComplete':
+              console.log('uploadComplete received');
+              setFileName('');
+              setFileSize('');
+              setUploadProgress(100);
+              setTimeout(() => setUploadProgress(0), 2000); // reset progress after a delay
               break;
             case 'test':
               console.log('test message received:', message.content);
@@ -93,7 +97,7 @@ export default function UserImageUploadButton() {
   function calculateBackOffDelay(retryCount) {
     // exponential back-off formula 
     return Math.min(1000 * (2 ** retryCount), 30000);
-  }
+  };
 
   function handleFileChange(file) {
       console.log('hit handleFileChange');
