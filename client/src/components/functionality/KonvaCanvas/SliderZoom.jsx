@@ -24,7 +24,7 @@ export default function SliderZoom() {
       <IconButton onClick={zoomIn}>
         <AddCircleRoundedIcon />
       </IconButton>
-      <Tooltip title='reset to fit window'>
+      <Tooltip title='Reset to fit window'>
         <IconButton onClick={() => dispatch(setZoom(100))} size='small'>
           <RestartAltIcon />
         </IconButton>
