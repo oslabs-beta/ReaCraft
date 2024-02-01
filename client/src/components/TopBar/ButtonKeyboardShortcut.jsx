@@ -28,7 +28,7 @@ export default function ButtonKeyboardShortcut() {
   const [open, setOpen] = useState(false);
   return (
     <Fragment>
-      <Tooltip title='View keyboard Shortcuts Button'>
+      <Tooltip title='Keyboard Shortcuts'>
         <IconButton
           size='small'
           component='label'
