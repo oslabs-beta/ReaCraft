@@ -54,7 +54,7 @@ const MuiSwitch = styled(Switch)(({ theme }) => ({
 
 export default function SwitchDarkMode({ toggleDarkMode, darkMode }) {
   return (
-    <Tooltip title={`switch to ${darkMode ? 'light' : 'dark'} mode`}>
+    <Tooltip title={`Switch to ${darkMode ? 'light' : 'dark'} mode`}>
       <MuiSwitch onChange={toggleDarkMode} checked={!darkMode} />
     </Tooltip>
   );
