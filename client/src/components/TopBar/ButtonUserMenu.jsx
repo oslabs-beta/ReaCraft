@@ -218,6 +218,7 @@ function UserData({ label, data }) {
 function UserProfileImage({ avatar, setAvatar }) {
   let url;
   if (avatar) url = new URL(avatar);
+
   const dispatch = useDispatch();
   return (
     <Box
