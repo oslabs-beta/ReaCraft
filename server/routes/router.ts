@@ -17,7 +17,7 @@ import {
   updateProfilePicture,
   verifyUser,
 } from '../controllers/userController';
-import { uploadImage, deleteImage } from '../controllers/imageController';
+import { uploadNewDesignImage, uploadImage, deleteImage } from '../controllers/imageController';
 import { downloadFiles } from '../controllers/fileController';
 
 import dotenv from 'dotenv';
