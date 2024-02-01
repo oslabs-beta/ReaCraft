@@ -1,6 +1,6 @@
-import request, { Response } from 'supertest';
 import db from '../server/models/dbModel';
 import s3 from '../server/models/s3Model';
+import request, { Response } from 'supertest';
 import { encrypt } from '../server/helpers/encryptDecrypt';
 import path from 'path';
 import fs from 'fs';
