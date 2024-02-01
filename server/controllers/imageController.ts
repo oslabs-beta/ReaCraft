@@ -18,10 +18,10 @@ export const uploadNewDesignImage = (
   let skipWebSocket = req.originalUrl === '/update-profile';
   console.log('this is skipWebSocket', skipWebSocket);
 
-  let ws;
+  let ws: WebSocket | null = null;
   if (!skipWebSocket) {
     if (!clientId) return res.status(404).send('clientId is required');
-    ws = getClient(clientId);
+    ws = getClient(clientId) as WebSocket;
     if (!ws || ws.readyState !== WebSocket.OPEN) {
       return res.status(404).send('websocket client not found');
     }
@@ -44,7 +44,7 @@ export const uploadNewDesignImage = (
     console.log('getting upload progress');
     const progress = Math.round((evt.loaded / evt.total) * 100);
     console.log('this is the progress', progress);
-    
+
     if (!skipWebSocket && ws && ws.readyState === 1) {
       ws.send(JSON.stringify({ type: 'progressUpdate', progress: progress }));
       console.log('progress update sent to client', clientId);
@@ -75,8 +75,11 @@ export const uploadImage = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log('uploadImage hit');
   const { userImage } = req.body;
   if (!userImage) return next();
+
+
   const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64Data, 'base64');
 
@@ -87,6 +90,7 @@ export const uploadImage = (
     ContentType: 'image/png',
     ContentEncoding: 'base64',
   };
+
   return s3
     .upload(params)
     .promise()
@@ -110,20 +114,19 @@ export const deleteImage = (
   let imageToDelete = res.locals.imageToDelete
     ? res.locals.imageToDelete
     : req.body.imageToDelete;
+
   if (!imageToDelete) return next();
+
   imageToDelete = Array.isArray(imageToDelete)
     ? imageToDelete
     : [imageToDelete];
 
   const params: S3.DeleteObjectsRequest = {
     Bucket: 'reactraft',
-    Delete: {
-      Objects: imageToDelete.map((url: string): { Key: string } => {
-        const imageUrl = new URL(url);
-        return { Key: imageUrl.pathname.substring(1) };
-      }),
-      Quiet: false,
-    },
+      Delete: {
+        Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
+        Quiet: false,
+      }
   };
 
   return s3
