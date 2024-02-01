@@ -80,7 +80,7 @@ export default function App() {
   // toggle drawer function
   const handleDrawerOpen = () => {
     setDrawerOpen(!drawerOpen);
-  }
+  };
 
   const mode = window.localStorage.getItem('mode');
   const [darkMode, setDarkMode] = useState(Boolean(mode));
@@ -94,15 +94,12 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <TopBar
-          toggleDarkMode={toggleDarkMode}
-          darkMode={darkMode}
-          drawerOpen={drawerOpen}
-          handleDrawerOpen={handleDrawerOpen}
-        />
-      <SideDrawer 
+        toggleDarkMode={toggleDarkMode}
+        darkMode={darkMode}
         drawerOpen={drawerOpen}
-        setDrawerOpen={setDrawerOpen}
-        />
+        handleDrawerOpen={handleDrawerOpen}
+      />
+      <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
       <Main open={drawerOpen}>
         <MainContainer
           sx={{

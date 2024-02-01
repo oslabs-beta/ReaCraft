@@ -1,8 +1,5 @@
 import db from '../server/models/dbModel';
 import s3 from '../server/models/s3Model';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 describe('PostgresQL Database Connection', () => {
   it('should connect to the database successfully', async () => {
