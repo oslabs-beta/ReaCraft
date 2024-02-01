@@ -12,7 +12,7 @@ import {
   addNewPageRequest,
   updateDesignCoverOrTitleRequest,
 } from '../fetchRequests';
-import { setMessage, setSelectedPageIdx } from './appSlice';
+import { setMessage, setSelectedPageIdx, goToPage } from './appSlice';
 import {
   Component,
   Design,
@@ -23,7 +23,7 @@ import {
 
 export const newDesign = createAsyncThunk(
   'designs/new',
-  async (body: { userImage: string; imageHeight: number; clientId: string; }) =>
+  async (body: { userImage: string; imageHeight: number; clientId: string }) =>
     await addDesignRequest(body)
 );
 
@@ -152,10 +152,8 @@ interface DesignState {
   last_updated: Date | null;
   loading: boolean;
   error: string | undefined;
-  searchTerm: string;
-  isDraggable: boolean;
-  cursorMode: string;
   image_url: string;
+  canEdit: Boolean;
 }
 
 const initialState: DesignState = {
@@ -167,9 +165,7 @@ const initialState: DesignState = {
   image_url: '',
   loading: false,
   error: undefined,
-  searchTerm: '',
-  isDraggable: false,
-  cursorMode: 'default',
+  canEdit: true,
 };
 
 const designSliceV3 = createSlice({
@@ -201,17 +197,11 @@ const designSliceV3 = createSlice({
       }
       root.rectangle.height = height;
     },
-    setSearchTerm: (state, action: PayloadAction<string>) => {
-      state.searchTerm = action.payload;
-    },
-    toggleIsDraggable: (state, action: PayloadAction<boolean>) => {
-      state.isDraggable = action.payload;
-    },
-    setCursorMode: (state, action: PayloadAction<string>) => {
-      state.cursorMode = action.payload;
-    },
     updateDesignTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
+    },
+    setCanEdit: (state, action: PayloadAction<Boolean>) => {
+      state.canEdit = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -340,7 +330,6 @@ const designSliceV3 = createSlice({
         ) => {
           state.loading = false;
           const { updatedComponent, pageIdx } = action.payload;
-          console.log('updatedComponent', updatedComponent, pageIdx);
           const compIdx = state.pages[pageIdx].components.findIndex(
             (item: Component) => item._id == updatedComponent._id
           );
@@ -444,14 +433,8 @@ export const deletePageAndUpdateSelectedPageIdx =
     );
   };
 
-export const {
-  resetDesign,
-  setSearchTerm,
-  updateRootHeight,
-  toggleIsDraggable,
-  setCursorMode,
-  updateDesignTitle,
-} = designSliceV3.actions;
+export const { resetDesign, updateRootHeight, updateDesignTitle, setCanEdit } =
+  designSliceV3.actions;
 
 export const updateDesignCoverOrTitleAndUpdateState =
   (params: { designId: number; title?: string; imageUrl?: string }) =>
@@ -467,6 +450,16 @@ export const updateDesignCoverOrTitleAndUpdateState =
         text: `updated design ${title ? 'title' : 'cover'} successfully`,
       })
     );
+  };
+
+export const getDesignDetailsAndSetApp =
+  (designId: number, canEdit: any) => async (dispatch: any) => {
+    await dispatch(getDesignDetails(designId));
+    if (canEdit === false) {
+      dispatch(setCanEdit(false));
+    }
+    dispatch(setSelectedPageIdx(0));
+    dispatch(goToPage('DESIGN'));
   };
 
 export default designSliceV3.reducer;

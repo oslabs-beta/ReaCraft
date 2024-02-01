@@ -13,6 +13,9 @@ import '../../../styles/ViewCode.scss';
 import Grow from '@mui/material/Grow';
 import useOutsideClick from '../../../hooks/useOutsideClick';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCode } from '@fortawesome/free-solid-svg-icons';
+
 export default function ButtonViewCode({ css, jsx, name, pageName }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -33,7 +36,7 @@ export default function ButtonViewCode({ css, jsx, name, pageName }) {
     <Fragment>
       <Tooltip title='View JSX Code for Components'>
         <Fab size='small' variant='contained' onClick={openPopper}>
-          <CodeRoundedIcon />
+          <FontAwesomeIcon icon={faCode} />
         </Fab>
       </Tooltip>
       {anchorEl && (

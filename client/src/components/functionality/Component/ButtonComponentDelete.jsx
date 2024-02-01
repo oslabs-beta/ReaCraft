@@ -9,6 +9,9 @@ import Box from '@mui/material/Box';
 import { setMessage, setSelectedIdx } from '../../../utils/reducers/appSlice';
 import { deleteComponent } from '../../../utils/reducers/designSliceV3';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+
 export default function ButtonComponentDelete({
   name,
   componentId,
@@ -29,6 +32,7 @@ export default function ButtonComponentDelete({
     <Box>
       <Tooltip title='Delete component'>
         <IconButton
+          size='small'
           onClick={() => {
             try {
               if (canDelete) {
@@ -46,7 +50,7 @@ export default function ButtonComponentDelete({
             }
           }}
         >
-          <DeleteIcon />
+          <FontAwesomeIcon icon={faTrashCan} />
         </IconButton>
       </Tooltip>
     </Box>

@@ -6,8 +6,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useAuth } from '../../hooks/useAuth';
-import LogoutIcon from '@mui/icons-material/Logout';
-import InfoIcon from '@mui/icons-material/Info';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -22,6 +20,12 @@ import Avatar from '@mui/material/Avatar';
 import { updateProfilePictureRequest } from '../../utils/fetchRequests';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../../utils/reducers/appSlice';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faCircleInfo,
+  faRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
 
 const style = {
   position: 'absolute',
@@ -143,13 +147,18 @@ export default function ButtonUserMenu() {
             setAnchorEl(null);
           }}
           disableRipple
+          sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}
         >
-          <InfoIcon />
+          <FontAwesomeIcon icon={faCircleInfo} />
           Account
         </MenuItem>
         <Divider sx={{ my: 0.5 }} />
-        <MenuItem onClick={() => logout()} disableRipple>
-          <LogoutIcon />
+        <MenuItem
+          onClick={() => logout()}
+          disableRipple
+          sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}
+        >
+          <FontAwesomeIcon icon={faRightFromBracket} />
           Logout
         </MenuItem>
       </StyledMenu>

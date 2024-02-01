@@ -1,10 +1,16 @@
-const db = require('../models/dbModel');
+import { Request, Response, NextFunction } from 'express';
+import db from '../models/dbModel';
+import { ComponentRow, Page, RectangleQueryRes } from '../../docs/types';
 
 // create rectangle for RootContainer component
-const createRootRectangle = (req, res, next) => {
-  let rootId;
+export const createRootRectangle = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  let rootId: Number;
   if (res.locals.design) {
-    const pages = res.locals.design.pages;
+    const pages: Page[] = res.locals.design.pages;
     rootId = pages[pages.length - 1].components[0]._id;
   } else {
     rootId = res.locals.newPage.components[0]._id;
@@ -17,7 +23,7 @@ const createRootRectangle = (req, res, next) => {
         'RETURNING *;',
       [rootId, 800, imageHeight]
     )
-    .then((data) => {
+    .then((data: RectangleQueryRes) => {
       if (res.locals.design) {
         res.locals.design.pages[0].components[0].rectangle = data.rows[0];
       } else {
@@ -35,7 +41,11 @@ const createRootRectangle = (req, res, next) => {
     );
 };
 
-const updateRootRectangle = (req, res, next) => {
+export const updateRootRectangle = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { rootId, imageHeight } = req.body;
   return db
     .query('UPDATE rectangles SET height = $1 WHERE component_id = $2;', [
@@ -53,8 +63,12 @@ const updateRootRectangle = (req, res, next) => {
     );
 };
 
-const createComponentRectangle = (req, res, next) => {
-  const componentId = res.locals.component._id;
+export const createComponentRectangle = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const componentId: number = res.locals.component._id;
   return db
     .query(
       'INSERT INTO rectangles (component_id, width, height) ' +
@@ -62,7 +76,7 @@ const createComponentRectangle = (req, res, next) => {
         'RETURNING *;',
       [componentId, 100, 100]
     )
-    .then((data) => {
+    .then((data: RectangleQueryRes) => {
       res.locals.component.rectangle = data.rows[0];
       return next();
     })
@@ -76,15 +90,19 @@ const createComponentRectangle = (req, res, next) => {
     );
 };
 
-const updateComponentRectanglePosition = (req, res, next) => {
-  const { componentId } = req.params;
+export const updateComponentRectanglePosition = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const componentId: number = Number(req.params.componentId);
   const { x, y, width, height } = req.body;
   return db
     .query(
       'UPDATE rectangles SET x_position = $1, y_position = $2, width = $3, height = $4 WHERE component_id = $5 RETURNING *;',
       [x, y, width, height, componentId]
     )
-    .then((data) => {
+    .then((data: RectangleQueryRes) => {
       res.locals.updatedRectangle = data.rows[0];
       return next();
     })
@@ -96,15 +114,19 @@ const updateComponentRectanglePosition = (req, res, next) => {
     );
 };
 
-const updateComponentRectangleStyle = (req, res, next) => {
-  const { componentId } = req.params;
+export const updateComponentRectangleStyle = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const componentId: number = Number(req.params.componentId);
   const { styleToChange, value } = req.body;
   return db
     .query(
       `UPDATE rectangles SET  ${styleToChange} = $1 WHERE component_id = $2 RETURNING *;`,
       [value, componentId]
     )
-    .then((data) => {
+    .then((data: RectangleQueryRes) => {
       res.locals.updatedRectangle = data.rows[0];
       return next();
     })
@@ -116,34 +138,27 @@ const updateComponentRectangleStyle = (req, res, next) => {
     );
 };
 
-const deleteDesignRectangles = (req, res, next) => {
-  const ids = res.locals.deletedComponentIds.map(({ _id }) => _id);
-  return db
-    .query('DELETE FROM rectangles WHERE component_id = ANY($1::int[]);', [ids])
-    .then(() => next())
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught rectangleController.deleteDesignRectangles middleware error: ' +
-          err,
-        message: { err: 'deleteDesignRectangles: ' + err },
-      })
-    );
-};
-
-const getRectangles = async (req, res, next) => {
+export const getRectangles = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const pages = res.locals.design.pages;
+    const pages: Page[] = res.locals.design.pages;
     for (const page of pages) {
       const components = page.components;
-      const rectanglePromises = components.map((item) =>
-        db.query('SELECT * FROM rectangles WHERE component_id = $1;', [
-          item._id,
-        ])
+      const rectanglePromises = components.map(
+        (item): Promise<RectangleQueryRes> =>
+          db.query('SELECT * FROM rectangles WHERE component_id = $1;', [
+            item._id,
+          ])
       );
       const results = await Promise.all(rectanglePromises);
-      results.forEach((data, i) => {
-        components[i].rectangle = data.rows.length > 0 ? data.rows[0] : null;
+      results.forEach((data: RectangleQueryRes, i: number) => {
+        if (data.rows.length === 0) {
+          throw new Error('A component has now rectangle');
+        }
+        components[i].rectangle = data.rows[0];
       });
     }
     return next();
@@ -155,14 +170,4 @@ const getRectangles = async (req, res, next) => {
       message: { err: 'getRectangles: ' + err },
     });
   }
-};
-
-module.exports = {
-  createRootRectangle,
-  deleteDesignRectangles,
-  getRectangles,
-  createComponentRectangle,
-  updateComponentRectanglePosition,
-  updateComponentRectangleStyle,
-  updateRootRectangle,
 };

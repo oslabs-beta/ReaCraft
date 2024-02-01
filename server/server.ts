@@ -2,26 +2,27 @@ import express, { Request, Response, NextFunction } from 'express';
 import { DefaultError } from '../docs/types';
 import { createServer } from 'http';
 import { setupWebSocketServer } from './controllers/websocketController';
+import dotenv from 'dotenv';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
-require('dotenv').config();
+import router from './routes/router';
 
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT;
 
-const router = require('./routes/router');
-
-// create HTTP server and pass express app to it
+// Create HTTP server and pass express app to it
 const server = createServer(app);
-// setup websocket server on the same HTTP server
+
+// Setup WebSocket server on the same HTTP server
 setupWebSocketServer(server);
 
 app.use(express.static(path.resolve(__dirname, '../client/public')));
 app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true })); // If you want to parse URL-encoded bodies
 app.use(cookieParser());
 
 app.use(
@@ -31,7 +32,7 @@ app.use(
   })
 );
 
-//Logging the request method and endpoint
+// Logging the request method and endpoint
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`${req.method} request for '${req.url}'`);
   return next();
@@ -39,12 +40,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use('/', router);
 
-//404 Error Handler
+// 404 Error Handler
 app.get('*', (req: Request, res: Response) =>
   res.status(404).send('Page not found')
 );
 
-//Global Error Handler
+// Global Error Handler
 app.use(
   (err: DefaultError, req: Request, res: Response, next: NextFunction) => {
     const defaultErr = {
@@ -53,16 +54,12 @@ app.use(
       message: { err: 'An error occurred' + err },
     };
     const errorObj = Object.assign({}, defaultErr, err);
-    console.log(errorObj);
+    console.log(errorObj.log);
     return res.status(errorObj.status).json(errorObj.message);
   }
 );
 
-// app.listen(PORT, () => {
-//   console.log(`Server listening on port: ${PORT}...`);
-// });
-
-// start the http server on the port
+// Start the HTTP server on the port
 server.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}...`);
 });
