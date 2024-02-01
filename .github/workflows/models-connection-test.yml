@@ -1,13 +1,13 @@
 name: routes-tests
-on:
-  pull_request:
-    branches:
-      - dev
+on: [push]
 jobs:
-  db-connection-testing:
+  models-connection-testing:
     runs-on: ubuntu-latest
     env:
       PG_URI: ${{ secrets.PG_URI }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
     steps:
       - uses: actions/checkout@v2
 
