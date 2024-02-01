@@ -23,10 +23,10 @@ export const uploadNewDesignImage = (
   let skipWebSocket = req.originalUrl === '/update-profile';
   console.log('this is skipWebSocket', skipWebSocket);
 
-  let ws: any;
+  let ws: WebSocket | null = null;
   if (!skipWebSocket) {
     if (!clientId) return res.status(404).send('clientId is required');
-    ws = getClient(clientId);
+    ws = getClient(clientId) as WebSocket;
     if (!ws || ws.readyState !== WebSocket.OPEN) {
       return res.status(404).send('websocket client not found');
     }
@@ -80,8 +80,10 @@ export const uploadImage = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log('uploadImage hit');
   const { userImage } = req.body;
   if (!userImage) return next();
+
   const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64Data, 'base64');
 
@@ -92,6 +94,7 @@ export const uploadImage = (
     ContentType: 'image/png',
     ContentEncoding: 'base64',
   };
+
   return s3
     .upload(params)
     .promise()
@@ -115,7 +118,9 @@ export const deleteImage = (
   let imageToDelete = res.locals.imageToDelete
     ? res.locals.imageToDelete
     : req.body.imageToDelete;
+
   if (!imageToDelete) return next();
+
   imageToDelete = Array.isArray(imageToDelete)
     ? imageToDelete
     : [imageToDelete];
