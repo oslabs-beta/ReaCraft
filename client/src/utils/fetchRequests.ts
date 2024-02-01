@@ -246,7 +246,7 @@ export function updateProfilePictureRequest(body: {
   userImage: string;
   imageToDelete?: string;
 }): Promise<{ imageUrl: string }> {
-  return fetch(`/update-profile`, {
+  return fetch('/update-profile', {
     method: 'POST',
     headers: {
       'Content-Type': 'Application/JSON',
