@@ -18,7 +18,7 @@ export const uploadNewDesignImage = (
   let skipWebSocket = req.originalUrl === '/update-profile';
   console.log('this is skipWebSocket', skipWebSocket);
 
-  let ws;
+  let ws: any;
   if (!skipWebSocket) {
     if (!clientId) return res.status(404).send('clientId is required');
     ws = getClient(clientId);
@@ -44,7 +44,7 @@ export const uploadNewDesignImage = (
     console.log('getting upload progress');
     const progress = Math.round((evt.loaded / evt.total) * 100);
     console.log('this is the progress', progress);
-    
+
     if (!skipWebSocket && ws && ws.readyState === 1) {
       ws.send(JSON.stringify({ type: 'progressUpdate', progress: progress }));
       console.log('progress update sent to client', clientId);
@@ -53,8 +53,8 @@ export const uploadNewDesignImage = (
         ws.send(JSON.stringify({ type: 'uploadComplete', progress: progress }));
         console.log('uploadComplete sent', clientId);
       }
-  }
-});
+    }
+  });
 
   upload
     .promise()
