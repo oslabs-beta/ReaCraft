@@ -37,6 +37,7 @@ export const decryptCookie = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log('decrypt cookie hit');
   try {
     const userId: number = Number(decrypt(req.cookies.sessionID));
     const userResponse: userQueryRes = await db.query(
