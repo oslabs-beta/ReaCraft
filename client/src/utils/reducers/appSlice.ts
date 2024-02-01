@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getDesignDetails, setSearchTerm } from './designSliceV3';
+import { getDesignDetails, setCanEdit } from './designSliceV3';
 
-type Message = {
+export type Message = {
   severity: 'success' | 'error' | 'info';
   text: string;
 };
 
-type AppState = {
+export type AppState = {
   message: Message | null;
   page: 'HOME' | 'DESIGN';
   selectedIdx: number | null;
@@ -14,6 +14,8 @@ type AppState = {
   windowHeight: number;
   windowWidth: number;
   zoom: number;
+  isDraggable: boolean;
+  cursorMode: 'default' | 'pan';
 };
 
 const initialState: AppState = {
@@ -21,9 +23,11 @@ const initialState: AppState = {
   page: 'HOME',
   selectedPageIdx: null,
   selectedIdx: null,
-  windowHeight: window.innerHeight,
-  windowWidth: window.innerWidth,
+  windowHeight: 1024,
+  windowWidth: 1366,
   zoom: 100,
+  isDraggable: false,
+  cursorMode: 'default',
 };
 
 const appSlice = createSlice({
@@ -59,16 +63,14 @@ const appSlice = createSlice({
     ) => {
       state.selectedPageIdx = action.payload;
     },
+    toggleIsDraggable: (state, action: PayloadAction<boolean>) => {
+      state.isDraggable = action.payload;
+    },
+    setCursorMode: (state, action: PayloadAction<'default' | 'pan'>) => {
+      state.cursorMode = action.payload;
+    },
   },
 });
-
-export const getDesignDetailsAndSetApp =
-  (designId: number) => async (dispatch: any) => {
-    await dispatch(getDesignDetails(designId));
-    dispatch(setSelectedPageIdx(0));
-    dispatch(goToPage('DESIGN'));
-    dispatch(setSearchTerm(''));
-  };
 
 export const {
   setMessage,
@@ -79,6 +81,8 @@ export const {
   setWindowSize,
   setZoom,
   setSelectedPageIdx,
+  toggleIsDraggable,
+  setCursorMode,
 } = appSlice.actions;
 
 export default appSlice.reducer;

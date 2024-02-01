@@ -6,12 +6,11 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "allowJs": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "outDir": "./build"
   },
-  "files": [
-    "docs/types.ts",
-    "server/server.ts",
-    "server/controllers/fileController.ts"
-  ],
-  "include": ["client/utils/**/*"]
+  "files": ["docs/types.ts"],
+  "exclude": ["**/*.js"],
+  "include": ["client/utils/**/*", "server/**/*"],
+  "types": ["jest"]
 }

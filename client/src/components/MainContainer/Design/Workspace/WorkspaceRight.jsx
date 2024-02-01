@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Stack from '@mui/material/Stack';
 import { useSelector } from 'react-redux';
 import { convertToTree } from '../../../../utils/treeNode';
@@ -11,7 +11,7 @@ import ButtonsPrevNextPage from '../../../functionality/Page/ButtonsPrevNextPage
 import ButtonSetPageAsDesignCover from '../../../functionality/Design/ButtonSetPageAsDesignCover';
 
 export default function WorkspaceRight({ canvasWidth }) {
-  const { title, pages, _id } = useSelector((state) => state.designV3);
+  const { pages, _id, canEdit } = useSelector((state) => state.designV3);
   const { selectedPageIdx } = useSelector((state) => state.app);
   const page = pages[selectedPageIdx];
   const components = page.components;
@@ -32,10 +32,17 @@ export default function WorkspaceRight({ canvasWidth }) {
         name={selectedIdx !== null ? components[selectedIdx].name : null}
         pageName={components[0].name}
       />
-      <ButtonSetPageAsDesignCover designId={_id} imageUrl={page.image_url} />
-      <ButtonAddPage pageIdx={selectedPageIdx} />
       <ButtonsPrevNextPage pageIdx={selectedPageIdx} />
-      <ButtonDeletePage pageId={page._id} canDelete={pages.length > 1} />
+      {canEdit && (
+        <Fragment>
+          <ButtonSetPageAsDesignCover
+            designId={_id}
+            imageUrl={page.image_url}
+          />
+          <ButtonAddPage pageIdx={selectedPageIdx} />
+          <ButtonDeletePage pageId={page._id} canDelete={pages.length > 1} />
+        </Fragment>
+      )}
     </Stack>
   );
 }

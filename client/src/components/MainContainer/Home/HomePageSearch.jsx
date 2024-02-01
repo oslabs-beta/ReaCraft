@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import {
   Typography,
   Paper,
@@ -8,30 +7,18 @@ import {
   IconButton,
   useTheme,
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import { useAuth } from '../../../hooks/useAuth';
-import { setSearchTerm } from '../../../utils/reducers/designSliceV3';
 
-export default function HomePageSearch() {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
+export default function HomePageSearch({ searchText, setSearchText }) {
   const { user } = useAuth();
-  const dispatch = useDispatch();
   const theme = useTheme();
-  // state to set the search bar text
-  const searchTerm = useSelector((state) => state.designV3.searchTerm);
-  const [searchText, setSearchText] = useState('');
   const searchBarTheme =
     theme.palette.mode === 'dark'
       ? 'linear-gradient(to right, #778DA9, #1B263B)'
       : 'linear-gradient(to right, #EDEDE9, #D5BDAF)';
-
-  const handleSearchChange = (event) => {
-    setSearchText(event.target.value);
-    dispatch(setSearchTerm(event.target.value));
-  };
-  // useEffect that checks if searchTerm in state changes
-  useEffect(() => {
-    setSearchTerm(searchTerm);
-  }, [searchTerm]);
 
   return (
     // {/* // Paper is a container for displaying content to give an 'elevated surface' look */}
@@ -65,7 +52,8 @@ export default function HomePageSearch() {
           fullWidth
           variant='outlined'
           // onChange will call event handler when user types in search bar
-          onChange={handleSearchChange}
+          onChange={(e) => setSearchText(e.target.value)}
+          value={searchText}
           placeholder='Search your content'
           sx={{
             // apply styles inside the placeholder of the input element within TextField
@@ -80,8 +68,12 @@ export default function HomePageSearch() {
           InputProps={{
             // startAdornment is used for adding read-only elements like the SearchIcon that's being used within the Button
             startAdornment: (
-              <IconButton variant='contained' sx={{ marginRight: 1 }}>
-                <SearchIcon />
+              <IconButton
+                variant='contained'
+                sx={{ marginRight: 1 }}
+                size='small'
+              >
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
               </IconButton>
             ),
           }}
