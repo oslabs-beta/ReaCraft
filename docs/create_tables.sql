@@ -17,9 +17,10 @@ CREATE TABLE designs (
   _id SERIAL PRIMARY KEY,
   user_id INTEGER NOT NULL,
   title VARCHAR(255) DEFAULT 'Untitled',
+  image_url VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  last_edited_by VARCHAR(255),
+  last_updated_by VARCHAR(255),
   FOREIGN KEY (user_id) REFERENCES users(_id) ON DELETE CASCADE
 );
 
@@ -50,7 +51,6 @@ CREATE TABLE components (
   inner_html VARCHAR(255) DEFAULT '',
   props VARCHAR(255) DEFAULT '{}',
   styles VARCHAR(255) DEFAULT '{}',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (page_id) REFERENCES pages(_id) ON DELETE CASCADE,
   FOREIGN KEY (parent_id) REFERENCES components(_id)
 );
