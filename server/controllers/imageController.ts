@@ -23,10 +23,10 @@ export const uploadNewDesignImage = (
   let skipWebSocket = req.originalUrl === '/update-profile';
   console.log('this is skipWebSocket', skipWebSocket);
 
-  let ws: any;
+  let ws: WebSocket | null = null;
   if (!skipWebSocket) {
     if (!clientId) return res.status(404).send('clientId is required');
-    ws = getClient(clientId);
+    ws = getClient(clientId) as WebSocket;
     if (!ws || ws.readyState !== WebSocket.OPEN) {
       return res.status(404).send('websocket client not found');
     }
@@ -85,6 +85,7 @@ export const uploadImage = (
   if (!userImage) return next();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -92,6 +93,8 @@ export const uploadImage = (
 
 >>>>>>> a92794e (Fixed ts error)
 >>>>>>> Amunoz-1-feature/DOM_revamp
+=======
+>>>>>>> 5fb12a6 (Fixed ts error)
   const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64Data, 'base64');
 
