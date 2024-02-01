@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import {
-  uploadImage,
   deleteImage,
   uploadNewDesignImage,
 } from '../controllers/imageController';
@@ -86,7 +85,7 @@ router.post(
 
 router.post(
   '/new-page/:designId',
-  uploadImage,
+  uploadNewDesignImage,
   addNewPage,
   shiftPages,
   createRootComponent,
