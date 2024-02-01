@@ -235,7 +235,7 @@ function UserProfileImage({ avatar, setAvatar }) {
                 dispatch(
                   setMessage({
                     severity: 'success',
-                    text: 'Upload profile picutre successfully',
+                    text: 'Upload profile picture successfully',
                   })
                 );
                 const reader = new FileReader();

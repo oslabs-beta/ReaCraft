@@ -3,17 +3,20 @@ const websocketController = require ('./websocketController');
 const WebSocket = require('ws');
 
 const uploadImage = (req, res, next) => {
-  // const { userImage } = req.body;
-  console.log('hit uploadImage');
   const { userImage, clientId } = req.body;
   console.log('this is the clientId from req.body', clientId);
   if (!userImage) return next();
-  if (!clientId) return res.status(404).send('clientId is required');
 
-  const ws = websocketController.getClient(clientId);
-  console.log('this is ws from uploadImage', ws);
-  if (!ws || ws.readyState !== WebSocket.OPEN) {
-    return res.status(404).send('websocket client not found');
+  let skipWebSocket = req.originalUrl === '/update-profile';
+  console.log('this is skipWebSocket', skipWebSocket);
+
+  let ws;
+  if (!skipWebSocket) {
+    if (!clientId) return res.status(404).send('clientId is required');
+    ws = websocketController.getClient(clientId);
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+      return res.status(404).send('websocket client not found');
+    }
   }
 
   const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
@@ -34,13 +37,17 @@ const uploadImage = (req, res, next) => {
     const progress = Math.round((evt.loaded / evt.total) * 100);
     console.log('this is the progress', progress);
 
-    if (ws.readyState === 1) {
-      ws.send(JSON.stringify({ type: 'progressUpdate', progress: progress }));
-      console.log('progress update sent to client', clientId);
-    } else {
-      console.log('websocket not open or does not exist for client', clientId);
+    if (!skipWebSocket && ws && ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'progressUpdate', progress: progress }));
+        console.log('progress update sent to client', clientId);
+
+        if (progress === 100) {
+          ws.send(JSON.stringify({ type: 'uploadComplete', progress: progress }));
+          console.log('uploadComplete sent', clientId);
+        }
     }
   });
+
   upload.promise()
   .then(data => {
     res.locals.onlineImageUrl = data.Location;

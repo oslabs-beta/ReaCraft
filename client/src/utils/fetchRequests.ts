@@ -380,6 +380,7 @@ export function addNewPageRequest(
     pageIdx: number;
     userImage: string;
     imageHeight: number;
+    clientId: string;
   }
 ): Promise<{
   newPage: Page;
