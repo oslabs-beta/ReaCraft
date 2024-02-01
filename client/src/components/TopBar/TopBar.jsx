@@ -126,7 +126,7 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
                 onClick={() => handlePageClick('HOME')}
               >
                 <img
-                  src={logo}
+                  src='./assets/ReaCraft2-01.png'
                   style={{
                     marginLeft: '20px',
                     width: 40,
