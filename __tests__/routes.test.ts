@@ -11,7 +11,7 @@ import {
   userRow,
 } from '../docs/types';
 
-const server = 'http://localhost:3000';
+const server = 'http://localhost:8080';
 const testUserData = {
   username: 'test_user',
   email: 'test_user@123.com',
