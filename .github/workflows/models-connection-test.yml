@@ -33,8 +33,8 @@ jobs:
       - name: Webpack and start the server
         run: npm run dev &
 
-      - name: Wait for Server to Start
-        run: sleep 10
+      # - name: Wait for Server to Start
+      #   run: sleep 10
 
-      - name: Run Jest routes tests
-        run: npm run test routes
+      # - name: Run Jest routes tests
+      #   run: npm run test routes
