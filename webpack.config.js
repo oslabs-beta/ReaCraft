@@ -31,12 +31,7 @@ module.exports = {
       {
         test: /\.svg$/,
         type: 'asset/resource',
-        // use: [
-        //   {
-        //     loader: 'svg-react-loader',
-        //   }
-        // ] 
-      }
+      },
     ],
   },
   plugins: [
