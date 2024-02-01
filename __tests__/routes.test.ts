@@ -64,7 +64,7 @@ afterAll(async () => {
 
 describe('GET /user', () => {
   // successfully get user
-  it('should respond with 200 status and application/json content type', async () => {
+  it('responds with 200 status and application/json content type', async () => {
     const res: Response = await request(server)
       .get('/user')
       .set('Cookie', `sessionID=${sessionId}`);
@@ -75,7 +75,7 @@ describe('GET /user', () => {
 
   // when there is no cookie
   it(
-    'should respond with 500 status and application/json content type ' +
+    'responds with 500 status and application/json content type ' +
       ' and Cookie error message',
     async () => {
       const res: Response = await request(server).get('/user');
@@ -87,7 +87,7 @@ describe('GET /user', () => {
 
   // when userId is not in db
   it(
-    'should respond with 400 status and application/json content type ' +
+    'responds with 400 status and application/json content type ' +
       'and a getUser error message',
     async () => {
       const res: Response = await request(server)
@@ -214,7 +214,7 @@ describe('GET /home', () => {
 
 describe('POST /update-profile', () => {
   //succuss
-  it('should respond with 200 status and application/json content type', async () => {
+  it('responds with 200 status and application/json content type', async () => {
     const res: Response = await request(server)
       .post('/update-profile')
       .set('Cookie', `sessionID=${sessionId}`)
@@ -234,7 +234,7 @@ describe('POST /update-profile', () => {
 
   // when there is no cookie
   it(
-    'should respond with 500 status and application/json content type ' +
+    'responds with 500 status and application/json content type ' +
       ' and Cookie error message',
     async () => {
       const res: Response = await request(server)
@@ -306,7 +306,7 @@ describe('/designs', () => {
 
     // No cookie
     it(
-      'should respond with 500 status and application/json content type ' +
+      'responds with 500 status and application/json content type ' +
         ' and Cookie error message',
       async () => {
         const res: Response = await request(server).post('/designs/new').send({
@@ -322,7 +322,7 @@ describe('/designs', () => {
 
     // When no valid userId is found
     it(
-      'should respond with 500 status and application/json content type ' +
+      'responds with 500 status and application/json content type ' +
         ' and addDesign error message',
       async () => {
         const res: Response = await request(server)
@@ -341,7 +341,7 @@ describe('/designs', () => {
 
     // No client Id
     it(
-      'should respond with 500 status and application/json content type ' +
+      'responds with 500 status and application/json content type ' +
         ' and addDesign error message',
       async () => {
         const res: Response = await request(server)
@@ -375,7 +375,7 @@ describe('/designs', () => {
     });
 
     // update cover
-    it('should respond with 200 status and application/json content type', async () => {
+    it('responds with 200 status and application/json content type', async () => {
       const res: Response = await request(server)
         .post(`/designs/update/${testDesign._id}`)
         .set('Cookie', `sessionID=${sessionId}`)
@@ -398,7 +398,7 @@ describe('/designs', () => {
     });
 
     // update title
-    it('should respond with 200 status and application/json content type', async () => {
+    it('responds with 200 status and application/json content type', async () => {
       const res: Response = await request(server)
         .post(`/designs/update/${testDesign._id}`)
         .set('Cookie', `sessionID=${sessionId}`)
