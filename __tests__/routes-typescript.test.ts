@@ -4,7 +4,12 @@ import s3 from '../server/models/s3Model';
 import { encrypt } from '../server/helpers/encryptDecrypt';
 import path from 'path';
 import fs from 'fs';
-import { userQueryRes, userRow } from '../docs/types';
+import {
+  DesignQueryRes,
+  DesignRow,
+  userQueryRes,
+  userRow,
+} from '../docs/types';
 
 const server = 'http://localhost:3000';
 const testUserData = {
@@ -15,6 +20,11 @@ const testUserData = {
 
 let sessionId: string;
 let testUser: userRow;
+let imagesToDelete: string[] = [];
+
+const testImageBuffer = Buffer.from(
+  fs.readFileSync(path.join(__dirname, './test.png'))
+).toString('base64');
 
 // set up test user in db
 beforeAll(async () => {
@@ -34,8 +44,22 @@ beforeAll(async () => {
 
 // clean up test user in db
 afterAll(async () => {
+  console.log(imagesToDelete);
   await db.query('DELETE FROM users WHERE _id = $1;', [testUser._id]);
   await db.end();
+  const res = await s3
+    .deleteObjects({
+      Bucket: 'reactraft',
+      Delete: {
+        Objects: imagesToDelete.map((url: string): { Key: string } => {
+          const imageUrl = new URL(url);
+          return { Key: imageUrl.pathname.substring(1) };
+        }),
+        Quiet: false,
+      },
+    })
+    .promise();
+  console.log(res);
 });
 
 describe('GET /user', () => {
@@ -189,23 +213,12 @@ describe('GET /home', () => {
 });
 
 describe('POST /update-profile', () => {
-  const filePath = path.join(__dirname, './test.png');
-  const fileData = fs.readFileSync(filePath);
-  const base64Image = Buffer.from(fileData).toString('base64');
-  let testImageUrl: string | undefined = undefined;
-
-  afterEach(() => {
-    if (testImageUrl) {
-      s3.deleteObject({ Bucket: 'reactraft', Key: testImageUrl });
-      testImageUrl = undefined;
-    }
-  });
   //succuss
   it('should respond with 200 status and application/json content type', async () => {
     const res: Response = await request(server)
       .post('/update-profile')
       .set('Cookie', `sessionID=${sessionId}`)
-      .send({ userImage: base64Image });
+      .send({ userImage: testImageBuffer });
     expect(res.status).toBe(200);
     expect(res.type).toMatch(/application\/json/);
     const { imageUrl } = res.body;
@@ -216,6 +229,7 @@ describe('POST /update-profile', () => {
       [testUser._id]
     );
     expect(imageUrl).toEqual(userQueryRes.rows[0].profile_image);
+    imagesToDelete.push(imageUrl);
   });
 
   // when there is no cookie
@@ -225,7 +239,7 @@ describe('POST /update-profile', () => {
     async () => {
       const res: Response = await request(server)
         .post('/update-profile')
-        .send({ userImage: base64Image });
+        .send({ userImage: testImageBuffer });
       expect(res.status).toBe(500);
       expect(res.type).toMatch(/application\/json/);
       expect(res.body).toContain('Cookie err');
@@ -233,4 +247,154 @@ describe('POST /update-profile', () => {
   );
 });
 
-describe('/designs', () => {});
+describe('/designs', () => {
+  describe('POST /new', () => {
+    const clientId =
+      Date.now().toString(36) + Math.random().toString(36).substring(2);
+
+    it('responds with 200 status with application/json content type', async () => {
+      const res: Response = await request(server)
+        .post('/designs/new')
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({
+          userImage: testImageBuffer,
+          imageHeight: 100,
+          clientId,
+        });
+      expect(res.status).toBe(200);
+      expect(res.type).toMatch(/application\/json/);
+
+      const design = res.body;
+      expect(design).toHaveProperty('user_id', testUser._id);
+      expect(design).toHaveProperty('title', 'Untitled');
+      expect(design).toHaveProperty('created_at');
+      expect(design).toHaveProperty('last_updated');
+      expect(design).toHaveProperty('last_updated_by', testUser.username);
+
+      const { pages, _id, image_url } = design;
+      expect(pages.length).toBe(1);
+      expect(pages[0]).toHaveProperty('_id');
+      expect(pages[0]).toHaveProperty('design_id', _id);
+      expect(pages[0]).toHaveProperty('index', 0);
+      expect(pages[0]).toHaveProperty('image_url', image_url);
+
+      const { components } = pages[0];
+      expect(components.length).toBe(1);
+      expect(components[0]).toHaveProperty('name', 'Page0');
+      expect(components[0]).toHaveProperty('page_id', pages[0]._id);
+      expect(components[0]).toHaveProperty('parent_id', null);
+      expect(components[0]).toHaveProperty('index', 0);
+      expect(components[0]).toHaveProperty('html_tag', '<div>');
+      expect(components[0]).toHaveProperty('inner_html', '');
+      expect(components[0]).toHaveProperty('props', '{}');
+      expect(components[0]).toHaveProperty('styles', '{}');
+
+      const { rectangle } = components[0];
+      expect(rectangle).toHaveProperty('component_id', components[0]._id);
+      expect(rectangle).toHaveProperty('x_position', '0.00');
+      expect(rectangle).toHaveProperty('y_position', '0.00');
+      expect(rectangle).toHaveProperty('z_index', 0);
+      expect(rectangle).toHaveProperty('width');
+      expect(rectangle).toHaveProperty('height', '100.00');
+      expect(rectangle).toHaveProperty('border_width', 3);
+      expect(rectangle).toHaveProperty('border_radius', null);
+      expect(rectangle).toHaveProperty('stroke', 'black');
+      expect(rectangle).toHaveProperty('background_color', null);
+
+      imagesToDelete.push(design.image_url);
+    });
+
+    // No cookie
+    it(
+      'should respond with 500 status and application/json content type ' +
+        ' and Cookie error message',
+      async () => {
+        const res: Response = await request(server).post('/designs/new').send({
+          userImage: testImageBuffer,
+          imageHeight: 100,
+          clientId,
+        });
+        expect(res.status).toBe(500);
+        expect(res.type).toMatch(/application\/json/);
+        expect(res.body).toContain('Cookie err');
+      }
+    );
+
+    // When no valid userId is found
+    it(
+      'should respond with 500 status and application/json content type ' +
+        ' and addDesign error message',
+      async () => {
+        const res: Response = await request(server)
+          .post('/designs/new')
+          .set('Cookie', `sessionID=${encrypt('0')}`)
+          .send({
+            userImage: testImageBuffer,
+            imageHeight: 100,
+            clientId,
+          });
+        expect(res.status).toBe(500);
+        expect(res.type).toMatch(/application\/json/);
+        expect(res.body).toContain('UserId not found');
+      }
+    );
+
+    // No client Id
+    it(
+      'should respond with 500 status and application/json content type ' +
+        ' and addDesign error message',
+      async () => {
+        const res: Response = await request(server)
+          .post('/designs/new')
+          .set('Cookie', `sessionID=${sessionId}`)
+          .send({
+            userImage: testImageBuffer,
+            imageHeight: 100,
+          });
+        expect(res.status).toBe(500);
+        expect(res.type).toMatch(/application\/json/);
+        expect(res.body).toContain('clientId required');
+      }
+    );
+  });
+
+  describe('POST /update/:designId', () => {
+    let testDesign: DesignRow;
+
+    beforeAll(async () => {
+      const designQueryRes: DesignQueryRes = await db.query(
+        'INSERT INTO designs (user_id, title, image_url) VALUES( $1, $2, $3) RETURNING *;',
+        [
+          testUser._id,
+          'TestDesign',
+          'https://reactraft.s3.amazonaws.com/test.png',
+        ]
+      );
+      testDesign = designQueryRes.rows[0];
+    });
+
+    // updateCover
+    it('should respond with 200 status and application/json content type', async () => {
+      const testImageUrl2 = 'https://reactraft.s3.amazonaws.com/test2.JPG';
+      const res: Response = await request(server)
+        .post(`/designs/update/${testDesign._id}`)
+        .set('Cookie', `sessionID=${sessionId}`)
+        .send({ imageUrl: testImageUrl2 });
+      expect(res.status).toBe(200);
+      expect(res.type).toMatch(/application\/json/);
+      expect(res.body.message).toBe('updated design successfully');
+      const updatedDesignRes: DesignQueryRes = await db.query(
+        'SELECT * FROM designs WHERE _id = $1;',
+        [testDesign._id]
+      );
+      const updatedDesign: DesignRow = updatedDesignRes.rows[0];
+      expect(updatedDesign._id).toBe(testDesign._id);
+      expect(updatedDesign.title).toBe(testDesign.title);
+      expect(updatedDesign.user_id).toBe(testDesign.user_id);
+      expect(updatedDesign.created_at).toEqual(testDesign.created_at);
+      expect(updatedDesign.last_updated_by).toBe(testUser.username);
+      expect(updatedDesign.image_url).toBe(testImageUrl2);
+      expect(updatedDesign.last_updated).not.toEqual(testDesign.last_updated);
+    });
+  });
+});
