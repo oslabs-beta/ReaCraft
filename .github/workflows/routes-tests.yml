@@ -1,0 +1,41 @@
+name: routes-tests
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+jobs:
+  routes-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '21.5.0'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Webpack and Start server
+        run: npm run dev &
+        env:
+          PG_URI: ${{ secrets.PG_URI }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          PORT: 8080
+
+      - name: Wait for Server to Start
+        run: sleep 10
+
+      - name: Run Jest Routes Test
+        run: npm run jest routes
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
