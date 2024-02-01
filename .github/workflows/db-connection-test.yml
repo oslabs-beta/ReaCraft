@@ -1,15 +1,10 @@
 name: routes-tests
-on:
-  pull_request:
-    branches:
-      - main
-      - dev
+on: [push]
 jobs:
   db-connection-testing:
     runs-on: ubuntu-latest
     env:
       PG_URI: ${{ secrets.PG_URI }}
-      TEST_SECRET: ${{ secrets.TEST_SECRET }}
     steps:
       - uses: actions/checkout@v2
 
@@ -34,6 +29,3 @@ jobs:
 
       - name: Echo PG_URI
         run: echo $PG_URI
-
-      - name: Echo TEST_SECRET
-        run: echo $TEST_SECRET
