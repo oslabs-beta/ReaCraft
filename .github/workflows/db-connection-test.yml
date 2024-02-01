@@ -5,8 +5,10 @@ on:
       - main
       - dev
 jobs:
-  routes-testing:
+  db-connection-testing:
     runs-on: ubuntu-latest
+    env:
+      PG_URI: ${{ secrets.PG_URI }}
     steps:
       - uses: actions/checkout@v2
 
@@ -20,8 +22,6 @@ jobs:
 
       - name: Run Jest db-connection
         run: npm run test db-connection
-        env:
-          PG_URI: ${{ secrets.PG_URI }}
 
       - name: Cache Node.js modules
         uses: actions/cache@v2
