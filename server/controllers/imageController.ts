@@ -23,7 +23,7 @@ export const uploadNewDesignImage = (
   let skipWebSocket = req.originalUrl === '/update-profile';
   console.log('this is skipWebSocket', skipWebSocket);
 
-  let ws: WebSocket | null = null;
+  let ws: any;
   if (!skipWebSocket) {
     if (!clientId) return res.status(404).send('clientId is required');
     ws = getClient(clientId) as WebSocket;
