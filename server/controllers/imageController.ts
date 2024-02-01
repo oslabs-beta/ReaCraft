@@ -4,7 +4,7 @@ import WebSocket from 'ws';
 import { Request, Response, NextFunction } from 'express';
 import { S3 } from 'aws-sdk';
 
-export const uploadImage = (
+export const uploadNewDesignImage = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -14,13 +14,13 @@ export const uploadImage = (
   console.log('this is the clientId from req.body', clientId);
 
   if (!userImage) return next();
-  if (!clientId) return res.status(404).send('clientId is required');
+  if (!clientId)
+    return next({
+      log: 'Express error handler caught imageController.uploadImage middleware error: clientId required',
+      message: 'Upload image err: clientId required',
+    });
 
   const ws = getClient(clientId);
-  console.log('this is ws from uploadImage', ws);
-  if (!ws || ws.readyState !== WebSocket.OPEN) {
-    return res.status(404).send('websocket client not found');
-  }
 
   const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64Data, 'base64');
@@ -39,12 +39,16 @@ export const uploadImage = (
     console.log('getting upload progress');
     const progress = Math.round((evt.loaded / evt.total) * 100);
     console.log('this is the progress', progress);
-
-    if (ws.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify({ type: 'progressUpdate', progress: progress }));
-      console.log('progress update sent to client', clientId);
-    } else {
-      console.log('websocket not open or does not exist for client', clientId);
+    if (ws) {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: 'progressUpdate', progress: progress }));
+        console.log('progress update sent to client', clientId);
+      } else {
+        console.log(
+          'websocket not open or does not exist for client',
+          clientId
+        );
+      }
     }
   });
 
@@ -60,6 +64,38 @@ export const uploadImage = (
         message: `Upload image err: ${err}`,
       });
     });
+};
+
+export const uploadImage = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { userImage } = req.body;
+  if (!userImage) return next();
+  const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
+  const buffer = Buffer.from(base64Data, 'base64');
+
+  const params: S3.PutObjectRequest = {
+    Bucket: 'reactraft',
+    Key: `${Date.now()}.png`,
+    Body: buffer,
+    ContentType: 'image/png',
+    ContentEncoding: 'base64',
+  };
+  return s3
+    .upload(params)
+    .promise()
+    .then((data) => (res.locals.onlineImageUrl = data.Location))
+    .then(() => next())
+    .catch((err) =>
+      next({
+        log:
+          'Express error handler caught imageController.uploadImage middleware error' +
+          err,
+        message: 'Upload image err: ' + err,
+      })
+    );
 };
 
 export const deleteImage = (
@@ -78,7 +114,10 @@ export const deleteImage = (
   const params: S3.DeleteObjectsRequest = {
     Bucket: 'reactraft',
     Delete: {
-      Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
+      Objects: imageToDelete.map((url: string): { Key: string } => {
+        const imageUrl = new URL(url);
+        return { Key: imageUrl.pathname.substring(1) };
+      }),
       Quiet: false,
     },
   };
