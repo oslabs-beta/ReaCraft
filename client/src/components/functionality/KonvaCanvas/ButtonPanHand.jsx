@@ -2,12 +2,13 @@ import React, { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
-import PanToolRoundedIcon from '@mui/icons-material/PanToolRounded';
-import NearMeRoundedIcon from '@mui/icons-material/NearMeRounded';
 import {
   toggleIsDraggable,
   setCursorMode,
-} from '../../../utils/reducers/designSliceV3';
+} from '../../../utils/reducers/appSlice';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHand, faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 
 export default function ButtonPanHand() {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ export default function ButtonPanHand() {
           variant='contained'
           onClick={handlePanToolClick}
         >
-          <PanToolRoundedIcon size='sm' />
+          <FontAwesomeIcon icon={faHand} />
         </IconButton>
       </Tooltip>
       <Tooltip title='Cursor'>
@@ -41,7 +42,7 @@ export default function ButtonPanHand() {
           variant='contained'
           onClick={handleCursorClick}
         >
-          <NearMeRoundedIcon size='sm' />
+          <FontAwesomeIcon icon={faArrowPointer} />
         </IconButton>
       </Tooltip>
     </Fragment>

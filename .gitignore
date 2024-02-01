@@ -1,3 +1,11 @@
 /node_modules
 .env
 /build
+.DS_Store
+/client/.DS_Store
+/client/src/.DS_Store
+/server/.DS_Store
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

@@ -8,6 +8,12 @@ import Typography from '@mui/material/Typography';
 import { useSelector, useDispatch } from 'react-redux';
 import { setZoom } from '../../../utils/reducers/appSlice';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowRotateRight,
+  faCirclePlus,
+  faCircleMinus,
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function SliderZoom() {
   const zoom = useSelector((state) => state.app.zoom);
@@ -17,16 +23,23 @@ export default function SliderZoom() {
 
   return (
     <Stack direction='row' alignItems='center'>
-      <IconButton onClick={zoomOut}>
-        <RemoveCircleRoundedIcon />
-      </IconButton>
+      <Tooltip title='zoom out'>
+        <IconButton onClick={zoomOut}>
+          <FontAwesomeIcon icon={faCircleMinus} />
+        </IconButton>
+      </Tooltip>
+
       <Typography>{zoom}%</Typography>
-      <IconButton onClick={zoomIn}>
-        <AddCircleRoundedIcon />
-      </IconButton>
-      <Tooltip title='Reset to fit window'>
+
+      <Tooltip title='zoom in'>
+        <IconButton onClick={zoomIn}>
+          <FontAwesomeIcon icon={faCirclePlus} />
+        </IconButton>
+      </Tooltip>
+
+      <Tooltip title='reset to fit window'>
         <IconButton onClick={() => dispatch(setZoom(100))} size='small'>
-          <RestartAltIcon />
+          <FontAwesomeIcon icon={faArrowRotateRight} />
         </IconButton>
       </Tooltip>
     </Stack>

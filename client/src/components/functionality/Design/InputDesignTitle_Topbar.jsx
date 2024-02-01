@@ -22,6 +22,7 @@ export default function InputDesignTitle() {
           label='Design Name'
           className='designTitle'
           value={title}
+          disabled={!design.canEdit}
           onChange={(e) => setTitle(e.target.value)}
           onBlur={() => {
             try {

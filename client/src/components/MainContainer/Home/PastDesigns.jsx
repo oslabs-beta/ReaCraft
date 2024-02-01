@@ -8,13 +8,10 @@ import Grid from '@mui/material/Grid';
 import { setMessage } from '../../../utils/reducers/appSlice';
 import ButtonSortPastDesigns from '../../functionality/Design/ButtonSortPastDesigns';
 
-export default function UserDesigns() {
+export default function UserDesigns({ searchText }) {
   const [pastDesigns, setPastDesigns] = useState([]);
-  const selectedDesign = useSelector((state) => state.designV3);
-  const searchTerm = useSelector((state) => state.designV3.searchTerm);
-  const [localSelectedDesignId, setLocalSelectedDesignId] = useState(null);
-  console.log('pastDesigns', pastDesigns);
   const dispatch = useDispatch();
+  console.log('search text', searchText);
 
   const theme = useTheme();
   useEffect(() => {
@@ -34,14 +31,11 @@ export default function UserDesigns() {
     };
 
     fetchData();
-  }, [selectedDesign._id]);
+  }, []);
 
   const getFilteredDesigns = () => {
-    if (!searchTerm) {
-      return pastDesigns;
-    }
     return pastDesigns.filter((design) =>
-      design.title.toLowerCase().includes(searchTerm.toLowerCase())
+      design.title.toLowerCase().includes(searchText.toLowerCase())
     );
   };
 
@@ -69,16 +63,14 @@ export default function UserDesigns() {
         container
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 4, sm: 12, md: 12 }}
+        sx={{ minWidth: '500px' }}
       >
         {visibleDesigns.map(
           (
             design // used pastDesigns here before
           ) => (
             <Grid item xs={2} sm={4} md={3} key={design._id}>
-              <CardDesignDisplay
-                design={design}
-                setLocalSelectedDesignId={setLocalSelectedDesignId}
-              />
+              <CardDesignDisplay design={design} />
             </Grid>
           )
         )}

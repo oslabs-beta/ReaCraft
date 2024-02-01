@@ -37,31 +37,40 @@ export default function ButtonAddNewComponent() {
       style={{ display: 'flex', width: '200px' }}
       onSubmit={(e) => {
         e.preventDefault();
-        if (isValidReactComponentName(name)) {
-          try {
-            dispatch(
-              addNewComponent({
-                pageId: page._id,
-                body: {
-                  index: page.components.length,
-                  rootId: page.components[0]._id,
-                  name,
-                },
-              })
-            );
-            dispatch(setMessage(successMess));
-            setName('');
-          } catch (error) {
-            dispatch(
-              setMessage({
-                severity: 'error',
-                text: 'Design: add new component ' + error,
-              })
-            );
-          }
+        if (!design.canEdit) {
+          dispatch(
+            setMessage({
+              severity: 'error',
+              text: 'You are not authorized to edit this design',
+            })
+          );
         } else {
-          const errMessage = name.length === 0 ? emptyNameErr : firstCharErr;
-          dispatch(setMessage(errMessage));
+          if (isValidReactComponentName(name)) {
+            try {
+              dispatch(
+                addNewComponent({
+                  pageId: page._id,
+                  body: {
+                    index: page.components.length,
+                    rootId: page.components[0]._id,
+                    name,
+                  },
+                })
+              );
+              dispatch(setMessage(successMess));
+              setName('');
+            } catch (error) {
+              dispatch(
+                setMessage({
+                  severity: 'error',
+                  text: 'Design: add new component ' + error,
+                })
+              );
+            }
+          } else {
+            const errMessage = name.length === 0 ? emptyNameErr : firstCharErr;
+            dispatch(setMessage(errMessage));
+          }
         }
       }}
     >
