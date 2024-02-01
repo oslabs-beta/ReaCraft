@@ -14,22 +14,19 @@ export const uploadNewDesignImage = (
   console.log('this is the clientId from req.body', clientId);
 
   if (!userImage) return next();
+  if (!clientId)
+    return next({
+      log: 'Express error handler caught imageController.uploadImage middleware error: clientId required',
+      message: 'Upload image err: clientId required',
+    });
 
   let skipWebSocket = req.originalUrl === '/update-profile';
   console.log('this is skipWebSocket', skipWebSocket);
 
-<<<<<<< HEAD
-  let ws: WebSocket | null = null;
-=======
-<<<<<<< HEAD
   let ws: any;
-=======
-  let ws: WebSocket | null = null;
->>>>>>> a92794e (Fixed ts error)
->>>>>>> Amunoz-1-feature/DOM_revamp
   if (!skipWebSocket) {
     if (!clientId) return res.status(404).send('clientId is required');
-    ws = getClient(clientId) as WebSocket;
+    ws = getClient(clientId);
     if (!ws || ws.readyState !== WebSocket.OPEN) {
       return res.status(404).send('websocket client not found');
     }
