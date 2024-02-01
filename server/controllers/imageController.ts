@@ -23,7 +23,11 @@ export const uploadNewDesignImage = (
   let skipWebSocket = req.originalUrl === '/update-profile';
   console.log('this is skipWebSocket', skipWebSocket);
 
+<<<<<<< HEAD
   let ws: any;
+=======
+  let ws: WebSocket | null = null;
+>>>>>>> a92794e (Fixed ts error)
   if (!skipWebSocket) {
     if (!clientId) return res.status(404).send('clientId is required');
     ws = getClient(clientId) as WebSocket;
@@ -84,6 +88,10 @@ export const uploadImage = (
   const { userImage } = req.body;
   if (!userImage) return next();
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a92794e (Fixed ts error)
   const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64Data, 'base64');
 
@@ -127,10 +135,17 @@ export const deleteImage = (
 
   const params: S3.DeleteObjectsRequest = {
     Bucket: 'reactraft',
+<<<<<<< HEAD
     Delete: {
       Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
       Quiet: false,
     },
+=======
+      Delete: {
+        Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
+        Quiet: false,
+      }
+>>>>>>> a92794e (Fixed ts error)
   };
 
   return s3
