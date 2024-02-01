@@ -33,7 +33,7 @@ export default function ButtonDeleteDesign() {
 
   return (
     <Fragment>
-      <Tooltip title='delete design'>
+      <Tooltip title='Delete design'>
         <Fab size='small' onClick={() => setOpen(true)} color='error'>
           <Delete />
         </Fab>

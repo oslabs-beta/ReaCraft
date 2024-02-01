@@ -119,6 +119,7 @@ export const addNewPage = createAsyncThunk(
       pageIdx: number;
       userImage: string;
       imageHeight: number;
+      clientId: string;
     };
   }) => await addNewPageRequest(arg.designId, arg.body)
 );
@@ -403,12 +404,12 @@ const designSliceV3 = createSlice({
 });
 
 export const addNewPageAndUpdateSelectedPageIdx =
-  (params: { designId: number; userImage: string; imageHeight: number }) =>
+  (params: { designId: number; userImage: string; imageHeight: number; clientId: string; }) =>
   async (dispatch: any, getState: any) => {
     const state = getState();
     const pageIdx = state.app.selectedPageIdx;
     // Destructure params to get necessary values
-    const { designId, userImage, imageHeight } = params;
+    const { designId, userImage, imageHeight, clientId } = params;
     // Dispatch the first action and wait for it to complete
     await dispatch(
       addNewPage({
@@ -417,6 +418,7 @@ export const addNewPageAndUpdateSelectedPageIdx =
           pageIdx: pageIdx + 1,
           userImage,
           imageHeight,
+          clientId,
         },
       })
     );
