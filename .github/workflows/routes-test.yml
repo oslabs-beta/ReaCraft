@@ -1,7 +1,7 @@
 name: routes-tests
 on: [push]
 jobs:
-  models-connection-testing:
+  routes-testing:
     runs-on: ubuntu-latest
     env:
       PG_URI: ${{ secrets.PG_URI }}
@@ -29,3 +29,12 @@ jobs:
 
       - name: Run Jest models-connection
         run: npm run test models-connection
+
+      - name: Webpack and start the server
+        run: npm run dev &
+
+      - name: Wait for Server to Start
+        run: sleep 10
+
+      - name: Run Jest routes tests
+        run: npm run test routes
