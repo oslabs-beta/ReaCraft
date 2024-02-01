@@ -114,10 +114,7 @@ export const deleteImage = (
   const params: S3.DeleteObjectsRequest = {
     Bucket: 'reactraft',
     Delete: {
-      Objects: imageToDelete.map((url: string): { Key: string } => {
-        const imageUrl = new URL(url);
-        return { Key: imageUrl.pathname.substring(1) };
-      }),
+      Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
       Quiet: false,
     },
   };
