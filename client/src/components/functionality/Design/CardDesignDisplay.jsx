@@ -7,10 +7,8 @@ import Typography from '@mui/material/Typography';
 import { useDispatch } from 'react-redux';
 import InputDesignTitle from './InputDesignTitle_DesignCard';
 import Paper from '@mui/material/Paper';
-import {
-  getDesignDetailsAndSetApp,
-  setMessage,
-} from '../../../utils/reducers/appSlice';
+import { setMessage } from '../../../utils/reducers/appSlice';
+import { getDesignDetailsAndSetApp } from '../../../utils/reducers/designSliceV3';
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
