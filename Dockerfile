@@ -12,6 +12,6 @@ RUN npm run build
 
 RUN npm run build-server
 
-EXPOSE 3000
+EXPOSE 8080
 
 ENTRYPOINT ["node", "dist/server/server.js"]
