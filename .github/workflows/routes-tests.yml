@@ -30,7 +30,7 @@ jobs:
         run: sleep 10
 
       - name: Run Jest Routes Test
-        run: npm run jest routes
+        run: npm run test routes
 
       - name: Cache Node.js modules
         uses: actions/cache@v2
