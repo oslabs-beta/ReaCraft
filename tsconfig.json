@@ -11,5 +11,6 @@
   },
   "files": ["docs/types.ts"],
   "exclude": ["**/*.js"],
-  "include": ["client/utils/**/*", "server/**/*"]
+  "include": ["client/utils/**/*", "server/**/*"],
+  "types": ["jest"]
 }

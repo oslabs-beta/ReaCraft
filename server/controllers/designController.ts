@@ -18,6 +18,7 @@ export const addNewDesign = (
 ) => {
   // userId from cookieController.decryptCookie
   const { userId, onlineImageUrl, username } = res.locals;
+  console.log('username in add new Design', username);
   return db
     .query(
       'INSERT INTO designs (user_id, image_url, last_updated_by) VALUES( $1, $2, $3 ) RETURNING *;',
@@ -48,11 +49,10 @@ export const updateDesignTitleOrCover = (
   const column: string = title ? 'title' : 'image_url';
   const value: string = title || imageUrl;
   return db
-    .query(`UPDATE designs SET ${column} = $1 WHERE _id = $2 RETURNING *;`, [
+    .query(`UPDATE designs SET ${column} = $1 WHERE _id = $2;`, [
       value,
       designId,
     ])
-    .then((data: DesignQueryRes) => (res.locals.design = data.rows[0]))
     .then(() => next())
     .catch((err) =>
       next({

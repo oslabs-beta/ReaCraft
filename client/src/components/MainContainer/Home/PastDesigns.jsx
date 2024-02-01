@@ -8,10 +8,10 @@ import Grid from '@mui/material/Grid';
 import { setMessage } from '../../../utils/reducers/appSlice';
 import ButtonSortPastDesigns from '../../functionality/Design/ButtonSortPastDesigns';
 
-export default function UserDesigns() {
+export default function UserDesigns({ searchText }) {
   const [pastDesigns, setPastDesigns] = useState([]);
-  const searchTerm = useSelector((state) => state.designV3.searchTerm);
   const dispatch = useDispatch();
+  console.log('search text', searchText);
 
   const theme = useTheme();
   useEffect(() => {
@@ -34,11 +34,8 @@ export default function UserDesigns() {
   }, []);
 
   const getFilteredDesigns = () => {
-    if (!searchTerm) {
-      return pastDesigns;
-    }
     return pastDesigns.filter((design) =>
-      design.title.toLowerCase().includes(searchTerm.toLowerCase())
+      design.title.toLowerCase().includes(searchText.toLowerCase())
     );
   };
 
