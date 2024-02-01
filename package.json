@@ -7,7 +7,8 @@
     "test": "jest --verbose",
     "dev": "npm run build && concurrently \"npm start\" \"nodemon server/server.ts\"",
     "start": "webpack-dev-server --mode development --open --hot",
-    "build": "webpack"
+    "build": "webpack",
+    "build-server": "tsc --outDir dist"
   },
   "keywords": [],
   "author": "",
