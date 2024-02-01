@@ -27,5 +27,5 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Jest db-connection
-        run: npm run test db-connection
+      - name: Run Jest models-connection
+        run: npm run test models-connection
