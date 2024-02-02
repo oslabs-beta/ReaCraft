@@ -78,6 +78,13 @@ $(document).ready(function () {
       behavior: 'smooth',
     });
   });
+
+  // event listener for meet the team text
+  $('#meetTeamText').click(function () {
+    document.getElementById('teamSection').scrollIntoView({
+      behavior: 'smooth',
+    });
+  });
 });
 
 //profiles animation script
@@ -129,3 +136,13 @@ $(document).ready(function () {
     }
   });
 });
+
+//slides script
+function showSlide(number) {
+  document.querySelectorAll('.slidePage2').forEach(function (slide) {
+    slide.style.display = 'none'; // Hide all slides
+  });
+
+  document.getElementById(`slide${number}`).style.display = 'block'; // Show the selected slide
+  document.querySelector('.containerRight').style.visibility = 'visible'; // Make the right container visible
+}
