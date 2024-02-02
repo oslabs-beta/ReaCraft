@@ -1,7 +1,18 @@
+/* font-family: 'Baloo Bhaijaan 2', sans-serif; */
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap');
 
-/* font-family: 'Baloo Bhaijaan 2', sans-serif; */
+/* page scrolling */
+html {
+  overflow: hidden;
+  height: 100%;
+}
 
+body {
+  overflow: auto;
+  height: 100%;
+}
+
+/* tutorial slide scrolling */
 @keyframes slideUp {
   from {
     transform: translateY(300%);
@@ -13,24 +24,17 @@
 
 @keyframes fadeInUp {
   0% {
-    transform: translateY(100%);
+    transform: translateY(50vw);
     opacity: 0;
   }
-  100% {
-    transform: translateY(0%);
+  5% {
+    transform: translateY(25vw);
     opacity: 1;
   }
-}
-/* page scrolling */
-
-html {
-  overflow: hidden;
-  height: 100%;
-}
-
-body {
-  overflow: auto;
-  height: 100%;
+  20% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* for the logo */
@@ -183,15 +187,15 @@ body p {
   flex-direction: column;
 }
 .containerLeft {
-  width: 30%;
+  width: 25%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-content: space-around;
-  align-items: flex-start;
-  padding-top: 20px;
 }
 .containerRight {
   width: 70%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -242,7 +246,7 @@ html {
 }
 
 .instruction:hover {
-  transform: translateY(-10px);
+  transform: translateY(-5px);
 }
 
 .logo {
