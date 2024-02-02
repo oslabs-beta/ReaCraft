@@ -461,3 +461,19 @@ export function addCollaboratorRequest(
       throw err;
     });
 }
+
+export function updateUsernameRequest(body: {
+  newUsername: string;
+}): Promise<{ message: string }> {
+  return fetch('/update-username', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
+    .catch((err) => {
+      throw err;
+    });
+}
