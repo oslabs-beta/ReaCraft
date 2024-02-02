@@ -21,6 +21,9 @@ import { downloadFiles } from '../controllers/fileController';
 import { authenticateGoogle, authenticateGoogleCallback, logoutUser } from '../controllers/passportController';
 import passport from 'passport';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 const router = express.Router();
 
 router.get('/logout', logoutUser, (req: Request, res: Response) =>
@@ -67,11 +70,16 @@ router.post(
 
 router.get('/', (req: Request, res: Response) => res.redirect('/home'));
 
+const PROJECT_ROOT = process.env.PROJECT_ROOT;
 router.get('/home', checkCookie, (req: Request, res: Response) => {
   const filePath: string = res.locals.verified
-    ? '../../build/index.html'
-    : '../../client/public/views/landingPage.html';
-  return res.status(200).sendFile(path.join(__dirname, filePath));
+    ? '/build/index.html'
+    : '/client/public/views/landingPage.html';
+  return res.status(200).sendFile(path.join(PROJECT_ROOT, filePath));
+});
+
+router.get('/bundle.js', (req: Request, res: Response) => {
+  res.status(200).sendFile(path.join(PROJECT_ROOT, '/build/bundle.js'));
 });
 
 export default router;
