@@ -35,10 +35,16 @@ body {
 
 /* for the logo */
 @keyframes rotate-in-ver {
-  0% {
-    -webkit-transform: rotateY(-360deg);
-    transform: rotateY(-360deg);
+  0%,
+  21.05% {
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
     opacity: 0;
+  }
+  21.05% {
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+    opacity: 1;
   }
   100% {
     -webkit-transform: rotateY(0deg);
@@ -48,10 +54,16 @@ body {
 }
 
 @keyframes rotate-in-ver2 {
-  0% {
+  0%,
+  21.05% {
     -webkit-transform: rotateX(360deg);
     transform: rotateX(360deg);
     opacity: 0;
+  }
+  21.05% {
+    -webkit-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    opacity: 1;
   }
   100% {
     -webkit-transform: rotateX(0deg);
@@ -61,10 +73,16 @@ body {
 }
 
 @keyframes rotate-in-ver3 {
-  0% {
+  0%,
+  21.05% {
     -webkit-transform: rotateX(360deg) rotateY(360deg);
     transform: rotateX(360deg) rotateY(360deg);
     opacity: 0;
+  }
+  21.05% {
+    -webkit-transform: rotateX(0deg) rotateY(0deg);
+    transform: rotateX(0deg) rotateY(0deg);
+    opacity: 1;
   }
   100% {
     -webkit-transform: rotateX(0deg) rotateY(0deg);
@@ -229,17 +247,17 @@ html {
 
 .logo {
   filter: drop-shadow(2px 2px 3px #2a2a2a);
-  animation: rotate-in-ver 8s cubic-bezier(0.19, 1, 0.22, 1) infinite both;
+  animation: rotate-in-ver 15s cubic-bezier(0.19, 1, 0.22, 1) infinite both;
 }
 
 .logo2 {
   filter: drop-shadow(2px 2px 3px #2a2a2a);
-  animation: rotate-in-ver2 8s cubic-bezier(0.19, 1, 0.22, 1) infinite both;
+  animation: rotate-in-ver2 15s cubic-bezier(0.19, 1, 0.22, 1) infinite both;
 }
 
 .logo3 {
   filter: drop-shadow(2px 2px 3px #2a2a2a);
-  animation: rotate-in-ver3 8s cubic-bezier(0.19, 1, 0.22, 1) infinite both;
+  animation: rotate-in-ver3 15s cubic-bezier(0.19, 1, 0.22, 1) infinite both;
 }
 
 .logo-letters {
@@ -474,7 +492,7 @@ html {
   line-height: 24px;
   text-size-adjust: 100%;
   width: 32px;
-  background-image: url('../assets/dark-mode.svg');
+  background-image: url('../../assets/dark-mode.svg');
   content: '';
   position: 'absolute';
   width: 100%;
@@ -484,7 +502,7 @@ html {
 }
 
 #dark-mode-switch-root #switch-thumb.dark {
-  background-image: url('../assets/light-mode.svg');
+  background-image: url('../../assets/light-mode.svg');
   background-color: #e0e1dd;
 }
 
