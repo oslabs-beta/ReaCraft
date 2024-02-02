@@ -4,7 +4,6 @@ import designsRouter from './designsRouter';
 import componentsRouter from './componentsRouter';
 import pageRouter from './pageRouter';
 import {
-  removeCookie,
   decryptCookie,
   checkCookie,
   setCookie,
@@ -17,16 +16,18 @@ import {
   updateProfilePicture,
   verifyUser,
 } from '../controllers/userController';
-import { uploadNewDesignImage, uploadImage, deleteImage } from '../controllers/imageController';
+import { uploadNewDesignImage, deleteImage } from '../controllers/imageController';
 import { downloadFiles } from '../controllers/fileController';
+import { authenticateGoogle, authenticateGoogleCallback, logoutUser } from '../controllers/passportController';
+import passport from 'passport';
 
 import dotenv from 'dotenv';
 dotenv.config();
 
 const router = express.Router();
 
-router.get('/logout', removeCookie, (req: Request, res: Response) =>
-  res.status(200).end()
+router.get('/logout', logoutUser, (req: Request, res: Response) =>
+res.status(200).end()
 );
 
 router.use('/designs', decryptCookie, designsRouter);
@@ -40,6 +41,11 @@ router.get('/user', decryptCookie, (req: Request, res: Response) =>
 router.post('/login', verifyUser, setCookie, (req: Request, res: Response) =>
   res.redirect('/home')
 );
+
+// google oauth routes
+router.get('/auth/google', authenticateGoogle);
+router.get('/auth/google/callback', authenticateGoogleCallback);
+
 router.post(
   '/signup',
   checkEmail,
@@ -56,7 +62,7 @@ router.post(
   '/update-profile',
   decryptCookie,
   deleteImage,
-  uploadImage,
+  uploadNewDesignImage,
   updateProfilePicture,
   (req: Request, res: Response) =>
     res.status(200).json({ imageUrl: res.locals.onlineImageUrl })

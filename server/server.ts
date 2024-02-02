@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import session from 'express-session';
+import passport from 'passport';
 
 import router from './routes/router';
 
@@ -25,6 +27,20 @@ app.use(express.static(path.join(PROJECT_ROOT, '/client/public')));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true })); // If you want to parse URL-encoded bodies
 app.use(cookieParser());
+
+// session setup
+app.use(session({
+  secret: process.env.SESSION_SECRET as string,
+  // options forces the session to be saved back to the session store, setting this to 'false' can help reduce session concurrency issues
+  resave: false,
+  // setting saveUnitialized to false will only store sessions on the server for users who are logged in
+  saveUninitialized: false,
+  // cookie option in session middleware defines the settings for the session cookie - creates its own cookie 'connect.sid' to track the session. specifically for maintaining the session state and contains the session ID which is matached on the server with a stored session main state between HTTP requests
+  cookie: { secure: false },
+}));
+// passport initialization 
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(
   cors({
