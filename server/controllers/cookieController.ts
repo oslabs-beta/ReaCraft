@@ -66,22 +66,3 @@ export const decryptCookie = async (
     });
   }
 };
-
-export const removeCookie = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    res.clearCookie('user_id');
-    res.clearCookie('sessionID');
-    return next();
-  } catch (err) {
-    return next({
-      log:
-        'Express error handler caught cookieController.removeCookie middleware error' +
-        err,
-      message: 'Cookie err: ' + err,
-    });
-  }
-};
