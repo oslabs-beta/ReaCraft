@@ -16,9 +16,16 @@ import {
   updateProfilePicture,
   verifyUser,
 } from '../controllers/userController';
-import { uploadNewDesignImage, deleteImage } from '../controllers/imageController';
+import {
+  uploadNewDesignImage,
+  deleteImage,
+} from '../controllers/imageController';
 import { downloadFiles } from '../controllers/fileController';
-import { authenticateGoogle, authenticateGoogleCallback, logoutUser } from '../controllers/passportController';
+import {
+  authenticateGoogle,
+  authenticateGoogleCallback,
+  logoutUser,
+} from '../controllers/passportController';
 import passport from 'passport';
 
 import dotenv from 'dotenv';
@@ -27,7 +34,7 @@ dotenv.config();
 const router = express.Router();
 
 router.get('/logout', logoutUser, (req: Request, res: Response) =>
-res.status(200).end()
+  res.status(200).end()
 );
 
 router.use('/designs', decryptCookie, designsRouter);
