@@ -13,6 +13,9 @@
     <!-- fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap"
+      rel="stylesheet" />
 
     <!-- bootstrap css -->
     <link
@@ -20,6 +23,8 @@
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous" />
+
+    <link rel="stylesheet" type="text/css" href="/views/modals.css" />
 
     <script
       src="https://code.jquery.com/jquery-3.7.1.js"
@@ -79,26 +84,71 @@
         </span>
       </span>
       <div id="modalPlaceholder"></div>
-      <div style="position: relative">
-        <!-- Tutorial Object -->
+      <div
+        class="logo-container"
+        width="800px"
+        height="100%"
+        style="display: flex; flex-direction: column; text-align: center">
+        <span
+          display="flex"
+          style="
+            width: 60%;
+            height: 70%;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+          ">
+          <img
+            alt="Logo"
+            style="
+              width: 90%;
+              height: auto;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              z-index: 2;
+              margin-right: 8%;
+              padding-bottom: 2.5rem;
+            "
+            class="logo rotate-in-ver"
+            src="../assets/ReactCraftNew.svg" />
+
+          <img
+            alt="Logo Letters"
+            style="
+              width: 70%;
+              height: auto;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              z-index: 1;
+            "
+            class="logo-letters"
+            src="../assets/ReactCraft_RC.svg" />
+        </span>
+        <span
+          style="
+            display: flex;
+            justify-content: center;
+            font-size: xx-large;
+            font-weight: bolder;
+            padding-top: 30px;
+            text-shadow: 4px 3px 10px rgba(47, 47, 47, 0.124);
+          ">
+          <p>Streamlining React Development from Design to Deployment</p>
+        </span>
         <div
           class="tutorial-container"
-          style="position: absolute; z-index: 15; top: 40%; right: 10%">
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            width: 90vw;
+            font-family: 'Baloo Bhaijaan 2', sans-serif;
+          ">
           <span id="tutorialText" style="cursor: pointer">
             Tutorial
-            <img
-              style="width: 20px; height: 20px"
-              alt="arrow"
-              class="arrow"
-              src="../assets/arrow.svg" />
-          </span>
-        </div>
-        <!-- Meet Team Object -->
-        <div
-          class="meetTeam"
-          style="position: absolute; z-index: 15; top: 45%; right: 10%">
-          <span id="meetTeamText" style="cursor: pointer">
-            Meet the Team
             <img
               style="width: 20px; height: 20px"
               alt="arrow"
@@ -340,7 +390,118 @@
     </span>
 
     <!-- scripts are at the bottom of the body to ensure HTML elements above are loaded before the scripts run -->
-    <script src="/views/scripts/slidesScript.js"></script>
-    <script src="/views/scripts/homepageScripts.js"></script>
+
+    <script src="/views/slidesScript.js"></script>
+
+    <script>
+      // when document is ready
+      $(document).ready(function () {
+        // attach click handler event to 'signup' button
+        $('#signup').click(function (e) {
+          // prevent default button action
+          e.preventDefault();
+          // load the 'signupModal.html' content into 'modalPlaceholder'
+          $('#modalPlaceholder').load('/views/signupModal.html', function () {
+            // show the 'signupModal' as a modal
+            $('#signupModal').modal('show');
+            updateModalDarkMode();
+          });
+        });
+
+        // attach click event handler to 'login' button
+        $('#login').click(function (e) {
+          // prevent default button action
+          e.preventDefault();
+          // load the 'loginModal.html' content into 'modalPlaceholder'
+          $('#modalPlaceholder').load('/views/loginModal.html', function () {
+            // show the 'loginModa' as a modal
+            $('#loginModal').modal('show');
+            updateModalDarkMode();
+          });
+        });
+
+        // attach input event handler to the 'username' field within 'loginModal'
+        $(document).on('input', '#user', function () {
+          // when the user types in the 'username' field
+          let username = $(this).val().trim();
+          // check if the 'username' field is not empty
+          if (username) {
+            // set the text of the element with class 'greeting-text' to 'Hello, username (input)!'
+            $('.greeting-text').text('Hello, ' + username + '!');
+          } else {
+            // set the text of the element with the class 'greeting-text' to 'Hello, Friend!'
+            $('.greeting-text').text('Hello, Friend!');
+          }
+        });
+
+        // when the 'Need an account?' button is clicked within the login modal
+        $(document).on('click', '.needAccount', function () {
+          // hide the login modal
+          $('#loginModal').modal('hide');
+          // unbind the previous hidden event handler to avoid stacking event calls
+          $('#loginModal').on('hidden.bs.modal', function (e) {
+            // load and show the signup modal
+            $('#modalPlaceholder').load('/views/signupModal.html', function () {
+              $('#signupModal').modal('show');
+            });
+          });
+        });
+
+        // when the 'Have an account?' button is clicked within the signup modal
+        $(document).on('click', '.account-button', function (e) {
+          // prevent default button action
+          e.preventDefault();
+          // hide the current modal
+          $('#signupModal').modal('hide');
+          // load the login modal after the signup modal is hidden
+          $('#signupModal').on('hidden.bs.modal', function () {
+            $('#modalPlaceholder').load('/views/loginModal.html', function () {
+              // show the login modal
+              $('#loginModal').modal('show');
+            });
+          });
+        });
+
+        // event listener for tutorial text
+        $('#tutorialText').click(function () {
+          document.getElementById('tutorialSection').scrollIntoView({
+            behavior: 'smooth',
+          });
+        });
+      });
+    </script>
+
+    <!-- profiles animation script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // once the DOM is loaded, event listener will be attached to every '.profile' class by creating an observer through IntersectionObserver
+        // IntersectionObserver API asynchronously observes changes in the intersection of a target element
+        const observer = new IntersectionObserver(
+          (entries, observer) => {
+            // loop over each entry - represents one observed element
+            entries.forEach((entry) => {
+              // check if element is in view
+              if (entry.isIntersecting) {
+                // add class to trigger the animation
+                entry.target.classList.add('animate-bounce-in-top');
+                // remove the animation class shortly after it finishes
+                setTimeout(() => {
+                  entry.target.classList.remove('animate-bounce-in-top');
+                }, 1500); // timeout should match duration of the animation
+              }
+            });
+          },
+          {
+            threshold: 0.1, // trigger when at least 10% of the target is visible
+          }
+        );
+
+        // observe all elements that have the class 'profile'
+        document.querySelectorAll('.profile').forEach((element) => {
+          // observer is called for each '.profile' element to tell the IntersectionObserver to start watching for these elements when they intersect with the viewport
+          observer.observe(element);
+        });
+      });
+    </script>
   </body>
 </html>
