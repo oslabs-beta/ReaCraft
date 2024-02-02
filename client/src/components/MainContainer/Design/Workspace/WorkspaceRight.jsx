@@ -25,7 +25,6 @@ export default function WorkspaceRight({ canvasWidth }) {
       direction={windowWidth - 320 > canvasWidth ? 'column' : 'row'}
       gap={2}
     >
-      <ButtonViewTree tree={tree} />
       <ButtonViewCode
         css={css}
         jsx={jsx}
