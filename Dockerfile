@@ -13,4 +13,8 @@ RUN npm run build-server
 
 EXPOSE 3000
 
+<<<<<<< HEAD
 ENTRYPOINT ["node", "dist/server/server.js"]
+=======
+ENTRYPOINT ["node", "dist/server/server.js"]
+>>>>>>> Amunoz-1-feature/DOM_revamp
