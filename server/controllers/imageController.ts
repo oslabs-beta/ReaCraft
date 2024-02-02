@@ -9,19 +9,11 @@ export const uploadNewDesignImage = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('hit uploadImage');
   const { userImage, clientId } = req.body;
-  console.log('this is the clientId from req.body', clientId);
 
   if (!userImage) return next();
-  if (!clientId)
-    return next({
-      log: 'Express error handler caught imageController.uploadImage middleware error: clientId required',
-      message: 'Upload image err: clientId required',
-    });
 
   let skipWebSocket = req.originalUrl === '/update-profile';
-  console.log('this is skipWebSocket', skipWebSocket);
 
   let ws: WebSocket | null = null;
   if (!skipWebSocket) {
@@ -46,17 +38,13 @@ export const uploadNewDesignImage = (
   const upload = s3.upload(params);
 
   upload.on('httpUploadProgress', function (evt) {
-    console.log('getting upload progress');
     const progress = Math.round((evt.loaded / evt.total) * 100);
-    console.log('this is the progress', progress);
 
     if (!skipWebSocket && ws && ws.readyState === 1) {
       ws.send(JSON.stringify({ type: 'progressUpdate', progress: progress }));
-      console.log('progress update sent to client', clientId);
 
       if (progress === 100) {
         ws.send(JSON.stringify({ type: 'uploadComplete', progress: progress }));
-        console.log('uploadComplete sent', clientId);
       }
     }
   });
@@ -80,27 +68,9 @@ export const uploadImage = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('uploadImage hit');
   const { userImage } = req.body;
   if (!userImage) return next();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> a92794e (Fixed ts error)
->>>>>>> Amunoz-1-feature/DOM_revamp
-=======
->>>>>>> 5fb12a6 (Fixed ts error)
-=======
-=======
-
->>>>>>> a92794e (Fixed ts error)
->>>>>>> 5cbf848 (Fixed ts error)
   const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64Data, 'base64');
 
@@ -144,17 +114,10 @@ export const deleteImage = (
 
   const params: S3.DeleteObjectsRequest = {
     Bucket: 'reactraft',
-<<<<<<< HEAD
     Delete: {
       Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
       Quiet: false,
     },
-=======
-      Delete: {
-        Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
-        Quiet: false,
-      }
->>>>>>> a92794e (Fixed ts error)
   };
 
   return s3
