@@ -15,9 +15,14 @@ import {
   checkUsername,
   hashPassword,
   updateProfilePicture,
+  updateUsername,
   verifyUser,
 } from '../controllers/userController';
-import { uploadNewDesignImage, uploadImage, deleteImage } from '../controllers/imageController';
+import {
+  uploadNewDesignImage,
+  uploadImage,
+  deleteImage,
+} from '../controllers/imageController';
 import { downloadFiles } from '../controllers/fileController';
 
 import dotenv from 'dotenv';
@@ -60,6 +65,14 @@ router.post(
   updateProfilePicture,
   (req: Request, res: Response) =>
     res.status(200).json({ imageUrl: res.locals.onlineImageUrl })
+);
+
+router.post(
+  '/update-username',
+  decryptCookie,
+  updateUsername,
+  (req: Request, res: Response) =>
+    res.status(res.locals.status).json({ message: res.locals.message })
 );
 
 router.get('/', (req: Request, res: Response) => res.redirect('/home'));

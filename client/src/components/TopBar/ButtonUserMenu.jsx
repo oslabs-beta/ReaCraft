@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -17,7 +17,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
-import { updateProfilePictureRequest } from '../../utils/fetchRequests';
+import {
+  updateProfilePictureRequest,
+  updateUsernameRequest,
+} from '../../utils/fetchRequests';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../../utils/reducers/appSlice';
 
@@ -25,7 +28,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCircleInfo,
   faRightFromBracket,
+  faPenToSquare,
+  faCircleCheck,
 } from '@fortawesome/free-solid-svg-icons';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 
 const style = {
   position: 'absolute',
@@ -179,7 +187,7 @@ export default function ButtonUserMenu() {
             <TableContainer component={Paper}>
               <Table aria-label='simple table'>
                 <TableBody>
-                  <UserData label='username' data={username} />
+                  <UserName username={username} />
                   <UserData label='email' data={email} />
                   <UserData
                     label='created_at'
@@ -199,10 +207,96 @@ export default function ButtonUserMenu() {
   );
 }
 
+function UserName({ username }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [text, setText] = useState(username);
+  const dispatch = useDispatch();
+  const { updateUsername } = useAuth();
+  return (
+    <TableRow
+      sx={{
+        '&:last-child td, &:last-child th': { border: 0 },
+      }}
+    >
+      <TableCell component='th' scope='row'>
+        username
+      </TableCell>
+      <TableCell>
+        {!isEditing && (
+          <Fragment>
+            {text}
+            <IconButton
+              size='small'
+              sx={{
+                color: 'white',
+                '& svg': {
+                  transform: 'scale(0.5)',
+                },
+              }}
+              onClick={() => setIsEditing(true)}
+            >
+              <FontAwesomeIcon icon={faPenToSquare} />
+            </IconButton>
+          </Fragment>
+        )}
+        {isEditing && (
+          <TextField
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton
+                    onClick={async () => {
+                      try {
+                        if (text !== username) {
+                          const res = await updateUsernameRequest({
+                            newUsername: text,
+                          });
+                          if (res.message === 'Username in use') {
+                            dispatch(
+                              setMessage({
+                                severity: 'error',
+                                text: res.message,
+                              })
+                            );
+                            setText(username);
+                          } else {
+                            updateUsername(text);
+                            dispatch(
+                              setMessage({
+                                severity: 'success',
+                                text: res.message,
+                              })
+                            );
+                          }
+                        }
+                        setIsEditing(false);
+                      } catch (err) {
+                        dispatch(
+                          setMessage({
+                            severity: 'error',
+                            text: 'Updating username ' + err,
+                          })
+                        );
+                      }
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faCircleCheck} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        )}
+      </TableCell>
+    </TableRow>
+  );
+}
+
 function UserData({ label, data }) {
   return (
     <TableRow
-      key={label}
       sx={{
         '&:last-child td, &:last-child th': { border: 0 },
       }}

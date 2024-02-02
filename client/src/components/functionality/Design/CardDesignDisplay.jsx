@@ -49,7 +49,7 @@ export default function CardDesignDisplay({ design }) {
       {typeof canEdit === 'boolean' && (
         <Box sx={{ position: 'absolute', right: '10px', top: '10px' }}>
           <Tooltip title='Collaboartion design'>
-            <Fab size='small' sx={{ boxShadow: 'none' }}>
+            <Fab size='small' sx={{ boxShadow: 'none', cursor: 'initial' }}>
               <FontAwesomeIcon icon={faUsers} />
             </Fab>
           </Tooltip>
