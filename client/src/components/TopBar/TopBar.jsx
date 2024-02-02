@@ -30,14 +30,13 @@ import {
   AppBarButtonsStyleLight,
   AppBarButtonsStyleDark,
 } from '../../styles/ThemeGlobal';
-import ButtonDeleteDesign from '../functionality/Design/ButtonDeleteDesign';
 import ButtonViewTree from '../functionality/Design/ButtonViewTree';
 import { convertToTree } from '../../utils/treeNode';
 import ButtonDownloadFiles from '../functionality/Design/ButtonDownloadFiles';
 import ButtonAddCollab from '../functionality/Design/ButtonAddCollab';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
   const dispatch = useDispatch();
@@ -59,11 +58,6 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
     theme.palette.mode === 'dark'
       ? AppBarButtonsStyleDark
       : AppBarButtonsStyleLight;
-
-  const logo =
-    theme.palette.mode === 'light'
-      ? './assets/logo_thickoutline_3.svg'
-      : './assets/logo_tiny_mode_DarkMode.svg';
 
   function handlePageClick(page) {
     dispatch(goToPage(page));
@@ -125,15 +119,17 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
                 }}
                 onClick={() => handlePageClick('HOME')}
               >
-                <img
-                  src='./assets/ReaCraft2-01.png'
-                  style={{
-                    marginLeft: '20px',
-                    width: 40,
-                    height: 40,
-                    color: '#736c6c',
-                  }}
-                />
+                <Tooltip title='Back to home'>
+                  <img
+                    src='./assets/ReaCraft2-01.png'
+                    style={{
+                      marginLeft: '20px',
+                      width: 40,
+                      height: 40,
+                      color: '#736c6c',
+                    }}
+                  />
+                </Tooltip>
               </Box>
 
               <InputDesignTitle />
@@ -144,7 +140,6 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
                   ownerName={user.username}
                 />
               )}
-              {canEdit && user_id == user._id && <ButtonDeleteDesign />}
               <ButtonViewTree entireApp={true} tree={tree} />
               <ButtonDownloadFiles />
             </Fragment>
@@ -160,36 +155,26 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
               <Divider orientation='vertical' flexItem />
             </Fragment>
           )}
-
-          <Button
-            variant='contained'
-            onClick={() => handlePageClick('DESIGN')}
-            sx={{
-              ...AppBarButtonsStyle,
-              backgroundColor: darkMode ? '#2a3f5a' : '#736c6c',
-              color: '#e2e2d3',
-              boxShadow: '1px 1px 5px white',
-              margin: '0 5px',
-            }}
-            startIcon={<AddPhotoAlternateIcon />}
-          >
-            New Design
-          </Button>
+          {!designId && (
+            <Button
+              variant='contained'
+              onClick={() => handlePageClick('DESIGN')}
+              sx={{
+                ...AppBarButtonsStyle,
+                backgroundColor: darkMode ? '#2a3f5a' : '#736c6c',
+                color: '#e2e2d3',
+                boxShadow: '1px 1px 5px white',
+                margin: '0 5px',
+              }}
+              startIcon={<AddPhotoAlternateIcon />}
+            >
+              New Design
+            </Button>
+          )}
           <Divider orientation='vertical' flexItem />
           <ButtonKeyboardShortcut
             sx={{ position: 'absolute', justifySelf: 'end' }}
           />
-          <Tooltip title='Home Button'>
-            <IconButton
-              variant='contained'
-              onClick={() => handlePageClick('HOME')}
-              width='30px'
-              size='small'
-            >
-              <FontAwesomeIcon icon={faHouse} />
-            </IconButton>
-          </Tooltip>
-          <Divider orientation='vertical' flexItem />
           <SwitchDarkMode
             size='xs'
             toggleDarkMode={toggleDarkMode}
