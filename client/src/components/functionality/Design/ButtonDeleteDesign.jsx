@@ -35,18 +35,9 @@ export default function ButtonDeleteDesign() {
 
   return (
     <Fragment>
-      <Tooltip title='delete design'>
-        <Fab
-          size='small'
-          onClick={() => setOpen(true)}
-          color='error'
-          sx={{
-            '& svg': {
-              transform: 'scale(1.2)',
-            },
-          }}
-        >
-          <FontAwesomeIcon icon={faTrashCan} />
+      <Tooltip title='Delete design'>
+        <Fab size='small' onClick={() => setOpen(true)} color='error'>
+          <Delete />
         </Fab>
       </Tooltip>
 
@@ -78,8 +69,7 @@ export default function ButtonDeleteDesign() {
                   })
                 );
               }
-            }}
-          >
+            }}>
             Yes
           </Button>
           <Button onClick={handleClose} autoFocus>
