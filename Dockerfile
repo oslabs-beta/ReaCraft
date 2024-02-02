@@ -14,4 +14,16 @@ RUN npm run build-server
 
 EXPOSE 8080
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 ENTRYPOINT ["node", "dist/server/server.js"]
+=======
+ENTRYPOINT ["node", "dist/server/server.js"]
+>>>>>>> Amunoz-1-feature/DOM_revamp
+=======
+ENTRYPOINT ["node", "dist/server/server.js"]
+>>>>>>> 4882b16 (Rename dockerfile to Dockerfile)
+=======
+ENTRYPOINT ["node", "dist/server/server.js"]
+>>>>>>> b39eebc (docker)
