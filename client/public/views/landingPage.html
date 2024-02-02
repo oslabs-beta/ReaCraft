@@ -33,26 +33,6 @@
 
     <!-- google platform library -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-    <script>
-      $(document).ready(function () {
-        let mode = window.localStorage.getItem('mode');
-        if (mode) $('*').addClass('dark');
-
-        $('#switch-base').click((e) => {
-          mode = window.localStorage.getItem('mode');
-          if (mode) {
-            $('*').removeClass('dark');
-            $('#modalPlaceholder').removeClass('dark');
-            window.localStorage.removeItem('mode');
-          } else {
-            $('*').addClass('dark');
-            $('#modalPlaceholder').addClass('dark');
-            window.localStorage.setItem('mode', 'dark');
-          }
-        });
-      });
-    </script>
   </head>
 
   <body id="landing-page">
@@ -135,14 +115,7 @@
         </span>
         <div
           class="tutorial-container"
-          style="
-            display: flex;
-            position: absolute;
-            flex-direction: row;
-            justify-content: flex-start;
-            width: 90vw;
-            font-family: 'Baloo Bhaijaan 2', sans-serif;
-          ">
+          style="position: absolute; z-index: 15; top: 40%; right: 10%">
           <span id="tutorialText" style="cursor: pointer">
             Tutorial
             <img
