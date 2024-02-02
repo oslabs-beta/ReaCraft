@@ -8,14 +8,10 @@
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="/views/styles/homepage.css" />
     <link rel="stylesheet" type="text/css" href="http://tinyurl.com/25bnpr88" />
-    <link rel="stylesheet" type="text/css" href="/views/styles/modals.css" />
 
     <!-- fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap"
-      rel="stylesheet" />
 
     <!-- bootstrap css -->
     <link
@@ -23,8 +19,7 @@
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous" />
-
-    <link rel="stylesheet" type="text/css" href="/views/modals.css" />
+    <link rel="stylesheet" type="text/css" href="/views/styles/modals.css" />
 
     <script
       src="https://code.jquery.com/jquery-3.7.1.js"
@@ -142,6 +137,7 @@
           class="tutorial-container"
           style="
             display: flex;
+            position: absolute;
             flex-direction: row;
             justify-content: flex-start;
             width: 90vw;
@@ -394,6 +390,12 @@
     <script src="/views/slidesScript.js"></script>
 
     <script>
+      $(document).ready(function () {
+        $('#LogoContainer').load('/views/ReactLogo.html');
+      });
+    </script>
+
+    <script>
       // when document is ready
       $(document).ready(function () {
         // attach click handler event to 'signup' button
@@ -470,7 +472,6 @@
         });
       });
     </script>
-
     <!-- profiles animation script -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
