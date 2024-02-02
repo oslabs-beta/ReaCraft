@@ -9,20 +9,9 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-RUN npm run build-server
 
-EXPOSE 3000
+RUN npm run build && npm run build-server
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+EXPOSE 8080
+
 ENTRYPOINT ["node", "dist/server/server.js"]
-=======
-ENTRYPOINT ["node", "dist/server/server.js"]
->>>>>>> Amunoz-1-feature/DOM_revamp
-=======
-ENTRYPOINT ["node", "dist/server/server.js"]
->>>>>>> 4882b16 (Rename dockerfile to Dockerfile)
-=======
-ENTRYPOINT ["node", "dist/server/server.js"]
->>>>>>> b39eebc (docker)
