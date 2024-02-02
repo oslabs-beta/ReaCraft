@@ -22,7 +22,8 @@ const server = createServer(app);
 // Setup WebSocket server on the same HTTP server
 setupWebSocketServer(server);
 
-app.use(express.static(path.resolve(__dirname, '../client/public')));
+const PROJECT_ROOT = process.env.PROJECT_ROOT;
+app.use(express.static(path.join(PROJECT_ROOT, '/client/public')));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true })); // If you want to parse URL-encoded bodies
 app.use(cookieParser());
