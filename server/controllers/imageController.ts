@@ -14,6 +14,11 @@ export const uploadNewDesignImage = (
   console.log('this is the clientId from req.body', clientId);
 
   if (!userImage) return next();
+  if (!clientId)
+    return next({
+      log: 'Express error handler caught imageController.uploadImage middleware error: clientId required',
+      message: 'Upload image err: clientId required',
+    });
 
   let skipWebSocket = req.originalUrl === '/update-profile';
   console.log('this is skipWebSocket', skipWebSocket);
@@ -79,7 +84,23 @@ export const uploadImage = (
   const { userImage } = req.body;
   if (!userImage) return next();
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> a92794e (Fixed ts error)
+>>>>>>> Amunoz-1-feature/DOM_revamp
+=======
+>>>>>>> 5fb12a6 (Fixed ts error)
+=======
+=======
+
+>>>>>>> a92794e (Fixed ts error)
+>>>>>>> 5cbf848 (Fixed ts error)
   const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64Data, 'base64');
 
@@ -123,10 +144,17 @@ export const deleteImage = (
 
   const params: S3.DeleteObjectsRequest = {
     Bucket: 'reactraft',
+<<<<<<< HEAD
     Delete: {
       Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
       Quiet: false,
     },
+=======
+      Delete: {
+        Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
+        Quiet: false,
+      }
+>>>>>>> a92794e (Fixed ts error)
   };
 
   return s3
