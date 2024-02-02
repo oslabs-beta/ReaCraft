@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import db from '../models/dbModel';
 
-type userRow = {
+export type userRow = {
   _id: number;
   username: string;
   email: string;
@@ -10,7 +10,7 @@ type userRow = {
   last_login: string;
 };
 
-type userQueryRes = {
+export type userQueryRes = {
   rows: userRow[];
 };
 
