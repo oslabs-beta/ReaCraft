@@ -16,25 +16,25 @@ import {
   faUsers,
   faPenToSquare,
   faEye,
+  faEllipsis,
+  faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Divider from '@mui/material/Divider';
+import ButtonDeleteDesign from './ButtonDeleteDesign';
+import { useAuth } from '../../../hooks/useAuth';
 
 export default function CardDesignDisplay({ design }) {
-  const dispatch = useDispatch();
   const { created_at, last_updated, canEdit, last_updated_by } = design;
+  const { user } = useAuth();
 
-  const handleViewDesign = async () => {
-    try {
-      dispatch(getDesignDetailsAndSetApp(design._id, canEdit));
-    } catch (err) {
-      dispatch(
-        setMessage({
-          severity: 'error',
-          text: 'Design: view past design detail ' + err,
-        })
-      );
-    }
-  };
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuOpen = Boolean(anchorEl);
 
   return (
     <Paper
@@ -121,21 +121,67 @@ export default function CardDesignDisplay({ design }) {
           justifyContent: 'end',
         }}
       >
-        <Tooltip title={canEdit === false ? 'View Design' : 'Edit Design'}>
-          <IconButton
-            size='medium'
-            // color={canEdit === false ? 'info' : 'success'}
-            onClick={handleViewDesign}
-            sx={{ boxShadow: 'none', color: 'white' }}
-          >
-            {canEdit === false ? (
-              <FontAwesomeIcon icon={faEye} />
-            ) : (
-              <FontAwesomeIcon icon={faPenToSquare} />
-            )}
-          </IconButton>
-        </Tooltip>
+        <IconButton
+          size='medium'
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          sx={{ boxShadow: 'none', color: 'white' }}
+        >
+          <FontAwesomeIcon icon={faEllipsis} />
+        </IconButton>
+        <DesignMenu
+          open={menuOpen}
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
+          viewOnly={canEdit === false}
+          designId={design._id}
+          isOwner={design.user_id === user._id}
+        />
       </CardActions>
     </Paper>
+  );
+}
+
+function DesignMenu({
+  open,
+  anchorEl,
+  setAnchorEl,
+  viewOnly,
+  designId,
+  isOwner,
+}) {
+  const handleClose = () => setAnchorEl(null);
+  const dispatch = useDispatch();
+  return (
+    <Menu
+      id='basic-menu'
+      anchorEl={anchorEl}
+      open={open}
+      onClose={handleClose}
+      MenuListProps={{
+        'aria-labelledby': 'basic-button',
+      }}
+    >
+      <MenuItem
+        onClick={async () => {
+          try {
+            dispatch(getDesignDetailsAndSetApp(designId, !viewOnly));
+          } catch (err) {
+            dispatch(
+              setMessage({
+                severity: 'error',
+                text: 'Design: view past design detail ' + err,
+              })
+            );
+          }
+        }}
+      >
+        <ListItemIcon sx={{ color: 'white' }}>
+          <FontAwesomeIcon icon={viewOnly ? faEye : faPenToSquare} />
+        </ListItemIcon>
+        <ListItemText>{viewOnly ? 'View' : 'Edit'} Design</ListItemText>
+      </MenuItem>
+      {isOwner && <Divider />}
+      {isOwner && <ButtonDeleteDesign designId={designId} />}
+    </Menu>
   );
 }
