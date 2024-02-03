@@ -34,7 +34,7 @@ export default function SliderZoom() {
         <AddCircleRoundedIcon />
       </IconButton>
       <Tooltip title='Reset to fit window'>
-        <IconButton onClick={() => dispatch(setZoom(100))} size='small'>
+        <IconButton onClick={() => dispatch(setZoom(100))} size='small' sx={{ marginRight: '.3rem' }}>
           <FontAwesomeIcon icon={faArrowRotateRight} />
         </IconButton>
       </Tooltip>
