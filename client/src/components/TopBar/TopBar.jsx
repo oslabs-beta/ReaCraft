@@ -85,6 +85,9 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
           height: '56px',
           justifyContent: 'space-between',
           backgroundColor: 'transparent',
+          '& .MuiButtonBase-root': {
+            boxShadow: 'none',
+          },
         }}
       >
         <Stack direction='row' alignItems='center'>
