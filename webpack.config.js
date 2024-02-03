@@ -7,12 +7,15 @@ module.exports = {
   mode: 'production',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: '[name].[contenthash].js',
+    filename: 'bundle.js',
   },
   optimization: {
     splitChunks: {
-      chunks: 'all',
+      cacheGroups: {
+        default: false,
+      },
     },
+    runtimeChunk: false, // Add this line
   },
   module: {
     rules: [
