@@ -30,14 +30,10 @@ export default function SliderZoom() {
       </Tooltip>
 
       <Typography>{zoom}%</Typography>
-
-      <Tooltip title='zoom in'>
-        <IconButton onClick={zoomIn}>
-          <FontAwesomeIcon icon={faCirclePlus} />
-        </IconButton>
-      </Tooltip>
-
-      <Tooltip title='reset to fit window'>
+      <IconButton onClick={zoomIn}>
+        <AddCircleRoundedIcon />
+      </IconButton>
+      <Tooltip title='Reset to fit window'>
         <IconButton onClick={() => dispatch(setZoom(100))} size='small'>
           <FontAwesomeIcon icon={faArrowRotateRight} />
         </IconButton>

@@ -3,20 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteDesign } from '../../../utils/fetchRequests';
 import { goToPage, setMessage } from '../../../utils/reducers/appSlice';
 import Button from '@mui/material/Button';
-import Fab from '@mui/material/Fab';
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import { resetDesign } from '../../../utils/reducers/designSliceV3';
-import { Tooltip } from '@mui/material';
-
+import ListItemIcon from '@mui/material/ListItemIcon';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
-export default function ButtonDeleteDesign() {
-  const designId = useSelector((state) => state.designV3._id);
+export default function ButtonDeleteDesign({ designId }) {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -35,20 +34,12 @@ export default function ButtonDeleteDesign() {
 
   return (
     <Fragment>
-      <Tooltip title='delete design'>
-        <Fab
-          size='small'
-          onClick={() => setOpen(true)}
-          color='error'
-          sx={{
-            '& svg': {
-              transform: 'scale(1.2)',
-            },
-          }}
-        >
+      <MenuItem onClick={() => setOpen(true)}>
+        <ListItemIcon sx={{ color: 'white' }}>
           <FontAwesomeIcon icon={faTrashCan} />
-        </Fab>
-      </Tooltip>
+        </ListItemIcon>
+        <ListItemText>Delete Design</ListItemText>
+      </MenuItem>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>

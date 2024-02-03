@@ -246,7 +246,7 @@ export function updateProfilePictureRequest(body: {
   userImage: string;
   imageToDelete?: string;
 }): Promise<{ imageUrl: string }> {
-  return fetch(`/update-profile`, {
+  return fetch('/update-profile', {
     method: 'POST',
     headers: {
       'Content-Type': 'Application/JSON',
@@ -380,6 +380,7 @@ export function addNewPageRequest(
     pageIdx: number;
     userImage: string;
     imageHeight: number;
+    clientId: string;
   }
 ): Promise<{
   newPage: Page;
@@ -456,6 +457,22 @@ export function addCollaboratorRequest(
       }
       return res.json();
     })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function updateUsernameRequest(body: {
+  newUsername: string;
+}): Promise<{ message: string }> {
+  return fetch('/update-username', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'Application/JSON',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
     .catch((err) => {
       throw err;
     });

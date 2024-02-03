@@ -37,6 +37,7 @@ export const decryptCookie = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log('decrypt cookie hit');
   try {
     const userId: number = Number(decrypt(req.cookies.sessionID));
     const userResponse: userQueryRes = await db.query(
@@ -60,25 +61,6 @@ export const decryptCookie = async (
     return next({
       log:
         'Express error handler caught cookieController.decryptCookie middleware error' +
-        err,
-      message: 'Cookie err: ' + err,
-    });
-  }
-};
-
-export const removeCookie = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    res.clearCookie('user_id');
-    res.clearCookie('sessionID');
-    return next();
-  } catch (err) {
-    return next({
-      log:
-        'Express error handler caught cookieController.removeCookie middleware error' +
         err,
       message: 'Cookie err: ' + err,
     });
