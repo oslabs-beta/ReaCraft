@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect, useRef } from 'react';
 import Fab from '@mui/material/Fab';
 import Popper from '@mui/material/Popper';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
-import { CodeBlock, monokai } from 'react-code-blocks';
+import { CodeBlock, tomorrow } from 'react-code-blocks';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -69,39 +69,12 @@ function GrowTransition({
   pageName,
   isVertical,
 }) {
+  const growTransitionRef = useRef(null);
   const [value, setValue] = useState(pageName);
+
   useEffect(() => {
     if (name) setValue(name);
   }, [name]);
-
-  const tabStyles = {
-    backgroundColor: '#ffffff', // Use a white background for the tabs
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', // Apply a subtle shadow
-    borderRadius: '8px', // Rounded corners for the tabs
-    color: '#000', // Text color for the tabs
-    padding: '10px', // Add padding inside the tabs container
-  };
-
-  const tabListStyles = {
-    borderBottom: '1px solid #e0e0e0', // Light grey border at the bottom of the tab list
-  };
-
-  const tabPanelStyles = {
-    backgroundColor: '#f7f7f7', // A light grey background for the content area
-    padding: '10px', // Padding inside the tab panels
-    minHeight: '100px', // Minimum height for the content area
-    // Additional styles for the code blocks and container
-    '& .code-block': {
-      backgroundColor: '#272822', // Background for the code block (monokai theme color)
-      borderRadius: '4px', // Optional: Rounded corners for the code block
-      boxShadow: 'inset 0 0 10px rgba(0,0,0,0.3)', // Optional: Inner shadow for depth
-      fontSize: '0.85rem', // Smaller font size for the code
-      overflowX: 'auto', // Allow horizontal scrolling if code overflows
-    },
-    '& .react-code-blocks__pre': {
-      margin: '0', // Remove default margins
-    },
-  };
 
   return (
     <Grow
@@ -109,22 +82,19 @@ function GrowTransition({
       style={{ transformOrigin: 'center right' }}
       timeout={255}
     >
-      <Box sx={{
-        ...tabStyles,
-        marginTop: isVertical ? '80px' : 0,
-      }}
-        // sx={{
-        //   backgroundColor: '#5D5F58',
-        //   borderRadius: '10px',
-        //   marginTop: isVertical ? '80px' : 0,
-        // }}
+      <Box 
+        ref={growTransitionRef}
+        className='tab-styles'
+        sx={{
+          marginTop: isVertical ? '80px' : 0,
+        }}
       >
         <TabContext value={value}>
-          <Box sx={tabListStyles}
-            // sx={{
-            //   borderBottom: 1,
-            //   borderColor: 'divider',
-            // }}
+          <Box 
+            sx={{
+              borderBottom: '1px solid #e0e0e0',
+              borderColor: 'divider',
+            }}
           >
             <TabList onChange={(e, newVal) => setValue(newVal)} variant="scrollable" scrollButtons="auto">
               {Object.keys(jsx).map((key) => (
@@ -143,25 +113,43 @@ function GrowTransition({
             </TabList>
           </Box>
           {Object.keys(jsx).map((key) => (
-            // <TabPanel value={key} key={key} className='code-panel'> 
-            <TabPanel value={key} key={key} sx={tabPanelStyles}> 
+            <TabPanel value={key} key={key} 
+              sx={{
+                backgroundColor: '#E0E1DD', 
+                padding: '5px', 
+                borderRadius: '20px',
+                marginTop: '10px',
+              }}> 
               <CodeBlock
                 text={jsx[key]}
                 language='jsx'
                 showLineNumbers={true}
-                theme={monokai}
-                customStyle={{ backgroundColor: '#E0E1DD', color: 'black' }}
+                theme={tomorrow}
+                customStyle={{ 
+                  backgroundColor: '#E0E1DD', 
+                  borderRadius: '6px',
+                  fontSize: '0.8em', 
+                 }}
               />
             </TabPanel>
           ))}
-          {/* <TabPanel value='css' className='code-panel'> */}
-          <TabPanel value='css' sx={tabPanelStyles}>
+          <TabPanel value='css' 
+          sx={{
+            backgroundColor: '#E0E1DD', 
+            padding: '5px', 
+            borderRadius: '20px',
+            marginTop: '10px',
+          }}>
             <CodeBlock
               text={css}
               language='css'
               showLineNumbers={true}
-              theme={monokai}
-              customStyle={{ backgroundColor: '#E0E1DD', color: 'black' }}
+              theme={tomorrow}
+              customStyle={{ 
+                backgroundColor: '#E0E1DD', 
+                borderRadius: '6px',
+                fontSize: '0.8em', 
+              }}
             />
           </TabPanel>
         </TabContext>
@@ -187,16 +175,28 @@ function CopyCodePopper({
     if (anchorEl && onClose) onClose();
   });
 
+  // ensure there's a gap between the buttons and the code box 
+  const popperModifiers = [
+    {
+      name: 'offset',
+      options: {
+        offset: [0, 10], // first value is horizontal offset, second is vertical offset
+      }
+    }
+  ]
+
   return (
     <Popper
       ref={popperRef}
       sx={{
         color: '#fff',
-        backgroundColor: '#ffffff4D',
+        backgroundColor: 'transparent',
+        borderRadius: '15px',
       }}
       open={Boolean(anchorEl)}
       placement={isVertical ? 'left' : 'bottom'}
       anchorEl={anchorEl}
+      modifiers={popperModifiers}
     >
       <GrowTransition
         jsx={jsx}
@@ -209,3 +209,5 @@ function CopyCodePopper({
     </Popper>
   );
 }
+
+
