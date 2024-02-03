@@ -34,6 +34,7 @@ export default function ButtonKeyboardShortcut() {
           component='label'
           variant='contained'
           onClick={() => setOpen(true)}
+          sx={{ marginLeft: '.3rem' }}
         >
           <FontAwesomeIcon icon={faKeyboard} />
         </IconButton>
