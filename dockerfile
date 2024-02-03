@@ -9,8 +9,9 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-RUN npm run build-server
 
-EXPOSE 3000
+RUN npm run build && npm run build-server
+
+EXPOSE 8080
 
 ENTRYPOINT ["node", "dist/server/server.js"]
