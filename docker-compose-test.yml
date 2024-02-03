@@ -10,4 +10,6 @@ services:
     entrypoint: ['/bin/sh', '-c']
     command: ['./scripts/test.sh']
     env_file:
-      - .env.test
+      - .env
+    environment:
+      - PROJECT_ROOT=/usr/src/app
