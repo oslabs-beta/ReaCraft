@@ -1,0 +1,13 @@
+version: '3'
+services:
+  test:
+    image: reacraft/prod
+    container_name: reacraft-test
+    ports:
+      - 8080:8080
+    volumes:
+      - ./:/usr/src/app
+    entrypoint: ['/bin/sh', '-c']
+    command: ['./scripts/test.sh']
+    env_file:
+      - .env.test
