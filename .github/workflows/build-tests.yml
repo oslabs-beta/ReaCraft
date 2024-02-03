@@ -1,0 +1,21 @@
+name: build-tests
+on: [pull_request_target]
+jobs:
+  unit-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create env file
+        run: |
+          echo PG_URI=${{ secrets.PG_URI }} >> .env
+          echo PORT=8080 >> .env
+          echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
+          echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
+          echo PROJECT_ROOT=/usr/src/app >> .env
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
+          echo SESSION_SECRET=${{ secrets.SESSION_SECRET }} >> .env
+
+      - name: run test
+        run: docker-compose -f docker-compose-test.yml up --abort-on-container-exit
