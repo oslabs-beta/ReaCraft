@@ -8,8 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
-
 RUN npm run build && npm run build-server
 
 EXPOSE 8080

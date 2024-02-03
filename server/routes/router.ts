@@ -27,7 +27,6 @@ import {
   authenticateGoogleCallback,
   logoutUser,
 } from '../controllers/passportController';
-import passport from 'passport';
 
 import dotenv from 'dotenv';
 dotenv.config();
