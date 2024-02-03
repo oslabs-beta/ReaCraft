@@ -10,26 +10,32 @@ import ButtonAddPage from '../../../functionality/Page/ButtonAddPage';
 import ButtonsPrevNextPage from '../../../functionality/Page/ButtonsPrevNextPage';
 import ButtonSetPageAsDesignCover from '../../../functionality/Design/ButtonSetPageAsDesignCover';
 
-export default function WorkspaceRight({ canvasWidth }) {
+export default function WorkspaceRight({ isVertical }) {
   const { pages, _id, canEdit } = useSelector((state) => state.designV3);
   const { selectedPageIdx } = useSelector((state) => state.app);
   const page = pages[selectedPageIdx];
   const components = page.components;
-  const { selectedIdx, windowWidth } = useSelector((state) => state.app);
+  const { selectedIdx } = useSelector((state) => state.app);
   const tree = convertToTree(components);
   const codes = new Codes(components, tree);
   const { jsx, css } = codes.convertToCode();
 
   return (
     <Stack
-      direction={windowWidth - 320 > canvasWidth ? 'column' : 'row'}
+      direction={isVertical ? 'column' : 'row'}
       gap={2}
+      sx={{
+        '& .MuiButtonBase-root': {
+          boxShadow: 'none',
+        },
+      }}
     >
       <ButtonViewCode
         css={css}
         jsx={jsx}
         name={selectedIdx !== null ? components[selectedIdx].name : null}
         pageName={components[0].name}
+        isVertical={isVertical}
       />
       <ButtonsPrevNextPage pageIdx={selectedPageIdx} />
       {canEdit && (
