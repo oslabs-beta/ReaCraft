@@ -5,11 +5,13 @@
 html {
   overflow: hidden;
   height: 100%;
+  width: 100%;
 }
 
 body {
   overflow: auto;
   height: 100%;
+  width: 100%;
 }
 
 /* tutorial slide scrolling */
@@ -208,9 +210,9 @@ body p {
   align-items: center;
   justify-content: flex-end;
   font-size: 2.5rem;
-  padding-right: 30px;
+  padding-right: 20px;
   position: fixed;
-  right: 0px;
+  right: 10px;
   top: 15px;
   z-index: 10;
 }
@@ -355,17 +357,17 @@ html {
 }
 
 .slide:nth-child(1) {
-  background-color: #d6ccc2;
+  background-color: #f4f3f7;
   z-index: 4;
 }
 
 .slide:nth-child(2) {
-  background-color: #e3d5ca;
+  background-color: #f4f3f7;
   z-index: 2;
 }
 
 .slide:nth-child(3) {
-  background-color: #d6ccc2;
+  background-color: #f4f3f7;
   flex-direction: column;
   z-index: 1;
 }
@@ -536,7 +538,7 @@ html {
 }
 
 .slide:nth-child(2).dark {
-  background-color: #778da9;
+  background-color: #415a77;
 }
 
 .slide:nth-child(3).dark {
