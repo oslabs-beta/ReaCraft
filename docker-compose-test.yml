@@ -7,8 +7,7 @@ services:
       - 8080:8080
     volumes:
       - ./:/usr/src/app
-    entrypoint: ['/bin/sh', '-c']
-    command: './scripts/test.sh'
+    entrypoint: /usr/src/app/scripts/test.sh
     env_file:
       - .env
     environment:
