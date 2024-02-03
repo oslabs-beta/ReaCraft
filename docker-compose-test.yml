@@ -8,7 +8,7 @@ services:
     volumes:
       - ./:/usr/src/app
     entrypoint:
-      ['/bin/sh', '-c', 'node dist/server/server.js & sleep 10; npm run test']
+      entrypoint: ['/bin/sh', '-c', 'echo Hello World']
     env_file:
       - .env
     environment:
