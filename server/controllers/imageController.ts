@@ -37,7 +37,7 @@ export const uploadNewDesignImage = (
   const buffer = Buffer.from(base64Data, 'base64');
 
   const params: S3.PutObjectRequest = {
-    Bucket: 'reactraft',
+    Bucket: 'reacraft',
     Key: `${Date.now()}.png`,
     Body: buffer,
     ContentType: 'image/png',
@@ -72,40 +72,6 @@ export const uploadNewDesignImage = (
     });
 };
 
-export const uploadImage = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { userImage } = req.body;
-  if (!userImage) return next();
-
-  const base64Data = userImage.replace(/^data:image\/\w+;base64,/, '');
-  const buffer = Buffer.from(base64Data, 'base64');
-
-  const params: S3.PutObjectRequest = {
-    Bucket: 'reactraft',
-    Key: `${Date.now()}.png`,
-    Body: buffer,
-    ContentType: 'image/png',
-    ContentEncoding: 'base64',
-  };
-
-  return s3
-    .upload(params)
-    .promise()
-    .then((data) => (res.locals.onlineImageUrl = data.Location))
-    .then(() => next())
-    .catch((err) =>
-      next({
-        log:
-          'Express error handler caught imageController.uploadImage middleware error' +
-          err,
-        message: 'Upload image err: ' + err,
-      })
-    );
-};
-
 export const deleteImage = (
   req: Request,
   res: Response,
@@ -122,11 +88,11 @@ export const deleteImage = (
     : [imageToDelete];
 
   const params: S3.DeleteObjectsRequest = {
-    Bucket: 'reactraft',
-      Delete: {
-        Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
-        Quiet: false,
-      }
+    Bucket: 'reacraft',
+    Delete: {
+      Objects: imageToDelete.map((Key: string): { Key: string } => ({ Key })),
+      Quiet: false,
+    },
   };
 
   return s3
