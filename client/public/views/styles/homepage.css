@@ -5,6 +5,7 @@
 html {
   overflow: hidden;
   height: 100%;
+  width: 100%;
 }
 
 body {
@@ -24,15 +25,15 @@ body {
 
 @keyframes fadeInUp {
   0% {
-    transform: translateY(50vw);
+    transform: translateX(50vw);
     opacity: 0;
   }
   5% {
-    transform: translateY(25vw);
+    transform: translateX(25vw);
     opacity: 1;
   }
   20% {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
   }
 }
@@ -355,17 +356,17 @@ html {
 }
 
 .slide:nth-child(1) {
-  background-color: #d6ccc2;
+  background-color: #f4f3f7;
   z-index: 4;
 }
 
 .slide:nth-child(2) {
-  background-color: #e3d5ca;
+  background-color: #f4f3f7;
   z-index: 2;
 }
 
 .slide:nth-child(3) {
-  background-color: #d6ccc2;
+  background-color: #f4f3f7;
   flex-direction: column;
   z-index: 1;
 }
@@ -536,7 +537,7 @@ html {
 }
 
 .slide:nth-child(2).dark {
-  background-color: #778da9;
+  background-color: #415a77;
 }
 
 .slide:nth-child(3).dark {
