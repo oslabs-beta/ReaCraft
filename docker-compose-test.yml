@@ -6,7 +6,7 @@ services:
     ports:
       - 8080:8080
     entrypoint: ['/bin/sh', '-c']
-    command: ['./scripts/test.sh']
+    command: ['/usr/src/app/scripts/test.sh']
     env_file:
       - .env
     environment:
