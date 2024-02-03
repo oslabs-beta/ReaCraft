@@ -5,21 +5,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Create env file
+        run: |
+          echo PG_URI=${{ secrets.PG_URI }} >> docker.env
+          echo PORT=8080 >> docker.env
+          echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> docker.env
+          echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> docker.env
+          echo PROJECT_ROOT=/usr/src/app >> docker.env
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> docker.env
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> docker.env
+          echo SESSION_SECRET=${{ secrets.SESSION_SECRET }} >> docker.env
+
       - name: Debugging - Docker Compose Version
         run: docker-compose --version
 
       - name: Debugging - Test Docker Compose Configuration
         run: docker-compose -f docker-compose-test.yml config
-
-      # - name: Create env file
-      #   run: |
-      #     echo PG_URI=${{ secrets.PG_URI }} >> docker.env
-      #     echo PORT=8080 >> docker.env
-      #     echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> docker.env
-      #     echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> docker.env
-      #     echo PROJECT_ROOT=/usr/src/app >> docker.env
-      #     echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> docker.env
-      #     echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> docker.env
-      #     echo SESSION_SECRET=${{ secrets.SESSION_SECRET }} >> docker.env
       # - name: run test
       #   run: docker-compose -f docker-compose-test.yml up --abort-on-container-exit --env-file docker.env
