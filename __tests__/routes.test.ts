@@ -49,7 +49,7 @@ afterAll(async () => {
   await db.end();
   const res = await s3
     .deleteObjects({
-      Bucket: 'reactraft',
+      Bucket: 'reacraft',
       Delete: {
         Objects: imagesToDelete.map((url: string): { Key: string } => {
           const imageUrl = new URL(url);
@@ -222,7 +222,7 @@ describe('POST /update-profile', () => {
     expect(res.status).toBe(200);
     expect(res.type).toMatch(/application\/json/);
     const { imageUrl } = res.body;
-    expect(imageUrl).toMatch('https://reactraft.s3.amazonaws.com/');
+    expect(imageUrl).toMatch('https://reacraft.s3.amazonaws.com/');
 
     const userQueryRes: { rows: { profile_image: string }[] } = await db.query(
       'SELECT profile_image FROM users WHERE _id = $1;',
@@ -360,7 +360,7 @@ describe('/designs', () => {
 
   describe('POST /update/:designId', () => {
     let testDesign: DesignRow;
-    const testImageUrl2 = 'https://reactraft.s3.amazonaws.com/test2.JPG';
+    const testImageUrl2 = 'https://reacraft.s3.amazonaws.com/test2.JPG';
 
     beforeAll(async () => {
       const designQueryRes: DesignQueryRes = await db.query(
@@ -368,7 +368,7 @@ describe('/designs', () => {
         [
           testUser._id,
           'TestDesign',
-          'https://reactraft.s3.amazonaws.com/test.png',
+          'https://reacraft.s3.amazonaws.com/test.png',
         ]
       );
       testDesign = designQueryRes.rows[0];
