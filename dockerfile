@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+RUN chmod +x /usr/src/app/scripts/test.sh
+
 RUN npm run build && npm run build-server
 
 EXPOSE 8080
