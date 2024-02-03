@@ -1,140 +1,183 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap');
 
 .modal-content {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  /* position: relative; */
-  font-family: 'Baloo Bhaijaan 2', sans-serif;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    /* position: relative; */
+    font-family: 'Baloo Bhaijaan 2', sans-serif;
 }
 
 .modal-header {
-  border-bottom: none;
-  position: relative;
+    border-bottom: none;
+    position: relative;
 }
 
 .modal-body p {
-  text-align: center;
-  margin-top: 50px;
+    text-align: center;
+    margin-top: 50px;
 }
 
 .btn-close {
-  position: absolute;
-  right: 15px;
-  top: 15px;
+    position: absolute;
+    right: 15px;
+    top: 15px;
 }
 
 .greeting-text {
-  font-size: 3em;
-  color: #d5bdaf;
-  margin-bottom: 20px;
+    font-size: 3em;
+    color: #D5BDAF;
+    margin-bottom: 20px;
 }
 
 .form-floating {
-  /* space between input fields */
-  margin-bottom: 10px;
+    /* space between input fields */
+    margin-bottom: 10px;
 }
 
 .form-control {
-  border: none;
-  border-bottom: 2px solid #cccccc;
-  border-radius: 0;
-  margin-bottom: 20px;
+    border: none;
+    border-bottom: 2px solid #cccccc;
+    border-radius: 0;
+    margin-bottom: 20px;
 }
 
 .form-control:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #d5bdaf;
-  outline: 0;
-  /* removes the default bootstrap shadow */
-  box-shadow: none;
+    color: #495057;
+    background-color: #fff;
+    border-color: #D5BDAF;
+    outline: 0;
+    /* removes the default bootstrap shadow */
+    box-shadow: none;
 }
 
-.btn-outline-secondary,
-.btn-primary {
-  border-radius: 20px;
-  border-color: #0056b3;
+.btn-outline-secondary, .btn-primary {
+    border-radius: 20px;
+    border-color: #0056b3;
 }
 
 .account-button {
-  color: #fff;
-  background-color: #a9978c;
-  border-color: #a9978c;
+    color: #fff;
+    background-color: #a9978c;
+    border-color: #a9978c;
 }
 
 .account-button:hover {
-  background-color: #7f7169;
-  border-color: #7f7169;
+    background-color: #7f7169;
+    border-color: #7f7169;
 }
 
 /* button for login */
 .btn-primary {
-  background-color: #d5bdaf;
-  border-color: #d5bdaf;
+    background-color: #D5BDAF;
+    border-color: #D5BDAF;
 }
 
 .needAccount {
-  border-color: #d5bdaf;
+    border-color: #D5BDAF;
 }
 
 .btn-primary:hover {
-  background-color: #e0d0c7;
-  border-color: #e0d0c7;
+    background-color: #e0d0c7;
+    border-color: #e0d0c7;
 }
 
 .needAccount:hover {
-  background-color: #beaa9d;
-  border-color: #beaa9d;
+    background-color: #beaa9d;
+    border-color: #beaa9d;
+}
+
+.btn-google {
+    background-color: #C1BDAF;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+}
+
+.btn-google:hover {
+    background-color: #e0d0c7;
+    color: white;
+}
+
+.divider-or {
+    position: relative;
+    font-size: 0.9em;
+    color: #999;
+    margin: 10px 0;
+}
+
+.divider-or::before,
+.divider-or::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #999;
+}
+
+.divider-or::before {
+    right: 1%;
+    margin-right: 15px;
+}
+
+.divider-or::after {
+    left: 1%;
+    margin-left: 15px;
 }
 
 .dark .modal-content {
-  background: #8d99ae;
+    background: #8D99AE;
 }
 
 .dark .greeting-text {
-  color: white;
+    color: white;
 }
 /* username and password form control */
 .dark .form-control {
-  border-bottom: 2px solid #cccccc;
-  background-color: transparent;
-  color: #ffffff;
+    border-bottom: 2px solid #cccccc;
+    background-color: transparent; 
+    color: #ffffff;
 }
 
 .dark .form-control:focus {
-  color: #495057;
-  background-color: transparent;
-  border-color: #a8a9b0;
-  box-shadow: none;
+    color: #495057;
+    background-color: transparent;
+    border-color: #a8a9b0; 
+    box-shadow: none; 
 }
 
 .dark .btn-primary {
-  background-color: #555667;
-  border-color: #555667;
+    background-color: #555667;
+    border-color: #555667;
 }
 
 .dark .btn-primary:hover {
-  background-color: #6a6c7a;
-  border-color: #6a6c7a;
+    background-color: #6a6c7a;
+    border-color: #6a6c7a;
 }
 
 .dark .needAccount {
-  border-color: #26283b;
-  color: white;
+    border-color: #26283b;
+    color: white;
 }
 
 .dark .needAccount:hover {
-  background-color: #92939d;
-  border-color: #92939d;
+    background-color: #92939d;
+    border-color: #92939d;
 }
 
 .dark .account-button {
-  background-color: #26283b;
-  border-color: #26283b;
+    background-color: #26283b;
+    border-color: #26283b;
 }
 
 .dark .account-button:hover {
-  background-color: #92939d;
-  border-color: #92939d;
+    background-color: #92939d;
+    border-color: #92939d;
+
 }
