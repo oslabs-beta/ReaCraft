@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN chmod +x /usr/src/app/scripts/test.sh
 
 RUN npm run build && npm run build-server
 

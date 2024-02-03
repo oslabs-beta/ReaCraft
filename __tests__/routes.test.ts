@@ -259,7 +259,7 @@ describe('/designs', () => {
         .send({
           userImage: testImageBuffer,
           imageHeight: 100,
-          clientId,
+          test: true,
         });
       expect(res.status).toBe(200);
       expect(res.type).toMatch(/application\/json/);
@@ -341,7 +341,7 @@ describe('/designs', () => {
 
     // No client Id
     it(
-      'responds with 500 status and application/json content type ' +
+      'responds with 404 status and application/json content type ' +
         ' and addDesign error message',
       async () => {
         const res: Response = await request(server)
@@ -351,9 +351,9 @@ describe('/designs', () => {
             userImage: testImageBuffer,
             imageHeight: 100,
           });
-        expect(res.status).toBe(500);
+        expect(res.status).toBe(404);
         expect(res.type).toMatch(/application\/json/);
-        expect(res.body).toContain('clientId required');
+        expect(res.body).toContain('clientId is required');
       }
     );
   });
