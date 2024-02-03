@@ -16,7 +16,13 @@ import useOutsideClick from '../../../hooks/useOutsideClick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode } from '@fortawesome/free-solid-svg-icons';
 
-export default function ButtonViewCode({ css, jsx, name, pageName }) {
+export default function ButtonViewCode({
+  css,
+  jsx,
+  name,
+  pageName,
+  isVertical,
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -48,38 +54,79 @@ export default function ButtonViewCode({ css, jsx, name, pageName }) {
           onClose={closePopper}
           isTransitioning={isTransitioning}
           pageName={pageName}
+          isVertical={isVertical}
         />
       )}
     </Fragment>
   );
 }
 
-function GrowTransition({ jsx, css, name, isTransitioning, pageName }) {
+function GrowTransition({
+  jsx,
+  css,
+  name,
+  isTransitioning,
+  pageName,
+  isVertical,
+}) {
   const [value, setValue] = useState(pageName);
   useEffect(() => {
     if (name) setValue(name);
   }, [name]);
+
+  const tabStyles = {
+    backgroundColor: '#ffffff', // Use a white background for the tabs
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', // Apply a subtle shadow
+    borderRadius: '8px', // Rounded corners for the tabs
+    color: '#000', // Text color for the tabs
+    padding: '10px', // Add padding inside the tabs container
+  };
+
+  const tabListStyles = {
+    borderBottom: '1px solid #e0e0e0', // Light grey border at the bottom of the tab list
+  };
+
+  const tabPanelStyles = {
+    backgroundColor: '#f7f7f7', // A light grey background for the content area
+    padding: '10px', // Padding inside the tab panels
+    minHeight: '100px', // Minimum height for the content area
+    // Additional styles for the code blocks and container
+    '& .code-block': {
+      backgroundColor: '#272822', // Background for the code block (monokai theme color)
+      borderRadius: '4px', // Optional: Rounded corners for the code block
+      boxShadow: 'inset 0 0 10px rgba(0,0,0,0.3)', // Optional: Inner shadow for depth
+      fontSize: '0.85rem', // Smaller font size for the code
+      overflowX: 'auto', // Allow horizontal scrolling if code overflows
+    },
+    '& .react-code-blocks__pre': {
+      margin: '0', // Remove default margins
+    },
+  };
+
   return (
     <Grow
       in={!isTransitioning}
       style={{ transformOrigin: 'center right' }}
       timeout={255}
     >
-      <Box
-        sx={{
-          backgroundColor: '#5D5F58',
-          borderRadius: '10px',
-          marginTop: '60px',
-        }}
+      <Box sx={{
+        ...tabStyles,
+        marginTop: isVertical ? '80px' : 0,
+      }}
+        // sx={{
+        //   backgroundColor: '#5D5F58',
+        //   borderRadius: '10px',
+        //   marginTop: isVertical ? '80px' : 0,
+        // }}
       >
         <TabContext value={value}>
-          <Box
-            sx={{
-              borderBottom: 1,
-              borderColor: 'divider',
-            }}
+          <Box sx={tabListStyles}
+            // sx={{
+            //   borderBottom: 1,
+            //   borderColor: 'divider',
+            // }}
           >
-            <TabList onChange={(e, newVal) => setValue(newVal)}>
+            <TabList onChange={(e, newVal) => setValue(newVal)} variant="scrollable" scrollButtons="auto">
               {Object.keys(jsx).map((key) => (
                 <Tab
                   label={key + '.jsx'}
@@ -96,21 +143,25 @@ function GrowTransition({ jsx, css, name, isTransitioning, pageName }) {
             </TabList>
           </Box>
           {Object.keys(jsx).map((key) => (
-            <TabPanel value={key} key={key} className='code-panel'>
+            // <TabPanel value={key} key={key} className='code-panel'> 
+            <TabPanel value={key} key={key} sx={tabPanelStyles}> 
               <CodeBlock
                 text={jsx[key]}
                 language='jsx'
                 showLineNumbers={true}
                 theme={monokai}
+                customStyle={{ backgroundColor: '#E0E1DD', color: 'black' }}
               />
             </TabPanel>
           ))}
-          <TabPanel value='css' className='code-panel'>
+          {/* <TabPanel value='css' className='code-panel'> */}
+          <TabPanel value='css' sx={tabPanelStyles}>
             <CodeBlock
               text={css}
               language='css'
               showLineNumbers={true}
               theme={monokai}
+              customStyle={{ backgroundColor: '#E0E1DD', color: 'black' }}
             />
           </TabPanel>
         </TabContext>
@@ -127,6 +178,7 @@ function CopyCodePopper({
   onClose,
   isTransitioning,
   pageName,
+  isVertical,
 }) {
   const popperRef = useRef(null);
 
@@ -134,6 +186,7 @@ function CopyCodePopper({
   useOutsideClick(popperRef, () => {
     if (anchorEl && onClose) onClose();
   });
+
   return (
     <Popper
       ref={popperRef}
@@ -142,7 +195,7 @@ function CopyCodePopper({
         backgroundColor: '#ffffff4D',
       }}
       open={Boolean(anchorEl)}
-      placement='left'
+      placement={isVertical ? 'left' : 'bottom'}
       anchorEl={anchorEl}
     >
       <GrowTransition
@@ -151,6 +204,7 @@ function CopyCodePopper({
         name={name}
         isTransitioning={isTransitioning}
         pageName={pageName}
+        isVertical={isVertical}
       />
     </Popper>
   );
