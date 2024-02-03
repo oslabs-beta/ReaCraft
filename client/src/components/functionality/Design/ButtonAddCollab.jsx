@@ -65,6 +65,7 @@ export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
           size='small'
           color='info'
           onClick={(e) => setAnchorEl(e.currentTarget)}
+          sx={{ marginRight: '0.3rem' }}
         >
           <FontAwesomeIcon icon={faUserPlus} />
         </Fab>
