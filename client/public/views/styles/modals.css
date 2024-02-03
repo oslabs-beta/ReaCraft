@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap');
-
 .modal-content {
   background: white;
   border-radius: 10px;
@@ -86,6 +84,49 @@
 .needAccount:hover {
   background-color: #beaa9d;
   border-color: #beaa9d;
+}
+
+.btn-google {
+  background-color: #c1bdaf;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.btn-google:hover {
+  background-color: #e0d0c7;
+  color: white;
+}
+
+.divider-or {
+  position: relative;
+  font-size: 0.9em;
+  color: #999;
+  margin: 10px 0;
+}
+
+.divider-or::before,
+.divider-or::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: #999;
+}
+
+.divider-or::before {
+  right: 1%;
+  margin-right: 15px;
+}
+
+.divider-or::after {
+  left: 1%;
+  margin-left: 15px;
 }
 
 .dark .modal-content {
