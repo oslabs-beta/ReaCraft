@@ -94,7 +94,6 @@ Streamlining React Development from Design to Deployment
 [![typescript](https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=black)](https://www.typescriptlang.org/)
 [![html5](https://img.shields.io/badge/html%205-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://html.spec.whatwg.org/)
 [![css3](https://img.shields.io/badge/css%203-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://en.wikipedia.org/wiki/CSS)
-[![docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=ffffff)](https://www.docker.com/)
 
 [![npm](https://img.shields.io/badge/npm-v10.3.0-CB3837?logo=npm)](https://docs.npmjs.com/)
 [![React](https://img.shields.io/badge/react-v18.2.0-61DAFB?logo=react)](https://react.dev/)
@@ -113,6 +112,13 @@ Streamlining React Development from Design to Deployment
 [![Bootstrap](https://img.shields.io/badge/bootstrap-v5.3-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 [![sass](https://img.shields.io/badge/sass-v1.69.7-CC6699?logo=sass)](https://sass-lang.com/)
 [![FontAwesome](https://img.shields.io/badge/font%20awesome-v6.5.1-528DD7?logo=font%20awesome)](https://fontawesome.com/)
+[![Passport.js](https://img.shields.io/badge/passport-v0.7.0-34E27A?logo=passport)](https://www.passportjs.org/)
+
+### Deployed With
+
+[![docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=ffffff)](https://www.docker.com/)
+[![aws](https://img.shields.io/badge/amazon%20AWS-232F3E?style=for-the-badge&logo=amazon%20aws&logoColor=white)](https://aws.amazon.com/)
+[![githubActions](https://img.shields.io/badge/github%20actions-2088FF?style=for-the-badge&logo=github%20actions&logoColor=white)](https://github.com/features/actions)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
