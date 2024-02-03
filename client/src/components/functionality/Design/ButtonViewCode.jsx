@@ -16,7 +16,13 @@ import useOutsideClick from '../../../hooks/useOutsideClick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode } from '@fortawesome/free-solid-svg-icons';
 
-export default function ButtonViewCode({ css, jsx, name, pageName }) {
+export default function ButtonViewCode({
+  css,
+  jsx,
+  name,
+  pageName,
+  isVertical,
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -48,13 +54,21 @@ export default function ButtonViewCode({ css, jsx, name, pageName }) {
           onClose={closePopper}
           isTransitioning={isTransitioning}
           pageName={pageName}
+          isVertical={isVertical}
         />
       )}
     </Fragment>
   );
 }
 
-function GrowTransition({ jsx, css, name, isTransitioning, pageName }) {
+function GrowTransition({
+  jsx,
+  css,
+  name,
+  isTransitioning,
+  pageName,
+  isVertical,
+}) {
   const [value, setValue] = useState(pageName);
   useEffect(() => {
     if (name) setValue(name);
@@ -69,7 +83,7 @@ function GrowTransition({ jsx, css, name, isTransitioning, pageName }) {
         sx={{
           backgroundColor: '#5D5F58',
           borderRadius: '10px',
-          marginTop: '60px',
+          marginTop: isVertical ? '80px' : 0,
         }}
       >
         <TabContext value={value}>
@@ -127,6 +141,7 @@ function CopyCodePopper({
   onClose,
   isTransitioning,
   pageName,
+  isVertical,
 }) {
   const popperRef = useRef(null);
 
@@ -134,6 +149,7 @@ function CopyCodePopper({
   useOutsideClick(popperRef, () => {
     if (anchorEl && onClose) onClose();
   });
+
   return (
     <Popper
       ref={popperRef}
@@ -142,7 +158,7 @@ function CopyCodePopper({
         backgroundColor: '#ffffff4D',
       }}
       open={Boolean(anchorEl)}
-      placement='left'
+      placement={isVertical ? 'left' : 'bottom'}
       anchorEl={anchorEl}
     >
       <GrowTransition
@@ -151,6 +167,7 @@ function CopyCodePopper({
         name={name}
         isTransitioning={isTransitioning}
         pageName={pageName}
+        isVertical={isVertical}
       />
     </Popper>
   );
