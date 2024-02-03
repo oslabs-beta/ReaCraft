@@ -27,7 +27,9 @@ export default function ButtonViewTree({ tree, entireApp }) {
       <Tooltip
         title={`View Dom tree for ${entireApp ? 'your whole app' : 'page'}`}
       >
-        <Fab onClick={() => setViewTree(true)} size='small' color='success'>
+        <Fab 
+          sx={{ marginRight: '0.3rem' }}
+          onClick={() => setViewTree(true)} size='small' color='success'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='20'
