@@ -111,3 +111,5 @@ export default function App() {
     </ThemeProvider>
   );
 }
+
+// realistically we have landing page (/), homepage, new design page, and workspace
