@@ -9,18 +9,27 @@ export const uploadNewDesignImage = (
   res: Response,
   next: NextFunction
 ) => {
-  const { userImage, clientId } = req.body;
+  const { userImage, clientId, test } = req.body;
 
   if (!userImage) return next();
 
-  let skipWebSocket = req.originalUrl === '/update-profile';
+  let skipWebSocket = req.originalUrl === '/update-profile' || test;
 
   let ws: WebSocket | null = null;
   if (!skipWebSocket) {
-    if (!clientId) return res.status(404).send('clientId is required');
+    if (!clientId)
+      return next({
+        status: 404,
+        log: `Express error handler caught imageController.uploadNewDesignImage middleware error: clientId required`,
+        message: `Upload image err: clientId is required`,
+      });
     ws = getClient(clientId) as WebSocket;
     if (!ws || ws.readyState !== WebSocket.OPEN) {
-      return res.status(404).send('websocket client not found');
+      return next({
+        status: 404,
+        log: `Express error handler caught imageController.uploadNewDesignImage middleware error: websocket client not found`,
+        message: `Upload image err: websocket client not found`,
+      });
     }
   }
 
