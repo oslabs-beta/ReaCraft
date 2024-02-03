@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import db from '../models/dbModel';
 
-type userRow = {
+export type userRow = {
   _id: number;
   username: string;
   email: string;
@@ -10,7 +10,7 @@ type userRow = {
   last_login: string;
 };
 
-type userQueryRes = {
+export type userQueryRes = {
   rows: userRow[];
 };
 
@@ -159,4 +159,39 @@ export const updateProfilePicture = (
         message: 'updateProfilePicture ' + err,
       })
     );
+};
+
+export const updateUsername = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { userId } = res.locals;
+  const { newUsername } = req.body;
+  try {
+    const userQueryRes: userQueryRes = await db.query(
+      'SELECT * FROM users WHERE username = $1;',
+      [newUsername]
+    );
+    console.log(userQueryRes.rows);
+    if (userQueryRes.rows.length > 0) {
+      res.locals.status = 400;
+      res.locals.message = 'Username in use';
+    } else {
+      await db.query('UPDATE users SET username = $1 WHERE _id = $2;', [
+        newUsername,
+        userId,
+      ]);
+      res.locals.status = 200;
+      res.locals.message = 'Updated username successfully';
+    }
+    return next();
+  } catch (err) {
+    return next({
+      log:
+        'Express error handler caught userController.updateUsername middleware error: ' +
+        err,
+      message: 'updateUsername ' + err,
+    });
+  }
 };

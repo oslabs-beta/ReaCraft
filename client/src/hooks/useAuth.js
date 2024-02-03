@@ -18,6 +18,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUsername = (newUsername) =>
+    setUser({ ...user, username: newUsername });
+
   const logout = async () => {
     try {
       await fetch('/logout');
@@ -34,6 +37,7 @@ export const AuthProvider = ({ children }) => {
         getUser,
         user,
         logout,
+        updateUsername,
       }}
     >
       {children}

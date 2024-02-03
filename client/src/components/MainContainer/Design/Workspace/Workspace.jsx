@@ -7,7 +7,7 @@ import WorkspaceRight from './WorkspaceRight';
 import KonvaStage from '../../../functionality/KonvaCanvas/KonvaStageV2';
 import Drawer from '@mui/material/Drawer';
 
-import { goToPage, setSelectedIdx } from '../../../../utils/reducers/appSlice';
+import { setSelectedIdx } from '../../../../utils/reducers/appSlice';
 import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material';
 
@@ -23,7 +23,7 @@ export default function Workspace() {
   const rootWidth = components[0].rectangle.width;
   const rootHeight = components[0].rectangle.height;
   const canvasMaxHeight = windowHeight - 180;
-  const canvasMaxWidth = windowWidth - 320;
+  const canvasMaxWidth = windowWidth - 350;
 
   let canvasHeight;
   let canvasWidth;
@@ -40,6 +40,8 @@ export default function Workspace() {
   }
 
   if (selectedIdx === components.length) dispatch(setSelectedIdx(null));
+
+  const verticalRight = windowWidth - 350 > canvasWidth;
 
   const handleKeyPress = (e) => {
     if (e.altKey && e.keyCode === 87) {
@@ -106,7 +108,7 @@ export default function Workspace() {
             paddingTop: 0,
           }}
         >
-          {windowWidth - 320 <= canvasWidth && <WorkspaceRight />}
+          {!verticalRight && <WorkspaceRight isVertical={false} />}
         </Grid>
         <Grid item xs sx={{ display: 'flex', justifyContent: 'center' }}>
           {image_url && (
@@ -118,12 +120,8 @@ export default function Workspace() {
             />
           )}
         </Grid>
-        <Grid
-          item
-          xs='auto'
-          sx={{ display: windowWidth - 320 > canvasWidth ? 'block' : 'none' }}
-        >
-          <WorkspaceRight canvasWidth={canvasWidth} />
+        <Grid item xs='auto' sx={{ display: verticalRight ? 'block' : 'none' }}>
+          <WorkspaceRight isVertical={true} />
         </Grid>
       </Grid>
     </Box>
