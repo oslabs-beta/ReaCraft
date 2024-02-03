@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect, useRef } from 'react';
 import Fab from '@mui/material/Fab';
 import Popper from '@mui/material/Popper';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
-import { CodeBlock, monokai } from 'react-code-blocks';
+import { CodeBlock, tomorrow } from 'react-code-blocks';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -69,31 +69,34 @@ function GrowTransition({
   pageName,
   isVertical,
 }) {
+  const growTransitionRef = useRef(null);
   const [value, setValue] = useState(pageName);
+
   useEffect(() => {
     if (name) setValue(name);
   }, [name]);
+
   return (
     <Grow
       in={!isTransitioning}
       style={{ transformOrigin: 'center right' }}
       timeout={255}
     >
-      <Box
+      <Box 
+        ref={growTransitionRef}
+        className='tab-styles'
         sx={{
-          backgroundColor: '#5D5F58',
-          borderRadius: '10px',
           marginTop: isVertical ? '80px' : 0,
         }}
       >
         <TabContext value={value}>
-          <Box
+          <Box 
             sx={{
-              borderBottom: 1,
+              borderBottom: '1px solid #e0e0e0',
               borderColor: 'divider',
             }}
           >
-            <TabList onChange={(e, newVal) => setValue(newVal)}>
+            <TabList onChange={(e, newVal) => setValue(newVal)} variant="scrollable" scrollButtons="auto">
               {Object.keys(jsx).map((key) => (
                 <Tab
                   label={key + '.jsx'}
@@ -110,21 +113,43 @@ function GrowTransition({
             </TabList>
           </Box>
           {Object.keys(jsx).map((key) => (
-            <TabPanel value={key} key={key} className='code-panel'>
+            <TabPanel value={key} key={key} 
+              sx={{
+                backgroundColor: '#E0E1DD', 
+                padding: '5px', 
+                borderRadius: '20px',
+                marginTop: '10px',
+              }}> 
               <CodeBlock
                 text={jsx[key]}
                 language='jsx'
                 showLineNumbers={true}
-                theme={monokai}
+                theme={tomorrow}
+                customStyle={{ 
+                  backgroundColor: '#E0E1DD', 
+                  borderRadius: '6px',
+                  fontSize: '0.8em', 
+                 }}
               />
             </TabPanel>
           ))}
-          <TabPanel value='css' className='code-panel'>
+          <TabPanel value='css' 
+          sx={{
+            backgroundColor: '#E0E1DD', 
+            padding: '5px', 
+            borderRadius: '20px',
+            marginTop: '10px',
+          }}>
             <CodeBlock
               text={css}
               language='css'
               showLineNumbers={true}
-              theme={monokai}
+              theme={tomorrow}
+              customStyle={{ 
+                backgroundColor: '#E0E1DD', 
+                borderRadius: '6px',
+                fontSize: '0.8em', 
+              }}
             />
           </TabPanel>
         </TabContext>
@@ -150,16 +175,28 @@ function CopyCodePopper({
     if (anchorEl && onClose) onClose();
   });
 
+  // ensure there's a gap between the buttons and the code box 
+  const popperModifiers = [
+    {
+      name: 'offset',
+      options: {
+        offset: [0, 10], // first value is horizontal offset, second is vertical offset
+      }
+    }
+  ]
+
   return (
     <Popper
       ref={popperRef}
       sx={{
         color: '#fff',
-        backgroundColor: '#ffffff4D',
+        backgroundColor: 'transparent',
+        borderRadius: '15px',
       }}
       open={Boolean(anchorEl)}
       placement={isVertical ? 'left' : 'bottom'}
       anchorEl={anchorEl}
+      modifiers={popperModifiers}
     >
       <GrowTransition
         jsx={jsx}
@@ -172,3 +209,5 @@ function CopyCodePopper({
     </Popper>
   );
 }
+
+
