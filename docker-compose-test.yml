@@ -7,7 +7,12 @@ services:
       - 8080:8080
     volumes:
       - ./:/usr/src/app
-    entrypoint: /usr/src/app/scripts/test.sh
+    entrypoint:
+      [
+        '/bin/sh',
+        '-c',
+        'node dist/server/server.js & sleep 10 && npm run test && kill $!',
+      ]
     env_file:
       - .env
     environment:
