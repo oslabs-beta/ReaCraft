@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMessage } from '../../../utils/reducers/appSlice';
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-import Fab from '@mui/material/Fab';
-import Tooltip from '@mui/material/Tooltip';
 import { addNewPageAndUpdateSelectedPageIdx } from '../../../utils/reducers/designSliceV3';
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
 export const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -41,18 +40,18 @@ export default function ButtonAddPage({ pageIdx }) {
   function initiateWebSocketConnection(clientId, retryCount = 0) {
     // create new websocket connection with clientId
     const ws = new WebSocket(`ws://localhost:8080/ws?clientId=${clientId}`);
-  
+
     // once websocket connection is open, console log
     ws.onopen = () => {
       console.log('websocket connection opened');
     };
-  
+
     // when a websocket message is received
     ws.onmessage = (event) => {
       try {
         // parse the message received from server
         const message = JSON.parse(event.data);
-  
+
         // check if message has the expected strcuture with type
         if (typeof message === 'object' && 'type' in message) {
           // handle different types of messages received from the server
@@ -78,12 +77,12 @@ export default function ButtonAddPage({ pageIdx }) {
         } else {
           console.log('received message without type:', message);
         }
-      } catch(err) {
+      } catch (err) {
         console.error('error parsing from server:', error);
       }
     };
-  
-    // if there's an error with the websocket 
+
+    // if there's an error with the websocket
     ws.onerror = (event) => {
       console.error('websocket error:', event);
       // check if event code is 1006 = abnormal connection
@@ -93,21 +92,21 @@ export default function ButtonAddPage({ pageIdx }) {
       // attempt to reconnect after a backoff delay
       const backOffDelay = calculateBackOffDelay(retryCount);
       setTimeout(() => initiateWebSocketConnection(clientId, retryCount + 1));
-    }
-  
+    };
+
     // when websocket closes
     ws.onclose = () => {
       console.log('websocket connection closed');
     };
     // set websocket connection to state
-    setSocket(ws); 
-  };
-  
-  // calculates the delay for reconection attempts 
+    setSocket(ws);
+  }
+
+  // calculates the delay for reconection attempts
   function calculateBackOffDelay(retryCount) {
-    // exponential back-off formula 
-    return Math.min(1000 * (2 ** retryCount), 30000);
-  };
+    // exponential back-off formula
+    return Math.min(1000 * 2 ** retryCount, 30000);
+  }
 
   function handleFileChange(e) {
     const file = e.target.files[0];
@@ -126,7 +125,7 @@ export default function ButtonAddPage({ pageIdx }) {
           const setWidth = 800;
           const imageHeight = img.height * (setWidth / img.width);
           console.log('userImage');
-          const currentSocket = initiateWebSocketConnection(clientId); 
+          const currentSocket = initiateWebSocketConnection(clientId);
           try {
             dispatch(
               addNewPageAndUpdateSelectedPageIdx({
@@ -162,41 +161,41 @@ export default function ButtonAddPage({ pageIdx }) {
         socket.close();
         console.log('connection closed');
       }
-    }
+    };
   }, [socket]);
-  
 
   return (
     <>
-      <Tooltip title='Add Page'>
-        <Fab size='small' component='label' variant='contained'>
-          <AddCircleRoundedIcon />
-          <VisuallyHiddenInput
-            type='file'
-            name='userImage'
-            accept='image/*'
-            onChange={handleFileChange}
-          />
-        </Fab>
-      </Tooltip>
+      <Button component='label'>
+        <FontAwesomeIcon icon={faCirclePlus} />
+        Add Page
+        <VisuallyHiddenInput
+          type='file'
+          name='userImage'
+          accept='image/*'
+          onChange={handleFileChange}
+        />
+      </Button>
       {fileName && (uploadProgress < 100 || socket) && (
-        <Box sx={{ 
-          position: 'fixed', 
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          bgcolor: '#E0E1DD',
-          p: 2,
-          borderRadius: 4,
-          width: 'auto',
-          maxWidth: '90%',
-          textAlign: 'center', 
-          color: 'black', 
-          // marginTop: '10px', 
-          }}>
+        <Box
+          sx={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: '#E0E1DD',
+            p: 2,
+            borderRadius: 4,
+            width: 'auto',
+            maxWidth: '90%',
+            textAlign: 'center',
+            color: 'black',
+            // marginTop: '10px',
+          }}
+        >
           <span>{fileName}</span> - <span>{fileSize}</span>
           <LinearProgress
-            variant="determinate"
+            variant='determinate'
             value={uploadProgress}
             color='secondary'
             sx={{
@@ -211,7 +210,9 @@ export default function ButtonAddPage({ pageIdx }) {
               color: 'black',
               borderColor: '#8D99AE',
             }}
-            onClick={() => {/* logic to handle file removal */}}
+            onClick={() => {
+              /* logic to handle file removal */
+            }}
           >
             X
           </Button>
