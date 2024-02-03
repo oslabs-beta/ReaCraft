@@ -1,0 +1,29 @@
+name: deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+
+      - name: Build, Tag, and Push Docker image to ECR
+        run: |
+          docker buildx build --platform linux/amd64 -t ${{ secrets.ECR_REGISTRY }}/reacraft:latest .
+          docker push ${{ secrets.ECR_REGISTRY }}/reacraft:latest
