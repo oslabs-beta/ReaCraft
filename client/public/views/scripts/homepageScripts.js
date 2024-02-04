@@ -137,12 +137,54 @@ $(document).ready(function () {
   });
 });
 
-//slides script
-function showSlide(number) {
-  document.querySelectorAll('.slidePage2').forEach(function (slide) {
-    slide.style.display = 'none'; // Hide all slides
-  });
+//instructions loop script
+document.addEventListener('DOMContentLoaded', () => {
+  let currentIndex = 0;
+  const instructions = document.querySelectorAll('.instruction');
+  const slides = document.querySelectorAll('.slidePage2');
+  let loopTimeout;
 
-  document.getElementById(`slide${number}`).style.display = 'block'; // Show the selected slide
-  document.querySelector('.containerRight').style.visibility = 'visible'; // Make the right container visible
-}
+  // function to show the corresponding slide for an instruction
+  const showSlide = (index) => {
+    slides.forEach((slide, idx) => {
+      slide.style.display = idx === index ? 'block' : 'none'; // Show only the corresponding slide
+    });
+  };
+
+  // function to activate a specific instruction and its text, and show corresponding slide
+  const activateInstructionAndSlide = (index) => {
+    instructions.forEach((instruction, idx) => {
+      const text = instruction.querySelector('.instructiontext');
+      if (idx === index) {
+        instruction.classList.add('active');
+        text.classList.add('active');
+      } else {
+        instruction.classList.remove('active');
+        text.classList.remove('active');
+      }
+    });
+    currentIndex = index;
+    showSlide(currentIndex); // show corresponding slide
+  };
+
+  activateInstructionAndSlide(0);
+
+  // loop through descriptions and slides
+  const loopDescriptionsAndSlides = () => {
+    currentIndex = (currentIndex + 1) % instructions.length;
+    activateInstructionAndSlide(currentIndex);
+    loopTimeout = setTimeout(loopDescriptionsAndSlides, 3000); // Continue loop every 3 seconds
+  };
+
+  // start the looping
+  loopTimeout = setTimeout(loopDescriptionsAndSlides, 3000);
+
+  // add click event to each instruction to synchronize with slides
+  instructions.forEach((instruction, index) => {
+    instruction.addEventListener('click', () => {
+      clearTimeout(loopTimeout); // stop the current loop
+      activateInstructionAndSlide(index); // activate the clicked instruction and show its slide
+      loopTimeout = setTimeout(loopDescriptionsAndSlides, 10000); // Wait 10 seconds before resuming the loop
+    });
+  });
+});
