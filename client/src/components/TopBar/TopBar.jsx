@@ -124,7 +124,7 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
               >
                 <Tooltip title='Back to home'>
                   <img
-                    src='./assets/ReaCraft2-01.png'
+                    src='./assets/ReaCraft.png'
                     style={{
                       marginLeft: '20px',
                       width: 40,
