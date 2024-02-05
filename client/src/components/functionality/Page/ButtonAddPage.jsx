@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMessage } from '../../../utils/reducers/appSlice';
 import { addNewPageAndUpdateSelectedPageIdx } from '../../../utils/reducers/designSliceV3';
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, Fab, Tooltip } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -166,16 +166,26 @@ export default function ButtonAddPage({ pageIdx }) {
 
   return (
     <>
-      <Button component='label'>
-        <FontAwesomeIcon icon={faCirclePlus} />
-        Add Page
-        <VisuallyHiddenInput
-          type='file'
-          name='userImage'
-          accept='image/*'
-          onChange={handleFileChange}
-        />
-      </Button>
+      <Tooltip title='Add New Page'>
+        <Fab
+          component='label'
+          size='small'
+          sx={{
+            '& svg': {
+              transform: 'scale(1.2)',
+            },
+          }}
+        >
+          <FontAwesomeIcon icon={faCirclePlus} />
+          <VisuallyHiddenInput
+            type='file'
+            name='userImage'
+            accept='image/*'
+            onChange={handleFileChange}
+          />
+        </Fab>
+      </Tooltip>
+
       {fileName && (uploadProgress < 100 || socket) && (
         <Box
           sx={{
