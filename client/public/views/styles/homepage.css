@@ -1,5 +1,5 @@
 :root {
-  --accent: D9D0C7;
+  --accent: #d9d0c7;
   --background: #f4f3f7;
   --text: #2c2c2c;
 }
@@ -103,7 +103,7 @@ html {
   font-weight: bolder;
   height: 100%;
   justify-content: center;
-  margin-bottom: 5%;
+  margin-top: 5%;
   padding-right: 10px;
   /* padding-bottom: 5px; */
   /* text-align: center; */
@@ -124,6 +124,27 @@ html {
 
 .instructiontext.active {
   display: block;
+}
+
+.instruction::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 3px;
+  background-color: var(--accent);
+  transition: width 0.5s ease-out;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  visibility: visible;
+  opacity: 1;
+}
+
+.instruction.active::before {
+  width: 100%;
+  transition: width 4s ease;
+  visibility: visible;
+  opacity: 1;
 }
 
 .instruction:hover {
@@ -219,8 +240,8 @@ html {
 
 .slidePage2 {
   animation: fadeInUp 1.5s;
-  border-radius: 10px;
-  box-shadow: 5px 2.5px 22.5px -7.5px #2d3f54;
+  border-radius: 2px;
+  box-shadow: 3px 5px 5px -3px rgba(44, 44, 44, 1);
   display: block;
   height: 100%;
   margin-left: 50px;

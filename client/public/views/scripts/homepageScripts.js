@@ -188,3 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  showSlide(1);
+});
