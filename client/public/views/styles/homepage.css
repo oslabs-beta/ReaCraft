@@ -2,6 +2,7 @@
   --accent: #d9d0c7;
   --background: #f4f3f7;
   --text: #2c2c2c;
+  --darkbackground: #415a77;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap');
@@ -15,6 +16,7 @@ body {
   padding: 0;
   scroll-snap-type: y mandatory;
   width: 100%;
+  background-color: var(--background);
 }
 
 body p {
@@ -23,6 +25,7 @@ body p {
 
 .dark body {
   color: white;
+  background-color: var(--darkbackground);
 }
 
 html {
@@ -45,12 +48,14 @@ html {
 .container {
   width: 90vw;
   margin-right: 5%;
+  overflow: hidden;
 }
 
 .containerLeft,
 .containerRight {
   display: flex;
   flex-direction: column;
+  padding-bottom: 2%;
 }
 
 .containerLeft {
@@ -66,6 +71,7 @@ html {
   font-family: 'Baloo Bhaijaan 2', sans-serif;
   height: 80vh;
   width: 90vw;
+  overflow: hidden;
 }
 
 .containerRight {
@@ -97,14 +103,16 @@ html {
   box-shadow: 3px 5px 5px -3px rgba(44, 44, 44, 1);
   color: var(--text);
   cursor: pointer;
-  /* display: flex; */
+  display: flex;
   /* flex: 1; */
   font-size: large;
   font-weight: bolder;
   height: 100%;
-  justify-content: center;
+  justify-content: flex-start;
   margin-top: 5%;
   padding-right: 10px;
+  padding-left: 5px;
+  position: relative;
   /* padding-bottom: 5px; */
   /* text-align: center; */
   transition: transform 250ms ease;
@@ -113,6 +121,7 @@ html {
 
 .instruction.active {
   font-size: x-large;
+  display: block;
   /* align-items: flex-start;
   justify-content: flex-start; */
 }
@@ -127,7 +136,7 @@ html {
 }
 
 .instruction::before {
-  content: '';
+  /* content: '';
   display: block;
   width: 0;
   height: 3px;
@@ -137,7 +146,26 @@ html {
   bottom: 0;
   left: 0;
   visibility: visible;
+  opacity: 1; */
+  content: '';
+  display: block;
+  width: 0;
+  height: 6px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  visibility: visible;
   opacity: 1;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.8) 0%,
+    var(--accent) 50%,
+    var(--accent) 100%
+  );
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: width 0.5s ease-out, background-position 4s ease;
+  filter: blur(1px);
 }
 
 .instruction.active::before {
@@ -145,10 +173,16 @@ html {
   transition: width 4s ease;
   visibility: visible;
   opacity: 1;
+  background-position: left bottom;
 }
 
 .instruction:hover {
   transform: translateY(-5px);
+}
+
+.instruction.dark {
+  background-color: #415a77;
+  color: white;
 }
 
 .link-container {
@@ -220,6 +254,8 @@ html {
   justify-content: center;
   scroll-snap-align: start;
   width: 100%;
+  margin-bottom: 5%;
+  margin-right: 5%;
 }
 
 .slide:nth-child(1),
@@ -457,7 +493,7 @@ html {
 }
 
 #dark-mode-switch-root #switch-thumb {
-  background-color: rgb(0, 30, 60);
+  background-color: var(--accent);
   background-image: url('../../assets/dark-mode.svg');
   background-position: center;
   background-repeat: no-repeat;
@@ -480,7 +516,7 @@ html {
 }
 
 #dark-mode-switch-root #switch-thumb.dark {
-  background-color: #e0e1dd;
+  background-color: var(--background);
   background-image: url('../../assets/light-mode.svg');
 }
 
@@ -541,6 +577,11 @@ html {
   padding: 5px 20px;
   position: relative;
   text-decoration: none;
+}
+
+#login.dark,
+#signup.dark {
+  color: white;
 }
 
 #login::after,
