@@ -3,6 +3,9 @@
   --background: #f4f3f7;
   --text: #2c2c2c;
   --darkbackground: #415a77;
+  --accentLogo: #bdbbb6;
+  --min-window-height: 800px;
+  --min-window-width: 600px;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap');
@@ -34,6 +37,14 @@ html {
   scroll-snap-align: start;
   scroll-snap-type: y mandatory;
   width: 100%;
+}
+
+img.arrow {
+  filter: brightness(0) saturate(0);
+}
+
+img.arrow.dark {
+  filter: brightness(100) saturate(0);
 }
 
 .boxContainer {
@@ -159,8 +170,8 @@ html {
   background: linear-gradient(
     to right,
     rgba(255, 255, 255, 0.8) 0%,
-    var(--accent) 50%,
-    var(--accent) 100%
+    var(--accentLogo) 50%,
+    var(--accentLogo) 100%
   );
   background-size: 200% 100%;
   background-position: right bottom;
@@ -189,6 +200,7 @@ html {
   display: flex;
   gap: 10px;
   justify-content: center;
+  width: 20%;
 }
 
 .logo,
@@ -224,27 +236,30 @@ html {
   display: flex;
   flex-direction: column;
   font-family: 'Baloo Bhaijaan 2', sans-serif;
-  margin-bottom: 20px;
+  margin-bottom: 5%;
   text-align: center;
 }
 
 .profile-name {
   margin-bottom: 5px;
+  font-size: larger;
 }
 
 .profile-photos {
   border-radius: 50%;
-  height: 200px;
-  margin-bottom: 10px;
+  height: 20vw;
+  margin-bottom: 1%;
   object-fit: cover;
-  width: 200px;
+  width: 20vw;
 }
 
 .profiles-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 100px;
-  justify-content: space-around;
+  width: 70vw;
+  /* gap: 100px; */
+  justify-content: space-between;
+  animation: slideUp 2.5s ease-out forwards 1.5s;
 }
 
 .slide {
@@ -280,7 +295,7 @@ html {
   box-shadow: 3px 5px 5px -3px rgba(44, 44, 44, 1);
   display: block;
   height: 100%;
-  margin-left: 50px;
+  margin-left: 10%;
   padding: 20px;
   width: 100%;
 }
@@ -299,8 +314,8 @@ html {
 
 .team-header {
   font-family: 'Baloo Bhaijaan 2', sans-serif;
-  font-size: 2rem;
-  margin-bottom: 80px;
+  font-size: 4vw;
+  margin-bottom: 10vh;
   text-align: center;
   width: 100%;
 }
@@ -493,7 +508,7 @@ html {
 }
 
 #dark-mode-switch-root #switch-thumb {
-  background-color: var(--accent);
+  background-color: var(--accentLogo);
   background-image: url('../../assets/dark-mode.svg');
   background-position: center;
   background-repeat: no-repeat;
