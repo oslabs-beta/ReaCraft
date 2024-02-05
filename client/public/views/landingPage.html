@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/assets/favicon.ico" />
     <title>ReaCraft</title>
 
     <!-- css -->
@@ -18,19 +19,24 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous" />
+      crossorigin="anonymous"
+    />
 
     <script
       src="https://code.jquery.com/jquery-3.7.1.js"
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
 
     <!-- bootstrap bundle JS (includes popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../views/styles/modals.css" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
 
     <!-- google platform library -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
@@ -46,7 +52,8 @@
         <button
           class="btn btn-outline-secondary btn-lg px-4"
           type="button"
-          id="signup">
+          id="signup"
+        >
           Sign Up
         </button>
         <!-- dark mode switch -->
@@ -64,7 +71,14 @@
         <!-- Tutorial Object -->
         <div
           class="tutorial-container"
-          style="position: absolute; z-index: 15; top: 40%; right: 10%; font-family: Baloo Bhaijaan 2;">
+          style="
+            position: absolute;
+            z-index: 15;
+            top: 40%;
+            right: 10%;
+            font-family: Baloo Bhaijaan 2;
+          "
+        >
           <span id="tutorialText" style="cursor: pointer">
             Tutorial ▼
             <!-- <img
@@ -77,7 +91,14 @@
         <!-- Meet Team Object -->
         <div
           class="meetTeam"
-          style="position: absolute; z-index: 15; top: 45%; right: 10%; font-family: Baloo Bhaijaan 2;">
+          style="
+            position: absolute;
+            z-index: 15;
+            top: 45%;
+            right: 10%;
+            font-family: Baloo Bhaijaan 2;
+          "
+        >
           <span id="meetTeamText" style="cursor: pointer">
             Meet the Team ▼
             <!-- <img
@@ -96,7 +117,8 @@
             justify-content: center;
             width: 95vw;
             height: 90vh;
-          "></div>
+          "
+        ></div>
       </div>
     </span>
     <!-- slide 2 -->
@@ -108,47 +130,54 @@
             <i class="fa-solid fa-file-import"></i> Design upload onto canvas
             <p class="instructiontext desc1">
               Kickstart your project by uploading your web design to the canvas.
-              Watch as your vision appears, ready for transformation into a dynamic web experience.
+              Watch as your vision appears, ready for transformation into a
+              dynamic web experience.
             </p>
           </div>
           <div class="instruction" onclick="showSlide(2)">
             <i class="fa-regular fa-square-plus"></i> Add components for design
             <p class="instructiontext desc2">
-              Elevate your design by intuitively adding web components with resizable rectangles,
-              precisely defining their hierarchy through parent container selection.
+              Elevate your design by intuitively adding web components with
+              resizable rectangles, precisely defining their hierarchy through
+              parent container selection.
             </p>
           </div>
           <div class="instruction" onclick="showSlide(3)">
             DOM tree visualizer
             <p class="instructiontext desc3">
-              Navigate the architecture of your design with the 'DOM Tree' viewer. Visualize the
-              hierarchy and relationships of components in your design, making it easy to understand
-              and manage the structure of your web project.
+              Navigate the architecture of your design with the 'DOM Tree'
+              viewer. Visualize the hierarchy and relationships of components in
+              your design, making it easy to understand and manage the structure
+              of your web project.
             </p>
           </div>
           <div class="instruction" onclick="showSlide(4)">
             Border color / Fill options
             <p class="instructiontext desc4">
-              Bring your design to life with vibrant precision with the 'Border Color/Fill' option.
-              Select and apply your desired colors to component borders and fill areas, ensuring these
-              styles are reflected in your exported design.
+              Bring your design to life with vibrant precision with the 'Border
+              Color/Fill' option. Select and apply your desired colors to
+              component borders and fill areas, ensuring these styles are
+              reflected in your exported design.
             </p>
           </div>
           <div class="instruction" onclick="showSlide(5)">
             Development suite
             <p class="instructiontext desc5">
-              Maximize your project's potentional by accessing React code for each component, CSS code for
-              the design page, add and navigate through multiple pages, and invite collaborators with ease.
-              Zoom controls and intuitive design tools empower you to craft and refine your multi-page web
-              application effortlessy.
+              Maximize your project's potentional by accessing React code for
+              each component, CSS code for the design page, add and navigate
+              through multiple pages, and invite collaborators with ease. Zoom
+              controls and intuitive design tools empower you to craft and
+              refine your multi-page web application effortlessy.
             </p>
           </div>
           <div class="instruction" onclick="showSlide(6)">
             Export project
-            <p class="instructiontext desc6">    
-              Transition from concept to code effortlessy with the exporting feature. Export to obtain
-              React and CSS code, mirroring your design's components and styles. Open in your IDE and
-              jumpstart development, transforming your visual concept into a functional web application.
+            <p class="instructiontext desc6">
+              Transition from concept to code effortlessy with the exporting
+              feature. Export to obtain React and CSS code, mirroring your
+              design's components and styles. Open in your IDE and jumpstart
+              development, transforming your visual concept into a functional
+              web application.
             </p>
           </div>
         </div>
@@ -161,7 +190,8 @@
                 align-items: center;
                 width: 100%;
                 height: 100%;
-              ">
+              "
+            >
               <img
                 src="../assets/homepage/contruction.svg"
                 class="construction"
@@ -171,7 +201,8 @@
                   justify-content: center;
                   align-items: center;
                   width: 300px;
-                " />
+                "
+              />
             </p>
           </div>
           <div class="slidePage2" id="slide2">
@@ -182,7 +213,8 @@
                 align-items: center;
                 width: 100%;
                 height: 100%;
-              ">
+              "
+            >
               <img
                 src="../assets/homepage/contruction.svg"
                 class="construction"
@@ -192,7 +224,8 @@
                   justify-content: center;
                   align-items: center;
                   width: 300px;
-                " />
+                "
+              />
             </p>
           </div>
           <div class="slidePage2" id="slide3">
@@ -203,7 +236,8 @@
                 align-items: center;
                 width: 100%;
                 height: 100%;
-              ">
+              "
+            >
               <img
                 src="../assets/homepage/contruction.svg"
                 class="construction"
@@ -213,7 +247,8 @@
                   justify-content: center;
                   align-items: center;
                   width: 300px;
-                " />
+                "
+              />
             </p>
           </div>
           <div class="slidePage2" id="slide4">
@@ -224,7 +259,8 @@
                 align-items: center;
                 width: 100%;
                 height: 100%;
-              ">
+              "
+            >
               <img
                 src="../assets/homepage/contruction.svg"
                 class="construction"
@@ -234,7 +270,8 @@
                   justify-content: center;
                   align-items: center;
                   width: 300px;
-                " />
+                "
+              />
             </p>
           </div>
           <div class="slidePage2" id="slide5">
@@ -245,7 +282,8 @@
                 align-items: center;
                 width: 100%;
                 height: 100%;
-              ">
+              "
+            >
               <img
                 src="../assets/homepage/contruction.svg"
                 class="construction"
@@ -255,7 +293,8 @@
                   justify-content: center;
                   align-items: center;
                   width: 300px;
-                " />
+                "
+              />
             </p>
           </div>
           <div class="slidePage2" id="slide6">
@@ -266,7 +305,8 @@
                 align-items: center;
                 width: 100%;
                 height: 100%;
-              ">
+              "
+            >
               <img
                 src="../assets/homepage/constructions2.svg"
                 class="construction"
@@ -276,7 +316,8 @@
                   justify-content: center;
                   align-items: center;
                   width: 300px;
-                " />
+                "
+              />
             </p>
           </div>
         </div>
@@ -285,63 +326,85 @@
     <!-- slide 3 -->
     <span class="slide" id="teamSection">
       <div>
-        <h1 class="team-header">Meet the team</h1>
+        <h1 class="team-header mb-5">
+          Meet the team <i class="fa-solid fa-people-group"></i>
+        </h1>
       </div>
-      <span class="profiles-container">
-        <span class="profile">
-          <img
-            src="../assets/amir.png"
-            class="profile-photos"
-            alt="Amir Profile" />
-          <div class="profile-name">Amir Munoz</div>
-          <div class="link-container">
-            <a href="https://github.com/Amunoz-1">
-              <img
-                src="../assets/github-mark-white.svg"
-                width="30px"
-                alt="Github" />
-            </a>
-            <a href="https://www.linkedin.com">
-              <img src="../assets/linked-in.svg" width="30px" alt="LinkedIn" />
-            </a>
-          </div>
-        </span>
-        <span class="profile">
-          <img
-            src="../assets/claire.png"
-            class="profile-photos"
-            alt="Claire Profile" />
-          <div class="profile-name">Claire Huang</div>
-          <div class="link-container">
-            <a href="https://github.com/clairehuang1008">
-              <img
-                src="../assets/github-mark-white.svg"
-                width="30px"
-                alt="Github" />
-            </a>
-            <a href="https://www.linkedin.com">
-              <img src="../assets/linked-in.svg" width="30px" alt="LinkedIn" />
-            </a>
-          </div>
-        </span>
-        <span class="profile">
-          <img
-            src="../assets/eunice.png"
-            class="profile-photos"
-            alt="Eunice Profile" />
-          <div class="profile-name">Eunice Kim</div>
-          <div class="link-container">
-            <a href="https://github.com/eunykim92">
-              <img
-                src="../assets/github-mark-white.svg"
-                width="30px"
-                alt="Github" />
-            </a>
-            <a href="https://www.linkedin.com">
-              <img src="../assets/linked-in.svg" width="30px" alt="LinkedIn" />
-            </a>
-          </div>
-        </span>
+      <span class="profiles-container container">
+        <div class="row">
+          <span class="profile col-sm-4">
+            <img
+              src="../assets/amir.png"
+              class="profile-photos"
+              alt="Amir Profile"
+            />
+            <div class="profile-name">Amir Munoz</div>
+            <div class="link-container">
+              <a href="https://github.com/Amunoz-1">
+                <img
+                  src="../assets/github-mark-white.svg"
+                  width="30px"
+                  alt="Github"
+                />
+              </a>
+              <a href="https://www.linkedin.com">
+                <img
+                  src="../assets/linked-in.svg"
+                  width="30px"
+                  alt="LinkedIn"
+                />
+              </a>
+            </div>
+          </span>
+          <span class="profile col-sm-4">
+            <img
+              src="../assets/claire.png"
+              class="profile-photos"
+              alt="Claire Profile"
+            />
+            <div class="profile-name">Claire Huang</div>
+            <div class="link-container">
+              <a href="https://github.com/clairehuang1008">
+                <img
+                  src="../assets/github-mark-white.svg"
+                  width="30px"
+                  alt="Github"
+                />
+              </a>
+              <a href="https://www.linkedin.com">
+                <img
+                  src="../assets/linked-in.svg"
+                  width="30px"
+                  alt="LinkedIn"
+                />
+              </a>
+            </div>
+          </span>
+          <span class="profile col-sm-4">
+            <img
+              src="../assets/eunice.png"
+              class="profile-photos"
+              alt="Eunice Profile"
+            />
+            <div class="profile-name">Eunice Kim</div>
+            <div class="link-container">
+              <a href="https://github.com/eunykim92">
+                <img
+                  src="../assets/github-mark-white.svg"
+                  width="30px"
+                  alt="Github"
+                />
+              </a>
+              <a href="https://www.linkedin.com">
+                <img
+                  src="../assets/linked-in.svg"
+                  width="30px"
+                  alt="LinkedIn"
+                />
+              </a>
+            </div>
+          </span>
+        </div>
       </span>
     </span>
 
