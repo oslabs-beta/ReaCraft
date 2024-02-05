@@ -1,7 +1,17 @@
+:root {
+  --accent: #d9d0c7;
+  --background: #f4f3f7;
+  --text: #2c2c2c;
+  --darkbackground: #415a77;
+  --accentLogo: #bdbbb6;
+}
+
 .modal-content {
-  background: white;
-  border-radius: 10px;
+  /* background: white; */
+  background: var(--background);
+  border-radius: 2px;
   padding: 20px;
+  height: 60vw;
   /* position: relative; */
   font-family: 'Baloo Bhaijaan 2', sans-serif;
 }
@@ -24,7 +34,8 @@
 
 .greeting-text {
   font-size: 3em;
-  color: #d5bdaf;
+  /* color: #d5bdaf; */
+  color: var(--accentLogo);
   margin-bottom: 20px;
 }
 
@@ -41,7 +52,8 @@
 }
 
 .form-control:focus {
-  color: #495057;
+  /* color: #495057; */
+  color: var(--accentLogo);
   background-color: #fff;
   border-color: #d5bdaf;
   outline: 0;
@@ -57,37 +69,49 @@
 
 .account-button {
   color: #fff;
-  background-color: #a9978c;
-  border-color: #a9978c;
+  /* background-color: #a9978c; */
+  background-color: var(--accentLogo);
+  /* border-color: #a9978c; */
+  border-color: var(--accent);
 }
 
 .account-button:hover {
-  background-color: #7f7169;
-  border-color: #7f7169;
+  /* background-color: #7f7169; */
+  background-color: var(--accent);
+  /* border-color: #7f7169; */
+  border-color: var(--accentLogo);
 }
 
 /* button for login */
 .btn-primary {
-  background-color: #d5bdaf;
-  border-color: #d5bdaf;
+  /* background-color: #d5bdaf; */
+  background-color: var(--accent);
+  /* border-color: #d5bdaf; */
+  border-color: var(--accentLogo);
 }
 
 .needAccount {
-  border-color: #d5bdaf;
+  /* border-color: #d5bdaf; */
+  border-color: var(--accent);
 }
 
 .btn-primary:hover {
-  background-color: #e0d0c7;
-  border-color: #e0d0c7;
+  /* background-color: #e0d0c7; */
+  background-color: var(--accentLogo);
+  /* border-color: #e0d0c7; */
+  border-color: var(--accent);
 }
 
 .needAccount:hover {
-  background-color: #beaa9d;
-  border-color: #beaa9d;
+  /* background-color: #beaa9d; */
+  background-color: var(--accent);
+  /* border-color: #beaa9d; */
+  border-color: var(--accentLogo);
 }
 
 .btn-google {
-  background-color: #c1bdaf;
+  /* background-color: #c1bdaf; */
+  background-color: var(--accentLogo);
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -98,7 +122,8 @@
 }
 
 .btn-google:hover {
-  background-color: #e0d0c7;
+  /* background-color: #e0d0c7; */
+  background-color: var(--background);
   color: white;
 }
 
@@ -130,7 +155,8 @@
 }
 
 .btn-google {
-  background-color: #c1bdaf;
+  /* background-color: #c1bdaf; */
+  background-color: var(--accentLogo);
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -141,7 +167,8 @@
 }
 
 .btn-google:hover {
-  background-color: #e0d0c7;
+  /* background-color: #e0d0c7; */
+  background-color: var(--accent);
   color: white;
 }
 
@@ -173,7 +200,8 @@
 }
 
 .dark .modal-content {
-  background: #8d99ae;
+  /* background: #8d99ae; */
+  background: var(--darkbackground);
 }
 
 .dark .greeting-text {
