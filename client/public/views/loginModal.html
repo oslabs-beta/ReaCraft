@@ -6,19 +6,19 @@
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLabel">Login</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"></button>
-      </div>
       <div class="modal-body">
+        <div class="m-0 p-1 modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Login</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
         <img
           src="../assets/homepage/ReaCraft_logoColor_light.svg"
           width="150px"
-          class="mb-3 d-block mx-auto"
+          class="mb-0 d-block mx-auto"
           style="border-radius: 50%" />
         <form id="loginForm" action="/login" method="POST">
           <!-- <h1 class="h3 mb-3 fw-normal">Please Login</h1> -->
@@ -66,7 +66,7 @@
                   style="
                     display: block;
                     height: 20px;
-                    width: 20p;
+                    width: 20px;
                     margin-right: 8px;
                   ">
                   <path
@@ -87,7 +87,9 @@
               </a>
             </div>
           </div>
-          <p class="mb-3 text-body-secondary">© 2024 ReaCraft</p>
+          <div class="copy-right">
+            <span>© 2024 ReaCraft</span>
+          </div>
         </form>
       </div>
     </div>
