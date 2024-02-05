@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMessage } from '../../../utils/reducers/appSlice';
 import { addNewPageAndUpdateSelectedPageIdx } from '../../../utils/reducers/designSliceV3';
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, Fab, Tooltip } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +22,7 @@ export const VisuallyHiddenInput = styled('input')({
 });
 
 export default function ButtonAddPage({ pageIdx }) {
-  const { _id, pages } = useSelector((state) => state.designV3);
+  const { _id } = useSelector((state) => state.designV3);
   const dispatch = useDispatch();
   const [fileName, setFileName] = useState('');
   const [fileSize, setFileSize] = useState('');
@@ -39,7 +39,9 @@ export default function ButtonAddPage({ pageIdx }) {
   // function to initiate websocket connection with the generated clientId and retryCount (if connection gets disconnected prematurely)
   function initiateWebSocketConnection(clientId, retryCount = 0) {
     // create new websocket connection with clientId
-    const ws = new WebSocket(`ws://localhost:8080/ws?clientId=${clientId}`);
+    const ws = new WebSocket(
+      `ws://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=${clientId}`
+    );
 
     // once websocket connection is open, console log
     ws.onopen = () => {
@@ -166,16 +168,26 @@ export default function ButtonAddPage({ pageIdx }) {
 
   return (
     <>
-      <Button component='label'>
-        <FontAwesomeIcon icon={faCirclePlus} />
-        Add Page
-        <VisuallyHiddenInput
-          type='file'
-          name='userImage'
-          accept='image/*'
-          onChange={handleFileChange}
-        />
-      </Button>
+      <Tooltip title='Add New Page'>
+        <Fab
+          component='label'
+          size='small'
+          sx={{
+            '& svg': {
+              transform: 'scale(1.2)',
+            },
+          }}
+        >
+          <FontAwesomeIcon icon={faCirclePlus} />
+          <VisuallyHiddenInput
+            type='file'
+            name='userImage'
+            accept='image/*'
+            onChange={handleFileChange}
+          />
+        </Fab>
+      </Tooltip>
+
       {fileName && (uploadProgress < 100 || socket) && (
         <Box
           sx={{
