@@ -93,21 +93,21 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <TopBar
-        toggleDarkMode={toggleDarkMode}
-        darkMode={darkMode}
-        drawerOpen={drawerOpen}
-        handleDrawerOpen={handleDrawerOpen}
-      />
-      <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-      <Main open={drawerOpen}>
-        <MainContainer
-          sx={{
-            top: '10%',
-          }}
+        <TopBar
+          toggleDarkMode={toggleDarkMode}
+          darkMode={darkMode}
+          drawerOpen={drawerOpen}
+          handleDrawerOpen={handleDrawerOpen}
         />
-        <ButtonBuyCoffee />
-      </Main>
+        <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+        <Main open={drawerOpen}>
+          <MainContainer
+            sx={{
+              top: '10%',
+            }}
+          />
+          <ButtonBuyCoffee />
+        </Main>
     </ThemeProvider>
   );
 }
