@@ -179,11 +179,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // start the looping
   loopTimeout = setTimeout(loopDescriptionsAndSlides, 3000);
 
+  //inject css into elements
+  const injectCSS = (css) => {
+    let el = document.createElement('style');
+    el.innerText = css;
+    document.head.appendChild(el);
+    return el;
+  };
+
   // add click event to each instruction to synchronize with slides
   instructions.forEach((instruction, index) => {
     instruction.addEventListener('click', () => {
       clearTimeout(loopTimeout); // stop the current loop
       activateInstructionAndSlide(index); // activate the clicked instruction and show its slide
+      instruction.classList.add('active');
+      instruction.style.transition = 'width 10s ease'; //curr not setting.
+
       loopTimeout = setTimeout(loopDescriptionsAndSlides, 10000); // Wait 10 seconds before resuming the loop
     });
   });
