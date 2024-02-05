@@ -78,14 +78,14 @@
   border-bottom: 2px solid #cccccc;
   border-radius: 0;
   margin-bottom: 15px;
+  background-color: var(--background);
 }
 
 .form-control:focus {
-  /* color: #495057; */
   color: var(--accentLogo);
-  background-color: #fff;
+  background-color: var(--background);
   border-color: #d5bdaf;
-  outline: 0;
+  outline: none !important;
   /* removes the default bootstrap shadow */
   box-shadow: none;
 }
