@@ -37,6 +37,8 @@ export default function App() {
     return;
   }
 
+  console.log(process.env.REACT_APP_HOST_ADDRESS);
+
   const error = useSelector((state) => state.designV3.error);
   if (error) {
     setMessage({
@@ -93,21 +95,21 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-        <TopBar
-          toggleDarkMode={toggleDarkMode}
-          darkMode={darkMode}
-          drawerOpen={drawerOpen}
-          handleDrawerOpen={handleDrawerOpen}
+      <TopBar
+        toggleDarkMode={toggleDarkMode}
+        darkMode={darkMode}
+        drawerOpen={drawerOpen}
+        handleDrawerOpen={handleDrawerOpen}
+      />
+      <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+      <Main open={drawerOpen}>
+        <MainContainer
+          sx={{
+            top: '10%',
+          }}
         />
-        <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-        <Main open={drawerOpen}>
-          <MainContainer
-            sx={{
-              top: '10%',
-            }}
-          />
-          <ButtonBuyCoffee />
-        </Main>
+        <ButtonBuyCoffee />
+      </Main>
     </ThemeProvider>
   );
 }
