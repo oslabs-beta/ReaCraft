@@ -16,6 +16,7 @@ body {
   height: 100%;
   margin: 0;
   overflow: auto;
+  overflow-x: hidden;
   padding: 0;
   scroll-snap-type: y mandatory;
   width: 100%;
@@ -28,7 +29,6 @@ body p {
 
 .dark body {
   color: white;
-  background-color: var(--darkbackground);
 }
 
 html {
@@ -37,6 +37,7 @@ html {
   scroll-snap-align: start;
   scroll-snap-type: y mandatory;
   width: 100%;
+  overflow-x: hidden;
 }
 
 img.arrow {
@@ -146,6 +147,11 @@ img.arrow.dark {
   display: block;
 }
 
+.instructiontext.active.dark {
+  display: block;
+  background-color: var(--darkbackground);
+}
+
 .instruction::before {
   /* content: '';
   display: block;
@@ -196,6 +202,11 @@ img.arrow.dark {
   color: white;
 }
 
+.instruction.active.dark::before {
+  background-color: #415a77;
+  color: white;
+}
+
 .link-container {
   display: flex;
   gap: 10px;
@@ -231,6 +242,10 @@ img.arrow.dark {
   filter: drop-shadow(2px 2px 3px #2a2a2a);
 }
 
+.logo-letters.dark {
+  filter: drop-shadow(2px 2px 3px #2a2a2a);
+}
+
 .profile {
   align-items: center;
   display: flex;
@@ -247,10 +262,10 @@ img.arrow.dark {
 
 .profile-photos {
   border-radius: 50%;
-  height: 20vw;
+  height: 10vw;
   margin-bottom: 1%;
   object-fit: cover;
-  width: 20vw;
+  width: 10vw;
 }
 
 .profiles-container {
@@ -269,14 +284,14 @@ img.arrow.dark {
   justify-content: center;
   scroll-snap-align: start;
   width: 100%;
-  margin-bottom: 5%;
+  /* margin-bottom: 5%; */
   margin-right: 5%;
 }
 
 .slide:nth-child(1),
 .slide:nth-child(2),
 .slide:nth-child(3) {
-  background-color: #f4f3f7;
+  background-color: var(--background);
 }
 
 .slide:nth-child(3) {
@@ -286,7 +301,7 @@ img.arrow.dark {
 .slide:nth-child(1).dark,
 .slide:nth-child(2).dark,
 .slide:nth-child(3).dark {
-  background-color: #415a77;
+  background-color: var(--darkbackground);
 }
 
 .slidePage2 {
