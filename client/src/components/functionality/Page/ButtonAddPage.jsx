@@ -22,7 +22,7 @@ export const VisuallyHiddenInput = styled('input')({
 });
 
 export default function ButtonAddPage({ pageIdx }) {
-  const { _id, pages } = useSelector((state) => state.designV3);
+  const { _id } = useSelector((state) => state.designV3);
   const dispatch = useDispatch();
   const [fileName, setFileName] = useState('');
   const [fileSize, setFileSize] = useState('');
@@ -39,7 +39,9 @@ export default function ButtonAddPage({ pageIdx }) {
   // function to initiate websocket connection with the generated clientId and retryCount (if connection gets disconnected prematurely)
   function initiateWebSocketConnection(clientId, retryCount = 0) {
     // create new websocket connection with clientId
-    const ws = new WebSocket(`ws://localhost:8080/ws?clientId=${clientId}`);
+    const ws = new WebSocket(
+      `ws://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=${clientId}`
+    );
 
     // once websocket connection is open, console log
     ws.onopen = () => {
