@@ -19,7 +19,6 @@
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous" />
-    <link rel="stylesheet" type="text/css" href="/views/styles/modals.css" />
 
     <link rel="stylesheet" type="text/css" href="../views/styles/modals.css" />
 
@@ -63,27 +62,27 @@
         <!-- Tutorial Object -->
         <div
           class="tutorial-container"
-          style="position: absolute; z-index: 15; top: 40%; right: 10%">
+          style="position: absolute; z-index: 15; top: 40%; right: 10%; font-family: Baloo Bhaijaan 2;">
           <span id="tutorialText" style="cursor: pointer">
-            Tutorial
-            <img
+            Tutorial ▼
+            <!-- <img
               style="width: 20px; height: 20px"
               alt="arrow"
               class="arrow"
-              src="../assets/arrow.svg" />
+              src="../assets/arrow.svg" /> -->
           </span>
         </div>
         <!-- Meet Team Object -->
         <div
           class="meetTeam"
-          style="position: absolute; z-index: 15; top: 45%; right: 10%">
+          style="position: absolute; z-index: 15; top: 45%; right: 10%; font-family: Baloo Bhaijaan 2;">
           <span id="meetTeamText" style="cursor: pointer">
-            Meet the Team
-            <img
+            Meet the Team ▼
+            <!-- <img
               style="width: 20px; height: 20px"
               alt="arrow"
               class="arrow"
-              src="../assets/arrow.svg" />
+              src="../assets/arrow.svg" /> -->
           </span>
         </div>
         <!-- Logo Load In -->
@@ -100,166 +99,198 @@
     </span>
     <!-- slide 2 -->
     <span class="slide" id="tutorialSection">
-      <span class="container" style="width: 90vw">
-        <span>
-          <!-- <fieldset class="slide2_Background">I love cheetos</fieldset> -->
-          <div class="containerMain">
-            <div class="containerLeft">
-              <div class="instruction" onclick="showSlide(1)">
-                Upload Design
-              </div>
-              <div class="instruction" onclick="showSlide(2)">
-                Adding a New Component
-              </div>
-              <div class="instruction" onclick="showSlide(3)">
-                Navigation Buttons
-              </div>
-              <div class="instruction" onclick="showSlide(4)">
-                Border Color / Fill Options
-              </div>
-              <div class="instruction" onclick="showSlide(5)">
-                Exporting Project
-              </div>
-              <div class="instruction" onclick="showSlide(6)">
-                Keyboard Shortcuts
-              </div>
-            </div>
-            <div class="containerRight">
-              <div class="slidePage2" id="slide1">
-                <p
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    height: 100%;
-                  ">
-                  <img
-                    src="../assets/homepage/contruction.svg"
-                    class="construction"
-                    alt="temp image"
-                    style="
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      width: 300px;
-                    " />
-                </p>
-              </div>
-              <div class="slidePage2" id="slide2">
-                <p
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    height: 100%;
-                  ">
-                  <img
-                    src="../assets/homepage/contruction.svg"
-                    class="construction"
-                    alt="temp image"
-                    style="
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      width: 300px;
-                    " />
-                </p>
-              </div>
-              <div class="slidePage2" id="slide3">
-                <p
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    height: 100%;
-                  ">
-                  <img
-                    src="../assets/homepage/contruction.svg"
-                    class="construction"
-                    alt="temp image"
-                    style="
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      width: 300px;
-                    " />
-                </p>
-              </div>
-              <div class="slidePage2" id="slide4">
-                <p
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    height: 100%;
-                  ">
-                  <img
-                    src="../assets/homepage/contruction.svg"
-                    class="construction"
-                    alt="temp image"
-                    style="
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      width: 300px;
-                    " />
-                </p>
-              </div>
-              <div class="slidePage2" id="slide5">
-                <p
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    height: 100%;
-                  ">
-                  <img
-                    src="../assets/homepage/contruction.svg"
-                    class="construction"
-                    alt="temp image"
-                    style="
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      width: 300px;
-                    " />
-                </p>
-              </div>
-              <div class="slidePage2" id="slide6">
-                <p
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    height: 100%;
-                  ">
-                  <img
-                    src="../assets/homepage/constructions2.svg"
-                    class="construction"
-                    alt="temp image"
-                    style="
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      width: 300px;
-                    " />
-                </p>
-              </div>
-            </div>
+      <!-- <fieldset class="slide2_Background">I love cheetos</fieldset> -->
+      <div class="containerMain">
+        <div class="containerLeft">
+          <div class="instruction" onclick="showSlide(1)">
+            Upload Design
+            <p class="instructiontext desc1">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </p>
           </div>
-        </span>
-      </span>
+          <div class="instruction" onclick="showSlide(2)">
+            Adding a New Component
+            <p class="instructiontext desc2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </p>
+          </div>
+          <div class="instruction" onclick="showSlide(3)">
+            Navigation Buttons
+            <p class="instructiontext desc3">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </p>
+          </div>
+          <div class="instruction" onclick="showSlide(4)">
+            Border Color / Fill Options
+            <p class="instructiontext desc4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </p>
+          </div>
+          <div class="instruction" onclick="showSlide(5)">
+            Exporting Project
+            <p class="instructiontext desc5">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </p>
+          </div>
+          <div class="instruction" onclick="showSlide(6)">
+            Keyboard Shortcuts
+            <p class="instructiontext desc6">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </p>
+          </div>
+        </div>
+        <div class="containerRight">
+          <div class="slidePage2" id="slide1">
+            <p
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+              ">
+              <img
+                src="../assets/homepage/contruction.svg"
+                class="construction"
+                alt="temp image"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 300px;
+                " />
+            </p>
+          </div>
+          <div class="slidePage2" id="slide2">
+            <p
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+              ">
+              <img
+                src="../assets/homepage/contruction.svg"
+                class="construction"
+                alt="temp image"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 300px;
+                " />
+            </p>
+          </div>
+          <div class="slidePage2" id="slide3">
+            <p
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+              ">
+              <img
+                src="../assets/homepage/contruction.svg"
+                class="construction"
+                alt="temp image"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 300px;
+                " />
+            </p>
+          </div>
+          <div class="slidePage2" id="slide4">
+            <p
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+              ">
+              <img
+                src="../assets/homepage/contruction.svg"
+                class="construction"
+                alt="temp image"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 300px;
+                " />
+            </p>
+          </div>
+          <div class="slidePage2" id="slide5">
+            <p
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+              ">
+              <img
+                src="../assets/homepage/contruction.svg"
+                class="construction"
+                alt="temp image"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 300px;
+                " />
+            </p>
+          </div>
+          <div class="slidePage2" id="slide6">
+            <p
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+              ">
+              <img
+                src="../assets/homepage/constructions2.svg"
+                class="construction"
+                alt="temp image"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 300px;
+                " />
+            </p>
+          </div>
+        </div>
+      </div>
     </span>
     <!-- slide 3 -->
     <span class="slide" id="teamSection">
-      <div class="team-header">
-        <h1>Meet the team</h1>
+      <div>
+        <h1 class="team-header">Meet the team</h1>
       </div>
       <span class="profiles-container">
         <span class="profile">
