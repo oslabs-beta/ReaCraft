@@ -48,6 +48,10 @@ img.arrow.dark {
   filter: brightness(100) saturate(0);
 }
 
+.animate-bounce-in-top {
+  animation: bounce-in-top 2s both;
+}
+
 .boxContainer {
   animation: slideUp 2.5s ease-out forwards 1.5s;
   box-shadow: 5px 5px 15px 0.5rem rgb(53, 53, 53);
