@@ -12,6 +12,7 @@ export default function MainContainer() {
   const { message, page } = useSelector((state) => state.app);
   const { loading } = useSelector((state) => state.designV3);
   const dispatch = useDispatch();
+
   return (
     <Container
       value='WorkSpaceContainer'
@@ -31,6 +32,10 @@ export default function MainContainer() {
           <Home maxWidth='false' />
         </Box>
       )}
+      {/* <Switch>
+        <Route path='/home' render={() => <Home page={page} />} />
+        <Route path='/design' render={() => <Design page={page} />} />
+      </Switch> */}
       <Snackbar
         value='SnackbarUnderWorkSpaceCont'
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
