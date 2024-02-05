@@ -12,6 +12,7 @@ body {
   overflow: auto;
   height: 100%;
   width: 100%;
+  color: #2c2c2c !important;
 }
 
 /* tutorial slide scrolling */
@@ -274,8 +275,8 @@ html {
 #signup {
   background: none;
   border: none;
-  color: white;
   cursor: pointer;
+  color: #2c2c2c;
   display: inline-block;
   font-family: 'Baloo Bhaijaan 2', sans-serif;
   font-size: 1.2rem;
@@ -288,7 +289,7 @@ html {
 
 #login::after,
 #signup::after {
-  background: white;
+  background: #2c2c2c;
   bottom: -10px;
   content: '';
   display: block;
