@@ -11,19 +11,45 @@
   background: var(--background);
   border-radius: 2px;
   padding: 20px;
-  height: 60vw;
+  height: 80vh;
+  width: 30vw;
+  max-height: 700px;
+  min-height: 650px;
+  min-width: 450px;
   /* position: relative; */
   font-family: 'Baloo Bhaijaan 2', sans-serif;
+}
+
+@media (min-width: 1080px) and (min-height: 960px) {
+  .modal-content {
+    max-height: 700px;
+    height: 700px;
+  }
+
+  .html {
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 800) and (max-height: 600) {
+  .html {
+    min-width: 600px;
+    min-height: 800px;
+  }
 }
 
 .modal-header {
   border-bottom: none;
   position: relative;
+  margin-bottom: 0;
 }
 
 .modal-body p {
   text-align: center;
-  margin-top: 50px;
+  max-height: 800px;
+  min-height: 650px;
+  min-width: 450px;
+  /* margin-top: 5%; */
 }
 
 .btn-close {
@@ -35,8 +61,11 @@
 .greeting-text {
   font-size: 3em;
   /* color: #d5bdaf; */
+  display: flex;
   color: var(--accentLogo);
-  margin-bottom: 20px;
+  /* margin-bottom: 10px; */
+  justify-content: flex-start;
+  align-items: flex-end;
 }
 
 .form-floating {
@@ -48,7 +77,7 @@
   border: none;
   border-bottom: 2px solid #cccccc;
   border-radius: 0;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .form-control:focus {
@@ -118,7 +147,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  padding: 8px;
+  margin-bottom: 5%;
 }
 
 .btn-google:hover {
@@ -249,4 +279,12 @@
 .dark .account-button:hover {
   background-color: #92939d;
   border-color: #92939d;
+}
+
+.copy-right {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 100%;
+  margin: 0;
 }
