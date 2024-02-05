@@ -48,6 +48,10 @@ img.arrow.dark {
   filter: brightness(100) saturate(0);
 }
 
+.animate-bounce-in-top {
+  animation: bounce-in-top 2s both;
+}
+
 .boxContainer {
   animation: slideUp 2.5s ease-out forwards 1.5s;
   box-shadow: 5px 5px 15px 0.5rem rgb(53, 53, 53);
@@ -251,7 +255,7 @@ img.arrow.dark {
   display: flex;
   flex-direction: column;
   font-family: 'Baloo Bhaijaan 2', sans-serif;
-  margin-bottom: 5%;
+  margin-bottom: 10%;
   text-align: center;
 }
 
@@ -262,18 +266,14 @@ img.arrow.dark {
 
 .profile-photos {
   border-radius: 50%;
-  height: 10vw;
+  width: 15vw;
+  height: 15vw;
   margin-bottom: 1%;
   object-fit: cover;
-  width: 10vw;
 }
 
 .profiles-container {
-  display: flex;
-  flex-wrap: wrap;
-  width: 70vw;
-  /* gap: 100px; */
-  justify-content: space-between;
+  display: grid;
   animation: slideUp 2.5s ease-out forwards 1.5s;
 }
 
@@ -330,7 +330,7 @@ img.arrow.dark {
 .team-header {
   font-family: 'Baloo Bhaijaan 2', sans-serif;
   font-size: 4vw;
-  margin-bottom: 10vh;
+  /* margin-bottom: 10vh; */
   text-align: center;
   width: 100%;
 }
