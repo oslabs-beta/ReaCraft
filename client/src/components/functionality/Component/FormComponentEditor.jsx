@@ -95,7 +95,8 @@ export default function FormComponentEditor({
         background: '415a77',
       }}
       open={open}
-      onClose={closeEditor}>
+      onClose={closeEditor}
+    >
       <Box
         component='form'
         className='componentEditor'
@@ -103,7 +104,8 @@ export default function FormComponentEditor({
         display='grid'
         gridTemplateColumns='repeat(12, 1fr)'
         gap={2}
-        onSubmit={handleSumbit}>
+        onSubmit={handleSumbit}
+      >
         <NameAndParent idx={idx} name={component.name} />
 
         {isLeaf && (
@@ -132,7 +134,8 @@ export default function FormComponentEditor({
                   closeEditor();
                 }
                 dispatch(setMessage(deleteMessage));
-              }}>
+              }}
+            >
               Delete
             </Button>
           )}
@@ -224,7 +227,8 @@ function AddData({ data, setData, dataName }) {
                 value: '',
               },
             ])
-          }>
+          }
+        >
           <AddCircleIcon label='plusIcon' color='#415a77' />{' '}
           {/* changes the color of the '+' in
           Props & Styles*/}
@@ -270,7 +274,8 @@ function AddData({ data, setData, dataName }) {
             <IconButton
               onClick={() => {
                 setData(data.filter((_, i) => i !== idx));
-              }}>
+              }}
+            >
               <RemoveCircleIcon />
             </IconButton>
           </Box>
@@ -285,43 +290,45 @@ function AddData({ data, setData, dataName }) {
 
 function PropsTextField({ idx, item, setData, keys, data }) {
   const dispatch = useDispatch();
+  const [propKey, setPropKey] = useState(item.key);
+
+  const duplicateErr = {
+    severity: 'error',
+    text: `Invalid prop key: ${propKey} has already been declared.`,
+  };
+  const invalidErr = {
+    severity: 'error',
+    text: `Invalid prop key: ${propKey} is not a valid Javascript variable name.`,
+  };
+  const emptyErr = {
+    severity: 'error',
+    text: `Props key cannot be empty.`,
+  };
+
   return (
     <TextField
       required
       label='key'
       id={`key${idx}`}
       name={`props-${item.key}-key`}
-      value={item.key}
-      onChange={(e) => {
-        const duplicateErr = {
-          severity: 'error',
-          text: `Invalid prop key: ${e.target.value} has already been declared.`,
-        };
-        const invalidErr = {
-          severity: 'error',
-          text: `Invalid prop key: ${e.target.value} is not a valid Javascript variable name.`,
-        };
-        const emptyErr = {
-          severity: 'error',
-          text: `Props key cannot be empty.`,
-        };
+      onChange={(e) => setPropKey(e.target.value)}
+      value={propKey}
+      onBlur={() => {
         let message;
-        if (e.target.value.length > 0 && keys.includes(e.target.value))
+        if (propKey.length === 0) {
+          message = emptyErr;
+          setPropKey(item.key);
+        } else if (keys.slice(0, idx).includes(propKey)) {
           message = duplicateErr;
-        else if (
-          !isValidVariableName(e.target.value) &&
-          e.target.value.length > 0
-        )
+          setPropKey(item.key);
+        } else if (!isValidVariableName(propKey) && propKey.length > 0) {
           message = invalidErr;
-        else if (e.target.value.length === 0) message = emptyErr;
-        else {
+          setPropKey(item.key);
+        } else {
           setData(
-            data.map((el, i) =>
-              i === idx ? { ...el, key: e.target.value } : el
-            )
+            data.map((el, i) => (i === idx ? { ...el, key: propKey } : el))
           );
         }
-
         dispatch(setMessage(message));
       }}
     />
@@ -392,7 +399,8 @@ function StylesAutocomplete({ idx, item, setData, keys, data }) {
         open={Boolean(anchorEl)}
         placement='bottom'
         anchorEl={anchorEl}
-        sx={{ zIndex: 10000, color: '#415a77', backgroundColor: '#bdbbb6' }}>
+        sx={{ zIndex: 10000, color: '#415a77', backgroundColor: '#bdbbb6' }}
+      >
         <Typography>
           Note: setting border-related styles here might not {'\n'}be reflected
           in the component rectangle
