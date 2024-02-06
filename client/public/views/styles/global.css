@@ -1,16 +1,26 @@
+:root {
+  --accent: #d9d0c7;
+  --background: #f4f3f7;
+  --text: #2c2c2c;
+  --darkbackground: #415a77;
+  --accentLogo: #bdbbb6;
+  --min-window-height: 800px;
+  --min-window-width: 600px;
+}
+
 .btn-primary {
-  background-color: #e0e1dd;
+  background-color: var(--accentLogo);
   border: 0;
   box-shadow: 1px 2px #cacbc8;
-  color: #415a77 !important;
+  color: var(--text) !important;
 }
 
 .btn-primary:hover {
-  background-color: #cacbc8;
+  background-color: var(--accentLogo);
 }
 
 .text-body-emphasis {
-  color: #415a77 !important;
+  color: var(--accentLogo) !important;
 }
 
 .description {
@@ -26,7 +36,7 @@
 }
 
 .login h1 {
-  color: #415a77 !important;
+  color: var(--text) !important;
 }
 
 .login label {
@@ -123,8 +133,7 @@ html * {
   border-bottom-right-radius: 50%;
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px,
-    rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
+  box-shadow: rgba(255, 145, 145, 0.2) 0px 2px 1px -1px;
   box-sizing: border-box;
   color: rgb(255, 255, 255);
   cursor: pointer;

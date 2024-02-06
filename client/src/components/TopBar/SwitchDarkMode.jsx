@@ -22,12 +22,12 @@ const MuiSwitch = styled(Switch)(({ theme }) => ({
       '& + .MuiSwitch-track': {
         opacity: 1,
         width: 30,
-        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+        backgroundColor: theme.palette.mode === 'dark' ? '#d9d0c7' : '#d9d0c7',
       },
     },
   },
   '& .MuiSwitch-thumb': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#E0E1DD' : '#001e3c',
+    backgroundColor: theme.palette.mode === 'dark' ? '#f4f3f7' : '#bdbbb6',
     width: 25,
     height: 25,
     x: '10px',

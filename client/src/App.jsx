@@ -3,7 +3,7 @@ import { useAuth } from './hooks/useAuth';
 import Cookies from 'js-cookie';
 import { ThemeProvider, styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { themeLight, themeDark } from './styles/ThemeGlobal';
+import { themeLight, themeDark } from './styles/ThemeGlobal.js';
 import TopBar from './components/TopBar/TopBar';
 import MainContainer from './components/MainContainer/MainContainer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -93,21 +93,21 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-        <TopBar
-          toggleDarkMode={toggleDarkMode}
-          darkMode={darkMode}
-          drawerOpen={drawerOpen}
-          handleDrawerOpen={handleDrawerOpen}
+      <TopBar
+        toggleDarkMode={toggleDarkMode}
+        darkMode={darkMode}
+        drawerOpen={drawerOpen}
+        handleDrawerOpen={handleDrawerOpen}
+      />
+      <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+      <Main open={drawerOpen}>
+        <MainContainer
+          sx={{
+            top: '10%',
+          }}
         />
-        <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-        <Main open={drawerOpen}>
-          <MainContainer
-            sx={{
-              top: '10%',
-            }}
-          />
-          <ButtonBuyCoffee />
-        </Main>
+        <ButtonBuyCoffee />
+      </Main>
     </ThemeProvider>
   );
 }

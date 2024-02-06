@@ -36,8 +36,7 @@ export default function WorkspaceLeft() {
         justifyContent: 'center',
         zIndex: 1,
         paddingTop: '10px',
-      }}
-    >
+      }}>
       {canEdit && (
         <Box sx={{ paddingLeft: '50px', marginRight: '20px' }}>
           <ButtonAddNewComponent />
@@ -83,14 +82,12 @@ function ComponentDisplay({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-      }}
-    >
+      }}>
       <ListItemButton
         value='NewComponentInputBox'
         selected={selected}
         onClick={handleListItemClick}
-        sx={{ width: '100%', paddingLeft: '40px' }}
-      >
+        sx={{ width: '100%', paddingLeft: '45px', borderRadius: '2px' }}>
         <ListItemText primary={component.name} />
         {selected && canEdit && (
           <Fragment>
@@ -99,8 +96,7 @@ function ComponentDisplay({
                 e.stopPropagation();
                 setOpenEditor(true);
               }}
-              size='small'
-            >
+              size='small'>
               <FontAwesomeIcon icon={faPenToSquare} />
             </IconButton>
             {idx > 0 && (
@@ -122,12 +118,11 @@ function ComponentDisplay({
       {selected && idx > 0 && canEdit && (
         <Box
           sx={{
-            padding: '0 20px',
+            padding: '20px 0 0 35px',
             display: 'flex',
             gap: '20px',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <SelectorParent childIdx={idx} />
           <ButtonGroupRectangleStyle rectangle={component.rectangle} />
         </Box>

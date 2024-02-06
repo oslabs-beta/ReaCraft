@@ -68,12 +68,12 @@ export default function UserImageUploadButton() {
         } else {
           console.log('received message without type:', message);
         }
-      } catch(err) {
+      } catch (err) {
         console.error('error parsing from server:', error);
       }
     };
 
-    // if there's an error with the websocket 
+    // if there's an error with the websocket
     ws.onerror = (event) => {
       console.error('websocket error:', event);
       // check if event code is 1006 = abnormal connection
@@ -83,67 +83,68 @@ export default function UserImageUploadButton() {
       // attempt to reconnect after a backoff delay
       const backOffDelay = calculateBackOffDelay(retryCount);
       setTimeout(() => initiateWebSocketConnection(clientId, retryCount + 1));
-    }
+    };
 
     // when websocket closes
     ws.onclose = () => {
       console.log('websocket connection closed');
     };
     // set websocket connection to state
-    setSocket(ws); 
-  };
+    setSocket(ws);
+  }
 
-  // calculates the delay for reconection attempts 
+  // calculates the delay for reconection attempts
   function calculateBackOffDelay(retryCount) {
-    // exponential back-off formula 
-    return Math.min(1000 * (2 ** retryCount), 30000);
-  };
+    // exponential back-off formula
+    return Math.min(1000 * 2 ** retryCount, 30000);
+  }
 
   function handleFileChange(file) {
-      console.log('hit handleFileChange');
-      setFileName(file.name);
-      setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB');
+    console.log('hit handleFileChange');
+    setFileName(file.name);
+    setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB');
 
-      const clientId = generateUniqueIdentifier();
-      console.log('Generated clientId:', clientId);
+    const clientId = generateUniqueIdentifier();
+    console.log('Generated clientId:', clientId);
 
-      if (file) {
-        dispatch(setMessage({ severity: 'success', text: 'Upload successful.' }));
+    if (file) {
+      dispatch(setMessage({ severity: 'success', text: 'Upload successful.' }));
 
-        const reader = new FileReader();
+      const reader = new FileReader();
 
-        reader.onloadend = () => { 
-          const userImage = reader.result;
-          const img = new Image();
+      reader.onloadend = () => {
+        const userImage = reader.result;
+        const img = new Image();
 
-          img.onload = () => {
-            const setWidth = 800;
-            const imageHeight = img.height * (setWidth / img.width);
-            // ensure the socket is connected before dispatching
-            const currentSocket = initiateWebSocketConnection(clientId); 
+        img.onload = () => {
+          const setWidth = 800;
+          const imageHeight = img.height * (setWidth / img.width);
+          // ensure the socket is connected before dispatching
+          const currentSocket = initiateWebSocketConnection(clientId);
 
-              try {
-                dispatch(newDesign({ userImage, imageHeight, clientId }));
-                console.log('dispatching to newDesign');
-                dispatch(setSelectedPageIdx(0));
-                dispatch(
-                  setMessage({ severity: 'success', text: 'Upload successful.' })
-                );
-              } catch (err) {
-                dispatch(setMessage({ 
-                  severity: 'error', 
-                  text: 'App: add new design' + err,
-                })
-                );
-              }
-            } 
-          img.onerror = (error) => {
-            console.error('Error loading image:', error);
-          };
-          img.src = userImage;
+          try {
+            dispatch(newDesign({ userImage, imageHeight, clientId }));
+            console.log('dispatching to newDesign');
+            dispatch(setSelectedPageIdx(0));
+            dispatch(
+              setMessage({ severity: 'success', text: 'Upload successful.' })
+            );
+          } catch (err) {
+            dispatch(
+              setMessage({
+                severity: 'error',
+                text: 'App: add new design' + err,
+              })
+            );
+          }
         };
-        reader.readAsDataURL(file);
-      }
+        img.onerror = (error) => {
+          console.error('Error loading image:', error);
+        };
+        img.src = userImage;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   // useEffect to close websocket connection
@@ -153,83 +154,91 @@ export default function UserImageUploadButton() {
         socket.close();
         console.log('connection closed');
       }
-    }
+    };
   }, [socket]);
 
   return (
-      <Box className='container'>
-        <Box className='svgBackground'>
-          <img src='/assets/Dotted_Box.svg' alt='Dotted box' /> 
-        </Box>
-        <Box className='content'>
-            <FileUploader
-              handleChange={handleFileChange} 
-              name="file" 
-              types={['JPG', 'PNG']} 
-              children={(
-                <Box>
-                  <CloudUploadRoundedIcon style={{ fontSize: '70px', color: '#736C6C', marginLeft: '60px' }} />
-                  <div style={{ margin: '20px 0', color: 'black' }}>Drag & Drop your files here</div>
-                  <Box>
-                  <Button
-                    variant="contained"
-                    component="label"
-                    sx={{
-                      backgroundColor: '#FFFFFF',
-                      color: '#8D99AE',
-                      marginLeft: '50px',
-                      '&:hover': {
-                        backgroundColor: '#E0E0E0',
-                      },
-                      '&:focus': {
-                        outline: 'none',
-                      },
-                      '&:active': {
-                        outline: 'none',
-                        border: 'none',
-                        boxShadow: 'none',
-                      }
-                    }}
-                  >
-                    BROWSE
-                    <VisuallyHiddenInput
-                      type='file'
-                      name='userImage'
-                      accept='image/*'
-                      onChange={(e) => handleFileChange(e.target.files[0])}
-                    />
-                  </Button>
-                    </Box>
-                </Box>
-              )}
-            />
-              {/* if fileName is set, render a Box with fileName, fileSize, and a LinearProgress component for uploadProgress */}
-              {fileName && (
-                <Box sx={{ textAlign: 'center', color: 'black', marginTop: '10px' }}>
-                  <span>{fileName}</span> - <span>{fileSize}</span>
-                  <LinearProgress
-                    variant="determinate"
-                    value={uploadProgress}
-                    sx={{
-                      width: '100%',
-                      marginTop: '10px',
-                      color: 'black',
-                    }}
+    <Box className='container'>
+      <Box className='svgBackground'>
+        <img src='/assets/Dotted_Box.svg' alt='Dotted box' />
+      </Box>
+      <Box className='content'>
+        <FileUploader
+          handleChange={handleFileChange}
+          name='file'
+          types={['JPG', 'PNG']}
+          children={
+            <Box>
+              <CloudUploadRoundedIcon
+                style={{
+                  fontSize: '70px',
+                  color: '#7bdbbb6',
+                  marginLeft: '60px',
+                }}
+              />
+              <div style={{ margin: '20px 0', color: 'black' }}>
+                Drag & Drop your files here
+              </div>
+              <Box>
+                <Button
+                  variant='contained'
+                  component='label'
+                  sx={{
+                    backgroundColor: '#FFFFFF',
+                    color: '#2c2c2c',
+                    marginLeft: '50px',
+                    '&:hover': {
+                      backgroundColor: '#E0E0E0',
+                    },
+                    '&:focus': {
+                      outline: 'none',
+                    },
+                    '&:active': {
+                      outline: 'none',
+                      border: 'none',
+                      boxShadow: 'none',
+                    },
+                  }}>
+                  BROWSE
+                  <VisuallyHiddenInput
+                    type='file'
+                    name='userImage'
+                    accept='image/*'
+                    onChange={(e) => handleFileChange(e.target.files[0])}
                   />
-                  <Button
-                    sx={{
-                      marginTop: '10px',
-                      color: 'black',
-                      borderColor: '#8D99AE',
-                    }}
-                    onClick={() => {/* logic to handle file removal */}}
-                  >
-                    X
-                  </Button>
-                </Box>
-              )}
+                </Button>
+              </Box>
             </Box>
+          }
+        />
+        {/* if fileName is set, render a Box with fileName, fileSize, and a LinearProgress component for uploadProgress */}
+        {fileName && (
+          <Box sx={{ textAlign: 'center', color: 'black', marginTop: '10px' }}>
+            <span>{fileName}</span> - <span>{fileSize}</span>
+            <LinearProgress
+              variant='determinate'
+              value={uploadProgress}
+              sx={{
+                width: '100%',
+                marginTop: '10px',
+                color: 'black',
+              }}
+            />
+            <Button
+              sx={{
+                marginTop: '10px',
+                color: 'black',
+                borderColor: '#8D99AE',
+              }}
+              onClick={() => {
+                /* logic to handle file removal */
+              }}>
+              X
+            </Button>
           </Box>
+        )}
+      </Box>
+    </Box>
   );
 }
 

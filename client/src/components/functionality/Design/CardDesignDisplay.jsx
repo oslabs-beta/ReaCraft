@@ -44,8 +44,7 @@ export default function CardDesignDisplay({ design }) {
         position: 'relative',
       }}
       elevation={3}
-      square={false}
-    >
+      square={false}>
       {typeof canEdit === 'boolean' && (
         <Box sx={{ position: 'absolute', right: '10px', top: '10px' }}>
           <Tooltip title='Collaboartion design'>
@@ -58,9 +57,10 @@ export default function CardDesignDisplay({ design }) {
       <CardMedia
         align='center'
         sx={{
-          borderRadius: '5px',
+          borderTopLeftRadius: '5px',
+          borderTopRightRadius: '5px',
           height: 140,
-          boxShadow: '0px 15px 200px -9px #5B5B5B',
+          // boxShadow: '3px 5px 5px -3px rgba(44, 44, 44, 1)',
         }}
         image={design.image_url}
         title={design.title}
@@ -71,47 +71,50 @@ export default function CardDesignDisplay({ design }) {
           initialText={design.title}
           canEdit={canEdit}
           align='center'
+          sx={{
+            fontSize: 'xl',
+          }}
         />
         <Typography gutterBottom variant='h5' component='div'></Typography>
         <Typography
           variant='body2'
-          color='text.secondary'
+          color='text'
           sx={{
-            fontSize: {
-              md: 12,
-              sm: 11,
-              xs: 10,
-            },
-          }}
-        >
-          Created at: {created_at.toLocaleString()}
+            fontSize: 'lg',
+            // fontSize: {
+            //   md: 12,
+            //   sm: 11,
+            //   xs: 10,
+            // },
+          }}>
+          Created: {created_at.toLocaleString()}
         </Typography>
         <Typography
           variant='body2'
-          color='text.secondary'
+          color='text'
           sx={{
-            fontSize: {
-              md: 12,
-              sm: 11,
-              xs: 10,
-            },
-          }}
-        >
-          Updated at: {last_updated.toLocaleString()}
+            fontSize: 'lg',
+            // fontSize: {
+            //   md: 12,
+            //   sm: 11,
+            //   xs: 10,
+            // },
+          }}>
+          Updated: {last_updated.toLocaleString()}
         </Typography>
         {last_updated_by && (
           <Typography
             variant='body2'
-            color='text.secondary'
+            color='text'
             sx={{
-              fontSize: {
-                md: 12,
-                sm: 11,
-                xs: 10,
-              },
-            }}
-          >
-            last_updated_by: {last_updated_by}
+              fontSize: 'lg',
+              // fontSize: {
+              //   md: 12,
+              //   sm: 11,
+              //   xs: 10,
+              // },
+            }}>
+            Last Updated By: {last_updated_by}
           </Typography>
         )}
       </CardContent>
@@ -119,13 +122,11 @@ export default function CardDesignDisplay({ design }) {
         sx={{
           display: 'flex',
           justifyContent: 'end',
-        }}
-      >
+        }}>
         <IconButton
           size='medium'
           onClick={(e) => setAnchorEl(e.currentTarget)}
-          sx={{ boxShadow: 'none', color: 'white' }}
-        >
+          sx={{ boxShadow: 'none', color: 'white' }}>
           <FontAwesomeIcon icon={faEllipsis} />
         </IconButton>
         <DesignMenu
@@ -159,8 +160,7 @@ function DesignMenu({
       onClose={handleClose}
       MenuListProps={{
         'aria-labelledby': 'basic-button',
-      }}
-    >
+      }}>
       <MenuItem
         onClick={async () => {
           try {
@@ -173,8 +173,7 @@ function DesignMenu({
               })
             );
           }
-        }}
-      >
+        }}>
         <ListItemIcon sx={{ color: 'white' }}>
           <FontAwesomeIcon icon={viewOnly ? faEye : faPenToSquare} />
         </ListItemIcon>

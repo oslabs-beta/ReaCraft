@@ -74,17 +74,14 @@ const StyledMenu = styled((props) => (
   />
 ))(({ theme }) => ({
   '& .MuiPaper-root': {
-    borderRadius: 6,
+    borderRadius: 1,
     marginTop: theme.spacing(1),
     minWidth: 180,
     backgroundColor:
       theme.palette.mode === 'light'
         ? '#ffffff'
         : theme.palette.background.paper,
-    color:
-      theme.palette.mode === 'light'
-        ? 'rgb(55, 65, 81)'
-        : theme.palette.grey[300],
+    color: theme.palette.mode === 'light' ? '#bdbbb6' : theme.palette.grey[300],
     boxShadow:
       'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
     '& .MuiMenu-list': {
@@ -96,7 +93,7 @@ const StyledMenu = styled((props) => (
         color:
           theme.palette.mode === 'light'
             ? 'rgb(55, 65, 81)'
-            : theme.palette.text.secondary,
+            : theme.palette.text,
         marginRight: theme.spacing(1.5),
       },
       '&:active': {
@@ -135,8 +132,7 @@ export default function ButtonUserMenu() {
         disableElevation
         onClick={(e) => setAnchorEl(e.currentTarget)}
         endIcon={<KeyboardArrowDownIcon />}
-        sx={{ backgroundColor: 'transparent', color: '#736c6c' }}
-      >
+        sx={{ backgroundColor: 'transparent', color: '#bdbbb6' }}>
         <Avatar src={avatar} sx={{ width: 40, height: 40 }} />
       </Button>
       <StyledMenu
@@ -147,16 +143,14 @@ export default function ButtonUserMenu() {
         }}
         anchorEl={anchorEl}
         open={open}
-        onClose={() => setAnchorEl(null)}
-      >
+        onClose={() => setAnchorEl(null)}>
         <MenuItem
           onClick={() => {
             setModal(true);
             setAnchorEl(null);
           }}
           disableRipple
-          sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}
-        >
+          sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <FontAwesomeIcon icon={faCircleInfo} />
           Account
         </MenuItem>
@@ -164,8 +158,7 @@ export default function ButtonUserMenu() {
         <MenuItem
           onClick={() => logout()}
           disableRipple
-          sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}
-        >
+          sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <FontAwesomeIcon icon={faRightFromBracket} />
           Logout
         </MenuItem>
@@ -175,8 +168,7 @@ export default function ButtonUserMenu() {
           open={modal}
           onClose={() => setModal(false)}
           aria-labelledby='modal-user-menu'
-          aria-describedby='modal-user-menu'
-        >
+          aria-describedby='modal-user-menu'>
           <Box sx={style}>
             <Typography id='modal-modal-title' variant='h6' component='h2'>
               Account Info
@@ -216,8 +208,7 @@ function UserName({ username }) {
     <TableRow
       sx={{
         '&:last-child td, &:last-child th': { border: 0 },
-      }}
-    >
+      }}>
       <TableCell component='th' scope='row'>
         username
       </TableCell>
@@ -233,8 +224,7 @@ function UserName({ username }) {
                   transform: 'scale(0.5)',
                 },
               }}
-              onClick={() => setIsEditing(true)}
-            >
+              onClick={() => setIsEditing(true)}>
               <FontAwesomeIcon icon={faPenToSquare} />
             </IconButton>
           </Fragment>
@@ -280,8 +270,7 @@ function UserName({ username }) {
                           })
                         );
                       }
-                    }}
-                  >
+                    }}>
                     <FontAwesomeIcon icon={faCircleCheck} />
                   </IconButton>
                 </InputAdornment>
@@ -299,8 +288,7 @@ function UserData({ label, data }) {
     <TableRow
       sx={{
         '&:last-child td, &:last-child th': { border: 0 },
-      }}
-    >
+      }}>
       <TableCell component='th' scope='row'>
         {label}
       </TableCell>
@@ -323,8 +311,7 @@ function UserProfileImage({ avatar, setAvatar }) {
         justifyContent: 'center',
         alignItems: 'center',
         padding: '20px',
-      }}
-    >
+      }}>
       <Avatar src={avatar} sx={{ width: 100, height: 100 }} />
       <Stack direction='row'>
         <Button component='label'>
@@ -370,8 +357,7 @@ function UserProfileImage({ avatar, setAvatar }) {
                   text: 'Delete profile picutre successfully',
                 })
               );
-            }}
-          >
+            }}>
             Delete
           </Button>
         )}
