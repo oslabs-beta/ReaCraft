@@ -20,7 +20,7 @@ export type HtmlTag = '<div>' | '<p>' | '<button>';
 interface ComponentEssential {
   _id: number;
   page_id: number;
-  parent_id: number;
+  parent_id: number | null;
   index: number;
   name: string;
   html_tag: HtmlTag;

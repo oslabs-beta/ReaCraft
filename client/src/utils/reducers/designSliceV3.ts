@@ -27,14 +27,6 @@ export const newDesign = createAsyncThunk(
     await addDesignRequest(body)
 );
 
-export const updateDesignTitleOrCover = createAsyncThunk(
-  'designs/update-title/:designId',
-  async (arg: {
-    designId: number;
-    body: { title?: string; imageUrl?: string };
-  }) => await updateDesignCoverOrTitleRequest(arg.designId, arg.body)
-);
-
 export const getDesignDetails = createAsyncThunk(
   'designs/detail/:designId',
   async (designId: number) => await getDesignDetailsRequest(designId)
@@ -126,7 +118,6 @@ export const addNewPage = createAsyncThunk(
 
 const asyncThunks = [
   newDesign,
-  updateDesignTitleOrCover,
   getDesignDetails,
   addNewComponent,
   deleteComponent,
@@ -144,7 +135,7 @@ const rectangleThunks = [
   updateComponentRectanglePosition,
   updateComponentRectangleStyle,
 ];
-interface DesignState {
+export interface DesignState {
   _id: null | number;
   pages: Page[];
   title: string;
@@ -393,7 +384,12 @@ const designSliceV3 = createSlice({
 });
 
 export const addNewPageAndUpdateSelectedPageIdx =
-  (params: { designId: number; userImage: string; imageHeight: number; clientId: string; }) =>
+  (params: {
+    designId: number;
+    userImage: string;
+    imageHeight: number;
+    clientId: string;
+  }) =>
   async (dispatch: any, getState: any) => {
     const state = getState();
     const pageIdx = state.app.selectedPageIdx;
@@ -440,9 +436,7 @@ export const updateDesignCoverOrTitleAndUpdateState =
   (params: { designId: number; title?: string; imageUrl?: string }) =>
   async (dispatch: any) => {
     const { designId, title, imageUrl } = params;
-    await dispatch(
-      updateDesignTitleOrCover({ designId, body: { title, imageUrl } })
-    );
+    await updateDesignCoverOrTitleRequest(designId, { title, imageUrl });
     if (title) dispatch(updateDesignTitle(title));
     dispatch(
       setMessage({
