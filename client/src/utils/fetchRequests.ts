@@ -50,6 +50,7 @@ export function addNewComponentRequest(
     body: JSON.stringify(body),
   })
     .then((res) => {
+      console.log(res);
       if (!res.ok) {
         throw new Error(res.statusText);
       }
