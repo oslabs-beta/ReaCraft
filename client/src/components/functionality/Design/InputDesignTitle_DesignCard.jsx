@@ -12,7 +12,8 @@ export default function InputDesignTitle({ initialText, designId, canEdit }) {
   const [text, setText] = useState(initialText);
 
   const dispatch = useDispatch();
-  const handleDoubleClick = () => {
+  const handleDoubleClick = (e) => {
+    e.stopPropagation();
     if (canEdit !== false) setIsEditing(true);
   };
 
@@ -21,7 +22,11 @@ export default function InputDesignTitle({ initialText, designId, canEdit }) {
   };
 
   return (
-    <div align='center' onDoubleClick={handleDoubleClick}>
+    <div
+      align='center'
+      onDoubleClick={handleDoubleClick}
+      style={{ zIndex: 100000 }}
+    >
       {isEditing ? (
         <TextField
           // onBlur={() => setIsEditing(false)}
@@ -32,18 +37,22 @@ export default function InputDesignTitle({ initialText, designId, canEdit }) {
               <InputAdornment position='end'>
                 <IconButton
                   onClick={async () => {
-                    try {
-                      await updateDesignCoverOrTitleRequest(designId, {
-                        title: text,
-                      });
+                    if (text === initialText) {
                       setIsEditing(false);
-                    } catch (err) {
-                      dispatch(
-                        setMessage({
-                          severity: 'error',
-                          text: 'Design: update title at homepage ' + err,
-                        })
-                      );
+                    } else {
+                      try {
+                        await updateDesignCoverOrTitleRequest(designId, {
+                          title: text,
+                        });
+                        setIsEditing(false);
+                      } catch (err) {
+                        dispatch(
+                          setMessage({
+                            severity: 'error',
+                            text: 'Design: update title at homepage ' + err,
+                          })
+                        );
+                      }
                     }
                   }}
                 >

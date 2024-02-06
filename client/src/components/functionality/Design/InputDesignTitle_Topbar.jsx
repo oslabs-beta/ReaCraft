@@ -19,7 +19,8 @@ export default function InputDesignTitle() {
             width: '20ch',
             backgroundColor: '#d9d0c7',
           },
-        }}>
+        }}
+      >
         <TextField
           variant='filled'
           label='Design Name'
@@ -28,20 +29,22 @@ export default function InputDesignTitle() {
           disabled={!design.canEdit}
           onChange={(e) => setTitle(e.target.value)}
           onBlur={() => {
-            try {
-              dispatch(
-                updateDesignCoverOrTitleAndUpdateState({
-                  designId: design._id,
-                  title,
-                })
-              );
-            } catch (error) {
-              dispatch(
-                setMessage({
-                  severity: 'error',
-                  text: 'Design: update title in workspace ' + err,
-                })
-              );
+            if (title !== design.title) {
+              try {
+                dispatch(
+                  updateDesignCoverOrTitleAndUpdateState({
+                    designId: design._id,
+                    title,
+                  })
+                );
+              } catch (error) {
+                dispatch(
+                  setMessage({
+                    severity: 'error',
+                    text: 'Design: update title in workspace ' + err,
+                  })
+                );
+              }
             }
           }}
           noValidate
