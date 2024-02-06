@@ -291,7 +291,6 @@ function AddData({ data, setData, dataName }) {
 function PropsTextField({ idx, item, setData, keys, data }) {
   const dispatch = useDispatch();
   const [propKey, setPropKey] = useState(item.key);
-  console.log('keys', keys, item);
 
   const duplicateErr = {
     severity: 'error',
