@@ -84,7 +84,7 @@ export default function CardDesignDisplay({ design }) {
             },
           }}
         >
-          Created at: {created_at.toLocaleString()}
+          Created: {created_at.toLocaleString()}
         </Typography>
         <Typography
           variant='body2'
@@ -97,7 +97,7 @@ export default function CardDesignDisplay({ design }) {
             },
           }}
         >
-          Updated at: {last_updated.toLocaleString()}
+          Updated: {last_updated.toLocaleString()}
         </Typography>
         {last_updated_by && (
           <Typography
@@ -111,7 +111,7 @@ export default function CardDesignDisplay({ design }) {
               },
             }}
           >
-            last_updated_by: {last_updated_by}
+            Last Updated By: {last_updated_by}
           </Typography>
         )}
       </CardContent>
