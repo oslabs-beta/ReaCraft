@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import HomeIcon from '@mui/icons-material/Home';
 import Drawer from '@mui/material/Drawer';
@@ -19,11 +19,12 @@ import { faHouse } from '@fortawesome/free-solid-svg-icons';
 export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
   const dispatch = useDispatch();
   const theme = useTheme();
-
+ 
   function handleClick(page) {
     dispatch(goToPage(page));
     dispatch(resetDesign());
   }
+
   return (
     <Drawer
       anchor='left'
