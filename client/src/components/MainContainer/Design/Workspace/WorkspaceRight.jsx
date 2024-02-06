@@ -26,10 +26,10 @@ export default function WorkspaceRight({ isVertical }) {
       gap={2}
       sx={{
         '& .MuiButtonBase-root': {
+          //changes all the FAB Icons
           boxShadow: 'none',
         },
-      }}
-    >
+      }}>
       <ButtonViewCode
         css={css}
         jsx={jsx}

@@ -3,7 +3,7 @@ import { useAuth } from './hooks/useAuth';
 import Cookies from 'js-cookie';
 import { ThemeProvider, styled, useTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { themeLight, themeDark } from './styles/ThemeGlobal';
+import { themeLight, themeDark } from './styles/ThemeGlobal.js';
 import TopBar from './components/TopBar/TopBar';
 import MainContainer from './components/MainContainer/MainContainer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -81,7 +81,9 @@ export default function App() {
 
   // if SideDrawer is open, this useEffect will close the drawer before rendering the workspace
   useEffect(() => {
-    const transitionDuration = currentTheme.transitions ? currentTheme.transitions.duration.enteringScreen : 300;
+    const transitionDuration = currentTheme.transitions
+      ? currentTheme.transitions.duration.enteringScreen
+      : 300;
 
     if (page === 'DESIGN') {
       if (drawerOpen) {
