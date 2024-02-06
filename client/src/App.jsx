@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from './hooks/useAuth';
 import Cookies from 'js-cookie';
-import { ThemeProvider, styled } from '@mui/material/styles';
+import { ThemeProvider, styled, useTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { themeLight, themeDark } from './styles/ThemeGlobal';
 import TopBar from './components/TopBar/TopBar';
 import MainContainer from './components/MainContainer/MainContainer';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMessage, setWindowSize } from './utils/reducers/appSlice';
+import { goToPage, setMessage, setWindowSize } from './utils/reducers/appSlice';
 import ButtonBuyCoffee from './components/ButtonBuyCoffee';
 import SideDrawer from './components/TopBar/SideDrawer';
 
@@ -46,8 +46,10 @@ export default function App() {
   }
   const { getUser } = useAuth();
   const dispatch = useDispatch();
-
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [renderWorkspace, setRenderWorkspace] = useState(false);
+  const { page } = useSelector((state) => state.app);
+  const currentTheme = darkMode ? themeDark : themeLight;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,6 +79,22 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // if SideDrawer is open, this useEffect will close the drawer before rendering the workspace
+  useEffect(() => {
+    const transitionDuration = currentTheme.transitions ? currentTheme.transitions.duration.enteringScreen : 300;
+
+    if (page === 'DESIGN') {
+      if (drawerOpen) {
+        setDrawerOpen(false);
+        setTimeout(() => setRenderWorkspace(true), transitionDuration);
+      } else {
+        setRenderWorkspace(true);
+      }
+    } else {
+      setRenderWorkspace(false);
+    }
+  }, [page, drawerOpen, currentTheme.transitions]);
+
   // toggle drawer function
   const handleDrawerOpen = () => {
     setDrawerOpen(!drawerOpen);
@@ -102,6 +120,7 @@ export default function App() {
       <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
       <Main open={drawerOpen}>
         <MainContainer
+          renderWorkspace={renderWorkspace}
           sx={{
             top: '10%',
           }}
