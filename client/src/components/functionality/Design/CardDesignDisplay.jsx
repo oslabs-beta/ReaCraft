@@ -70,7 +70,6 @@ export default function CardDesignDisplay({ design }) {
       }}
       elevation={3}
       square={false}
-      onClick={openMenu}
     >
       {typeof canEdit === 'boolean' && (
         <Box sx={{ position: 'absolute', right: '10px', top: '10px' }}>
@@ -82,6 +81,7 @@ export default function CardDesignDisplay({ design }) {
         </Box>
       )}
       <CardMedia
+        onClick={openMenu}
         align='center'
         sx={{
           borderTopLeftRadius: '5px',
@@ -102,35 +102,38 @@ export default function CardDesignDisplay({ design }) {
             fontSize: 'xl',
           }}
         />
-        <Typography gutterBottom variant='h5' component='div'></Typography>
-        <Typography
-          variant='body2'
-          color='text'
-          sx={{
-            fontSize: 'lg',
-            // fontSize: {
-            //   md: 12,
-            //   sm: 11,
-            //   xs: 10,
-            // },
-          }}
-        >
-          Created: {created_at.toLocaleString()}
-        </Typography>
-        <Typography variant='body2' color='text' sx={{ fontSize: 'lg' }}>
-          Updated: {last_updated.toLocaleString()}
-        </Typography>
-        {last_updated_by && (
-          <Typography variant='body2' color='text' sx={{ fontSize: 'lg' }}>
-            Last Updated By: {last_updated_by}
+        <Box onClick={openMenu}>
+          <Typography gutterBottom variant='h5' component='div'></Typography>
+          <Typography
+            variant='body2'
+            color='text'
+            sx={{
+              fontSize: 'lg',
+              // fontSize: {
+              //   md: 12,
+              //   sm: 11,
+              //   xs: 10,
+              // },
+            }}
+          >
+            Created: {created_at.toLocaleString()}
           </Typography>
-        )}
+          <Typography variant='body2' color='text' sx={{ fontSize: 'lg' }}>
+            Updated: {last_updated.toLocaleString()}
+          </Typography>
+          {last_updated_by && (
+            <Typography variant='body2' color='text' sx={{ fontSize: 'lg' }}>
+              Last Updated By: {last_updated_by}
+            </Typography>
+          )}
+        </Box>
       </CardContent>
       <CardActions
         sx={{
           display: 'flex',
           justifyContent: 'end',
         }}
+        onClick={openMenu}
       >
         <IconButton
           size='medium'
