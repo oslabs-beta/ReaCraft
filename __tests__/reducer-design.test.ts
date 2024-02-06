@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import designSliceV3, {
   DesignState,
+  addNewComponent,
   getDesignDetails,
   getDesignDetailsAndSetApp,
   newDesign,
   updateDesignCoverOrTitleAndUpdateState,
 } from '../client/src/utils/reducers/designSliceV3';
-import {} from 'react';
+import { Component } from 'react';
 import {
   ComponentRes,
   DesignRes,
@@ -201,6 +202,61 @@ describe('designSlice', () => {
       expect(app.message).toEqual({
         severity: 'success',
         text: 'updated design cover successfully',
+      });
+    });
+
+    it('handles successful adding new component', async () => {
+      const mockNewComponent: ComponentRes = {
+        _id: 1,
+        page_id: 0,
+        parent_id: 0,
+        index: 1,
+        name: 'NewComponent',
+        html_tag: '<div>',
+        inner_html: 'new component',
+        rectangle: {
+          component_id: 1,
+          x_position: '0',
+          y_position: '0',
+          z_index: 0,
+          width: '100',
+          height: '100',
+          border_width: 10,
+          border_radius: '20',
+          background_color: 'white',
+          stroke: 'red',
+        },
+        props: JSON.stringify({ prop: 'test' }),
+        styles: JSON.stringify({ style: 'test' }),
+      };
+
+      (global.fetch as jest.Mock).mockImplementationOnce(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(mockNewComponent),
+        })
+      );
+
+      await store.dispatch(
+        addNewComponent({
+          pageId: 0,
+          body: {
+            index: 1,
+            rootId: 0,
+            name: 'NewComponent',
+          },
+        })
+      );
+
+      const { design } = store.getState();
+      expect(design).toEqual({
+        ...mockDesignState,
+        pages: [
+          handlePageRes({
+            ...mockPage0,
+            components: [mockPage0Root, mockNewComponent],
+          }),
+        ],
       });
     });
   });
