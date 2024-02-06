@@ -34,7 +34,7 @@ export default function ButtonBuyCoffee() {
           }}
           onClick={(e) => setAnchorEl(e.currentTarget)}
         >
-          <FontAwesomeIcon icon={faMugHot} />
+          <FontAwesomeIcon icon={faMugHot}/>
         </Fab>
       </Tooltip>
       {anchorEl && (
