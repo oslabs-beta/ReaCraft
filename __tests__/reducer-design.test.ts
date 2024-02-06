@@ -1,6 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import designSliceV3, {
   DesignState,
+  getDesignDetails,
+  getDesignDetailsAndSetApp,
   newDesign,
   updateDesignCoverOrTitleAndUpdateState,
 } from '../client/src/utils/reducers/designSliceV3';
@@ -11,8 +13,11 @@ import {
   PageRes,
   RectangleRes,
   handleDesignRes,
+  handlePageRes,
 } from '../client/src/utils/handleReceivedData';
-import appSlice from '../client/src/utils/reducers/appSlice';
+import appSlice, {
+  initialAppState,
+} from '../client/src/utils/reducers/appSlice';
 
 const mockRectangle: RectangleRes = {
   component_id: 0,
@@ -44,7 +49,7 @@ const mockPage0: PageRes = {
   _id: 0,
   design_id: 0,
   index: 0,
-  image_url: 'https://reacraft.s3.amazonaws.com/test.png',
+  image_url: 'test image',
   components: [mockPage0Root],
 };
 
@@ -52,11 +57,18 @@ const mockDesign: DesignRes = {
   _id: 0,
   user_id: 0,
   title: 'Test Design',
-  image_url: 'https://reacraft.s3.amazonaws.com/test.png',
+  image_url: 'test cover',
   created_at: 'now',
   last_updated: 'now',
   last_updated_by: 'testUser',
   pages: [mockPage0],
+};
+
+const mockDesignState: DesignState = {
+  ...handleDesignRes(mockDesign),
+  pages: [handlePageRes(mockPage0)],
+  loading: false,
+  error: undefined,
   canEdit: true,
 };
 
@@ -65,63 +77,131 @@ describe('designSlice', () => {
 
   beforeEach(() => {
     global.fetch = jest.fn() as jest.Mock;
-
-    store = configureStore({
-      reducer: {
-        design: designSliceV3,
-        app: appSlice,
-      },
-    });
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  it('handles successful design creation', async () => {
-    (global.fetch as jest.Mock).mockImplementationOnce(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockDesign),
-      })
-    );
+  describe('Enter Workspace: create new design and get design details', () => {
+    beforeEach(() => {
+      store = configureStore({
+        reducer: { design: designSliceV3 },
+      });
+    });
 
-    await store.dispatch(
-      newDesign({
-        userImage: 'test image',
-        imageHeight: 100,
-        clientId: 'test client id',
-      })
-    );
+    it('handles successful design creation', async () => {
+      (global.fetch as jest.Mock).mockImplementationOnce(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(mockDesign),
+        })
+      );
 
-    const { design } = store.getState();
-    expect(design).toEqual({
-      ...handleDesignRes(mockDesign),
-      loading: false,
-      error: undefined,
+      await store.dispatch(
+        newDesign({
+          userImage: 'test image',
+          imageHeight: 100,
+          clientId: 'test client id',
+        })
+      );
+
+      const { design } = store.getState();
+      expect(design).toEqual(mockDesignState);
+    });
+
+    it('handles successful design details get', async () => {
+      (global.fetch as jest.Mock).mockImplementationOnce(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(mockDesign),
+        })
+      );
+
+      await store.dispatch(getDesignDetails(0));
+
+      const { design } = store.getState();
+      expect(design).toEqual(mockDesignState);
+    });
+
+    it('handles successful design details get and set app', async () => {
+      (global.fetch as jest.Mock).mockImplementationOnce(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(mockDesign),
+        })
+      );
+
+      await store.dispatch(getDesignDetailsAndSetApp(0, false));
+
+      const { design } = store.getState();
+      expect(design).toEqual({ ...mockDesignState, canEdit: false });
     });
   });
 
-  it('handles successful design title or cover update', async () => {
-    (global.fetch as jest.Mock).mockImplementationOnce(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockDesign),
-      })
-    );
+  describe('Inside Workspace: update design, page, component or rectangle', () => {
+    beforeEach(() => {
+      store = configureStore({
+        reducer: {
+          design: designSliceV3,
+          app: appSlice,
+        },
+        preloadedState: {
+          design: mockDesignState,
+          app: initialAppState,
+        },
+      });
+    });
 
-    await store.dispatch(
-      updateDesignCoverOrTitleAndUpdateState({
-        designId: 0,
+    it('handles successful design title update', async () => {
+      (global.fetch as jest.Mock).mockImplementationOnce(() =>
+        Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({ message: 'updated design successfully' }),
+        })
+      );
+
+      await store.dispatch(
+        updateDesignCoverOrTitleAndUpdateState({
+          designId: 0,
+          title: 'new title',
+        })
+      );
+
+      const { design, app } = store.getState();
+      expect(design).toEqual({
+        ...mockDesignState,
         title: 'new title',
-      })
-    );
+      });
+      expect(app.message).toEqual({
+        severity: 'success',
+        text: 'updated design title successfully',
+      });
+    });
 
-    const { design, app } = store.getState();
-    expect(design.title).toBe('new title');
-    expect(app.message).toEqual({
-      severity: 'success',
-      text: 'updated design title successfully',
+    it('handles successful design cover update', async () => {
+      (global.fetch as jest.Mock).mockImplementationOnce(() =>
+        Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({ message: 'updated design successfully' }),
+        })
+      );
+
+      await store.dispatch(
+        updateDesignCoverOrTitleAndUpdateState({
+          designId: 0,
+          imageUrl: 'test cover',
+        })
+      );
+
+      const { design, app } = store.getState();
+      expect(design).toEqual(mockDesignState);
+      expect(app.message).toEqual({
+        severity: 'success',
+        text: 'updated design cover successfully',
+      });
     });
   });
 });
