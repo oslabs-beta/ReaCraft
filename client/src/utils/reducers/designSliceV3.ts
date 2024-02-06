@@ -147,7 +147,7 @@ export interface DesignState {
   canEdit: Boolean;
 }
 
-const initialState: DesignState = {
+export const initialDesignState: DesignState = {
   _id: null,
   pages: [],
   title: 'Untitled',
@@ -161,9 +161,9 @@ const initialState: DesignState = {
 
 const designSliceV3 = createSlice({
   name: 'design_v3',
-  initialState,
+  initialState: initialDesignState,
   reducers: {
-    resetDesign: () => initialState,
+    resetDesign: () => initialDesignState,
     updateRootHeight: (
       state: DesignState,
       action: PayloadAction<{ pageIdx: number; height: number }>
