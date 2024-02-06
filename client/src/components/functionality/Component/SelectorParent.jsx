@@ -18,7 +18,6 @@ export default function SelectorParent({ childIdx }) {
     const child = components[childIdx];
     const parentId = child.parent_id;
     const parent = components.filter((item) => item._id === parentId)[0];
-    console.log('parent', parent);
 
     const theme = useTheme();
 

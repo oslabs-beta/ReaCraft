@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteDesign } from '../../../utils/fetchRequests';
 import { goToPage, setMessage } from '../../../utils/reducers/appSlice';
 import Button from '@mui/material/Button';
