@@ -31,10 +31,6 @@ export function addDesignRequest(body: {
       }
       return res.json();
     })
-    .then((data) => {
-      console.log('new design', data);
-      return data;
-    })
     .then(handleDesignRes)
     .catch((err) => {
       console.log('App: add design: ERROR: ', err);
