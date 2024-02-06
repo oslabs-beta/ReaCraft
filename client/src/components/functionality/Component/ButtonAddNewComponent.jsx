@@ -72,8 +72,7 @@ export default function ButtonAddNewComponent() {
             dispatch(setMessage(errMessage));
           }
         }
-      }}
-    >
+      }}>
       <TextField
         size='small'
         id='new-component'
@@ -84,7 +83,7 @@ export default function ButtonAddNewComponent() {
         onChange={(e) => setName(e.target.value)}
         sx={{
           '& input': {
-            color: theme.palette.mode === 'dark' ? 'white' : '#736c6c',
+            color: theme.palette.mode === 'dark' ? 'white' : '#d9d0c7', //accentlogo color
           },
         }}
       />

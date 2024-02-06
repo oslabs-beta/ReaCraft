@@ -25,7 +25,7 @@ export const themeDOMTreeLight = createTheme({
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-around',
-          backgroundColor: '#FFEEDB',
+          backgroundColor: '#d9d0c7',
           color: '#333333',
           fontSize: '15px',
           height: `40px`,

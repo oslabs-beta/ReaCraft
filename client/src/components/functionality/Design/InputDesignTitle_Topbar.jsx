@@ -14,9 +14,12 @@ export default function InputDesignTitle() {
       <Box
         component='form'
         sx={{
-          '& .MuiTextField-root': { m: '10px', width: '20ch' },
-        }}
-      >
+          '& .MuiTextField-root': {
+            m: '10px',
+            width: '20ch',
+            backgroundColor: '#d9d0c7',
+          },
+        }}>
         <TextField
           variant='filled'
           label='Design Name'
