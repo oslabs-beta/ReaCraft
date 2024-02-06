@@ -58,7 +58,6 @@ export default function KonvaStage({
     // prevent stage from deselecting the shape
     e.cancelBubble = true;
     const clickedIdx = components.findIndex((item) => item._id === componentId);
-    console.log('clicked', clickedIdx);
     dispatch(setSelectedIdx(clickedIdx));
   }
 
