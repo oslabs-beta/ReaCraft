@@ -37,8 +37,7 @@ export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
           boxSizing: 'border-box',
           marginTop: '64px',
         },
-      }}
-    >
+      }}>
       <Divider />
       <Stack gap={2} sx={{ alignItems: 'center', marginTop: '15px' }}>
         <Tooltip title='New Design'>
@@ -54,8 +53,7 @@ export default function SideDrawer({ drawerOpen, setDrawerOpen }) {
               '& svg': {
                 transform: 'scale(1.2)',
               },
-            }}
-          >
+            }}>
             <FontAwesomeIcon icon={faHouse} />
           </Fab>
         </Tooltip>

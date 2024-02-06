@@ -26,9 +26,11 @@ const boxStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 500,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
+  bgcolor: '#f4f3f7',
+  color: '#2c2c2c',
+  // border: '2px solid #000',
+  borderRadius: '2px',
+  boxShadow: '3px 5px 5px -3px rgba(44, 44, 44, 1);',
   p: 4,
 };
 
@@ -88,7 +90,12 @@ export default function FormComponentEditor({
   }
 
   return (
-    <Modal open={open} onClose={closeEditor}>
+    <Modal
+      sx={{
+        background: '415a77',
+      }}
+      open={open}
+      onClose={closeEditor}>
       <Box
         component='form'
         className='componentEditor'
@@ -96,8 +103,7 @@ export default function FormComponentEditor({
         display='grid'
         gridTemplateColumns='repeat(12, 1fr)'
         gap={2}
-        onSubmit={handleSumbit}
-      >
+        onSubmit={handleSumbit}>
         <NameAndParent idx={idx} name={component.name} />
 
         {isLeaf && (
@@ -126,15 +132,14 @@ export default function FormComponentEditor({
                   closeEditor();
                 }
                 dispatch(setMessage(deleteMessage));
-              }}
-            >
+              }}>
               Delete
             </Button>
           )}
         </Box>
 
         <Box gridColumn='span 4'>
-          <Button color='secondary' variant='contained' onClick={closeEditor}>
+          <Button color='primary' variant='contained' onClick={closeEditor}>
             Cancel
           </Button>
         </Box>
@@ -178,7 +183,7 @@ function HtmlData({ idx, isLeaf, innerHtml }) {
       <Box gridColumn='span 2'>
         <SelectorHtmlTag idx={idx} isLeaf={isLeaf} />
       </Box>
-      <Box gridColumn='span 10'>
+      <Box gridColumn='span 10' sx={{ height: '80%' }}>
         <TextField
           label='inner_html'
           name='innerHtml'
@@ -219,9 +224,10 @@ function AddData({ data, setData, dataName }) {
                 value: '',
               },
             ])
-          }
-        >
-          <AddCircleIcon color='primary' />
+          }>
+          <AddCircleIcon label='plusIcon' color='#415a77' />{' '}
+          {/* changes the color of the '+' in
+          Props & Styles*/}
         </IconButton>
       </Box>
       {data.map((item, idx) => (
@@ -245,7 +251,7 @@ function AddData({ data, setData, dataName }) {
               />
             )}
           </Box>
-          <Box gridColumn='span 5'>
+          <Box gridColumn='span 5' sx={{ alignSelf: 'center' }}>
             <TextField
               label='value'
               id={`value${idx}`}
@@ -264,8 +270,7 @@ function AddData({ data, setData, dataName }) {
             <IconButton
               onClick={() => {
                 setData(data.filter((_, i) => i !== idx));
-              }}
-            >
+              }}>
               <RemoveCircleIcon />
             </IconButton>
           </Box>
@@ -380,19 +385,14 @@ function StylesAutocomplete({ idx, item, setData, keys, data }) {
         }}
         options={basicCssProperties}
         renderInput={(params) => (
-          <TextField
-            {...params}
-            label='Common Non-Layour css'
-            inputRef={inputRef}
-          />
+          <TextField {...params} label='Common CSS' inputRef={inputRef} />
         )}
       />
       <Popper
         open={Boolean(anchorEl)}
         placement='bottom'
         anchorEl={anchorEl}
-        sx={{ zIndex: 10000, color: '#fff', backgroundColor: '#ffffff4D' }}
-      >
+        sx={{ zIndex: 10000, color: '#415a77', backgroundColor: '#bdbbb6' }}>
         <Typography>
           Note: setting border-related styles here might not {'\n'}be reflected
           in the component rectangle
