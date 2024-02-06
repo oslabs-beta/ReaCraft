@@ -19,6 +19,7 @@ jobs:
           echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
           echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
           echo PROJECT_ROOT=/usr/src/app >> .env
+          echo REACT_APP_HOST_ADDRESS=localhost >> .env
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
           echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
           echo SESSION_SECRET=${{ secrets.SESSION_SECRET }} >> .env
@@ -48,6 +49,7 @@ jobs:
           echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
           echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
           echo PROJECT_ROOT=/usr/src/app >> .env
+          echo REACT_APP_HOST_ADDRESS=${{ secrets.EC2_HOST }} >> .env
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
           echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
           echo SESSION_SECRET=${{ secrets.SESSION_SECRET }} >> .env
@@ -60,3 +62,11 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64 -t ${{ secrets.ECR_REGISTRY }}/reacraft:latest .
           docker push ${{ secrets.ECR_REGISTRY }}/reacraft:latest
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: bash ./update-docker-image.sh

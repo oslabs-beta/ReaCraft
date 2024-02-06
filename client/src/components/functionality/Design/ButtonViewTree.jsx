@@ -27,9 +27,12 @@ export default function ButtonViewTree({ tree, entireApp }) {
       <Tooltip
         title={`View Dom tree for ${entireApp ? 'your whole app' : 'page'}`}
       >
-        <Fab 
+        <Fab
           sx={{ marginRight: '0.3rem' }}
-          onClick={() => setViewTree(true)} size='small' color='success'>
+          onClick={() => setViewTree(true)}
+          size='small'
+          color='success'
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='20'
@@ -65,13 +68,6 @@ const renderRectSvgNode = ({ nodeDatum, toggleNode }) => {
   const textWidth = textLength * estimatedCharWidth;
   const padding = 20;
   const paddedWidth = textWidth * 2;
-
-  // console.log('=> This is nodeDatum: ', nodeDatum);
-  // const [htmlTag, setHtmlTag] = React.useState('');
-
-  // const handleChange = (event) => {
-  //   setHtmlTag(event.target.value);
-  // };
 
   return (
     <ThemeProvider theme={themeDOMTreeLight}>

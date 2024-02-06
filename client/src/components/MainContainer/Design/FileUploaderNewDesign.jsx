@@ -28,7 +28,9 @@ export default function UserImageUploadButton() {
   // function to initiate websocket connection with the generated clientId and retryCount (if connection gets disconnected prematurely)
   function initiateWebSocketConnection(clientId, retryCount = 0) {
     // create new websocket connection with clientId
-    const ws = new WebSocket(`ws://localhost:8080/ws?clientId=${clientId}`);
+    const ws = new WebSocket(
+      `ws://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=${clientId}`
+    );
 
     // once websocket connection is open, console log
     ws.onopen = () => {
@@ -68,6 +70,7 @@ export default function UserImageUploadButton() {
         } else {
           console.log('received message without type:', message);
         }
+      } catch (err) {
       } catch (err) {
         console.error('error parsing from server:', error);
       }
