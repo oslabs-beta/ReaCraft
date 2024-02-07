@@ -44,7 +44,6 @@ beforeAll(async () => {
 
 // clean up test user in db
 afterAll(async () => {
-  console.log(imagesToDelete);
   await db.query('DELETE FROM users WHERE _id = $1;', [testUser._id]);
   await db.end();
   const res = await s3
@@ -59,7 +58,6 @@ afterAll(async () => {
       },
     })
     .promise();
-  console.log(res);
 });
 
 describe('GET /user', () => {
@@ -102,13 +100,12 @@ describe('GET /user', () => {
 
 describe('POST /login', () => {
   // successful login
-  it('responds with 302 status and redirects to /home', async () => {
+  it('responds with 200 status and a successful login message', async () => {
     const res: Response = await request(server)
       .post('/login')
-      .send({ username: 'test_user', password: '1234' })
-      .redirects(0);
-    expect(res.status).toBe(302);
-    expect(res.headers.location).toBe('/home');
+      .send({ username: 'test_user', password: '1234' });
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe('login successfully');
   });
 
   // Username not found
