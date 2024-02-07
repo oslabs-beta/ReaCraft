@@ -46,7 +46,7 @@ router.get('/user', decryptCookie, (req: Request, res: Response) =>
 );
 
 router.post('/login', verifyUser, setCookie, (req: Request, res: Response) =>
-  res.redirect('/home')
+  res.status(200).json({ message: 'login successfully' })
 );
 
 // google oauth routes
@@ -60,7 +60,8 @@ router.post(
   addUser,
   hashPassword,
   setCookie,
-  (req: Request, res: Response) => res.redirect('/home')
+  (req: Request, res: Response) =>
+    res.status(200).json({ message: 'sign up successfully' })
 );
 
 router.post('/download', downloadFiles);
