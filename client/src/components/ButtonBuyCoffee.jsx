@@ -30,11 +30,12 @@ export default function ButtonBuyCoffee() {
             position: 'fixed',
             right: '50px',
             bottom: '50px',
-            '& svg': { transform: 'scale(1.8)' },
+            backgroundColor: 'white',
+            '& svg': { transform: 'scale(2)' },
           }}
           onClick={(e) => setAnchorEl(e.currentTarget)}
         >
-          <FontAwesomeIcon icon={faMugHot} color='#f4f3f7' />
+          <img src='./assets/bmc_logo.svg' />
         </Fab>
       </Tooltip>
       {anchorEl && (
