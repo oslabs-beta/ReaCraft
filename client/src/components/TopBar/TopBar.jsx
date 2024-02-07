@@ -76,7 +76,8 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
       display='block'
       position='fixed'
       height='56px'
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      sx={{ 
+        zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar
         disableGutters={true}
         sx={{
@@ -98,7 +99,7 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
                 sx={{
                   ...AppBarButtonsStyle,
                   '&:hover': {
-                    backgroundColor: 'transparent',
+                    // backgroundColor: '#D9D0C7',
                     boxShadow: 'none',
                   },
                 }}>
@@ -162,11 +163,12 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
               onClick={() => handlePageClick('DESIGN')}
               sx={{
                 ...AppBarButtonsStyle,
-                backgroundColor: darkMode ? '#2a3f5a' : '#bdbbb6',
+                backgroundColor: darkMode ? '#2a3f5a' : '#979591',
                 color: '#f4f3f7',
                 boxShadow: '1px 1px 5px white',
                 margin: '0 5px',
                 textTransform: 'none',
+                marginRight: '10px',
               }}
               startIcon={<AddPhotoAlternateIcon />}>
               New Designs

@@ -34,6 +34,7 @@ import {
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
+import { useTheme } from '@mui/material';
 
 const style = {
   position: 'absolute',
@@ -110,8 +111,7 @@ export default function ButtonUserMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const { logout, user } = useAuth();
-  const [modal, setModal] = useState(false);
-
+  const [modal, setModal] = useState(false)
   const { username, email, profile_image } = user;
   const [avatar, setAvatar] = useState(profile_image);
   const created_at = new Date(
@@ -120,6 +120,8 @@ export default function ButtonUserMenu() {
   const last_login = new Date(
     new Date(user.last_login).toString().split('-')[0]
   );
+  const theme = useTheme();
+
   return (
     <div>
       <Button
@@ -132,7 +134,7 @@ export default function ButtonUserMenu() {
         disableElevation
         onClick={(e) => setAnchorEl(e.currentTarget)}
         endIcon={<KeyboardArrowDownIcon />}
-        sx={{ backgroundColor: 'transparent', color: '#bdbbb6' }}>
+        sx={{ backgroundColor: 'transparent', color: theme.palette.mode === 'light'? '#787774' : '#F1F1ED' }}>
         <Avatar src={avatar} sx={{ width: 40, height: 40 }} />
       </Button>
       <StyledMenu
@@ -180,14 +182,14 @@ export default function ButtonUserMenu() {
               <Table aria-label='simple table'>
                 <TableBody>
                   <UserName username={username} />
-                  <UserData label='email' data={email} />
+                  <UserData label='Email' data={email} />
                   <UserData
-                    label='created_at'
-                    data={created_at.toLocaleString()}
+                    label='Created at'
+                    data={created_at.toLocaleDateString()}
                   />
                   <UserData
-                    label='last_login'
-                    data={last_login.toLocaleString()}
+                    label='Last login'
+                    data={last_login.toLocaleDateString()}
                   />
                 </TableBody>
               </Table>
@@ -210,7 +212,7 @@ function UserName({ username }) {
         '&:last-child td, &:last-child th': { border: 0 },
       }}>
       <TableCell component='th' scope='row'>
-        username
+        Username
       </TableCell>
       <TableCell>
         {!isEditing && (
@@ -314,7 +316,7 @@ function UserProfileImage({ avatar, setAvatar }) {
       }}>
       <Avatar src={avatar} sx={{ width: 100, height: 100 }} />
       <Stack direction='row'>
-        <Button component='label'>
+        <Button component='label' sx={{ color: '#F4F3F7' }}>
           {avatar ? 'Change' : 'Upload'}
           <VisuallyHiddenInput
             type='file'

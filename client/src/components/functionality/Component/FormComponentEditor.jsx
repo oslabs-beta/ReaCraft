@@ -1,22 +1,19 @@
 import React, { Fragment, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Divider, Typography, IconButton } from '@mui/material';
+import { Divider, Typography, IconButton, useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import Autocomplete from '@mui/material/Autocomplete';
 import Popper from '@mui/material/Popper';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-
 import { setMessage } from '../../../utils/reducers/appSlice';
 import isValidVariableName from '../../../utils/isValidVariableName';
 import { convertArrToObj } from '../../../utils/convertBetweenObjArr';
 import { submitComponentForm } from '../../../utils/reducers/designSliceV3';
-
 import SelectorParent from './SelectorParent';
 import SelectorHtmlTag from './SelectorHtmlTag';
 
@@ -26,8 +23,8 @@ const boxStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 500,
-  bgcolor: '#f4f3f7',
-  color: '#2c2c2c',
+  // bgcolor: '#f4f3f7',
+  // color: '#414141',
   // border: '2px solid #000',
   borderRadius: '2px',
   boxShadow: '3px 5px 5px -3px rgba(44, 44, 44, 1);',
@@ -44,9 +41,9 @@ export default function FormComponentEditor({
   const { pages } = useSelector((state) => state.designV3);
   const { selectedPageIdx } = useSelector((state) => state.app);
   const component = pages[selectedPageIdx].components[idx];
-
   const [props, setProps] = useState(component.props);
   const [styles, setStyles] = useState(component.styles);
+  const theme = useTheme();
 
   const deleteMessage = isLeaf
     ? {
@@ -100,7 +97,11 @@ export default function FormComponentEditor({
       <Box
         component='form'
         className='componentEditor'
-        sx={boxStyle}
+        sx={{
+          ...boxStyle,
+          bgcolor: theme.palette.mode === 'light' ? '#f4f3f7' : '#2D2D2D',
+          color: theme.palette.mode === 'light' ? '#414141' : '#FFFFFF',
+        }}
         display='grid'
         gridTemplateColumns='repeat(12, 1fr)'
         gap={2}
@@ -159,6 +160,8 @@ export default function FormComponentEditor({
 
 function NameAndParent({ idx, name }) {
   const [nameVal, setNameVal] = useState(name);
+  const theme = useTheme();
+
   return (
     <Fragment>
       <Box gridColumn='span 6'>
@@ -170,6 +173,11 @@ function NameAndParent({ idx, name }) {
           value={nameVal}
           disabled={idx === 0}
           onChange={(e) => setNameVal(e.target.value)}
+          sx={{
+            '& .MuiInputBase-input': {
+              color: theme.palette.mode === 'light' ? '#666666' : '#e5e5e5',
+            }
+          }}
         />
       </Box>
       <Box gridColumn='span 6'>
@@ -181,16 +189,27 @@ function NameAndParent({ idx, name }) {
 
 function HtmlData({ idx, isLeaf, innerHtml }) {
   const [innerHtmlVal, setInnerHtmlVal] = useState(innerHtml);
+  const theme = useTheme();
+
   return (
     <Fragment>
       <Box gridColumn='span 2'>
-        <SelectorHtmlTag idx={idx} isLeaf={isLeaf} />
+        <SelectorHtmlTag idx={idx} isLeaf={isLeaf} sx={{
+          '& .Mui-selected': {
+            color: theme.palette.mode === 'light' ? '#666666' : '#e5e5e5',
+          }
+        }}/>
       </Box>
       <Box gridColumn='span 10' sx={{ height: '80%' }}>
         <TextField
           label='inner_html'
           name='innerHtml'
-          sx={{ width: '100%' }}
+          sx={{ 
+            width: '100%',
+            '& .MuiInputBase-input': {
+              color: theme.palette.mode === 'light' ? '#666666' : '#e5e5e5',
+            }
+          }}
           value={innerHtmlVal}
           onChange={(e) => setInnerHtmlVal(e.target.value)}
         />
@@ -201,6 +220,7 @@ function HtmlData({ idx, isLeaf, innerHtml }) {
 
 function AddData({ data, setData, dataName }) {
   const keys = data.map((item) => item.key);
+  const theme = useTheme();
   const title =
     dataName === 'Props'
       ? 'You can specify your component props in key-value pairs. '
@@ -261,6 +281,11 @@ function AddData({ data, setData, dataName }) {
               id={`value${idx}`}
               name={`${dataName.toLowerCase()}-${item.key}-value`}
               value={item.value}
+              sx={{
+                '& .MuiInputBase-input': {
+                  color: theme.palette.mode === 'light' ? '#666666' : '#e5e5e5',
+                }
+              }}
               onChange={(e) =>
                 setData(
                   data.map((el, i) =>
@@ -367,6 +392,7 @@ function StylesAutocomplete({ idx, item, setData, keys, data }) {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const inputRef = useRef();
+  const theme = useTheme();
 
   return (
     <Fragment>
@@ -392,7 +418,12 @@ function StylesAutocomplete({ idx, item, setData, keys, data }) {
         }}
         options={basicCssProperties}
         renderInput={(params) => (
-          <TextField {...params} label='Common CSS' inputRef={inputRef} />
+          <TextField {...params} label='Common CSS' inputRef={inputRef} 
+          sx={{
+            '& .MuiInputBase-input': {
+              color: theme.palette.mode === 'light' ? '#666666' : '#e5e5e5',
+            }
+          }}/>
         )}
       />
       <Popper

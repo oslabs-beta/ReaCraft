@@ -83,7 +83,7 @@ export default function ButtonAddNewComponent() {
         onChange={(e) => setName(e.target.value)}
         sx={{
           '& input': {
-            color: theme.palette.mode === 'dark' ? 'white' : '#d9d0c7', //accentlogo color
+            color: theme.palette.mode === 'dark' ? 'white' : '#323232', //accentlogo color
           },
         }}
       />
