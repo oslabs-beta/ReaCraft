@@ -1,5 +1,8 @@
 name: build-tests
-on: [pull_request_target]
+on:
+  pull_request_target:
+    branches:
+      - dev
 jobs:
   unit-testing:
     runs-on: ubuntu-latest
