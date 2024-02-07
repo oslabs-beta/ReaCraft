@@ -144,13 +144,12 @@ describe('POST /signup', () => {
   });
 
   // successful signup
-  it('responds with 302 status and redirects to /home', async () => {
+  it('responds with 200 status a successful signup message', async () => {
     const res: Response = await request(server)
       .post('/signup')
-      .send(testSignUp)
-      .redirects(0);
-    expect(res.status).toBe(302);
-    expect(res.headers.location).toBe('/home');
+      .send(testSignUp);
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe('sign up successfully');
   });
 
   // Username in use
