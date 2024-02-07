@@ -8,14 +8,9 @@ import Alert from '@mui/material/Alert';
 import Home from './Home/HomePage';
 import Design from './Design/DesignPage';
 
-export default function MainContainer({ renderWorkspace }) {
+export default function MainContainer({ isWorkspaceReady }) {
   const { message, page } = useSelector((state) => state.app);
-  const { loading } = useSelector((state) => state.designV3);
   const dispatch = useDispatch();
-
-  // if (page === 'DESIGN' && drawerOpen) {
-  //   setDrawerOpen(false);
-  // };
 
   return (
     <Container
@@ -30,15 +25,10 @@ export default function MainContainer({ renderWorkspace }) {
         marginTop: '60px',
       }}
     >
-      {/* {page === 'DESIGN' && <Design />}
+      {page === 'DESIGN' && <Design 
+      isWorkspaceReady={isWorkspaceReady}
+      />}
       {page === 'HOME' && (
-        <Box display='flex' justifyContent='center'>
-          <Home maxWidth='false' />
-        </Box>
-      )} */}
-      {renderWorkspace ? (
-        <Design />
-      ) : (
         <Box display='flex' justifyContent='center'>
           <Home maxWidth='false' />
         </Box>
