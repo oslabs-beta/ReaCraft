@@ -21,14 +21,15 @@ export const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-export default function ButtonAddPage({ pageIdx }) {
+export default function ButtonAddPage() {
   const { _id } = useSelector((state) => state.designV3);
   const dispatch = useDispatch();
   const [fileName, setFileName] = useState('');
   const [fileSize, setFileSize] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [socket, setSocket] = useState(null);
-  const wss = process.env.REACT_APP_HOST_ADDRESS === 'localhost' ? 'ws' : 'wss';
+  const wss =
+    process.env.REACT_APP_HOST_ADDRESS === 'localhost:8080' ? 'ws' : 'wss';
 
   function generateUniqueIdentifier() {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -37,7 +38,7 @@ export default function ButtonAddPage({ pageIdx }) {
   function initiateWebSocketConnection(clientId, retryCount = 0) {
     // create new websocket connection with clientId
     const ws = new WebSocket(
-      `${wss}://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=${clientId}`
+      `${wss}://${process.env.REACT_APP_HOST_ADDRESS}/ws?clientId=${clientId}`
     );
 
     // once websocket connection is open, console log
