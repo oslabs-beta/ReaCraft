@@ -36,12 +36,12 @@ export default function ButtonSortPastDesigns({ pastDesigns, setPastDesigns }) {
       </Tooltip>
 
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
-        <MenuItem onClick={() => handleSort('title')}>by title</MenuItem>
+        <MenuItem onClick={() => handleSort('title')}>By title</MenuItem>
         <MenuItem onClick={() => handleSort('created_at')}>
-          by created_at
+          By created at
         </MenuItem>
         <MenuItem onClick={() => handleSort('last_updated')}>
-          by last_updated
+          By last updated
         </MenuItem>
       </Menu>
     </Fragment>
