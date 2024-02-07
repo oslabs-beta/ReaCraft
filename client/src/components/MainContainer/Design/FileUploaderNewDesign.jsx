@@ -23,7 +23,7 @@ export default function UserImageUploadButton() {
   const wss = process.env.REACT_APP_HOST_ADDRESS === 'localhost' ? 'ws' : 'wss';
 
   console.log(
-    `${wss}://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=`
+    `${wss}://${process.env.REACT_APP_HOST_ADDRESS}/ws?clientId=`
   );
 
   // Moved this function outside of handleFileChange for clarity
