@@ -76,8 +76,10 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
       display='block'
       position='fixed'
       height='56px'
-      sx={{ 
-        zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+      }}
+    >
       <Toolbar
         disableGutters={true}
         sx={{
@@ -88,7 +90,8 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
           '& .MuiButtonBase-root': {
             boxShadow: 'none',
           },
-        }}>
+        }}
+      >
         <Stack direction='row' alignItems='center'>
           {!designId && (
             <Fragment>
@@ -102,7 +105,8 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
                     // backgroundColor: '#D9D0C7',
                     boxShadow: 'none',
                   },
-                }}>
+                }}
+              >
                 <FontAwesomeIcon icon={faBars} />
               </Button>
               <Box>
@@ -120,15 +124,15 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-                onClick={() => handlePageClick('HOME')}>
+                onClick={() => handlePageClick('HOME')}
+              >
                 <Tooltip title='Back to home'>
                   <img
-                    src='./assets/homepage/ReaCraft_logoColor_light.svg'
+                    src={`./assets/Logo_${theme.palette.mode}.svg`}
                     style={{
                       marginLeft: '20px',
-                      width: 40,
-                      height: 40,
-                      color: '#bdbbb6',
+                      width: 50,
+                      height: 50,
                     }}
                   />
                 </Tooltip>
@@ -170,7 +174,8 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
                 textTransform: 'none',
                 marginRight: '10px',
               }}
-              startIcon={<AddPhotoAlternateIcon />}>
+              startIcon={<AddPhotoAlternateIcon />}
+            >
               New Designs
             </Button>
           )}
