@@ -25,10 +25,11 @@ export default class Codes {
     const rootWidth = components[0].rectangle.width;
     const rootHeight = components[0].rectangle.height;
     position[components[0]._id] = { top: 0, left: 0 };
+    const rootW2HRatio = Math.round((rootWidth / rootHeight) * 1000) / 1000;
 
     css += `:root {
-  --${pageName}-width: ${rootWidth}px;
-  --${pageName}-height: ${rootHeight}px;
+  --${pageName}-height: min(80vh, ${rootHeight}px);
+  --${pageName}-width: calc(var(--${pageName}-height) * ${rootW2HRatio});
 }
 `;
 
@@ -79,7 +80,7 @@ export default class Codes {
     const i = component.index;
     let parentPos: any;
     if (i > 0) {
-      parentPos = position[parent_id];
+      if (parent_id) parentPos = position[parent_id];
       position[_id] = { top: y_position, left: x_position };
     }
 
