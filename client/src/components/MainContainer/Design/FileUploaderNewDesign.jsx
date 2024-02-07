@@ -22,6 +22,10 @@ export default function UserImageUploadButton() {
   const [socket, setSocket] = useState(null);
   const wss = process.env.REACT_APP_HOST_ADDRESS === 'localhost' ? 'ws' : 'wss';
 
+  console.log(
+    `${wss}://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=`
+  );
+
   // Moved this function outside of handleFileChange for clarity
   function generateUniqueIdentifier() {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
