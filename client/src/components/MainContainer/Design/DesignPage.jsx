@@ -11,7 +11,6 @@ export default function DesignPage({ isWorkspaceReady }) {
   // return _id ? <Workspace /> : <FileUploaderNewDesign />;
   // render FileUploader if _id is not available
   if (!_id) return <FileUploaderNewDesign />;
-
   // render Workspace if _id is available and workspace is ready
   return _id && isWorkspaceReady ? <Workspace /> : null;
 }
