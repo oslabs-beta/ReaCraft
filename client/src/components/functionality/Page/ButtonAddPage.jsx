@@ -28,10 +28,7 @@ export default function ButtonAddPage({ pageIdx }) {
   const [fileSize, setFileSize] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [socket, setSocket] = useState(null);
-
-  // useEffect(() => {
-  //   console.log('uploadProgress is now', uploadProgress);
-  // }, [uploadProgress]);
+  const wss = process.env.REACT_APP_HOST_ADDRESS === 'localhost' ? 'ws' : 'wss';
 
   function generateUniqueIdentifier() {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -40,7 +37,7 @@ export default function ButtonAddPage({ pageIdx }) {
   function initiateWebSocketConnection(clientId, retryCount = 0) {
     // create new websocket connection with clientId
     const ws = new WebSocket(
-      `ws://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=${clientId}`
+      `${wss}://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=${clientId}`
     );
 
     // once websocket connection is open, console log
@@ -116,7 +113,6 @@ export default function ButtonAddPage({ pageIdx }) {
     setFileName(file.name);
     setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB');
     const clientId = generateUniqueIdentifier();
-    console.log('Generated clientId:', clientId);
 
     if (file) {
       const reader = new FileReader();
@@ -203,7 +199,8 @@ export default function ButtonAddPage({ pageIdx }) {
             textAlign: 'center',
             color: 'black',
             // marginTop: '10px',
-          }}>
+          }}
+        >
           <span>{fileName}</span> - <span>{fileSize}</span>
           <LinearProgress
             variant='determinate'
@@ -223,7 +220,8 @@ export default function ButtonAddPage({ pageIdx }) {
             }}
             onClick={() => {
               /* logic to handle file removal */
-            }}>
+            }}
+          >
             X
           </Button>
         </Box>

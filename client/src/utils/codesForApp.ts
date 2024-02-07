@@ -1,5 +1,6 @@
 export function jsxCodeForApp(pageLen: number, title: string): string {
-  let code = "import React, { useEffect } from 'react';\nimport './App.css';\n";
+  let code =
+    "import React, { useEffect } from 'react';\nimport Logo from './Logo.jsx';\n";
   for (let i = 0; i < pageLen; i++) {
     code += `import Page${i} from './Page${i}/Page${i}.jsx';\n`;
   }
@@ -10,7 +11,11 @@ export function jsxCodeForApp(pageLen: number, title: string): string {
   },[]);
   return (
     <div className='App'>
-      <span class='slide'>
+      <span class='slide reacraft'>
+        <Logo />
+        <p>
+          Thank you for using <a href='https://reacraft.org'>ReaCraft</a>
+        </p>
         <h1>Your design: ${title}</h1>
       </span>`;
 
