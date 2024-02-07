@@ -77,14 +77,13 @@ export default function Workspace() {
             width: '250px',
             marginTop: '100px',
             backgroundColor: theme.palette.background.default,
-            color: theme.palette.mode === 'light' ? '#736c6c' : 'FCFFF1',
+            color: theme.palette.mode === 'light' ? '#2c2c2c' : '#f4f3f7',
           },
           '& .Mui-selected': {
-            backgroundColor: 'rgba(165, 155, 135, 0.18) !important',
+            backgroundColor: '#d9d0c7 !important',
           },
         }}
-        open
-      >
+        open>
         <WorkspaceLeft />
       </Drawer>
       <Grid
@@ -96,8 +95,7 @@ export default function Workspace() {
           width: windowWidth - 270,
           paddingRight: '20px',
           minWidth: 800,
-        }}
-      >
+        }}>
         <Grid
           item
           xs={12}
@@ -106,8 +104,7 @@ export default function Workspace() {
             justifyContent: 'center',
             height: '50px',
             paddingTop: 0,
-          }}
-        >
+          }}>
           {!verticalRight && <WorkspaceRight isVertical={false} />}
         </Grid>
         <Grid item xs sx={{ display: 'flex', justifyContent: 'center' }}>

@@ -34,7 +34,7 @@ export function handleRectangleRes(data: RectangleRes): Rectangle {
 export type ComponentRes = {
   _id: number;
   page_id: number;
-  parent_id: number;
+  parent_id: number | null;
   index: number;
   name: string;
   html_tag: HtmlTag;
@@ -83,6 +83,8 @@ export type DesignRes = {
   last_updated: string;
   image_url: string;
   pages?: PageRes[];
+  last_updated_by: string;
+  canEdit?: Boolean;
 };
 
 export function handleDesignRes(data: DesignRes): Design {

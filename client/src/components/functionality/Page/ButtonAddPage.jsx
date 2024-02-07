@@ -28,10 +28,7 @@ export default function ButtonAddPage({ pageIdx }) {
   const [fileSize, setFileSize] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [socket, setSocket] = useState(null);
-
-  // useEffect(() => {
-  //   console.log('uploadProgress is now', uploadProgress);
-  // }, [uploadProgress]);
+  const wss = process.env.REACT_APP_HOST_ADDRESS === 'localhost' ? 'ws' : 'wss';
 
   function generateUniqueIdentifier() {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -40,7 +37,7 @@ export default function ButtonAddPage({ pageIdx }) {
   function initiateWebSocketConnection(clientId, retryCount = 0) {
     // create new websocket connection with clientId
     const ws = new WebSocket(
-      `ws://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=${clientId}`
+      `${wss}://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=${clientId}`
     );
 
     // once websocket connection is open, console log
@@ -116,7 +113,6 @@ export default function ButtonAddPage({ pageIdx }) {
     setFileName(file.name);
     setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB');
     const clientId = generateUniqueIdentifier();
-    console.log('Generated clientId:', clientId);
 
     if (file) {
       const reader = new FileReader();
@@ -195,7 +191,7 @@ export default function ButtonAddPage({ pageIdx }) {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            bgcolor: '#E0E1DD',
+            bgcolor: '#d9d0c7',
             p: 2,
             borderRadius: 4,
             width: 'auto',

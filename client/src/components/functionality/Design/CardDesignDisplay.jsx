@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -17,7 +17,7 @@ import {
   faPenToSquare,
   faEye,
   faEllipsis,
-  faTrashCan,
+  faCircleXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import Box from '@mui/material/Box';
 
@@ -33,8 +33,29 @@ export default function CardDesignDisplay({ design }) {
   const { created_at, last_updated, canEdit, last_updated_by } = design;
   const { user } = useAuth();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const menuOpen = Boolean(anchorEl);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const viewOnly = canEdit === false;
+
+  const menuRef = useRef(null);
+  const openMenu = (e) => {
+    e.stopPropagation();
+    setMenuOpen(true);
+  };
+
+  const handleClick = async (designId, viewOnly) => {
+    try {
+      dispatch(getDesignDetailsAndSetApp(designId, !viewOnly));
+    } catch (err) {
+      dispatch(
+        setMessage({
+          severity: 'error',
+          text: 'Design: view past design detail ' + err,
+        })
+      );
+    }
+  };
 
   return (
     <Paper
@@ -42,6 +63,10 @@ export default function CardDesignDisplay({ design }) {
         maxWidth: 345,
         minWidth: 200,
         position: 'relative',
+        '&:hover': {
+          transform: 'scale(1.1)',
+          cursor: 'pointer',
+        },
       }}
       elevation={3}
       square={false}
@@ -56,11 +81,13 @@ export default function CardDesignDisplay({ design }) {
         </Box>
       )}
       <CardMedia
+        onClick={openMenu}
         align='center'
         sx={{
-          borderRadius: '5px',
+          borderTopLeftRadius: '5px',
+          borderTopRightRadius: '5px',
           height: 140,
-          boxShadow: '0px 15px 200px -9px #5B5B5B',
+          // boxShadow: '3px 5px 5px -3px rgba(44, 44, 44, 1)',
         }}
         image={design.image_url}
         title={design.title}
@@ -71,68 +98,64 @@ export default function CardDesignDisplay({ design }) {
           initialText={design.title}
           canEdit={canEdit}
           align='center'
+          sx={{
+            fontSize: 'xl',
+          }}
         />
-        <Typography gutterBottom variant='h5' component='div'></Typography>
-        <Typography
-          variant='body2'
-          color='text.secondary'
-          sx={{
-            fontSize: {
-              md: 12,
-              sm: 11,
-              xs: 10,
-            },
-          }}
-        >
-          Created at: {created_at.toLocaleString()}
-        </Typography>
-        <Typography
-          variant='body2'
-          color='text.secondary'
-          sx={{
-            fontSize: {
-              md: 12,
-              sm: 11,
-              xs: 10,
-            },
-          }}
-        >
-          Updated at: {last_updated.toLocaleString()}
-        </Typography>
-        {last_updated_by && (
+        <Box onClick={openMenu}>
+          <Typography gutterBottom variant='h5' component='div'></Typography>
           <Typography
             variant='body2'
-            color='text.secondary'
+            color='text'
             sx={{
-              fontSize: {
-                md: 12,
-                sm: 11,
-                xs: 10,
-              },
+              fontSize: 'lg',
+              // fontSize: {
+              //   md: 12,
+              //   sm: 11,
+              //   xs: 10,
+              // },
             }}
           >
-            last_updated_by: {last_updated_by}
+            Created: {created_at.toLocaleString()}
           </Typography>
-        )}
+          <Typography variant='body2' color='text' sx={{ fontSize: 'lg' }}>
+            Updated: {last_updated.toLocaleString()}
+          </Typography>
+          {last_updated_by && (
+            <Typography variant='body2' color='text' sx={{ fontSize: 'lg' }}>
+              Last Updated By: {last_updated_by}
+            </Typography>
+          )}
+        </Box>
       </CardContent>
       <CardActions
         sx={{
           display: 'flex',
           justifyContent: 'end',
         }}
+        onClick={openMenu}
       >
         <IconButton
           size='medium'
-          onClick={(e) => setAnchorEl(e.currentTarget)}
+          onClick={openMenu}
+          id='basic-button'
+          aria-controls={open ? 'basic-menu' : undefined}
+          aria-haspopup='true'
+          aria-expanded={open ? 'true' : undefined}
           sx={{ boxShadow: 'none', color: 'white' }}
+          ref={menuRef}
         >
           <FontAwesomeIcon icon={faEllipsis} />
         </IconButton>
         <DesignMenu
+          anchorEl={menuRef.current}
           open={menuOpen}
-          anchorEl={anchorEl}
-          setAnchorEl={setAnchorEl}
-          viewOnly={canEdit === false}
+          setMenuOpen={setMenuOpen}
+          viewOnly={viewOnly}
+          handleClick={(e) => {
+            e.stopPropagation();
+            handleClick(design._id, viewOnly);
+          }}
           designId={design._id}
           isOwner={design.user_id === user._id}
         />
@@ -142,39 +165,28 @@ export default function CardDesignDisplay({ design }) {
 }
 
 function DesignMenu({
-  open,
   anchorEl,
-  setAnchorEl,
+  open,
+  setMenuOpen,
   viewOnly,
   designId,
   isOwner,
+  handleClick,
 }) {
-  const handleClose = () => setAnchorEl(null);
-  const dispatch = useDispatch();
   return (
     <Menu
       id='basic-menu'
       anchorEl={anchorEl}
       open={open}
-      onClose={handleClose}
+      onClose={(e) => {
+        e.stopPropagation();
+        setMenuOpen(false);
+      }}
       MenuListProps={{
         'aria-labelledby': 'basic-button',
       }}
     >
-      <MenuItem
-        onClick={async () => {
-          try {
-            dispatch(getDesignDetailsAndSetApp(designId, !viewOnly));
-          } catch (err) {
-            dispatch(
-              setMessage({
-                severity: 'error',
-                text: 'Design: view past design detail ' + err,
-              })
-            );
-          }
-        }}
-      >
+      <MenuItem onClick={handleClick}>
         <ListItemIcon sx={{ color: 'white' }}>
           <FontAwesomeIcon icon={viewOnly ? faEye : faPenToSquare} />
         </ListItemIcon>

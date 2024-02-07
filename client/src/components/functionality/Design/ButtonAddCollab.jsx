@@ -65,8 +65,7 @@ export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
           size='small'
           color='info'
           onClick={(e) => setAnchorEl(e.currentTarget)}
-          sx={{ marginRight: '0.3rem' }}
-        >
+          sx={{ marginRight: '0.3rem' }}>
           <FontAwesomeIcon icon={faUserPlus} />
         </Fab>
       </Tooltip>
@@ -75,15 +74,13 @@ export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
         placement='bottom-start'
         anchorEl={anchorEl}
         sx={{
-          backgroundColor: '#736c6c',
+          backgroundColor: '#bdbbb6',
           zIndex: 10000,
-        }}
-      >
+        }}>
         <Box
           component='form'
           sx={{ display: 'flex', flexDirection: 'column' }}
-          onSubmit={handleSumbit}
-        >
+          onSubmit={handleSumbit}>
           <TextField
             label='Collaborator username'
             name='collaboratorUsername'
