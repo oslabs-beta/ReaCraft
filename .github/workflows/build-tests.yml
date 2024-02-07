@@ -15,7 +15,7 @@ jobs:
           echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
           echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
           echo PROJECT_ROOT=/usr/src/app >> .env
-          echo REACT_APP_HOST_ADDRESS=localhost >> .env
+          echo REACT_APP_HOST_ADDRESS=localhost:8080 >> .env
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
           echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
           echo SESSION_SECRET=${{ secrets.SESSION_SECRET }} >> .env
