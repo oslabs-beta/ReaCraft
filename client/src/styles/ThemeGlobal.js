@@ -56,15 +56,15 @@ export const themeLight = createTheme({
       },
     },
 
-    MuiListItemText: {
-      styleOverrides: {
-        root: {
-          '& .MuiTypography-root': {
-            fontWeight: '800',
-          },
-        },
-      },
-    },
+    // MuiListItemText: {
+    //   styleOverrides: {
+    //     root: {
+    //       '& .MuiTypography-root': {
+    //         // fontWeight: '800',
+    //       },
+    //     },
+    //   },
+    // },
 
     MuiTextField: {
       styleOverrides: {
@@ -102,6 +102,7 @@ export const themeLight = createTheme({
       },
     },
   },
+
 });
 
 export const themeDark = createTheme({
@@ -130,11 +131,14 @@ export const themeDark = createTheme({
 export const AppBarButtonsStyleLight = {
   backgroundColor: 'transparent',
   boxShadow: 'none',
-  color: root.accentLogo,
+  color: '#787774',
+  '&:hover': {
+    backgroundColor: '#D9D0C7',
+  }
 };
 
 export const AppBarButtonsStyleDark = {
   backgroundColor: 'transparent',
   boxShadow: 'none',
-  color: root.accent,
+  color: '#F1F1ED',
 };

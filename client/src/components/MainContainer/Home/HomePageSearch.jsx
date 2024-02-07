@@ -68,7 +68,7 @@ export default function HomePageSearch({ searchText, setSearchText }) {
               opacity: 1,
             },
             input: {
-              color: theme.palette.mode === 'light' ? '#d9d0c7' : '#F5EBE0',
+              color: theme.palette.mode === 'light' ? '#7c7c7c' : '#F5EBE0',
             },
           }}
           InputProps={{
