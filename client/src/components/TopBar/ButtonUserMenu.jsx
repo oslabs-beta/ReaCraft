@@ -152,7 +152,7 @@ export default function ButtonUserMenu() {
             setAnchorEl(null);
           }}
           disableRipple
-          sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          sx={{ display: 'flex', gap: '10px', alignItems: 'center', color: theme.palette.mode === 'light' ? '#85827f' : ''  }}>
           <FontAwesomeIcon icon={faCircleInfo} />
           Account
         </MenuItem>
@@ -160,7 +160,7 @@ export default function ButtonUserMenu() {
         <MenuItem
           onClick={() => logout()}
           disableRipple
-          sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          sx={{ display: 'flex', gap: '10px', alignItems: 'center', color: theme.palette.mode === 'light' ? '#85827f' : '' }}>
           <FontAwesomeIcon icon={faRightFromBracket} />
           Logout
         </MenuItem>
