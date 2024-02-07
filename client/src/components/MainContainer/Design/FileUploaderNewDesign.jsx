@@ -174,7 +174,7 @@ export default function UserImageUploadButton() {
               <CloudUploadRoundedIcon
                 style={{
                   fontSize: '70px',
-                  color: '#736C6C',
+                  color: '#7bdbbb6',
                   marginLeft: '60px',
                 }}
               />
@@ -187,7 +187,7 @@ export default function UserImageUploadButton() {
                   component='label'
                   sx={{
                     backgroundColor: '#FFFFFF',
-                    color: '#8D99AE',
+                    color: '#2c2c2c',
                     marginLeft: '50px',
                     '&:hover': {
                       backgroundColor: '#E0E0E0',
@@ -200,8 +200,7 @@ export default function UserImageUploadButton() {
                       border: 'none',
                       boxShadow: 'none',
                     },
-                  }}
-                >
+                  }}>
                   BROWSE
                   <VisuallyHiddenInput
                     type='file'
@@ -235,8 +234,7 @@ export default function UserImageUploadButton() {
               }}
               onClick={() => {
                 /* logic to handle file removal */
-              }}
-            >
+              }}>
               X
             </Button>
           </Box>

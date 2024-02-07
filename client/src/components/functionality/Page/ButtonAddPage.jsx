@@ -195,7 +195,7 @@ export default function ButtonAddPage({ pageIdx }) {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            bgcolor: '#E0E1DD',
+            bgcolor: '#d9d0c7',
             p: 2,
             borderRadius: 4,
             width: 'auto',
@@ -203,8 +203,7 @@ export default function ButtonAddPage({ pageIdx }) {
             textAlign: 'center',
             color: 'black',
             // marginTop: '10px',
-          }}
-        >
+          }}>
           <span>{fileName}</span> - <span>{fileSize}</span>
           <LinearProgress
             variant='determinate'
@@ -224,8 +223,7 @@ export default function ButtonAddPage({ pageIdx }) {
             }}
             onClick={() => {
               /* logic to handle file removal */
-            }}
-          >
+            }}>
             X
           </Button>
         </Box>

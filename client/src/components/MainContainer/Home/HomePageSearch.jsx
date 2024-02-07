@@ -18,7 +18,8 @@ export default function HomePageSearch({ searchText, setSearchText }) {
   const searchBarTheme =
     theme.palette.mode === 'dark'
       ? 'linear-gradient(to right, #778DA9, #1B263B)'
-      : 'linear-gradient(to right, #EDEDE9, #D5BDAF)';
+      : 'linear-gradient(to right, #edecee, #bdbbb6)';
+  // : 'linear-gradient(to right, #EDEDE9, #D5BDAF)';
 
   return (
     // {/* // Paper is a container for displaying content to give an 'elevated surface' look */}
@@ -30,10 +31,16 @@ export default function HomePageSearch({ searchText, setSearchText }) {
         marginBottom: '3%',
         backgroundImage: searchBarTheme,
         width: 'auto',
-      }}
-    >
+      }}>
       {/* Typography is used for title text */}
-      <Typography variant='h4' component='h1' gutterBottom align='center'>
+      <Typography
+        variant='h4'
+        component='h1'
+        gutterBottom
+        align='center'
+        sx={{
+          textShadow: '3px 5px 5px -3px rgba(44, 44, 44, 1)',
+        }}>
         What will you design today, {user.username}?
       </Typography>
       {/* Box is a wrapper tool, using it to contain the 'TextField and SearchIcon */}
@@ -45,8 +52,7 @@ export default function HomePageSearch({ searchText, setSearchText }) {
           maxWidth: 800,
           justifyContent: 'center',
           margin: 'auto',
-        }}
-      >
+        }}>
         {/* TextField lets users enter and edit text. using it to represent search bar with an InputProps to include a search button inside the text field*/}
         <TextField
           fullWidth
@@ -62,7 +68,7 @@ export default function HomePageSearch({ searchText, setSearchText }) {
               opacity: 1,
             },
             input: {
-              color: theme.palette.mode === 'light' ? '#736C6C' : '#F5EBE0',
+              color: theme.palette.mode === 'light' ? '#7c7c7c' : '#F5EBE0',
             },
           }}
           InputProps={{
@@ -71,8 +77,7 @@ export default function HomePageSearch({ searchText, setSearchText }) {
               <IconButton
                 variant='contained'
                 sx={{ marginRight: 1 }}
-                size='small'
-              >
+                size='small'>
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </IconButton>
             ),

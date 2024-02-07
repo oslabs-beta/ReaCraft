@@ -32,9 +32,8 @@ export default function ButtonBuyCoffee() {
             bottom: '50px',
             '& svg': { transform: 'scale(1.8)' },
           }}
-          onClick={(e) => setAnchorEl(e.currentTarget)}
-        >
-          <FontAwesomeIcon icon={faMugHot}/>
+          onClick={(e) => setAnchorEl(e.currentTarget)}>
+          <FontAwesomeIcon icon={faMugHot} color='#f4f3f7' />
         </Fab>
       </Tooltip>
       {anchorEl && (
@@ -64,20 +63,17 @@ function QrCodePopper({ anchorEl, onClose, isTransitioning }) {
       }}
       open={Boolean(anchorEl)}
       placement='left-end'
-      anchorEl={anchorEl}
-    >
+      anchorEl={anchorEl}>
       <Grow
         in={!isTransitioning}
         style={{ transformOrigin: 'center right' }}
-        timeout={255}
-      >
+        timeout={255}>
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
             flexDirection: 'column',
-          }}
-        >
+          }}>
           <img src='../assets/puss-in-boots-cat.gif' width='120px' />
           <img
             src='../assets/zelle_qr.PNG'
