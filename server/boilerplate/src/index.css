@@ -1,16 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap');
 
-/* font-family: 'Baloo Bhaijaan 2', sans-serif; */
-
-@keyframes slideUp {
-  from {
-    transform: translateY(300%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
 body {
   font-family: 'Baloo Bhaijaan 2', sans-serif;
   margin: 0;
@@ -23,24 +12,6 @@ html {
   height: 100%;
   scroll-snap-align: start;
   scroll-snap-type: y mandatory;
-}
-
-.logo {
-  filter: drop-shadow(2px 2px 3px #2a2a2a);
-}
-
-.logo-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.profile {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  text-align: center;
 }
 
 .slide {
@@ -69,10 +40,14 @@ html {
   z-index: 1;
 }
 
-.slide2_Background {
-  animation: slideUp 3.5s ease-out forwards;
-  animation-delay: 1.5s;
-  font-size: 65px;
-  position: relative;
-  z-index: 1;
+.reacraft {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  a,
+  p {
+    color: #b8b6b1;
+    font-size: larger;
+  }
 }

@@ -4,6 +4,9 @@ import path from 'path';
 const rimraf = require('rimraf');
 import { Request, Response, NextFunction } from 'express';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const downloadFiles = async (
   req: Request,
   res: Response,
@@ -18,7 +21,9 @@ export const downloadFiles = async (
     appData: { filename: string; content: string };
     title: string;
   } = req.body;
-  const projectPath = path.join(__dirname, '../boilerplate');
+
+  const PROJECT_ROOT = process.env.PROJECT_ROOT;
+  const projectPath = path.join(PROJECT_ROOT, 'server/boilerplate');
   const projectSrcPath = path.join(projectPath, './src');
 
   try {

@@ -20,6 +20,7 @@ export default function UserImageUploadButton() {
   const [fileSize, setFileSize] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [socket, setSocket] = useState(null);
+  const wss = process.env.REACT_APP_HOST_ADDRESS === 'localhost' ? 'ws' : 'wss';
 
   // Moved this function outside of handleFileChange for clarity
   function generateUniqueIdentifier() {
@@ -29,7 +30,7 @@ export default function UserImageUploadButton() {
   function initiateWebSocketConnection(clientId, retryCount = 0) {
     // create new websocket connection with clientId
     const ws = new WebSocket(
-      `ws://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=${clientId}`
+      `${wss}://${process.env.REACT_APP_HOST_ADDRESS}:8080/ws?clientId=${clientId}`
     );
 
     // once websocket connection is open, console log
@@ -107,7 +108,6 @@ export default function UserImageUploadButton() {
     setFileSize((file.size / 1024 / 1024).toFixed(2) + 'MB');
 
     const clientId = generateUniqueIdentifier();
-    console.log('Generated clientId:', clientId);
 
     if (file) {
       dispatch(setMessage({ severity: 'success', text: 'Upload successful.' }));
