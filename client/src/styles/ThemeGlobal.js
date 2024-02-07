@@ -1,5 +1,13 @@
 import { createTheme } from '@mui/material/styles';
 
+const root = {
+  accent: '#d9d0c7',
+  background: '#f4f3f7',
+  text: '#2c2c2c',
+  darkbackground: '#415a77',
+  accentLogo: '#bdbbb6',
+};
+
 const globalFont = [
   '-apple-system',
   'BlinkMacSystemFont',
@@ -17,24 +25,25 @@ export const themeLight = createTheme({
   typography: {
     // fontFamily: 'Avenir',
     fontFamily: "'Baloo Bhaijaan 2', cursive",
+    color: root.accentLogo,
   },
   palette: {
     mode: 'light',
     primary: {
-      main: '#e0e1dd',
-      dark: '#CACBC8',
-      light: '#FCFFF1',
+      main: root.accentLogo,
+      dark: root.accent,
+      light: root.accent,
     },
     secondary: {
-      main: '#f50057',
+      main: root.accentLogo,
     },
     background: {
-      default: '#fefffb',
-      paper: '#989897',
+      default: root.background,
+      paper: root.accentLogo,
     },
     text: {
-      primary: '#FFFFFF',
-      secondary: '#D8D6D6',
+      primary: root.background,
+      secondary: root.accentLogo,
     },
   },
 
@@ -42,28 +51,30 @@ export const themeLight = createTheme({
     MuiTab: {
       styleOverrides: {
         root: {
-          color: '#BBBBBB',
+          color: root.accentLogo,
         },
       },
     },
 
-    MuiListItemText: {
-      styleOverrides: {
-        root: {
-          '& .MuiTypography-root': {
-            fontWeight: '800',
-          },
-        },
-      },
-    },
+    // MuiListItemText: {
+    //   styleOverrides: {
+    //     root: {
+    //       '& .MuiTypography-root': {
+    //         // fontWeight: '800',
+    //       },
+    //     },
+    //   },
+    // },
 
     MuiTextField: {
       styleOverrides: {
         root: {
           '&.designTitle': {
-            backgroundColor: '#BBBBBB',
+            color: root.text,
+            backgroundColor: root.background,
             // backgroundColor: 'transparent',
-            borderRadius: '5px',
+            borderRadius: '2px',
+            boxShadow: '5px 5px 15px 0.5rem rgb(53, 53, 53)',
           },
         },
       },
@@ -80,6 +91,18 @@ export const themeLight = createTheme({
       },
     },
   },
+
+  MuiIconButton: {
+    styleOverrides: {
+      root: {
+        '&.designTitle': {
+          color: root.text,
+          backgroundColor: root.text,
+        },
+      },
+    },
+  },
+
 });
 
 export const themeDark = createTheme({
@@ -93,10 +116,10 @@ export const themeDark = createTheme({
       dark: '#80817f',
     },
     secondary: {
-      main: '#f50057',
+      main: '#bdbbb6',
     },
     background: {
-      default: '#0d1b2a',
+      default: '#415a77',
     },
     text: {
       primary: '#f1f1ed',
@@ -108,11 +131,14 @@ export const themeDark = createTheme({
 export const AppBarButtonsStyleLight = {
   backgroundColor: 'transparent',
   boxShadow: 'none',
-  color: '#736c6c',
+  color: '#787774',
+  '&:hover': {
+    backgroundColor: '#D9D0C7',
+  }
 };
 
 export const AppBarButtonsStyleDark = {
   backgroundColor: 'transparent',
   boxShadow: 'none',
-  color: '#E0E1DD',
+  color: '#F1F1ED',
 };

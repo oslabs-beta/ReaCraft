@@ -8,10 +8,14 @@ import Alert from '@mui/material/Alert';
 import Home from './Home/HomePage';
 import Design from './Design/DesignPage';
 
-export default function MainContainer() {
+export default function MainContainer({ renderWorkspace }) {
   const { message, page } = useSelector((state) => state.app);
   const { loading } = useSelector((state) => state.designV3);
   const dispatch = useDispatch();
+
+  // if (page === 'DESIGN' && drawerOpen) {
+  //   setDrawerOpen(false);
+  // };
 
   return (
     <Container
@@ -26,16 +30,19 @@ export default function MainContainer() {
         marginTop: '60px',
       }}
     >
-      {page === 'DESIGN' && <Design />}
+      {/* {page === 'DESIGN' && <Design />}
       {page === 'HOME' && (
         <Box display='flex' justifyContent='center'>
           <Home maxWidth='false' />
         </Box>
+      )} */}
+      {renderWorkspace ? (
+        <Design />
+      ) : (
+        <Box display='flex' justifyContent='center'>
+          <Home maxWidth='false' />
+        </Box>
       )}
-      {/* <Switch>
-        <Route path='/home' render={() => <Home page={page} />} />
-        <Route path='/design' render={() => <Design page={page} />} />
-      </Switch> */}
       <Snackbar
         value='SnackbarUnderWorkSpaceCont'
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

@@ -100,6 +100,14 @@ img.arrow.dark {
   width: 70%;
 }
 
+.fa-github, .fa-linkedin {
+  color: var(--accentLogo);
+}
+
+.fa-github.dark, .fa-linkedin.dark {
+  color: white;
+}
+
 .floater {
   align-items: center;
   display: flex;
@@ -133,10 +141,19 @@ img.arrow.dark {
   /* text-align: center; */
   transition: transform 250ms ease;
   width: 100%;
+  display: flex;
+}
+
+.instruction i {
+  margin-right: 10px; 
+}
+
+.instruction-title {
+  font-size: 1.5rem;
 }
 
 .instruction.active {
-  font-size: x-large;
+  /* font-size: x-large; */
   display: block;
   /* align-items: flex-start;
   justify-content: flex-start; */
@@ -215,6 +232,7 @@ img.arrow.dark {
   display: flex;
   gap: 10px;
   justify-content: center;
+  align-items: center;
   width: 20%;
 }
 
@@ -632,4 +650,8 @@ img.arrow.dark {
 #login:hover::after,
 #signup:hover::after {
   width: 90%;
+}
+
+#tutorialText, #meetTeamText {
+  font-family: 'Baloo Bhaijaan 2', sans-serif;
 }

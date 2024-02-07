@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getDesignDetails, setCanEdit } from './designSliceV3';
 
 export type Message = {
   severity: 'success' | 'error' | 'info';
@@ -18,7 +17,7 @@ export type AppState = {
   cursorMode: 'default' | 'pan';
 };
 
-const initialState: AppState = {
+export const initialAppState: AppState = {
   message: null,
   page: 'HOME',
   selectedPageIdx: null,
@@ -32,7 +31,7 @@ const initialState: AppState = {
 
 const appSlice = createSlice({
   name: 'page',
-  initialState,
+  initialState: initialAppState,
   reducers: {
     setMessage: (state: AppState, action: PayloadAction<Message | null>) => {
       state.message = action.payload;
@@ -53,7 +52,7 @@ const appSlice = createSlice({
     goToPage: (state: AppState, action: PayloadAction<'HOME' | 'DESIGN'>) => {
       state.page = action.payload;
     },
-    resetApp: () => initialState,
+    resetApp: () => initialAppState,
     setSelectedIdx: (state: AppState, action: PayloadAction<number | null>) => {
       state.selectedIdx = action.payload;
     },

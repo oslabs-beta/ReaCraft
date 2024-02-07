@@ -30,11 +30,12 @@ export default function ButtonBuyCoffee() {
             position: 'fixed',
             right: '50px',
             bottom: '50px',
-            '& svg': { transform: 'scale(1.8)' },
+            backgroundColor: 'white',
+            '& svg': { transform: 'scale(2)' },
           }}
           onClick={(e) => setAnchorEl(e.currentTarget)}
         >
-          <FontAwesomeIcon icon={faMugHot} />
+          <img src='./assets/bmc_logo.svg' />
         </Fab>
       </Tooltip>
       {anchorEl && (
@@ -79,11 +80,13 @@ function QrCodePopper({ anchorEl, onClose, isTransitioning }) {
           }}
         >
           <img src='../assets/puss-in-boots-cat.gif' width='120px' />
-          <img
-            src='../assets/zelle_qr.PNG'
-            width='300px'
-            style={{ borderRadius: '20px' }}
-          />
+          <a href='https://www.buymeacoffee.com/reacraft'>
+            <img
+              src='../assets/bmc_qr.png'
+              width='300px'
+              style={{ borderRadius: '20px' }}
+            />
+          </a>
         </Box>
       </Grow>
     </Popper>

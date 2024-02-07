@@ -11,6 +11,7 @@ import ButtonSortPastDesigns from '../../functionality/Design/ButtonSortPastDesi
 export default function UserDesigns({ searchText }) {
   const [pastDesigns, setPastDesigns] = useState([]);
   const dispatch = useDispatch();
+  const message = useSelector((state) => state.app.message);
 
   const theme = useTheme();
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function UserDesigns({ searchText }) {
     };
 
     fetchData();
-  }, []);
+  }, [message]);
 
   const getFilteredDesigns = () => {
     return pastDesigns.filter((design) =>
