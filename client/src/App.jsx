@@ -81,20 +81,19 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    // close the SideDrawer if it's open before rendering the Workspace
-    if (page === 'DESIGN' && _id && drawerOpen) {
+    // if on the 'DESIGN' page and _id is present, close the SideDrawer before rendering Workspace
+    if (page === 'DESIGN' && _id) {
       setDrawerOpen(false);
-      // set a timeout to ensure the closing animation completes before rendering Workspace
+      // set a timeout to ensure the closing animation completes before setting Workspace as ready
       const transitionDuration = currentTheme.transitions ? currentTheme.transitions.duration.leavingScreen : 225;
       setTimeout(() => {
-        // after the transition duration, set Workspace as ready
         setIsWorkspaceReady(true);
       }, transitionDuration);
     } else {
-      // if not 'DESIGN' or _id is not present, workspaceReady is false
+      // if not on the 'DESIGN' page or _id is not present, set Workspace as not ready
       setIsWorkspaceReady(false);
     }
-  }, [page, drawerOpen, _id, currentTheme.transitions]);
+  }, [page, _id, currentTheme.transitions]);
 
   // toggle drawer function
   const handleDrawerOpen = () => {
