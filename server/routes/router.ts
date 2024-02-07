@@ -60,7 +60,8 @@ router.post(
   addUser,
   hashPassword,
   setCookie,
-  (req: Request, res: Response) => res.redirect('/home')
+  (req: Request, res: Response) =>
+    res.status(200).json({ message: 'sign up successfully' })
 );
 
 router.post('/download', downloadFiles);
