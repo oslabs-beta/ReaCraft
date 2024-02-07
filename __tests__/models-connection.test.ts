@@ -16,7 +16,7 @@ describe('PostgresQL Database Connection', () => {
 describe('S3 Connection', () => {
   it('should list objects from a bucket', async () => {
     const params = {
-      Bucket: 'reactraft', // Replace with your actual bucket name
+      Bucket: 'reacraft',
     };
 
     try {

@@ -222,7 +222,7 @@ describe('POST /update-profile', () => {
     expect(res.status).toBe(200);
     expect(res.type).toMatch(/application\/json/);
     const { imageUrl } = res.body;
-    expect(imageUrl).toMatch('https://reacraft.s3.amazonaws.com/');
+    expect(imageUrl).toMatch('reacraft.s3.us-east-2.amazonaws.com');
 
     const userQueryRes: { rows: { profile_image: string }[] } = await db.query(
       'SELECT profile_image FROM users WHERE _id = $1;',

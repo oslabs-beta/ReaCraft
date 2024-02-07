@@ -12,9 +12,9 @@ import TabPanel from '@mui/lab/TabPanel';
 import '../../../styles/ViewCode.scss';
 import Grow from '@mui/material/Grow';
 import useOutsideClick from '../../../hooks/useOutsideClick';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '@mui/material';
 
 export default function ButtonViewCode({
   css,
@@ -71,6 +71,7 @@ function GrowTransition({
 }) {
   const growTransitionRef = useRef(null);
   const [value, setValue] = useState(pageName);
+  const theme = useTheme();
 
   useEffect(() => {
     if (name) setValue(name);
@@ -87,6 +88,7 @@ function GrowTransition({
         className='tab-styles'
         sx={{
           marginTop: isVertical ? '80px' : 0,
+          backgroundColor: theme.palette.mode === 'light' ? '#F4F3F7' : '#2D2D2D',
         }}
       >
         <TabContext value={value}>
@@ -115,7 +117,7 @@ function GrowTransition({
           {Object.keys(jsx).map((key) => (
             <TabPanel value={key} key={key} 
               sx={{
-                backgroundColor: '#E0E1DD', 
+                backgroundColor: theme.palette.mode === 'light' ? '#E0E1DD' : '#d5d5d5',  
                 padding: '5px', 
                 borderRadius: '20px',
                 marginTop: '10px',
@@ -126,7 +128,7 @@ function GrowTransition({
                 showLineNumbers={true}
                 theme={tomorrow}
                 customStyle={{ 
-                  backgroundColor: '#E0E1DD', 
+                  backgroundColor: theme.palette.mode === 'light' ? '#E0E1DD' : '#d5d5d5', 
                   borderRadius: '6px',
                   fontSize: '0.8em', 
                  }}
@@ -135,7 +137,7 @@ function GrowTransition({
           ))}
           <TabPanel value='css' 
           sx={{
-            backgroundColor: '#E0E1DD', 
+            backgroundColor: theme.palette.mode === 'light' ? '#E0E1DD' : '#d5d5d5', 
             padding: '5px', 
             borderRadius: '20px',
             marginTop: '10px',
@@ -146,7 +148,7 @@ function GrowTransition({
               showLineNumbers={true}
               theme={tomorrow}
               customStyle={{ 
-                backgroundColor: '#E0E1DD', 
+                backgroundColor: theme.palette.mode === 'light' ? '#E0E1DD' : '#d5d5d5', 
                 borderRadius: '6px',
                 fontSize: '0.8em', 
               }}

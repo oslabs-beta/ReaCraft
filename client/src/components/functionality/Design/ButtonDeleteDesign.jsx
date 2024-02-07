@@ -1,9 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteDesign } from '../../../utils/fetchRequests';
 import { goToPage, setMessage } from '../../../utils/reducers/appSlice';
 import Button from '@mui/material/Button';
-
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -14,10 +13,12 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '@mui/material';
 
 export default function ButtonDeleteDesign({ designId }) {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const handleClose = () => setOpen(false);
 
@@ -43,12 +44,18 @@ export default function ButtonDeleteDesign({ designId }) {
 
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
+          <DialogContentText id='alert-dialog-description' sx={{ color: theme.palette.mode === 'light' ? '#f6f5f8' : '#909091' }}>
             Are you sure you want to delete this design?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
+            sx={{ 
+              color: theme.palette.mode === 'light' ? '#F4F3F7' : '#E0E1DD',
+              '&:hover': {
+                backgroundColor: theme.palette.mode === 'light' ? '#c9c8c4' : '#4D4D4D'
+              } 
+            }}
             onClick={async () => {
               try {
                 await deleteDesign(designId);
@@ -73,7 +80,14 @@ export default function ButtonDeleteDesign({ designId }) {
           >
             Yes
           </Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button 
+            sx={{
+              color: theme.palette.mode === 'light' ? '#F4F3F7' : '#E0E1DD',
+              '&:hover': {
+                backgroundColor: theme.palette.mode === 'light' ? '#c9c8c4' : '#4D4D4D'
+              } 
+            }}
+            onClick={handleClose} autoFocus>
             No
           </Button>
         </DialogActions>

@@ -51,7 +51,7 @@ export default function ButtonGroupRectangleStyle({ rectangle }) {
         styleOverrides: {
           root: {
             '& .MuiButton-root': {
-              border: '1px solid rgba(224, 225, 221, 0.5)',
+              border: '1px solid #d9d0c7',
             },
           },
         },
@@ -66,8 +66,8 @@ export default function ButtonGroupRectangleStyle({ rectangle }) {
         styleOverrides: {
           root: {
             '& .MuiButton-root': {
-              color: '#998e8e',
-              borderColor: '#ada6a6ab',
+              color: '#bdbbb6', //changes the line weight SVG color
+              borderColor: '#bdbbb6', //changes the border color
             },
           },
         },
@@ -76,7 +76,7 @@ export default function ButtonGroupRectangleStyle({ rectangle }) {
         styleOverrides: {
           root: {
             '& .MuiButton-root': {
-              border: '1px solid #ada6a6ab',
+              border: '1px solid #bdbbb6', //changes the border color for color button
             },
           },
         },
@@ -85,9 +85,8 @@ export default function ButtonGroupRectangleStyle({ rectangle }) {
   });
   return (
     <ThemeProvider
-      theme={theme.palette.mode === 'dark' ? themeDark : themeLight}
-    >
-      <ButtonGroup width='50px' variant='outlined' height='30px'>
+      theme={theme.palette.mode === 'dark' ? themeDark : themeLight}>
+      <ButtonGroup width='40px' variant='outlined' height='40px'>
         <Fragment>
           <Tooltip title='Change background color'>
             <MuiColorInput
@@ -143,8 +142,7 @@ function BorderMenu({
       onClose={handleClose}
       MenuListProps={{
         'aria-labelledby': 'basic-button',
-      }}
-    >
+      }}>
       <MenuItem>
         <Tooltip title='Border Color'>
           <MuiColorInput

@@ -76,8 +76,8 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
       display='block'
       position='fixed'
       height='56px'
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-    >
+      sx={{ 
+        zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar
         disableGutters={true}
         sx={{
@@ -88,8 +88,7 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
           '& .MuiButtonBase-root': {
             boxShadow: 'none',
           },
-        }}
-      >
+        }}>
         <Stack direction='row' alignItems='center'>
           {!designId && (
             <Fragment>
@@ -100,14 +99,15 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
                 sx={{
                   ...AppBarButtonsStyle,
                   '&:hover': {
-                    backgroundColor: 'transparent',
+                    // backgroundColor: '#D9D0C7',
                     boxShadow: 'none',
                   },
-                }}
-              >
+                }}>
                 <FontAwesomeIcon icon={faBars} />
               </Button>
-              <Typography fontSize='25px'>ReaCraft</Typography>
+              <Box>
+                <Typography fontSize='25px'>ReaCraft</Typography>
+              </Box>
             </Fragment>
           )}
           {designId && (
@@ -120,16 +120,15 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-                onClick={() => handlePageClick('HOME')}
-              >
+                onClick={() => handlePageClick('HOME')}>
                 <Tooltip title='Back to home'>
                   <img
-                    src='./assets/ReaCraft.png'
+                    src='./assets/homepage/ReaCraft_logoColor_light.svg'
                     style={{
                       marginLeft: '20px',
                       width: 40,
                       height: 40,
-                      color: '#736c6c',
+                      color: '#bdbbb6',
                     }}
                   />
                 </Tooltip>
@@ -164,14 +163,15 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
               onClick={() => handlePageClick('DESIGN')}
               sx={{
                 ...AppBarButtonsStyle,
-                backgroundColor: darkMode ? '#2a3f5a' : '#736c6c',
-                color: '#e2e2d3',
+                backgroundColor: darkMode ? '#2a3f5a' : '#979591',
+                color: '#f4f3f7',
                 boxShadow: '1px 1px 5px white',
                 margin: '0 5px',
+                textTransform: 'none',
+                marginRight: '10px',
               }}
-              startIcon={<AddPhotoAlternateIcon />}
-            >
-              New Design
+              startIcon={<AddPhotoAlternateIcon />}>
+              New Designs
             </Button>
           )}
           <Divider orientation='vertical' flexItem />
