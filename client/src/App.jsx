@@ -47,9 +47,10 @@ export default function App() {
   const { getUser } = useAuth();
   const dispatch = useDispatch();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [renderWorkspace, setRenderWorkspace] = useState(false);
   const { page } = useSelector((state) => state.app);
   const currentTheme = darkMode ? themeDark : themeLight;
+  const { _id } = useSelector((state) => state.designV3);
+  const [isWorkspaceReady, setIsWorkspaceReady] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,23 +80,20 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // if SideDrawer is open, this useEffect will close the drawer before rendering the workspace
   useEffect(() => {
-    const transitionDuration = currentTheme.transitions
-      ? currentTheme.transitions.duration.enteringScreen
-      : 300;
-
-    if (page === 'DESIGN') {
-      if (drawerOpen) {
-        setDrawerOpen(false);
-        setTimeout(() => setRenderWorkspace(true), transitionDuration);
-      } else {
-        setRenderWorkspace(true);
-      }
+    // if on the 'DESIGN' page and _id is present, close the SideDrawer before rendering Workspace
+    if (page === 'DESIGN' && _id) {
+      setDrawerOpen(false);
+      // set a timeout to ensure the closing animation completes before setting Workspace as ready
+      const transitionDuration = currentTheme.transitions ? currentTheme.transitions.duration.leavingScreen : 225;
+      setTimeout(() => {
+        setIsWorkspaceReady(true);
+      }, transitionDuration);
     } else {
-      setRenderWorkspace(false);
+      // if not on the 'DESIGN' page or _id is not present, set Workspace as not ready
+      setIsWorkspaceReady(false);
     }
-  }, [page, drawerOpen, currentTheme.transitions]);
+  }, [page, _id, currentTheme.transitions]);
 
   // toggle drawer function
   const handleDrawerOpen = () => {
@@ -122,7 +120,7 @@ export default function App() {
       <SideDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
       <Main open={drawerOpen}>
         <MainContainer
-          renderWorkspace={renderWorkspace}
+          isWorkspaceReady={isWorkspaceReady}
           sx={{
             top: '10%',
           }}
