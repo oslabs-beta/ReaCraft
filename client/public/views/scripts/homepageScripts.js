@@ -1,11 +1,8 @@
-//load react logo script
-$(document).ready(function () {
-  $('#LogoContainer').load('/views/ReactLogo.html');
-});
-
-//login/SignUp Script
 // when document is ready
 $(document).ready(function () {
+  //load react logo script
+  $('#LogoContainer').load('/views/ReactLogo.html');
+
   // attach click handler event to 'signup' button
   $('#signup').click(function (e) {
     // prevent default button action
@@ -14,7 +11,51 @@ $(document).ready(function () {
     $('#modalPlaceholder').load('/views/signupModal.html', function () {
       // show the 'signupModal' as a modal
       $('#signupModal').modal('show');
-      updateModalDarkMode();
+
+      $('#signupForm').on('submit', async (e) => {
+        e.preventDefault();
+        const username = e.target.username.value;
+        const password = e.target.password.value;
+        const email = e.target.email.value;
+
+        const alert = $('<div class="alert" role="alert"></div>');
+
+        if (username.length < 3) {
+          alert.addClass('alert-danger');
+          alert.html('Username must contain at least 3 characters.');
+          $('.greeting-text').append(alert);
+          setTimeout(() => alert.remove(), 3000);
+        } else if (password.length < 8) {
+          alert.addClass('alert-danger');
+          alert.html('Password must contain at least 8 characters.');
+          $('.greeting-text').append(alert);
+          setTimeout(() => alert.remove(), 3000);
+        } else {
+          const res = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'Application/JSON',
+            },
+            body: JSON.stringify({
+              username,
+              password,
+              email,
+            }),
+          });
+          if (res.ok) {
+            alert.addClass('alert-success');
+            alert.html('Sign up Successfully.');
+            $('.greeting-text').append(alert);
+            location.reload();
+          } else {
+            const err = await res.json();
+            alert.addClass('alert-danger');
+            alert.html(err);
+            $('.greeting-text').append(alert);
+            setTimeout(() => alert.remove(), 3000);
+          }
+        }
+      });
     });
   });
 
@@ -26,7 +67,35 @@ $(document).ready(function () {
     $('#modalPlaceholder').load('/views/loginModal.html', function () {
       // show the 'loginModa' as a modal
       $('#loginModal').modal('show');
-      updateModalDarkMode();
+
+      $('#loginForm').on('submit', async (e) => {
+        e.preventDefault();
+        const res = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'Application/JSON',
+          },
+          body: JSON.stringify({
+            username: e.target.username.value,
+            password: e.target.password.value,
+          }),
+        });
+        const alert = $('<div class="alert" role="alert"></div>');
+        if (res.ok) {
+          alert.addClass('alert-success');
+          alert.html('Login Successfully.');
+          $('.greeting-text').append(alert);
+          location.reload();
+        } else {
+          const err = await res.json();
+          alert.addClass('alert-danger');
+          console.log(err);
+          alert.html(err);
+          $('.greeting-text').append(alert);
+          setTimeout(() => alert.remove(), 3000);
+          console.log(err);
+        }
+      });
     });
   });
 
