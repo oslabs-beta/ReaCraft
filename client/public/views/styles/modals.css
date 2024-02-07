@@ -73,6 +73,13 @@
   }
 }
 
+.signup-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .form-floating {
   /* space between input fields */
   margin-bottom: 10px;
