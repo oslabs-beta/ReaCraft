@@ -48,7 +48,7 @@ Streamlining React Development from Design to Deployment
 <a href="https://github.com/oslabs-beta/Reactraft/issues">Report Bug</a>
 ·
 <a href="https://github.com/oslabs-beta/Reactraft/issues">Request Feature</a>
-
+·
 <a href="https://linktr.ee/reacraftorg">Link Tree</a>
 
   </p>
