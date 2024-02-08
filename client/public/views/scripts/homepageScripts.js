@@ -1,6 +1,7 @@
 // when document is ready
 $(document).ready(function () {
   const navs = $('#nav-btns');
+  navs.hide();
   navs.css({
     right: '10%',
     display: 'flex',
@@ -25,7 +26,9 @@ $(document).ready(function () {
   });
 
   //load react logo script
-  $('#LogoContainer').load('/views/ReactLogo.html');
+  $('#LogoContainer').load('/views/ReactLogo.html', function () {
+    navs.show();
+  });
 
   // attach click handler event to 'signup' button
   $('#signup').click(function (e) {
