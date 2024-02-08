@@ -5,7 +5,6 @@ import {
   setMessage,
   setSelectedPageIdx,
 } from '../../../utils/reducers/appSlice';
-import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
 import { styled } from '@mui/material/styles';
 import { newDesign } from '../../../utils/reducers/designSliceV3';
 import { Box } from '@mui/material';
@@ -165,9 +164,15 @@ export default function UserImageUploadButton() {
   }, [socket]);
 
   return (
-    <Box className='container'>
+    <Box className='container'
+      sx={{
+        maxWidth: '500px',
+        height: 'auto',
+        margin: '0 auto',
+      }}
+    >
       <Box className='svgBackground'>
-        <img src='/assets/Dotted_Box.svg' alt='Dotted box' />
+        <img class="dotted-upload" src='/assets/Dotted_Box.svg' alt='Dotted box' style={{ filter: theme.palette.mode === 'light' ? 'none' : 'invert(100%)' }}/>
       </Box>
       <Box className='content'>
         <FileUploader
@@ -176,16 +181,9 @@ export default function UserImageUploadButton() {
           types={['JPG', 'PNG']}
           children={
             <Box>
-              {/* <CloudUploadRoundedIcon
-                style={{
-                  fontSize: '70px',
-                  color: '#736C6C',
-                  marginLeft: '60px',
-                }}
-              /> */}
               <FontAwesomeIcon icon={faCloudArrowUp}
                 style={{
-                  fontSize: '70px',
+                  fontSize: '4.375em',
                   color: theme.palette.mode === 'light' ? '#BCBBB6' : 'white',
                   marginLeft: '3.03rem',
                 }}
