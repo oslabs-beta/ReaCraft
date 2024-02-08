@@ -71,7 +71,7 @@ $(document).ready(function () {
           });
           if (res.ok) {
             alert.addClass('alert-success');
-            alert.html('Sign up Successfully.');
+            alert.html('Sign up Successful');
             $('.signup-text').append(alert);
             location.reload();
           } else {
@@ -110,7 +110,7 @@ $(document).ready(function () {
         const alert = $('<div class="alert" role="alert"></div>');
         if (res.ok) {
           alert.addClass('alert-success');
-          alert.html('Login Successfully.');
+          alert.html('Login Successful');
           $('.greeting-text').append(alert);
           location.reload();
         } else {
@@ -240,10 +240,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const slides = document.querySelectorAll('.slidePage2');
   let loopTimeout;
 
+  // Store the URLs of the GIFs
+  const gifUrls = [
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/UploadPhotos.gif",
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/AddComponents.gif",
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/DomTree.gif",
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/BorderColorFill.gif",
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/DevelopmentSuite.gif",
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/ExportAll.gif"
+    // Add more URLs as needed
+  ];
+
   // function to show the corresponding slide for an instruction
   const showSlide = (index) => {
     slides.forEach((slide, idx) => {
       slide.style.display = idx === index ? 'block' : 'none'; // Show only the corresponding slide
+      if (idx === index) {
+        const img = slide.querySelector('img');
+        if (img && gifUrls[idx]) {
+          img.src= ''; // clear the src to force the GIF to reload and restart
+          img.src = gifUrls[idx]; // set the src attribute to start the gif
+        }
+      }
     });
   };
 
@@ -269,11 +287,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const loopDescriptionsAndSlides = () => {
     currentIndex = (currentIndex + 1) % instructions.length;
     activateInstructionAndSlide(currentIndex);
-    loopTimeout = setTimeout(loopDescriptionsAndSlides, 3000); // Continue loop every 3 seconds
+    loopTimeout = setTimeout(loopDescriptionsAndSlides, 13000); // Continue loop every 3 seconds
   };
 
   // start the looping
-  loopTimeout = setTimeout(loopDescriptionsAndSlides, 3000);
+  loopTimeout = setTimeout(loopDescriptionsAndSlides, 13000);
 
   //inject css into elements
   const injectCSS = (css) => {
@@ -288,10 +306,10 @@ document.addEventListener('DOMContentLoaded', () => {
     instruction.addEventListener('click', () => {
       clearTimeout(loopTimeout); // stop the current loop
       activateInstructionAndSlide(index); // activate the clicked instruction and show its slide
-      instruction.classList.add('active');
-      instruction.style.transition = 'width 10s ease'; //curr not setting.
+      // instruction.classList.add('active');
+      // instruction.style.transition = 'width 10s ease'; //curr not setting.
 
-      loopTimeout = setTimeout(loopDescriptionsAndSlides, 10000); // Wait 10 seconds before resuming the loop
+      loopTimeout = setTimeout(loopDescriptionsAndSlides, 13000); // Wait 10 seconds before resuming the loop
     });
   });
 });

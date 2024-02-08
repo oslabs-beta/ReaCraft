@@ -111,12 +111,12 @@ Streamlining React Development from Design to Deployment
 [![Konva](https://img.shields.io/badge/konva-v9.3.0-0D83CD?logo=konva&logoColor=white)](https://konvajs.org/)
 [![Jest](https://img.shields.io/badge/jest-v27.5.1-C21325?logo=jest)](https://jestjs.io/)
 [![Webpack](https://img.shields.io/badge/webpack-v5.89.0-8DD6F9?logo=webpack)](https://webpack.js.org/)
-[![Electron](https://img.shields.io/badge/electron-v28.1.3-47848F?logo=electron&logoColor=white)](https://www.electronjs.org/)
 [![Babel](https://img.shields.io/badge/babel-v7.23.7-F9DC3E?logo=babel)](https://babeljs.io/)
 [![Bootstrap](https://img.shields.io/badge/bootstrap-v5.3-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 [![sass](https://img.shields.io/badge/sass-v1.69.7-CC6699?logo=sass)](https://sass-lang.com/)
 [![FontAwesome](https://img.shields.io/badge/font%20awesome-v6.5.1-528DD7?logo=font%20awesome)](https://fontawesome.com/)
 [![Passport.js](https://img.shields.io/badge/passport-v0.7.0-34E27A?logo=passport)](https://www.passportjs.org/)
+[![WebSocket](https://img.shields.io/badge/ws-v8.5.10-F1711C)](https://www.npmjs.com/package/ws)
 
 ### Deployed With
 
