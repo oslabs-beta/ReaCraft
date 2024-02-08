@@ -287,7 +287,7 @@ img.arrow.dark {
 }
 
 .nav-container {
-  z-index: 5;
+  z-index: 100;
 }
 
 .profile {
