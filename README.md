@@ -86,7 +86,9 @@ Streamlining React Development from Design to Deployment
 
 ### Tables design:
 
-![alt text][database-tables]
+- Diagram made with <a href='https://github.com/oslabs-beta/SQLens'>SQLens<a/>
+
+![database design][database-tables]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -170,6 +172,7 @@ Project Link: [https://github.com/oslabs-beta/Reactraft](https://github.com/osla
 - [react-drag-drop-files](https://www.npmjs.com/package/react-drag-drop-files)
 - [create-react-app](https://create-react-app.dev/)
 - [Font Awesome](https://fontawesome.com/)
+- [SQLens](https://github.com/oslabs-beta/SQLens)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -186,4 +189,4 @@ Project Link: [https://github.com/oslabs-beta/Reactraft](https://github.com/osla
 [issues-url]: https://github.com/oslabs-beta/Reactraft/issues
 [license-shield]: https://img.shields.io/github/license/oslabs-beta/Reactraft.svg?style=for-the-badge
 [license-url]: https://github.com/oslabs-beta/Reactraft/blob/master/LICENSE.txt
-[database-tables]: /docs/database_tables_new.png
+[database-tables]: https://reacraft-demos.s3.ca-central-1.amazonaws.com/database_tables.png
