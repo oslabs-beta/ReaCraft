@@ -20,6 +20,15 @@
   font-family: 'Baloo Bhaijaan 2', sans-serif;
 }
 
+.alert {
+  position: absolute;
+  top: 32%;
+  left: 0;
+  right: 0;
+  z-index: 10; 
+  text-align: center;
+}
+
 @media (min-width: 1080px) and (min-height: 960px) {
   .modal-content {
     max-height: 700px;
