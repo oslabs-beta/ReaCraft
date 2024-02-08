@@ -64,7 +64,7 @@ img.arrow.dark {
 .container {
   width: 90vw;
   margin-right: 5%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .containerLeft,
@@ -204,16 +204,23 @@ img.arrow.dark {
   );
   background-size: 200% 100%;
   background-position: right bottom;
-  transition: width 0.5s ease-out, background-position 4s ease;
+  /* transition: width 0.5s ease-out, background-position 4s ease; */
+  transition: width 14s ease-out;
   filter: blur(1px);
 }
 
 .instruction.active::before {
   width: 100%;
-  transition: width 4s ease;
+  /* transition: width 4s ease; */
+  /* transition: width 20s ease; */
   visibility: visible;
   opacity: 1;
   background-position: left bottom;
+}
+/* for the bar to move back when another instruction is clicked */
+.instruction:not(.active)::before {
+  width: 0%;
+  transition: width 0.6s ease-out; 
 }
 
 .instruction:hover {
@@ -294,7 +301,7 @@ img.arrow.dark {
 
 .profiles-container {
   display: grid;
-  animation: slideUp 2.5s ease-out forwards 1.5s;
+  /* animation: slideUp 2.5s ease-out forwards 1.5s; */
 }
 
 .slide {
@@ -327,7 +334,6 @@ img.arrow.dark {
 .slidePage2 {
   animation: fadeInUp 1.5s;
   border-radius: 2px;
-  box-shadow: 3px 5px 5px -3px rgba(44, 44, 44, 1);
   display: block;
   height: 100%;
   margin-left: 10%;
@@ -681,6 +687,11 @@ img.arrow.dark {
 
 .link.dark {
   color: white;
+}
+
+
+.topbar-btn.dark::after, .topbar-btn:hover.dark::after {
+  background: white;
 }
 
 /* #medium-article {
