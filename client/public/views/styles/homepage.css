@@ -64,7 +64,7 @@ img.arrow.dark {
 .container {
   width: 90vw;
   margin-right: 5%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .containerLeft,
@@ -301,7 +301,7 @@ img.arrow.dark {
 
 .profiles-container {
   display: grid;
-  animation: slideUp 2.5s ease-out forwards 1.5s;
+  /* animation: slideUp 2.5s ease-out forwards 1.5s; */
 }
 
 .slide {
@@ -676,4 +676,9 @@ img.arrow.dark {
 
 .link.dark {
   color: white;
+}
+
+
+.topbar-btn.dark::after, .topbar-btn:hover.dark::after {
+  background: white;
 }

@@ -15,11 +15,21 @@ import { setMessage } from '../../../utils/reducers/appSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from '@mui/material';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const theme = useTheme();
+
+  const handleClick = (event) => {
+    event.stopPropagation();
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   async function handleSumbit(e) {
     e.preventDefault();
@@ -66,11 +76,13 @@ export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
         <Fab
           size='small'
           color='info'
-          onClick={(e) => setAnchorEl(e.currentTarget)}
+          // onClick={(e) => setAnchorEl(e.currentTarget)}
+          onClick={handleClick}
           sx={{ marginRight: '0.3rem' }}>
           <FontAwesomeIcon icon={faUserPlus} />
         </Fab>
       </Tooltip>
+      <ClickAwayListener onClickAway={handleClose}>
       <Popper
         open={Boolean(anchorEl)}
         placement='bottom-start'
@@ -116,6 +128,7 @@ export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
           />
         </Box>
       </Popper>
+      </ClickAwayListener>
     </Fragment>
   );
 }
