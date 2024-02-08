@@ -1,11 +1,8 @@
-//load react logo script
-$(document).ready(function () {
-  $('#LogoContainer').load('/views/ReactLogo.html');
-});
-
-//login/SignUp Script
 // when document is ready
 $(document).ready(function () {
+  //load react logo script
+  $('#LogoContainer').load('/views/ReactLogo.html');
+
   // attach click handler event to 'signup' button
   $('#signup').click(function (e) {
     // prevent default button action
@@ -14,7 +11,51 @@ $(document).ready(function () {
     $('#modalPlaceholder').load('/views/signupModal.html', function () {
       // show the 'signupModal' as a modal
       $('#signupModal').modal('show');
-      updateModalDarkMode();
+
+      $('#signupForm').on('submit', async (e) => {
+        e.preventDefault();
+        const username = e.target.username.value;
+        const password = e.target.password.value;
+        const email = e.target.email.value;
+
+        const alert = $('<div class="alert" role="alert"></div>');
+
+        if (username.length < 3) {
+          alert.addClass('alert-danger');
+          alert.html('Username must contain at least 3 characters.');
+          $('.signup-text').append(alert);
+          setTimeout(() => alert.remove(), 3000);
+        } else if (password.length < 8) {
+          alert.addClass('alert-danger');
+          alert.html('Password must contain at least 8 characters.');
+          $('.signup-text').append(alert);
+          setTimeout(() => alert.remove(), 3000);
+        } else {
+          const res = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'Application/JSON',
+            },
+            body: JSON.stringify({
+              username,
+              password,
+              email,
+            }),
+          });
+          if (res.ok) {
+            alert.addClass('alert-success');
+            alert.html('Sign up Successfully.');
+            $('.signup-text').append(alert);
+            location.reload();
+          } else {
+            const err = await res.json();
+            alert.addClass('alert-danger');
+            alert.html(err);
+            $('.signup-text').append(alert);
+            setTimeout(() => alert.remove(), 3000);
+          }
+        }
+      });
     });
   });
 
@@ -26,7 +67,35 @@ $(document).ready(function () {
     $('#modalPlaceholder').load('/views/loginModal.html', function () {
       // show the 'loginModa' as a modal
       $('#loginModal').modal('show');
-      updateModalDarkMode();
+
+      $('#loginForm').on('submit', async (e) => {
+        e.preventDefault();
+        const res = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'Application/JSON',
+          },
+          body: JSON.stringify({
+            username: e.target.username.value,
+            password: e.target.password.value,
+          }),
+        });
+        const alert = $('<div class="alert" role="alert"></div>');
+        if (res.ok) {
+          alert.addClass('alert-success');
+          alert.html('Login Successfully.');
+          $('.greeting-text').append(alert);
+          location.reload();
+        } else {
+          const err = await res.json();
+          alert.addClass('alert-danger');
+          console.log(err);
+          alert.html(err);
+          $('.greeting-text').append(alert);
+          setTimeout(() => alert.remove(), 3000);
+          console.log(err);
+        }
+      });
     });
   });
 
@@ -144,10 +213,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const slides = document.querySelectorAll('.slidePage2');
   let loopTimeout;
 
+  // Store the URLs of the GIFs
+  const gifUrls = [
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/UploadPhotos.gif",
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/AddComponents.gif",
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/DomTree.gif",
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/BorderColorFill.gif",
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/DevelopmentSuite.gif",
+    "https://reacraft-demos.s3.ca-central-1.amazonaws.com/ExportAll.gif"
+    // Add more URLs as needed
+  ];
+
   // function to show the corresponding slide for an instruction
   const showSlide = (index) => {
     slides.forEach((slide, idx) => {
       slide.style.display = idx === index ? 'block' : 'none'; // Show only the corresponding slide
+      if (idx === index) {
+        const img = slide.querySelector('img');
+        if (img && gifUrls[idx]) {
+          img.src= ''; // clear the src to force the GIF to reload and restart
+          img.src = gifUrls[idx]; // set the src attribute to start the gif
+        }
+      }
     });
   };
 
@@ -173,11 +260,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const loopDescriptionsAndSlides = () => {
     currentIndex = (currentIndex + 1) % instructions.length;
     activateInstructionAndSlide(currentIndex);
-    loopTimeout = setTimeout(loopDescriptionsAndSlides, 3000); // Continue loop every 3 seconds
+    loopTimeout = setTimeout(loopDescriptionsAndSlides, 13000); // Continue loop every 3 seconds
   };
 
   // start the looping
-  loopTimeout = setTimeout(loopDescriptionsAndSlides, 3000);
+  loopTimeout = setTimeout(loopDescriptionsAndSlides, 13000);
 
   //inject css into elements
   const injectCSS = (css) => {
@@ -192,10 +279,10 @@ document.addEventListener('DOMContentLoaded', () => {
     instruction.addEventListener('click', () => {
       clearTimeout(loopTimeout); // stop the current loop
       activateInstructionAndSlide(index); // activate the clicked instruction and show its slide
-      instruction.classList.add('active');
-      instruction.style.transition = 'width 10s ease'; //curr not setting.
+      // instruction.classList.add('active');
+      // instruction.style.transition = 'width 10s ease'; //curr not setting.
 
-      loopTimeout = setTimeout(loopDescriptionsAndSlides, 10000); // Wait 10 seconds before resuming the loop
+      loopTimeout = setTimeout(loopDescriptionsAndSlides, 13000); // Wait 10 seconds before resuming the loop
     });
   });
 });

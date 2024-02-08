@@ -12,13 +12,14 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../../../utils/reducers/appSlice';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '@mui/material';
 
 export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   async function handleSumbit(e) {
     e.preventDefault();
@@ -58,6 +59,7 @@ export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
       );
     }
   }
+
   return (
     <Fragment>
       <Tooltip title='Add Collaborator'>
@@ -74,9 +76,19 @@ export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
         placement='bottom-start'
         anchorEl={anchorEl}
         sx={{
-          backgroundColor: '#bdbbb6',
+          backgroundColor: theme.palette.mode === 'light' ? '#9f9f9f' : '#8D8D8D',
           zIndex: 10000,
-        }}>
+        }}
+        modifiers={[
+          {
+            name: 'offset',
+            options: {
+              // first value is for horizontal offset, second is for vertical offset
+              offset: [0, 20],
+            },
+          },
+        ]}
+        >
         <Box
           component='form'
           sx={{ display: 'flex', flexDirection: 'column' }}
@@ -84,19 +96,23 @@ export default function ButtonAddCollab({ designId, ownerId, ownerName }) {
           <TextField
             label='Collaborator username'
             name='collaboratorUsername'
+            InputLabelProps={{
+              style: { color: 'white' }
+            }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position='end'>
-                  <IconButton type='submit' sx={{ color: 'white' }}>
-                    <PersonAddIcon />
-                  </IconButton>
-                </InputAdornment>
+                <IconButton type='submit' sx={{ color: 'white' }}>
+                  <PersonAddIcon />
+                </IconButton>
+              </InputAdornment>
               ),
             }}
           />
           <FormControlLabel
             control={<Checkbox name='canEdit' defaultChecked />}
             label='They can edit'
+            sx={{ marginLeft: '.01rem' }}
           />
         </Box>
       </Popper>

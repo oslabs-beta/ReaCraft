@@ -13,9 +13,6 @@ export function jsxCodeForApp(pageLen: number, title: string): string {
     <div className='App'>
       <span class='slide reacraft'>
         <Logo />
-        <p>
-          Thank you for using <a href='https://reacraft.org'>ReaCraft</a>
-        </p>
         <h1>Your design: ${title}</h1>
       </span>`;
 
