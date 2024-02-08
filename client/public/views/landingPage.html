@@ -48,8 +48,8 @@
 
   <body id="landing-page">
     <!-- slide 1 -->
-    <span class="slide">
-      <span class="floater">
+    <span class="slide" style="position: relative">
+      <span class="floater topbar-btns">
         <a
           href="https://github.com/oslabs-beta/ReaCraft"
           target="_blank"
@@ -74,100 +74,62 @@
         </span>
       </span>
       <div id="modalPlaceholder"></div>
-      <div style="position: relative">
-        <!-- Tutorial Object -->
-        <div
-          class="tutorial-container"
-          style="position: absolute; z-index: 15; top: 40%; right: 10%"
-        >
-          <span id="tutorialText" style="cursor: pointer">
-            Tutorial <i class="fa-regular fa-square-caret-down"></i>
-            <!-- <img
-              style="width: 20px; height: 20px"
-              alt="arrow"
-              class="arrow"
-              src="../assets/arrow.svg" /> -->
-          </span>
-        </div>
-        <!-- Meet Team Object -->
-        <div
-          class="meetTeam"
-          style="position: absolute; z-index: 15; top: 45%; right: 10%"
-        >
-          <span id="meetTeamText" style="cursor: pointer">
-            Meet the Team <i class="fa-regular fa-square-caret-down"></i>
-            <!-- <img
-              style="width: 20px; height: 20px"
-              alt="arrow"
-              class="arrow"
-              src="../assets/arrow.svg" /> -->
-          </span>
-        </div>
 
-        <div
-          class="twitter"
-          style="position: absolute; z-index: 15; top: 30%; right: 10%"
+      <div id="nav-btns">
+        <a
+          class="link"
+          style="cursor: pointer"
+          href="https://twitter.com/reacraft_org"
+          target="_blank"
+          rel="noopener noreferrer"
+          id="medium-article"
         >
-          <a
-            class="link"
-            style="cursor: pointer"
-            href="https://linktr.ee/reacraftorg"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Connect on
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-twitter-x"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"
-              />
-            </svg>
-            <!-- <img
-            style="width: 20px; height: 20px"
-            alt="arrow"
-            class="arrow"
-            src="../assets/arrow.svg" /> -->
-          </a>
-        </div>
-
-        <div
-          class="medium"
-          style="position: absolute; z-index: 15; top: 35%; right: 10%"
+          Medium Article <i class="fa-brands fa-medium"></i>
+        </a>
+        <a
+          class="link"
+          style="cursor: pointer"
+          href="https://linktr.ee/reacraftorg"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <a
-            class="link"
-            style="cursor: pointer"
-            href="https://twitter.com/reacraft_org"
-            target="_blank"
-            rel="noopener noreferrer"
+          Connect on
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-twitter-x"
+            viewBox="0 0 16 16"
           >
-            Medium Article <i class="fa-brands fa-medium"></i>
-            <!-- <img
-          style="width: 20px; height: 20px"
-          alt="arrow"
-          class="arrow"
-          src="../assets/arrow.svg" /> -->
-          </a>
-        </div>
-        <!-- Logo Load In -->
-        <div
-          id="LogoContainer"
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 95vw;
-            height: 90vh;
-          "
-        ></div>
+            <path
+              d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"
+            />
+          </svg>
+        </a>
+        <span id="tutorialText" style="cursor: pointer">
+          Tutorial <i class="fa-regular fa-square-caret-down"></i>
+        </span>
+        <span id="meetTeamText" style="cursor: pointer">
+          Meet the Team <i class="fa-regular fa-square-caret-down"></i>
+        </span>
       </div>
-    </span>
+
+      <!-- Logo Load In -->
+      <span>
+        <div>
+          <div
+            id="LogoContainer"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 95vw;
+              height: 90vh;
+            "
+          ></div>
+        </div> </span
+    ></span>
     <!-- slide 2 -->
     <span class="slide" id="tutorialSection">
       <div class="containerMain">
