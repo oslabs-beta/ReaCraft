@@ -259,7 +259,6 @@
 }
 
 .dark .form-control:focus {
-  /* color: #495057; */
   color: white;
   background-color: transparent;
   border-color: #a8a9b0;
