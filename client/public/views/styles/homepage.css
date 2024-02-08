@@ -814,6 +814,22 @@ img.arrow.dark {
   .team-header {
     font-size: xx-large;
   }
+
+  .containerRight {
+    width: 0;
+  }
+
+  .slidePage2 {
+    width: 0;
+  }
+
+  .construction {
+    visibility: hidden;
+  }
+
+  .containerLeft {
+    width: 90vw;
+  }
 }
 
 @media only screen and (min-width: 480) and (max-width: 1000px) and (max-height: 600px) {
