@@ -31,11 +31,11 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/oslabs-beta/ReaCraft">
-    <img src="docs/ReaCraft.png" alt="Logo" width="200" height="200">
+  <a href="https://reacraft.org">
+    <img src="https://reacraft-demos.s3.ca-central-1.amazonaws.com/ReaCraft_BDBBB6_circleShadow_transparent.svg" alt="Logo" width="200" height="200">
   </a>
 
-<h3 align="center">ReaCraft</h3>
+<a href="https://reacraft.org" target="_blank" rel="noopener noreferrer"><h3 align="center">ReaCraft</h3></a>
 
   <p align="center">
 Streamlining React Development from Design to Deployment
