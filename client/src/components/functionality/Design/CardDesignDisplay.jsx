@@ -116,10 +116,10 @@ export default function CardDesignDisplay({ design }) {
               // },
             }}
           >
-            Created: {created_at.toLocaleString()}
+            Created: {created_at.toLocaleDateString()}
           </Typography>
           <Typography variant='body2' color='text' sx={{ fontSize: 'lg' }}>
-            Updated: {last_updated.toLocaleString()}
+            Updated: {last_updated.toLocaleDateString()}
           </Typography>
           {last_updated_by && (
             <Typography variant='body2' color='text' sx={{ fontSize: 'lg' }}>
