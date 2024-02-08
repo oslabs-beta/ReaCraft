@@ -34,7 +34,6 @@ import ButtonViewTree from '../functionality/Design/ButtonViewTree';
 import { convertToTree } from '../../utils/treeNode';
 import ButtonDownloadFiles from '../functionality/Design/ButtonDownloadFiles';
 import ButtonAddCollab from '../functionality/Design/ButtonAddCollab';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
@@ -156,9 +155,9 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
           {designId && (
             <Fragment>
               <SliderZoom />
-              <Divider orientation='vertical' flexItem />
+              <Divider orientation='vertical' flexItem sx={{ height: 30, marginTop: '10px' }} />
               <ButtonPanHand />
-              <Divider orientation='vertical' flexItem />
+              {/* <Divider orientation='vertical' flexItem sx={{ height: 30, marginTop: '10px' }} /> */}
             </Fragment>
           )}
           {!designId && (
@@ -179,7 +178,7 @@ export default function TopBar({ toggleDarkMode, darkMode, handleDrawerOpen }) {
               New Designs
             </Button>
           )}
-          <Divider orientation='vertical' flexItem />
+          <Divider orientation='vertical' flexItem sx={{ height: 30, marginTop: '10px' }}/>
           <ButtonKeyboardShortcut
             sx={{ position: 'absolute', justifySelf: 'end' }}
           />
