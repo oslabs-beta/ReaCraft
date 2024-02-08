@@ -613,7 +613,15 @@ img.arrow.dark {
   z-index: 1;
 }
 
+.topbar-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
 .topbar-btn {
+  flex-basis: 1;
   background: none;
   border: none;
   color: var(--text);
@@ -623,7 +631,6 @@ img.arrow.dark {
   font-size: 1.2rem;
   font-weight: bold;
   margin-right: 15px;
-  padding: 5px 20px;
   position: relative;
   text-decoration: none;
   color: #2c2c2c;
@@ -651,6 +658,10 @@ img.arrow.dark {
   width: 90%;
 }
 
+#github {
+  padding-right: 10px;
+}
+
 .link,
 #tutorialText,
 #meetTeamText {
@@ -671,3 +682,14 @@ img.arrow.dark {
 .link.dark {
   color: white;
 }
+
+/* #medium-article {
+  background-color: #f4f3f771;
+  padding-left: 10px;
+  padding-top: 5px;
+  border-radius: 20px;
+}
+
+#medium-article.dark {
+  background-color: #415a778f;
+} */
