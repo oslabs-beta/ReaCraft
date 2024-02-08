@@ -295,6 +295,23 @@
   border-color: #92939d;
 }
 
+.dark .divider-or {
+  color: white;
+}
+
+.dark .divider-or::before,
+.dark .divider-or::after {
+  background: white;
+}
+
+.dark .btn-google {
+  background-color: #767785
+}
+
+.dark .btn-google:hover {
+  background-color: #92939d;
+}
+
 .copy-right {
   display: flex;
   justify-content: center;
