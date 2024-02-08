@@ -44,7 +44,7 @@ $(document).ready(function () {
           });
           if (res.ok) {
             alert.addClass('alert-success');
-            alert.html('Sign up Successfully.');
+            alert.html('Sign up Successful');
             $('.signup-text').append(alert);
             location.reload();
           } else {
@@ -83,7 +83,7 @@ $(document).ready(function () {
         const alert = $('<div class="alert" role="alert"></div>');
         if (res.ok) {
           alert.addClass('alert-success');
-          alert.html('Login Successfully.');
+          alert.html('Login Successful');
           $('.greeting-text').append(alert);
           location.reload();
         } else {
