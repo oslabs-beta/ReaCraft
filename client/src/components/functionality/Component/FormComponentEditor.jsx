@@ -316,6 +316,7 @@ function AddData({ data, setData, dataName }) {
 function PropsTextField({ idx, item, setData, keys, data }) {
   const dispatch = useDispatch();
   const [propKey, setPropKey] = useState(item.key);
+  const theme = useTheme();
 
   const duplicateErr = {
     severity: 'error',
@@ -338,6 +339,11 @@ function PropsTextField({ idx, item, setData, keys, data }) {
       name={`props-${item.key}-key`}
       onChange={(e) => setPropKey(e.target.value)}
       value={propKey}
+      sx={{
+        '& .MuiInputBase-input': {
+          color: theme.palette.mode === 'light' ? '#666666' : '#e5e5e5',
+        }
+      }}
       onBlur={() => {
         let message;
         if (propKey.length === 0) {
