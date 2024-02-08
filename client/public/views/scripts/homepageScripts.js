@@ -1,7 +1,34 @@
 // when document is ready
 $(document).ready(function () {
+  const navs = $('#nav-btns');
+  navs.hide();
+  navs.css({
+    right: '10%',
+    display: 'flex',
+    'flex-direction': 'column',
+    'align-items': 'end',
+    gap: '10px',
+    'z-index': 10,
+    position: 'absolute',
+  });
+  let windowWidth = $(window).width();
+  navs.css({
+    top: windowWidth < 1080 ? '70%' : '40%',
+    gap: windowWidth < 1080 ? '5px' : '10px',
+  });
+
+  $(window).on('resize', () => {
+    windowWidth = $(window).width();
+    navs.css({
+      top: windowWidth < 1080 ? '70%' : '40%',
+      gap: windowWidth < 1080 ? '5px' : '10px',
+    });
+  });
+
   //load react logo script
-  $('#LogoContainer').load('/views/ReactLogo.html');
+  $('#LogoContainer').load('/views/ReactLogo.html', function () {
+    navs.show();
+  });
 
   // attach click handler event to 'signup' button
   $('#signup').click(function (e) {
