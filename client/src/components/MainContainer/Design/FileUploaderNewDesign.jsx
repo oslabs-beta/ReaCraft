@@ -12,9 +12,13 @@ import { Box } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import '../../../styles/UserImageUploadButton.css';
+import { useTheme } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 export default function UserImageUploadButton() {
   const dispatch = useDispatch();
+  const theme = useTheme();
   // const socket = new WebSocket(`ws://${window.location.host}/ws`)
   const [fileName, setFileName] = useState('');
   const [fileSize, setFileSize] = useState('');
@@ -172,14 +176,21 @@ export default function UserImageUploadButton() {
           types={['JPG', 'PNG']}
           children={
             <Box>
-              <CloudUploadRoundedIcon
+              {/* <CloudUploadRoundedIcon
                 style={{
                   fontSize: '70px',
                   color: '#736C6C',
                   marginLeft: '60px',
                 }}
+              /> */}
+              <FontAwesomeIcon icon={faCloudArrowUp}
+                style={{
+                  fontSize: '70px',
+                  color: theme.palette.mode === 'light' ? '#BCBBB6' : 'white',
+                  marginLeft: '3.03rem',
+                }}
               />
-              <div style={{ margin: '20px 0', color: 'black' }}>
+              <div style={{ margin: '20px 0', color: theme.palette.mode === 'light' ? '#2D2D2D' : 'white', fontWeight: 'bolder' }}>
                 Drag & Drop your files here
               </div>
               <Box>

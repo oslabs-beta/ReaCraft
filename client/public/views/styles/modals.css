@@ -91,10 +91,12 @@
   border-radius: 0;
   margin-bottom: 15px;
   background-color: var(--background);
+  color: #6C757D;
 }
 
 .form-control:focus {
-  color: var(--accentLogo);
+  /* color: var(--accentLogo); */
+  color: #6C757D;
   background-color: var(--background);
   border-color: #d5bdaf;
   outline: none !important;
