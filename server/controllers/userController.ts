@@ -109,7 +109,7 @@ export const verifyUser = async (
       return next({
         log: 'Express error handler caught userController.verifyUser middleware error: Username not found',
         status: 400,
-        message: 'VerifyUser Err: Username not found.',
+        message: 'Username not found.',
       });
 
     const pswMatched: { rows: { user_id: number }[] } = await db.query(
@@ -120,7 +120,7 @@ export const verifyUser = async (
       return next({
         log: 'Express error handler caught userController.verifyUser middleware error: Password incorrect',
         status: 400,
-        message: 'VerifyUser Err: Password incorrect.',
+        message: 'Password incorrect.',
       });
 
     res.locals.userId = user._id;

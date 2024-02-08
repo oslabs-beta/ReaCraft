@@ -8,7 +8,11 @@
 
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="/views/styles/homepage.css" />
-    <link rel="stylesheet" type="text/css" href="http://tinyurl.com/25bnpr88" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap"
+    />
 
     <!-- fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,16 +50,19 @@
     <!-- slide 1 -->
     <span class="slide">
       <span class="floater">
-        <button class="btn btn-primary btn-lg px-4" type="button" id="login">
-          Login
-        </button>
-        <button
-          class="btn btn-outline-secondary btn-lg px-4"
+        <a
+          href="https://github.com/oslabs-beta/ReaCraft"
+          target="_blank"
+          rel="noopener noreferrer"
           type="button"
-          id="signup"
+          id="github"
+          class="topbar-btn"
         >
-          Sign Up
-        </button>
+          Github
+        </a>
+
+        <button type="button" id="login" class="topbar-btn">Login</button>
+        <button type="button" id="signup" class="topbar-btn">Sign Up</button>
         <!-- dark mode switch -->
         <span id="dark-mode-switch-root">
           <span id="switch-base">
@@ -71,7 +78,8 @@
         <!-- Tutorial Object -->
         <div
           class="tutorial-container"
-          style="position: absolute; z-index: 15; top: 40%; right: 10%;">
+          style="position: absolute; z-index: 15; top: 40%; right: 10%"
+        >
           <span id="tutorialText" style="cursor: pointer">
             Tutorial ▼
             <!-- <img
@@ -84,7 +92,8 @@
         <!-- Meet Team Object -->
         <div
           class="meetTeam"
-          style="position: absolute; z-index: 15; top: 45%; right: 10%;">
+          style="position: absolute; z-index: 15; top: 45%; right: 10%"
+        >
           <span id="meetTeamText" style="cursor: pointer">
             Meet the Team ▼
             <!-- <img
@@ -93,6 +102,58 @@
               class="arrow"
               src="../assets/arrow.svg" /> -->
           </span>
+        </div>
+
+        <div
+          class="twitter"
+          style="position: absolute; z-index: 15; top: 30%; right: 10%"
+        >
+          <a
+            class="link"
+            style="cursor: pointer"
+            href="https://linktr.ee/reacraftorg"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Connect on
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-twitter-x"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"
+              />
+            </svg>
+            <!-- <img
+            style="width: 20px; height: 20px"
+            alt="arrow"
+            class="arrow"
+            src="../assets/arrow.svg" /> -->
+          </a>
+        </div>
+
+        <div
+          class="medium"
+          style="position: absolute; z-index: 15; top: 35%; right: 10%"
+        >
+          <a
+            class="link"
+            style="cursor: pointer"
+            href="https://twitter.com/reacraft_org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Medium Article <i class="fa-brands fa-medium"></i>
+            <!-- <img
+          style="width: 20px; height: 20px"
+          alt="arrow"
+          class="arrow"
+          src="../assets/arrow.svg" /> -->
+          </a>
         </div>
         <!-- Logo Load In -->
         <div
@@ -112,7 +173,7 @@
       <div class="containerMain">
         <div class="containerLeft">
           <div class="instruction" onclick="showSlide(1)">
-            <i class="fa-solid fa-file-import"></i> 
+            <i class="fa-solid fa-file-import"></i>
             <span class="instruction-title">Design upload onto canvas</span>
             <p class="instructiontext desc1">
               Kickstart your project by uploading your web design to the canvas.
@@ -121,7 +182,7 @@
             </p>
           </div>
           <div class="instruction" onclick="showSlide(2)">
-            <i class="fa-regular fa-square-plus"></i> 
+            <i class="fa-regular fa-square-plus"></i>
             <span class="instruction-title">Add components for design</span>
             <p class="instructiontext desc2">
               Elevate your design by intuitively adding web components with
@@ -163,10 +224,12 @@
           <div class="instruction" onclick="showSlide(6)">
             <i class="fa-solid fa-file-export"></i>
             <span class="instruction-title">Export project</span>
-            <p class="instructiontext desc6">    
-              Transition from concept to code effortlessy with the exporting feature. Export to obtain
-              React and CSS code, mirroring your design's components and styles. Open in your IDE and
-              jumpstart development, transforming your visual concept into a functional web application.
+            <p class="instructiontext desc6">
+              Transition from concept to code effortlessy with the exporting
+              feature. Export to obtain React and CSS code, mirroring your
+              design's components and styles. Open in your IDE and jumpstart
+              development, transforming your visual concept into a functional
+              web application.
             </p>
           </div>
         </div>
@@ -182,14 +245,13 @@
               "
             >
               <img
-                src="../assets/homepage/contruction.svg"
                 class="construction"
-                alt="temp image"
+                alt="Design Upload"
                 style="
                   display: flex;
                   justify-content: center;
                   align-items: center;
-                  width: 300px;
+                  width: 1300px;
                 "
               />
             </p>
@@ -205,14 +267,13 @@
               "
             >
               <img
-                src="../assets/homepage/contruction.svg"
                 class="construction"
-                alt="temp image"
+                alt="Add Components"
                 style="
                   display: flex;
                   justify-content: center;
                   align-items: center;
-                  width: 300px;
+                  width: 1300px;
                 "
               />
             </p>
@@ -228,14 +289,13 @@
               "
             >
               <img
-                src="../assets/homepage/contruction.svg"
                 class="construction"
-                alt="temp image"
+                alt="Dom Tree"
                 style="
                   display: flex;
                   justify-content: center;
                   align-items: center;
-                  width: 300px;
+                  width: 1300px;
                 "
               />
             </p>
@@ -251,14 +311,13 @@
               "
             >
               <img
-                src="../assets/homepage/contruction.svg"
                 class="construction"
-                alt="temp image"
+                alt="Border Color Fill"
                 style="
                   display: flex;
                   justify-content: center;
                   align-items: center;
-                  width: 300px;
+                  width: 1300px;
                 "
               />
             </p>
@@ -274,14 +333,13 @@
               "
             >
               <img
-                src="../assets/homepage/contruction.svg"
                 class="construction"
-                alt="temp image"
+                alt="Development Suite"
                 style="
                   display: flex;
                   justify-content: center;
                   align-items: center;
-                  width: 300px;
+                  width: 1300px;
                 "
               />
             </p>
@@ -297,14 +355,13 @@
               "
             >
               <img
-                src="../assets/homepage/constructions2.svg"
                 class="construction"
-                alt="temp image"
+                alt="Export"
                 style="
                   display: flex;
                   justify-content: center;
                   align-items: center;
-                  width: 300px;
+                  width: 1300px;
                 "
               />
             </p>
@@ -324,7 +381,7 @@
         <div class="row">
           <span class="profile col-sm-4">
             <img
-              src="../assets/amir.png"
+              src="../assets/amir.jpeg"
               class="profile-photos"
               alt="Amir Profile"
             />

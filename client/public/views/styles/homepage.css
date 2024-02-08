@@ -100,11 +100,13 @@ img.arrow.dark {
   width: 70%;
 }
 
-.fa-github, .fa-linkedin {
+.fa-github,
+.fa-linkedin {
   color: var(--accentLogo);
 }
 
-.fa-github.dark, .fa-linkedin.dark {
+.fa-github.dark,
+.fa-linkedin.dark {
   color: white;
 }
 
@@ -145,7 +147,7 @@ img.arrow.dark {
 }
 
 .instruction i {
-  margin-right: 10px; 
+  margin-right: 10px;
 }
 
 .instruction-title {
@@ -202,16 +204,23 @@ img.arrow.dark {
   );
   background-size: 200% 100%;
   background-position: right bottom;
-  transition: width 0.5s ease-out, background-position 4s ease;
+  /* transition: width 0.5s ease-out, background-position 4s ease; */
+  transition: width 14s ease-out;
   filter: blur(1px);
 }
 
 .instruction.active::before {
   width: 100%;
-  transition: width 4s ease;
+  /* transition: width 4s ease; */
+  /* transition: width 20s ease; */
   visibility: visible;
   opacity: 1;
   background-position: left bottom;
+}
+/* for the bar to move back when another instruction is clicked */
+.instruction:not(.active)::before {
+  width: 0%;
+  transition: width 0.6s ease-out; 
 }
 
 .instruction:hover {
@@ -325,7 +334,6 @@ img.arrow.dark {
 .slidePage2 {
   animation: fadeInUp 1.5s;
   border-radius: 2px;
-  box-shadow: 3px 5px 5px -3px rgba(44, 44, 44, 1);
   display: block;
   height: 100%;
   margin-left: 10%;
@@ -537,7 +545,7 @@ img.arrow.dark {
 }
 
 #dark-mode-switch-root #switch-base.dark {
-  transform: translateX(6px);
+  transform: translateX(25px);
 }
 
 #dark-mode-switch-root #switch-thumb {
@@ -611,8 +619,7 @@ img.arrow.dark {
   z-index: 1;
 }
 
-#login,
-#signup {
+.topbar-btn {
   background: none;
   border: none;
   color: var(--text);
@@ -625,15 +632,14 @@ img.arrow.dark {
   padding: 5px 20px;
   position: relative;
   text-decoration: none;
+  color: #2c2c2c;
 }
 
-#login.dark,
-#signup.dark {
+.topbar-btn.dark {
   color: white;
 }
 
-#login::after,
-#signup::after {
+.topbar-btn::after {
   background: var(--text);
   bottom: -10px;
   content: '';
@@ -647,11 +653,27 @@ img.arrow.dark {
   width: 0;
 }
 
-#login:hover::after,
-#signup:hover::after {
+.topbar-btn:hover::after {
   width: 90%;
 }
 
-#tutorialText, #meetTeamText {
+.link,
+#tutorialText,
+#meetTeamText {
   font-family: 'Baloo Bhaijaan 2', sans-serif;
+}
+
+.link:hover,
+#tutorialText:hover,
+#meetTeamText:hover {
+  font-size: large;
+}
+
+.link {
+  text-decoration: none;
+  color: #2c2c2c;
+}
+
+.link.dark {
+  color: white;
 }
