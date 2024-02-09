@@ -94,9 +94,8 @@ router.get('/home', checkCookie, (req: Request, res: Response) => {
   return res.status(200).sendFile(path.join(PROJECT_ROOT, filePath));
 });
 
-router.get(/.*\.bundle\.js$/, (req: Request, res: Response) => {
-  const fileName = req.path.split('/').pop();
-  res.status(200).sendFile(path.join(PROJECT_ROOT, `/build/${fileName}`));
+router.get('/bundle.js', (req: Request, res: Response) => {
+  res.status(200).sendFile(path.join(PROJECT_ROOT, '/build/bundle.js'));
 });
 
 export default router;
